@@ -1,0 +1,122 @@
+@import '../var.css';
+button:disabled{
+    opacity: 56%;
+    cursor: not-allowed;
+}
+button img{
+   width: 20px;
+}
+button:focus{
+    outline: 0;
+}
+.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    white-space: nowrap;
+    cursor: pointer;
+    background: #fff;
+    border: 1px solid #dcdfe6;
+    color: var(--text-white);
+    box-sizing: border-box;
+    font-weight: 500;
+    padding: 9px 16px;
+    font-size: 14px;
+    border-radius: 4px;
+    min-width: 80px;
+    height: 36px;
+}
+.button__primary{
+    background-color: var(--button-bg-color-green);
+}
+.button.button__primary:not(:disabled):active{
+    background-color: var(--button-bg-color-green-active);
+}
+.button__primary-border{
+    border-color: var(--button-bg-color-green);
+    color: var(--button-bg-color-green);
+}
+.button.button__primary-border:not(:disabled):active{
+    background-color: var(--button-bg-color-green-active);
+}
+.button__primary-border:hover{
+    background-color: #CEEAD9;
+}
+.button__warning-border{
+    border-color: var(--color-red);
+    color: var(--color-red);
+}
+.button.button__warning-border:active{
+    background-color: var(--button-bg-color-red-active);
+}
+.button__warning-border:hover{
+    background: #fef1f1;
+}
+.button__blue{
+    background-color: var(--color-blue);
+}
+.button__default{
+    color: black;
+}
+.button__primary:hover{
+    background-color: var(--button-bg-color-green-hover);
+}
+.button__secondary{
+    color: var(--text-black);
+    background-color: var(--text-white);
+    border-color: var(--button-border-color-white);
+}
+.button__secondary:hover{
+    background-color:var(--button-bg-color-white-hover);
+}
+.button.button__secondary:active{
+    background-color:var(--button-bg-color-white-active);
+}
+.button__icon{
+    min-width: 40px;
+    width: 40px;
+    padding: 8px;
+    background-color: var(--button-bg-color-icon);
+}
+.button__icon img{
+    width: 20px;
+}
+.button__link{
+    width: auto;
+    background-color: transparent;
+    color: var(--button-bg-color-green);
+    border-color: transparent;
+}
+.button.button__link:active{
+    color: var(--button-bg-color-green-active);
+}
+.button__primary-combo{
+    position: relative;
+    padding: 8px 12px 8px 16px;
+    background-color: var(--button-bg-color-green);
+}
+.button__icon_pr6{
+    padding-right: 6px;
+}
+.button__text-pr16{
+    padding-right: 16px;
+    border-right: 1px solid white;
+}
+.button .vertical{
+    left: 65px;
+    position: absolute;
+    height: 100%;
+    border: 1px solid white;
+}
+.button__icon-default{
+    background-color: transparent;
+    padding: 0;
+    border: 0;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.icon-margin-right{
+    margin-right: 6px;
+}

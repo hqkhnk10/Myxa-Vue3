@@ -1,0 +1,31 @@
+.form__items{
+    position: relative;
+    width: fit-content;
+    height: 36px;
+}
+.form{
+    background-color: white;
+    padding: 32px;
+    min-width: 300px;
+    box-sizing: content-box;
+}
+.form-item{
+    margin-bottom: 20px;
+}
+.form-item__label{
+    margin: 0 0 8px 0;
+}
+.form-item__content {
+    line-height: 36px;
+    position: relative;
+    font-size: 14px;
+}
+.form__footer{
+    display: flex;
+    justify-content: end;
+    gap: 12px;
+}
+.required{
+    color: red;
+    margin-left: 5px;
+}

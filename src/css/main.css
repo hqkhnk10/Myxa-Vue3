@@ -1,0 +1,30 @@
+@import './components/button.css';
+@import './components/input.css';
+@import './components/form.css';
+@import './components/dialog.css';
+@import './components/popup.css';
+@import './components/select.css';
+@import './components/table.css';
+@import './components/checkbox.css';
+@import './components/scroll.css';
+@import './layouts/layout.css';
+@import './components/icon.css';
+@import './components/tooltip.css';
+@import './components/dropdown.css';
+@import '../libs/mcombobox/style/mcombobox.css';
+@import './inline-class.css';
+
+*{
+    font-family: var(--default-font);
+    font-size: var(--default-font-size);
+    font-weight: var(--default-font-weight);
+    box-sizing: border-box;
+    word-break: break-word;
+}
+body{
+    background: #f4f5f8;
+    margin: 0;
+}
+h1{
+    font-size: 40px;
+}

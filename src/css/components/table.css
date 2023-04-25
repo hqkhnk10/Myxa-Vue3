@@ -1,0 +1,111 @@
+table {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-collapse: collapse;
+  padding: 8px;
+  background-color: white;
+  overflow-x: auto;
+}
+th, td{
+  height: 32px;
+  max-height: 32px;
+  border-bottom: 1px solid #ddd;
+  border-top: 1px solid #ddd;
+  border-collapse: collapse;
+  padding: 8px;
+  word-break: break-word;
+  white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+th{
+  text-align: left;
+  font-weight: 700;
+}
+td{
+  max-width: 50px;
+}
+tr{
+  position: relative;
+}
+tr:has(td:hover) > td{
+  background-color: var(--table-color-green-hover);
+}
+tr:focus > td{
+  background-color: var(--table-color-green-hover);
+}
+.focus__table{
+  background-color: var(--table-color-green-hover);
+}
+.table {
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  flex: 1;
+  width: 100%;
+  max-width: 100%;
+  background-color: #fff;
+  font-size: 14px;
+  color: #606266;
+}
+.button__table {
+  display: none;
+  border: 0;
+  width: 0;
+  position: absolute;
+  white-space: nowrap;
+  z-index: 5;
+  padding: 0;
+  left: 72vw;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+tr:hover .button__table {
+  display: flex;
+  gap: 4px;
+  background-color: white;
+}
+tr:hover .button__table {
+  display: flex;
+  gap: 4px;
+  background-color: white;
+}
+tr:hover .button__table .button-icon-table{
+  display: flex;
+  min-width: 32px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  cursor: pointer;
+}
+.icon-round-active{
+  background-color: var(--color-green);
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+}
+.icon-round-inactive{
+  background-color: var(--color-red);
+  width: 8px;
+  height: 8px;
+  border-radius: 4px;
+}
+.button__table img{
+  cursor: pointer;
+}
+.sticky-col {
+  position: -webkit-sticky;
+  position: sticky;
+  background-color: white;
+}
+
+.first-col {
+  width: 50px;
+  min-width: 50px;
+  max-width: 50px;
+  left: 0px;
+}

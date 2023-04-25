@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/main.css">
+    <script type="text/javascript" src="../js/script.js"></script>
+
+<body>
+    <!-- Button -->
+    <div class="flex items-center" style="column-gap:5%;">
+        <h1>Button:</h1>
+        <div>
+            <h2>Nút chính:</h2>
+            <button class="button button__primary">
+                <span>Button</span>
+            </button>
+            <h2>Nút chính disabled:</h2>
+            <button class="button button__primary" disabled>
+                <span>Button</span>
+            </button>
+        </div>
+        <div>
+            <h2>Nút phụ:</h2>
+            <button class="button button__secondary">
+                <span>Button</span>
+            </button>
+        </div>
+        <div>
+            <h2>Link button:</h2>
+            <button class="button button__link">
+                <span>Button</span>
+            </button>
+        </div>
+        <div>
+            <h2>Icon button:</h2>
+            <button class="button button__icon">
+                <img src="../assets/icon/plus-icon-green.svg" alt="Plus icon">
+            </button>
+        </div>
+        <div>
+            <h2>Combo button:</h2>
+            <button class="button button__primary-combo">
+                <span style="padding-right:24px">Button</span>
+                <div class="vertical"></div>
+                <img src="../assets/icon/down-arrow-icon.svg" style="width: 16px;" alt="Down arrow icon">
+            </button>
+        </div>
+        <div>
+            <h2>Button with icon:</h2>
+            <button class="button button__primary">
+                <img src="../assets/icon/plus-icon.svg" alt="Plus icon" class="button__icon_pr6">
+                <span>Button</span>
+            </button>
+        </div>
+    </div>
+    <!-- Input -->
+    <div>
+        <h1>Textfield</h1>
+        <div class="flex items-center" style="column-gap:5%;flex-wrap: wrap;">
+            <div>
+                <form>
+                    <h2>Validate field:
+                    </h2>
+                    <div class="form__items input-container">
+                        <input type="email" id="mail" name="mail" />
+                        <span class="input__icon">
+                            <image src="../assets/icon/loading-icon.svg" class="loading"></image>
+                        </span>
+                        <span class="input__icon">
+                            <image src="../assets/icon/approve-icon.svg" class="approve"></image>
+                        </span>
+                    </div>
+                    <p class="error"></p>
+                </form>
+                <button type="button" onclick="fakeLoading()">Submit</button>
+            </div>
+
+            <div>
+                <label>Error field:</label>
+                <div class="form__items input-container">
+                    <input type="email" id="mail" name="mail" class="invalid" />
+                    <p class="error active">Error</p>
+                </div>
+            </div>
+
+            <div>
+                <label>Loading field:</label>
+                <div class="form__items input-container">
+                    <input type="email" id="mail" name="mail" />
+                    <span class="input__icon">
+                        <image src="../assets/icon/loading-icon.svg" class="loading-show"></image>
+                    </span>
+                    <p class="error"></p>
+                </div>
+            </div>
+
+            <div>
+                <label>Approve field:</label>
+                <div class="form__items input-container">
+                    <input type="email" id="mail" name="mail" />
+                    <span class="input__icon">
+                        <image src="../assets/icon/approve-icon.svg"></image>
+                    </span>
+                    <p class="error"></p>
+                </div>
+            </div>
+
+            <div>
+                <label>Search field:</label>
+                <div class="form__items input-container">
+                    <input type="email" id="mail" name="mail" />
+                    <span class="input__icon">
+                        <image src="../assets/icon/search-icon.svg"></image>
+                    </span>
+                    <p class="error"></p>
+                </div>
+            </div>
+
+            <div>
+                <label>Search field:</label>
+                <div class="form__items input-container">
+                    <input type="email" id="mail" name="mail" />
+                    <span class="input__icon-graybg">
+                        <image src="../assets/icon/search-icon.svg"></image>
+                    </span>
+                    <p class="error"></p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Dialog -->
+    <div>
+        <h1>Dialog</h1>
+        <button onclick="showDialog()">Click to open dialog</button>
+        <div role="dialog" aria-modal="true" aria-label="Tips" class="dialog">
+            <div class="dialog__padding">
+                <div class="dialog__header">
+                    <span class="dialog__title">Title</span>
+                    <button type="button" aria-label="Close" class="dialog__headerbtn">
+                        <img src="../assets/icon/x-icon.svg" alt="Exit" style="width:12px" />
+                    </button>
+                </div>
+                <div class="dialog__body">
+                    <span>This is a message</span>
+                </div>
+                <div class="dialog__footer">
+                    <button class="button button__secondary">
+                        <span>Button 2</span>
+                    </button>
+                    <button class="button button__primary">
+                        <span>Button 1</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="dialog-show">
+            <div role="dialog" aria-modal="true" aria-label="Tips" class="dialog" style="margin-top: 20vh;">
+                <div class="dialog__padding">
+                    <div class="dialog__header">
+                        <span class="dialog__title">Title</span>
+                        <button type="button" aria-label="Close" class="dialog__headerbtn" onclick="closeDialog()">
+                            <img src="../assets/icon/x-icon.svg" alt="Exit" style="width:12px" />
+                        </button>
+                    </div>
+                    <div class="dialog__body">
+                        <span>This is a message</span>
+                    </div>
+                    <div class="dialog__footer">
+                        <button class="button button__secondary">
+                            <span>Button 2</span>
+                        </button>
+                        <button class="button button__primary">
+                            <span>Button 1</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Message -->
+    <div>
+        <h1>Popup</h1>
+        <div class="flex items-center" style="gap:5%">
+            <button onclick="openInfo()"
+                style="background-color: var(--popup-info-color);width:100px;">Information</button>
+            <div role="alert" class="popup__demo" style="top: 20px; display: flex;">
+                <div class="flex justify-center items-center">
+                    <img src="../assets/icon/information-icon.svg" width="20px" alt="information" class="popup__icon">
+                    <span class="popup__info-title">Thông tin!&nbsp;</span>
+                    <span class="popup_content">This is a message.</span>
+                </div>
+                <div class="flex justify-center items-center">
+                    <div class="popup__action">Hoàn tác</div>
+                    <button type="button" aria-label="Close" class="button__icon-default" onclick="closeInfo()">
+                        <img src="../assets/icon/x-icon.svg" alt="Exit" style="width:12px" />
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center " style="gap:5%">
+            <button onclick="openWarning()"
+                style="background-color: var(--popup-warning-color);width:100px;">Warning</button>
+            <div role="alert" class="popup__demo" style="top: 20px; ">
+                <div class="flex justify-center items-center">
+                    <img src="../assets/icon/warning-icon.svg" width="20px" alt="information" class="popup__icon">
+                    <span class="popup__warning-title">Thông tin!&nbsp;</span>
+                    <span class="popup_content">This is a message.</span>
+                </div>
+                <div class="flex justify-center items-center">
+                    <div class="popup__action">Hoàn tác</div>
+                    <button type="button" aria-label="Close" class="button__icon-default" onclick="closeWarning()">
+                        <img src="../assets/icon/x-icon.svg" alt="Exit" style="width:12px" />
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center " style="gap:5%">
+            <button onclick="openError()" style="background-color: var(--popup-error-color);width:100px;">Error</button>
+            <div role="alert" class="popup__demo" style="top: 20px; ">
+                <div class="flex justify-center items-center">
+                    <img src="../assets/icon/error-icon.svg" width="20px" alt="information" class="popup__icon">
+                    <span class="popup__error-title">Thông tin!&nbsp;</span>
+                    <span class="popup_content">This is a message.</span>
+                </div>
+                <div class="flex justify-center items-center">
+                    <div class="popup__action">Hoàn tác</div>
+                    <button type="button" aria-label="Close" class="button__icon-default" onclick="closeError()">
+                        <img src="../assets/icon/x-icon.svg" alt="Exit" style="width:12px" />
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="flex items-center " style="gap:5%">
+            <button onclick="openSuccess()"
+                style="background-color: var(--popup-success-color);width:100px;">Success</button>
+            <div role="alert" class="popup__demo" style="top: 20px; ">
+                <div class="flex justify-center items-center">
+                    <img src="../assets/icon/success-icon.svg" width="20px" alt="information" class="popup__icon">
+                    <span class="popup__success-title">Thông tin!&nbsp;</span>
+                    <span class="popup_content">This is a message.</span>
+                </div>
+                <div class="flex justify-center items-center">
+                    <div class="popup__action">Hoàn tác</div>
+                    <button type="button" aria-label="Close" class="button__icon-default" onclick="closeSuccess()">
+                        <img src="../assets/icon/x-icon.svg" alt="Exit" style="width:12px" />
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div role="alert" class="popup popup__info" style="top: 20px; z-index: 2012;">
+            <div class="flex justify-center items-center">
+                <img src="../assets/icon/information-icon.svg" width="20px" alt="information" class="popup__icon">
+                <span class="popup__info-title">Thông tin!&nbsp;</span>
+                <span class="popup_content">This is a message.</span>
+            </div>
+            <div class="flex justify-center items-center">
+                <div class="popup__action">Hoàn tác</div>
+                <button type="button" aria-label="Close" class="button__icon-default" onclick="closeInfo()">
+                    <img src="../assets/icon/x-icon.svg" alt="Exit" style="width:12px" />
+                </button>
+            </div>
+        </div>
+        <div role="alert" class="popup popup__warning" style="top: 20px; z-index: 2012;">
+            <div class="flex justify-center items-center">
+                <img src="../assets/icon/warning-icon.svg" width="20px" alt="information" class="popup__icon">
+                <span class="popup__warning-title">Thông tin!&nbsp;</span>
+                <span class="popup_content">This is a message.</span>
+            </div>
+            <div class="flex justify-center items-center">
+                <div class="popup__action">Hoàn tác</div>
+                <button type="button" aria-label="Close" class="button__icon-default" onclick="closeWarning()">
+                    <img src="../assets/icon/x-icon.svg" alt="Exit" style="width:12px" />
+                </button>
+            </div>
+        </div>
+        <div role="alert" class="popup popup__error" style="top: 20px; z-index: 2012;">
+            <div class="flex justify-center items-center">
+                <img src="../assets/icon/error-icon.svg" width="20px" alt="information" class="popup__icon">
+                <span class="popup__error-info">Thông tin!&nbsp;</span>
+                <span class="popup_content">This is a message.</span>
+            </div>
+            <div class="flex justify-center items-center">
+                <div class="popup__action">Hoàn tác</div>
+                <button type="button" aria-label="Close" class="button__icon-default" onclick="closeError()">
+                    <img src="../assets/icon/x-icon.svg" alt="Exit" style="width:12px" />
+                </button>
+            </div>
+        </div>
+        <div role="alert" class="popup popup__success" style="top: 20px; z-index: 2012;">
+            <div class="flex justify-center items-center">
+                <img src="../assets/icon/success-icon.svg" width="20px" alt="information" class="popup__icon">
+                <span class="popup__success-title">Thông tin!&nbsp;</span>
+                <span class="popup_content">This is a message.</span>
+            </div>
+            <div class="flex justify-center items-center">
+                <div class="popup__action">Hoàn tác</div>
+                <button type="button" aria-label="Close" class="button__icon-default" onclick="closeSuccess()">
+                    <img src="../assets/icon/x-icon.svg" alt="Exit" style="width:12px" />
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Select box -->
+    <div>
+        <h1>Combo box:</h1>
+        <div>
+            <div class="custom-select">
+                <div class="select__icon">
+                    <img src="../assets/icon/arrow-down.svg">
+                </div>
+                <select>
+                    <option value="0">Select car:</option>
+                    <option value="1">Audi</option>
+                    <option value="2">BMW</option>
+                    <option value="3">Citroen</option>
+                    <option value="4">Ford</option>
+                    <option value="5">Honda</option>
+                    <option value="6">Jaguar</option>
+                    <option value="7">Land Rover</option>
+                    <option value="8">Mercedes</option>
+                    <option value="9">Mini</option>
+                    <option value="10">Nissan</option>
+                    <option value="11">Toyota</option>
+                    <option value="12">Volvo</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <!-- Form -->
+    <div>
+        <h1>Form</h1>
+        <form class="form">
+            <div class="form-item"><label class="form-item__label">Họ và tên</label>
+                <div class="form-item__content">
+                    <input type="text" autocomplete="off" class="input">
+                </div>
+            </div>
+            <div class="form-item"><label class="form-item__label">Giới tính</label>
+                <div class="form-item__content">
+                    <div>
+                        <input type="radio" id="html" name="fav_language" value="HTML">
+                        <span for="html">Nam</span>
+                    </div>
+                    <div>
+                        <input type="radio" id="css" name="fav_language" value="CSS">
+                        <span for="css">Nữ</span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-item"><label class="form-item__label">Ngày sinh</label>
+                <div class="form-item__content">
+                    <input type="date" placeholder="dd/mm/yyyy">
+                </div>
+            </div>
+            <div class="form-item"><label class="form-item__label">Địa chỉ email</label>
+                <div class="form-item__content">
+                    <input type="text" placeholder="example@gmail.com">
+                </div>
+            </div>
+            <div class="form__footer">
+                <button class="button button__secondary" type="button">
+                    <span>Hủy</span>
+                </button>
+                <button class="button button__primary" type="button">
+                    <span>Đăng kí</span>
+                </button>
+            </div>
+        </form>
+    </div>
+    <!-- Checkbox -->
+    <div>
+        <h1>Checkbox</h1>
+        <div class="checkbox">
+            <input type="checkbox" id="overall">
+            <input type="checkbox" class="checkbox__input">
+            <span class="checkmark"></span>
+        </div>
+    </div>
+    <!-- ComboBox -->
+    <div>
+        <h1>ComboBox</h1>
+        <m-combo-box api="https://provinces.open-api.vn/api/" propText="name" propValue="code">
+        </m-combo-box>
+    </div>
+</body>
+
+</html>

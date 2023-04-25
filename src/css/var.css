@@ -1,0 +1,37 @@
+:root {
+    --button-bg-color-green: var(--color-green);
+    --button-bg-color-green-hover:#57C841;
+    --button-bg-color-green-active:#30881f;
+    --button-bg-color-white:#FFFFFF;
+    --button-bg-color-white-active:#c4c2c2;
+    --button-bg-color-white-hover:#cccccc;
+    --button-bg-color-red-hover:#fef1f1;
+    --button-bg-color-red-active:#B80000;
+    --button-bg-color-icon:rgba(80,184,60,0.1);
+    --button-border-color-white:#E0E0E0;
+    --text-white: #FFFFFF;
+    --text-black:#1F1F1F;
+    --default-font:MISA Font;
+    --default-font-size: 14px;
+    --default-font-weight: 100;
+    --default-height:36px;
+    --color-green:#50B83C;
+    --color-blue:#007AFF;
+    --color-orange:#FF9800;
+    --color-red:#E60000;
+    --color-gray:#9E9E9E;
+    --input-border-color-gray:#EBEBEB;
+    --input-error-color-red:#E61D1D;
+    --input-border-size: 1px;
+    --input-padding-size: 12px;
+    --popup-info-color:#00b3ff;
+    --popup-error-color:#E60000;
+    --popup-warning-color:#FF9800;
+    --popup-success-color:#50B83C;
+    --select-items-color:rgba(80,184,60,0.1);
+    --table-color-green-hover:#CEEAD9;
+}
+@font-face {
+    font-family: MISA Font;
+    src: url('../assets/font/Roboto/Roboto-Regular.ttf');
+}
