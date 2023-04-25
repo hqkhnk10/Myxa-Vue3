@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-import { updateDisplay } from "../pages/category";
 const checkMark = document?.querySelector("span .checkmark");
 
 function unclickCheckbox() {

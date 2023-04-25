@@ -7,8 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="https://cegovapp.misacdn.net/cegov/img/ic_cegoLogo_new.89475e3e.svg" type="image/icon type">
     <title>MISA CeGov</title>
-    <link rel="stylesheet" href="../css/main.css">
-    <script type="text/javascript" src="../js/script.js"></script>
+    <link rel="stylesheet" href="../../css/main.css">
+    <script type="text/javascript" src="../../js/script.js"></script>
 
 </head>
 
@@ -211,7 +211,7 @@
                         <div style="margin-bottom: 10px;justify-content: space-between;" class="flex">
                             <div class="flex" style="gap:15px">
                                 <div>
-                                    <div class="form__items input-container">
+                                    <div class="form__items input-container" style="width: 300px;">
                                         <input type="text" placeholder="Nhập mã hoặc tên danh hiệu ..." />
                                         <span class="input__icon">
                                             <image src="../../assets/icon/search-icon.svg" style="width: 20px;"></image>
@@ -542,7 +542,7 @@
                         <div class="tooltip">
                             <button type="button" aria-label="Close" class="dialog__headerbtn"
                                 onclick="btnAddTitleOnClick()" style="height:15px">
-                                <img src="../assets/icon/x-icon.svg" alt="Exit" style="width:15px" />
+                                <img src="../../assets/icon/x-icon.svg" alt="Exit" style="width:15px" />
                             </button>
                             <span class="tooltiptext tooltiptext-top">Thoát</span>
                         </div>
@@ -589,8 +589,15 @@
                                 <label class="form-item__label">Cấp khen thưởng<span class="required">*</span></label>
                                 <div class="form-item__content">
                                     <div class="mcombobox">
-                                        <input>
-                                        <div></div>
+                                        <input type="text" class="mcombobox__input">
+                                
+                                        <button class="mcombobox__button"></button>
+                                        <div class="mcombobox__data" propText="name" propValue="code">
+                                            <a href="#" class="mcombobox-item" value="1">Cấp nhà nước</a>
+                                            <a href="#" class="mcombobox-item" value="2">Cấp Tỉnh/tương đương</a>
+                                            <a href="#" class="mcombobox-item" value="3">Cấp Huyện/tương đương</a>
+                                            <a href="#" class="mcombobox-item" value="4">Cấp Xã/tương đương</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -631,7 +638,7 @@
             </div>
         </div>
     </div>
-    <script type="text/javascript" src="../js/pages/category.js"></script>
+    <script type="text/javascript" src="../../js/pages/category.js"></script>
 </body>
 
 </html>

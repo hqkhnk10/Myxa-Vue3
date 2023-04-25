@@ -25,7 +25,7 @@ function btnAddTitleOnClick() {
  * @returns None
  */
 let checkedCount = 0;
-export function updateDisplay() {
+function updateDisplay() {
   checkedCount = 0;
   for (const box of checkBoxes) {
     if (box.style.backgroundImage == checked) {

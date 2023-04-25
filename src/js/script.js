@@ -1,14 +1,13 @@
-loadScript('/js/components/validate.js')
-loadScript('/js/components/formvalidate.js')
-loadScript('/js/components/dialog.js')
-loadScript('/js/components/popup.js')
-loadScript('/js/components/select.js')
-loadScript('/js/components/checkbox.js')
-loadScript('/js/components/table.js')
-loadScript('/js/components/dropdown.js')
-loadScript('/js/components/menu.js')
-loadScript('/libs/mcombobox/js/mcombobox.js')
-
+loadScript('../../js/components/validate.js')
+loadScript('../../js/components/formvalidate.js')
+loadScript('../../js/components/dialog.js')
+loadScript('../../js/components/popup.js')
+loadScript('../../js/components/select.js')
+loadScript('../../js/components/checkbox.js')
+loadScript('../../js/components/table.js')
+loadScript('../../js/components/dropdown.js')
+loadScript('../../js/components/menu.js')
+loadScript('../../libs/mcombobox/js/mcombobox.js')
 /**
  * load all the scripts
  * @param {*} url 
