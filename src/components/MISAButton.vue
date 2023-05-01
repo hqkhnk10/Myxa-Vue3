@@ -1,6 +1,7 @@
 <template>
   <button class="button" :class="renderButton()" :disabled="disabled">
-    <slot></slot>
+    <slot>
+    </slot>
   </button>
 </template>
 
@@ -19,11 +20,10 @@ export default {
     disabled: {
       type: Boolean,
       default: false
-    },
+    }
   },
   methods: {
     renderButton() {
-      console.log('type', this.type);
       return `button__${this.type}`;
     }
   }

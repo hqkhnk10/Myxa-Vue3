@@ -1,5 +1,14 @@
 <template>
-  <input v-model="inputValue" on-blur="blurEvent" :disabled="disabled" on-change="changeEvent" on-focus="focusEvent">
+  <div>
+    <input v-model="inputValue" on-blur="blurEvent" :disabled="disabled" @change="changeEvent" on-focus="focusEvent">
+    <span class="input__icon">
+      <image src="../assets/icon/loading-icon.svg" class="loading"></image>
+    </span>
+    <span class="input__icon">
+      <image src="../assets/icon/approve-icon.svg" class="approve"></image>
+    </span>
+    <p class="error"></p>
+  </div>
 </template>
 
 <script>
@@ -12,7 +21,7 @@ export default {
   },
   props: {
     modelValue: {
-      type: [String,Number],
+      type: [String, Number],
       default: ''
     },
     type: {
@@ -22,8 +31,15 @@ export default {
       type: Boolean,
       default: false
     },
-    placeholder:{
+    placeholder: {
       type: String
+    },
+    validateEvent: {
+      type: Function
+    },
+    trigger: {
+      type: String,
+      default: 'change'
     }
   },
   watch: {
@@ -31,7 +47,7 @@ export default {
       this.$emit('update:modelValue', newValue)
     }
   },
-  emits: ['update:modelValue','change','focus'],
+  emits: ['update:modelValue', 'change', 'focus'],
   methods: {
     renderButton() {
       console.log('type', this.type);
@@ -41,7 +57,7 @@ export default {
       this.$emit('blur')
     },
     changeEvent() {
-      this.$emit('change', this.input)
+      this.$emit('change', this.modelValue)
     },
     focusEvent() {
       this.$emit('focus')

@@ -24,7 +24,7 @@ button:focus{
     font-size: 14px;
     border-radius: 4px;
     min-width: 80px;
-    width: 80px;
+    width: fit-content;
     height: 36px;
 }
 .button__primary{
@@ -75,7 +75,6 @@ button:focus{
 }
 .button__icon{
     min-width: 40px;
-    width: 40px;
     padding: 8px;
     background-color: var(--button-bg-color-icon);
 }
@@ -83,7 +82,7 @@ button:focus{
     width: 20px;
 }
 .button__link{
-    width: auto;
+    width: fit-content;
     background-color: transparent;
     color: var(--button-bg-color-green);
     border-color: transparent;

@@ -43,6 +43,8 @@
     gap: 8px;
 }
 .dialog__padding{
+    margin: auto;
+    background-color: white;
     padding: 24px;
     display: flex;
     flex-direction: column;
@@ -50,7 +52,6 @@
 }
 .dialog-show{
     background: rgb(0, 0, 0, 0.6);
-    display: none;
     z-index: 999;
     position: fixed;
     top: 0;

@@ -20,6 +20,7 @@
     font-weight: var(--default-font-weight);
     box-sizing: border-box;
     word-break: break-word;
+    outline: 1px dotted red;
 }
 body{
     background: #f4f5f8;

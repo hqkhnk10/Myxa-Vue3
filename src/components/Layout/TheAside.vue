@@ -1,6 +1,13 @@
 <template>
     <aside class="aside" style="display: flex;justify-content: space-between;flex-direction: column;">
         <ul role="menubar" class="menu">
+            <li v-for="(item, index) in routes" :key="index" role="menuitem" class="submenu">
+                <div class="menu-item-icon" v-if="item.children">
+                    <img src="https://cegovapp.misacdn.net/cegov/img/ic_dashboard_default.110fa5f3.svg" alt="logo">
+                </div>
+                <div class="submenu__title">
+                    Tổng quan</div>
+            </li>
             <li role="menuitem" class="submenu" router="index.html">
                 <div class="menu-item-icon">
                     <img src="https://cegovapp.misacdn.net/cegov/img/ic_dashboard_default.110fa5f3.svg" alt="logo">
@@ -140,7 +147,13 @@
     </aside>
 </template>
 <script>
+import { routes } from '@/routers/router';
 export default {
-    name: 'TheAside'
+    name: 'TheAside',
+    data() {
+        return {
+            routes: routes
+        }
+    }
 }
 </script>

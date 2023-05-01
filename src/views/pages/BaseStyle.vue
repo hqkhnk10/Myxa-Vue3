@@ -1,31 +1,107 @@
 <template>
     <div>
-        Button:
+        Nút chính:
         <misa-button type="primary" @click="click">Button</misa-button>
-        <misa-button type="primary" @click="click" disabled>Button</misa-button>
+        <misa-button type="primary" @click="click" disabled>Butsadfsadfsdfasdfton</misa-button>
+        <div>Nút phụ:</div>
+        <misa-button type="secondary" @click="click">Button</misa-button>
+        <div>Nút link:</div>
+        <misa-button type="link" @click="click">Button</misa-button>
+        <div>Nút Icon:</div>
+        <misa-button type="icon" @click="click">
+            <img src="@/assets/icon/plus-icon-green.svg" alt="Plus icon">
+        </misa-button>
+        <div>Nút Combo:</div>
+        <misa-button type="primary-combo" @click="click">
+            <span style="padding-right:24px">Button</span>
+            <div class="vertical"></div>
+            <img src="@/assets/icon/down-arrow-icon.svg" style="width: 16px;" alt="Down arrow icon">
+        </misa-button>
+        <div>Nút Combo với icon:</div>
+        <misa-button type="primary-combo" @click="click">
+            <img src="@/assets/icon/plus-icon.svg" alt="Plus icon" class="button__icon_pr6">
+            <span>Button</span>
+        </misa-button>
     </div>
-    <div style="width: 300px;">
+    <div>
         Input: {{ input }}
-        <misa-input placeholder="Xin vui lòng nhập" v-model="input" @focus="focusEvent" @change="changeEvent"></misa-input>
+        <misa-input placeholder="Xin vui lòng nhập" v-model="input" @focus="focusEvent" @change="changeEvent" :validateEvent="minLength"
+            style="width:300px;position: relative;"></misa-input>
     </div>
+    <div>
+        <div>Dialog</div>
+        <misa-button type="primary" @click="toogleDialog">OpenDialog</misa-button>
+        <misa-dialog v-model="dialogShow" title="Title" width="60%" top="10vh">
+            <div class="dialog__body">
+                <span>This is a message</span>
+            </div>
+            <div class="dialog__footer">
+                <misa-button type="secondary" @click="toogleDialog">
+                    <span>Button 2</span>
+                </misa-button>
+                <misa-button type="primary" @click="toogleDialog">
+                    <span>Button 1</span>
+                </misa-button>
+            </div>
+        </misa-dialog>
+    </div>
+    <div>
+        <div>M-Combo-Box with API</div>
+        <misa-combobox v-model="select" :options="options"></misa-combobox>
+    </div>
+    <div>
+        <div>Checkbox</div>
+        <misa-checkbox v-model="checkbox"></misa-checkbox>
+    </div>
+    <div>
+        <div>Router</div>
+        <router-link to="/home">About page</router-link>
+        <router-view></router-view>
+        </div>
 </template>
 <script>
 export default {
     name: 'BaseStyle',
     data() {
-        return{
+        return {
             input: '',
-            input2: ''
+            input2: '',
+            dialogShow: false,
+            select: '',
+            options: [{
+                label: '1',
+                value: 1
+            },
+            {
+                label: '2',
+                value: 2
+            }
+                , {
+                label: '3',
+                value: 3
+            }
+                , {
+                label: '4',
+                value: 4
+            }
+            ],
+            checkbox: false
         }
     },
     methods: {
-        click(){
+        minLength(){
+            return true;
+        },
+        toogleDialog() {
+            this.dialogShow = !this.dialogShow;
+        },
+        click() {
             alert('click');
         },
-        changeEvent(value){
-            alert('change', value)
+        changeEvent(value) {
+            console.log('change', value);
         },
-        focusEvent(){
+        focusEvent() {
             console.log('focus');
         }
     }
