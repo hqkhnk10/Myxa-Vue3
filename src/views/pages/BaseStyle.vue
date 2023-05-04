@@ -25,8 +25,8 @@
     </div>
     <div>
         Input: {{ input }}
-        <misa-input placeholder="Xin vui lòng nhập" v-model="input" @focus="focusEvent" @change="changeEvent" :validateEvent="minLength"
-            style="width:300px;position: relative;"></misa-input>
+        <misa-input placeholder="Xin vui lòng nhập" v-model="input" @focus="focusEvent" @change="changeEvent"
+            :validateEvent="minLength" style="width:300px;position: relative;"></misa-input>
     </div>
     <div>
         <div>Dialog</div>
@@ -57,7 +57,11 @@
         <div>Router</div>
         <router-link to="/home">About page</router-link>
         <router-view></router-view>
-        </div>
+    </div>
+    <div>
+        Table
+        <misa-table v-model="table" :header="headerTable" checkbox></misa-table>
+    </div>
 </template>
 <script>
 export default {
@@ -85,11 +89,30 @@ export default {
                 value: 4
             }
             ],
-            checkbox: false
+            checkbox: false,
+            table: {
+                header: [{
+                    label: 'Name',
+                    prop: 'name'
+                },
+                { label: 'Age', prop: 'age' }],
+                data: [{
+                    name: 'a',
+                    age: 18
+                },
+                {
+                    name: 'b',
+                    age: 18
+                },
+                {
+                    name: 'c',
+                    age: 18
+                }]
+            }
         }
     },
     methods: {
-        minLength(){
+        minLength() {
             return true;
         },
         toogleDialog() {

@@ -29,10 +29,11 @@ export default {
       type: Function
     },
   },
-  emits: ['update:modelValue'],
+  emits: ['update:modelValue','click'],
   methods: {
     toogleCheckbox(){
       this.$emit('update:modelValue', !this.modelValue)
+      this.$emit('click', !this.modelValue)
     }
   }
 }
