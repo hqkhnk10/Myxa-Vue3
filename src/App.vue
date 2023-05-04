@@ -1,15 +1,6 @@
 <template>
-  <the-layout></the-layout>
+  <router-view></router-view>
 </template>
-
-<script>
-import TheLayout from './components/Layout/TheLayout.vue'
-// import './js/loadscript.js';
-export default {
-  components: { TheLayout },
-  name: 'App'
-}
-</script>
 <style>
 @import url('./css/main.css');
 </style>

@@ -4,7 +4,9 @@
         <section class="container" style="border: 1px solid rgb(238, 238, 238)">
             <the-aside></the-aside>
             <section class="container is-vertical">
-                <the-main></the-main>
+                <main class="main">
+                    <router-view></router-view>
+                </main>
             </section>
         </section>
     </section>
@@ -12,9 +14,8 @@
 <script>
 import TheAside from './TheAside.vue'
 import TheHeader from './TheHeader.vue'
-import TheMain from './TheMain.vue'
 export default {
-    components: { TheHeader, TheAside, TheMain },
+    components: { TheHeader, TheAside },
     name: 'TheLayout',
 }
 </script>
