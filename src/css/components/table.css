@@ -111,3 +111,9 @@ tr:hover .button__table .button-icon-table{
   max-width: 50px;
   left: 0px;
 }
+.table__header{
+  position: sticky;
+    top: 0;
+    background: white;
+    z-index: 99;
+}

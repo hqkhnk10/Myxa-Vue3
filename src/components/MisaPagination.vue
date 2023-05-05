@@ -3,19 +3,8 @@
     <div>Tổng số: <span style="font-weight: 700;">{{ total }}</span> bản ghi</div>
     <div class="flex" style="gap:10px">
       <div class="flex items-center">Số bản ghi/trang</div>
-      <div>
-        <div class="custom-select" style="width: 90px;">
-          <div class="select__icon">
-            <img src="@/assets/icon/arrow-down.svg" alt="Arrow down">
-          </div>
-          <select>
-            <option value="0" selected></option>
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="50">50</option>
-            <option value="100">100</option>
-          </select>
-        </div>
+      <div style="width: 80px;">
+        <misa-combobox :modelValue="pageSize" :options="paginationOptions" position="top" @change="updatePageSize"></misa-combobox>
       </div>
       <div class="flex items-center">1 - 10 bản ghi</div>
       <div class="flex items-center">
@@ -31,7 +20,9 @@
 export default {
   name: 'MisaPagination',
   data() {
-    return {}
+    return {
+      paginationOptions:[{value:10,label:10},{value:20,label:20},{value:50,label:50},{value:100,label:100}]
+    }
   },
   props: {
     pageSize: {
@@ -45,6 +36,15 @@ export default {
     total: {
       type: Number
     }
-  }
+  },
+  emits:['update:pageSize', 'update:pageIndex'],
+  methods: {
+    updatePageSize(value){
+      this.$emit('update:pageSize', value)
+    },
+    updatePageIndex(value){
+      this.$emit('update:pageIndex', value)
+    }
+  },
 }
 </script>

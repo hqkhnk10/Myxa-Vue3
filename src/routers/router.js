@@ -1,9 +1,9 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 
 const TheLayout = () => import('@/components/Layout/TheLayout.vue')
-const NotFound = () => import('@/views/pages/NotFound.vue')
-const BaseStyle = () => import('@/views/pages/BaseStyle.vue')
-const EmulationTitle = () => import('@/views/pages/EmulationTitle.vue')
+const NotFound = () => import('@/views/pages/base-view/NotFound.vue')
+const BaseStyle = () => import('@/views/pages/base-view/BaseStyle.vue')
+const EmulationTitle = () => import('@/views/pages/emulation-title/EmulationTitle.vue')
 
 const mainRoutes =[
   {

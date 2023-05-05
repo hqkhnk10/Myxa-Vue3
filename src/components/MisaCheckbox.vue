@@ -1,6 +1,6 @@
 <template>
   <div class="checkbox">
-    <input type="checkbox" class="checkbox__input" @click="toogleCheckbox" :disabled="disabled">
+    <input type="checkbox" class="checkbox__input" @click="toogleCheckbox()" :disabled="disabled">
     <span class="checkmark" :class="imageCheckbox()"></span>
   </div>
   <slot></slot>
@@ -30,11 +30,11 @@ export default {
       type: Function
     },
   },
-  emits: ['update:modelValue', 'click-box'],
+  emits: ["update:modelValue", "click-box"],
   methods: {
     toogleCheckbox() {
-      this.$emit('update:modelValue', !this.modelValue)
-      this.$emit('click-box', !this.modelValue)
+      this.$emit("update:modelValue", !this.modelValue)
+      this.$emit("click-box", !this.modelValue)
     },
     imageCheckbox() {
       switch (this.modelValue) {

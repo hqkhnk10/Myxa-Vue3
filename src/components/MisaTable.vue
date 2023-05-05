@@ -1,10 +1,10 @@
 <template>
   <div style="overflow: auto;">
     <table aria-describedby="table">
-      <thead>
+      <thead class="table__header">
         <tr>
           <th style="width: 50px;" class="sticky-col first-col" v-if="checkbox">
-            <misa-checkbox v-model="headerBox" @click="checkAll"></misa-checkbox>
+            <misa-checkbox v-model="headerBox" @click-box="checkAll"></misa-checkbox>
           </th>
           <th v-for="(header, index) in modelValue.header" :key="index">
             {{ header.label }}
