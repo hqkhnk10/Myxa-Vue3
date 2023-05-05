@@ -84,12 +84,14 @@ tr:hover .button__table .button-icon-table{
 }
 .icon-round-active{
   background-color: var(--color-green);
+  min-width: 8px;
   width: 8px;
   height: 8px;
   border-radius: 4px;
 }
 .icon-round-inactive{
   background-color: var(--color-red);
+  min-width: 8px;
   width: 8px;
   height: 8px;
   border-radius: 4px;

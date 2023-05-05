@@ -29,7 +29,6 @@
 }
 .mcombobox__data {
   z-index: 2;
-  display: none;
   max-height: 308px;
   position: absolute;
   top: calc(100% + 1px);

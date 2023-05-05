@@ -46,7 +46,7 @@
         </misa-dialog>
     </div>
     <div>
-        <div>M-Combo-Box with API</div>
+        <div>M-Combo-Box</div>
         <misa-combobox v-model="select" :options="options"></misa-combobox>
     </div>
     <div>
@@ -60,7 +60,7 @@
     </div>
     <div>
         Table
-        <misa-table v-model="table" checkbox operator="operator">
+        <misa-table v-model="table" checkbox>
             <template #status="row">
                 <span style="color: greenyellow">{{ row.status }}</span>
             </template>

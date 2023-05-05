@@ -3,6 +3,7 @@
     <input type="checkbox" class="checkbox__input" @click="toogleCheckbox" :disabled="disabled">
     <span class="checkmark" :class="imageCheckbox()"></span>
   </div>
+  <slot></slot>
 </template>
 
 <script>

@@ -93,6 +93,7 @@ export default {
                 route.selected = false
             })
             item.selected = true
+            this.openSubMenu = !this.openSubMenu
             router.push(item.path)
         },
         toogleMenu() {

@@ -1,12 +1,13 @@
 <template>
   {{ options }}
-    <div class="mcombobox">
-        <input type="text" class="mcombobox__input">
+    <div class="mcombobox" @click="toggleOptions">
+        <misa-input type="text" :modelValue="modelValue"></misa-input>
         <span class="input__icon" style="right: 40px;">
             <img src="/libs/mcombobox/icon/loading-icon.svg" class="loading" alt="loading" />
         </span>
         <button class="mcombobox__button"></button>
-        <div class="mcombobox__data" api="https://provinces.open-api.vn/api/" propText="name" propValue="code">
+        <div class="mcombobox__data" v-if="optionsBox">
+          <a v-for="(item,index) in options" class="mcombobox-item" :key="index" @click="selectOption(item)">{{ item.label }}</a>
         </div>
     </div>
 </template>
@@ -16,11 +17,12 @@ export default {
   name: 'MisaCombobox',
   data() {
     return {
+      optionsBox: false
     };
   },
   props: {
     modelValue:{
-      type: Boolean,
+      type: [String,Number],
       required: true
     },
     options:{
@@ -39,6 +41,12 @@ export default {
   methods: {
     toggleDialog() {
       this.$emit('update:modelValue',!this.modelValue)
+    },
+    toggleOptions(){
+      this.optionsBox= !this.optionsBox
+    },
+    selectOption(item){
+      this.$emit('update:modelValue',item.value)
     }
   }
 }

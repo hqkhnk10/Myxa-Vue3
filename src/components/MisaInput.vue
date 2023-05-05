@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="width:100%">
     <input v-model="inputValue" on-blur="blurEvent" :disabled="disabled" @change="changeEvent" on-focus="focusEvent">
     <span class="input__icon">
       <image src="../assets/icon/loading-icon.svg" class="loading"></image>
@@ -43,6 +43,9 @@ export default {
     }
   },
   watch: {
+    modelValue(value){
+      this.inputValue = value
+    },
     inputValue(newValue) {
       this.$emit('update:modelValue', newValue)
     }
