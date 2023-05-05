@@ -1,7 +1,7 @@
 <template>
   <div class="checkbox">
     <input type="checkbox" class="checkbox__input" @click="toogleCheckbox" :disabled="disabled">
-    <span class="checkmark" :class="modelValue ? 'checkmark__checked' : ''"></span>
+    <span class="checkmark" :class="imageCheckbox()"></span>
   </div>
 </template>
 
@@ -15,7 +15,7 @@ export default {
   },
   props: {
     modelValue: {
-      type: Boolean,
+      type: [Boolean,String],
       default: false
     },
     type: {
@@ -29,11 +29,23 @@ export default {
       type: Function
     },
   },
-  emits: ['update:modelValue','click'],
+  emits: ['update:modelValue', 'click-box'],
   methods: {
-    toogleCheckbox(){
+    toogleCheckbox() {
       this.$emit('update:modelValue', !this.modelValue)
-      this.$emit('click', !this.modelValue)
+      this.$emit('click-box', !this.modelValue)
+    },
+    imageCheckbox() {
+      switch (this.modelValue) {
+        case true:
+          return 'checkmark__checked'
+        case 'half':
+          return 'checkmark__half'
+        case false:
+          return ''
+        default:
+          return ''
+      }
     }
   }
 }

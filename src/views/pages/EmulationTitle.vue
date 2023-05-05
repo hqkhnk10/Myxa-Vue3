@@ -3,21 +3,13 @@
         <div class="main__title">Danh hiệu thi đua </div>
         <div style="margin-bottom: 10px;justify-content: space-between;" class="flex">
             <div class="flex" style="gap:15px">
-                <div>
-                    <div class="form__items input-container" style="width: 300px;">
-                        <input type="text" placeholder="Nhập mã hoặc tên danh hiệu ..." />
-                        <span class="input__icon">
-                            <image src="../../assets/icon/search-icon.svg" style="width: 20px;"></image>
-                        </span>
-                        <p class="error"></p>
-                    </div>
-                </div>
+                <misa-input></misa-input>
                 <div class="flex">
                     <div class="dropdown">
-                        <button class="button button__default button__dropdown" onclick="showDropdown()">
+                        <misa-button type="secondary">
                             <div id="filter-icon" class="icon-margin-right icon__filter"></div>
                             <span style="font-weight: 400;">Bộ lọc</span>
-                        </button>
+                        </misa-button>
                         <div class="dropdown-content">
                             <span class="custom-arrow" style="right: 58px;"></span>
                             <div class="dropdown__header">
@@ -110,19 +102,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="filter-button">
-                        <button class="button button__link hide" style="padding-left: 0;" id="remove-filter-button"
-                            onclick="removeFilter()">Bỏ lọc</button>
-                    </div>
+                    <misa-button type="link" v-if="false" class="filter-button">
+                        Bỏ lọc
+                    </misa-button>
                 </div>
             </div>
             <div>
                 <div id="add-title-button">
-                    <button class="button button__primary" onclick="btnAddTitleOnClick()">
-                        <img src="../../assets/icon/plus-icon.svg" alt="Plus icon" class="button__icon_pr6"
-                            style="width: 17px;">
-                        <span>Thêm danh hiệu</span>
-                    </button>
+                    <misa-button type="primary"> <img src="../../assets/icon/plus-icon.svg" alt="Plus icon"
+                            class="button__icon_pr6" style="width: 17px;">
+                        <span>Thêm danh hiệu</span></misa-button>
                 </div>
                 <div id="crud-button-header" class="hide">
                     <div>Đã chọn<span id="row-selected-count" style="margin-left: 4px;font-weight: bold;"></span>
@@ -139,173 +128,216 @@
     </div>
     <div class="main__body">
         <div class="main__body-table">
-            <table aria-describedby="table">
-                <tr>
-                    <th style="width: 50px;" class="sticky-col first-col">
-                        <div class="checkbox">
-                            <input type="checkbox" id="check-all">
-                            <span class="checkmark checkmark__table-header"></span>
-                        </div>
-                    </th>
-                    <th style="min-width: 200px">Tên danh hiệu thi đua</th>
-                    <th style="min-width: 200px">Mã danh hiệu</th>
-                    <th style="min-width: 200px">Đối tượng khen thưởng</th>
-                    <th style="min-width: 200px">Cấp khen thưởng</th>
-                    <th style="min-width: 200px">Loại phong trào</th>
-                    <th style="min-width: 200px">Trạng thái</th>
-                </tr>
-                <tr>
-                    <td class="sticky-col first-col">
-                        <div class="checkbox">
-                            <input type="checkbox" class="checkbox__input">
-                            <span class="checkmark checkmark__table"></span>
-                        </div>
-                    </td>
-                    <td>Lao động thi đua</td>
-                    <td>LĐTT</td>
-                    <td>Cá nhân</td>
-                    <td>Cấp Xã/tương đương</td>
-                    <td>Thường xuyên</td>
-                    <td>
-                        <div class="flex items-center" style="gap: 4px">
+            <misa-table v-model="table" checkbox pagination>
+                <template #ApplyObject="row">
+                    {{ row.ApplyObject == 2 ? 'Cá nhân' : 'Tập thể' }}
+                </template>
+                <template #CommendationLevel="row">
+                    <div v-if="row.CommendationLevel == 1">
+                        Cấp Xã/tương đương</div>
+                    <div v-if="row.CommendationLevel == 2">
+                        Cấp Huyện/tương đương</div>
+                    <div v-if="row.CommendationLevel == 3">
+                        Cấp Tỉnh/tương đương</div>
+                    <div v-if="row.CommendationLevel == 4">Cấp nhà nước</div>
+                </template>
+                <template #MovementType="row">
+                    <div v-if="row.CommendationLevel == 0">
+                        Thường xuyên</div>
+                </template>
+                <template #Inactive="row">
+                    <div v-if="row.Inactive == 0" class="flex items-center" style="gap: 4px">
                             <div class="icon-round-active"></div>
                             <div>Sử dụng</div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="button__table">
-                            <div class="button-icon-table">
-                                <div class="tooltip">
-                                    <div class="icon__pencil"></div>
-                                    <span class="tooltiptext tooltiptext-top">Sửa</span>
-                                </div>
-                            </div>
-                            <div class="button-icon-table">
-                                <div class="tooltip">
-                                    <div class="icon__threedots"></div>
-                                    <span class="tooltiptext tooltiptext-top dropdown">Thêm
-                                        nữa...</span>
-                                    <div id="myDropdown" class="dropdown-content">
-                                        <a style="color: #d2d2d2;">Sử dụng</a>
-                                        <a>Ngưng sử dụng</a>
-                                        <a style="color:red">Xóa</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="sticky-col first-col">
-                        <div class="checkbox">
-                            <input type="checkbox" class="checkbox__input">
-                            <span class="checkmark checkmark__table"></span>
-                        </div>
-                    </td>
-                    <td>Lao động thi đua</td>
-                    <td>LĐTT</td>
-                    <td>Cá nhân</td>
-                    <td>Cấp Xã/tương đương</td>
-                    <td>Thường xuyên</td>
-                    <td>
-                        <div class="flex items-center" style="gap: 4px">
-                            <div class="icon-round-active"></div>
-                            <div>Sử dụng</div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="button__table">
-                            <div class="button-icon-table">
-                                <div class="tooltip">
-                                    <div class="icon__pencil"></div>
-                                    <span class="tooltiptext tooltiptext-top">Sửa</span>
-                                </div>
-                            </div>
-                            <div class="button-icon-table">
-                                <div class="tooltip">
-                                    <div class="icon__threedots"></div>
-                                    <span class="tooltiptext tooltiptext-top dropdown">Thêm
-                                        nữa...</span>
-                                    <div id="myDropdown" class="dropdown-content">
-                                        <a style="color: #d2d2d2;">Sử dụng</a>
-                                        <a>Ngưng sử dụng</a>
-                                        <a style="color:red">Xóa</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="sticky-col first-col">
-                        <div class="checkbox">
-                            <input type="checkbox" class="checkbox__input">
-                            <span class="checkmark checkmark__table"></span>
-                        </div>
-                    </td>
-                    <td>Lao động thi đua</td>
-                    <td>LĐTT</td>
-                    <td>Cá nhân</td>
-                    <td>Cấp Xã/tương đương</td>
-                    <td>Thường xuyên</td>
-                    <td>
-                        <div class="flex items-center" style="gap: 4px">
-                            <div class="icon-round-active"></div>
-                            <div>Sử dụng</div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="button__table">
-                            <div class="button-icon-table">
-                                <div class="tooltip">
-                                    <div class="icon__pencil"></div>
-                                    <span class="tooltiptext tooltiptext-top ">Sửa</span>
-                                </div>
-                            </div>
-                            <div class="button-icon-table">
-                                <div class="tooltip">
-                                    <div class="icon__threedots"></div>
-                                    <span class="tooltiptext  tooltiptext-top dropdown">Thêm
-                                        nữa...</span>
-                                    <div id="myDropdown" class="dropdown-content">
-                                        <a style="color: #d2d2d2;">Sử dụng</a>
-                                        <a>Ngưng sử dụng</a>
-                                        <a style="color:red">Xóa</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-
-        </div>
-        <div class="main__body-pagination">
-            <div>Tổng số: <span style="font-weight: 700;">3</span> bản ghi</div>
-            <div class="flex" style="gap:10px">
-                <div class="flex items-center">Số bản ghi/trang</div>
-                <div>
-                    <div class="custom-select" style="width: 90px;">
-                        <div class="select__icon">
-                            <img src="../../assets/icon/arrow-down.svg" alt="Arrow down">
-                        </div>
-                        <select>
-                            <option value="0" selected></option>
-                            <option value="10">10</option>
-                            <option value="20">20</option>
-                            <option value="50">50</option>
-                            <option value="100">100</option>
-                        </select>
                     </div>
-                </div>
-                <div class="flex items-center">1 - 10 bản ghi</div>
-                <div class="flex items-center">
-                    <div class="icon__leftarrow"></div>
-                </div>
-                <div class="flex items-center">
-                    <div class="icon__rightarrow"></div>
-                </div>
-            </div>
+                    <div v-if="row.Inactive == 1" class="flex items-center" style="gap: 4px">
+                            <div class="icon-round-inactive"></div>
+                            <div>Ngưng sử dụng</div>
+                    </div>
+                </template>
+            </misa-table>
         </div>
     </div>
 </template>
+<script>
+export default {
+    name: "EmulationTitle",
+    data() {
+        return {
+            table: {
+                header: [{
+                    label: 'Tên danh hiệu thi đua',
+                    prop: 'EmulationTitleName'
+                },
+                { label: 'Mã danh hiệu', prop: 'EmulationTitleCode' },
+                { label: 'Đối tượng khen thưởng', prop: 'ApplyObject', slot: true },
+                { label: 'Cấp khen thưởng', prop: 'CommendationLevel', slot: true },
+                { label: 'Loại phong trào', prop: 'MovementType', slot: true },
+                { label: 'Trạng thái', prop: 'Inactive', slot: true }],
+                data: [
+                    {
+                        "EmulationTitleName": "Lao động tiên tiến",
+                        "EmulationTitleCode": "LĐTTCX",
+                        "ApplyObject": 2,
+                        "CommendationLevel": 3,
+                        "MovementType": 0,
+                        "Inactive": 0,
+                        "EmulationTitleID": 50,
+                        "IsSystem": 1
+                    },
+                    {
+                        "EmulationTitleName": "Chiến sĩ thi đua cơ sở",
+                        "EmulationTitleCode": "CSTĐCS",
+                        "ApplyObject": 2,
+                        "CommendationLevel": 2,
+                        "MovementType": 0,
+                        "Inactive": 0,
+                        "EmulationTitleID": 48,
+                        "IsSystem": 1
+                    },
+                    {
+                        "EmulationTitleName": "Lao động tiên tiến",
+                        "EmulationTitleCode": "LĐTTCH",
+                        "ApplyObject": 2,
+                        "CommendationLevel": 2,
+                        "MovementType": 0,
+                        "Inactive": 0,
+                        "EmulationTitleID": 49,
+                        "IsSystem": 1
+                    },
+                    {
+                        "EmulationTitleName": "Chiến sĩ thi đua cấp bộ",
+                        "EmulationTitleCode": "CSTĐCB",
+                        "ApplyObject": 2,
+                        "CommendationLevel": 1,
+                        "MovementType": 0,
+                        "Inactive": 0,
+                        "EmulationTitleID": 46,
+                        "IsSystem": 1
+                    },
+                    {
+                        "EmulationTitleName": "Chiến sĩ thi đua cấp tỉnh",
+                        "EmulationTitleCode": "CSTĐCT",
+                        "ApplyObject": 2,
+                        "CommendationLevel": 1,
+                        "MovementType": 0,
+                        "Inactive": 0,
+                        "EmulationTitleID": 47,
+                        "IsSystem": 1
+                    },
+                    {
+                        "EmulationTitleName": "a",
+                        "EmulationTitleCode": "A",
+                        "ApplyObject": 2,
+                        "CommendationLevel": 0,
+                        "MovementType": 0,
+                        "Inactive": 0,
+                        "EmulationTitleID": 61,
+                        "IsSystem": 0
+                    },
+                    {
+                        "EmulationTitleName": "Chiến sĩ thi đua toàn quốc",
+                        "EmulationTitleCode": "CSTĐTQ",
+                        "ApplyObject": 2,
+                        "CommendationLevel": 0,
+                        "MovementType": 0,
+                        "Inactive": 0,
+                        "EmulationTitleID": 45,
+                        "IsSystem": 1
+                    },
+                    {
+                        "EmulationTitleName": "ds",
+                        "EmulationTitleCode": "D",
+                        "ApplyObject": 2,
+                        "CommendationLevel": 0,
+                        "MovementType": 0,
+                        "Inactive": 0,
+                        "EmulationTitleID": 63,
+                        "IsSystem": 0
+                    },
+                    {
+                        "EmulationTitleName": "l d t t c x",
+                        "EmulationTitleCode": "LDTTCX",
+                        "ApplyObject": 2,
+                        "CommendationLevel": 0,
+                        "MovementType": 0,
+                        "Inactive": 0,
+                        "EmulationTitleID": 57,
+                        "IsSystem": 0
+                    },
+                    {
+                        "EmulationTitleName": "sda",
+                        "EmulationTitleCode": "LĐTT",
+                        "ApplyObject": 2,
+                        "CommendationLevel": 0,
+                        "MovementType": 0,
+                        "Inactive": 0,
+                        "EmulationTitleID": 65,
+                        "IsSystem": 0
+                    },
+                    {
+                        "EmulationTitleName": "Tập thể lao động tiên tiến",
+                        "EmulationTitleCode": "TTLĐTT",
+                        "ApplyObject": 1,
+                        "CommendationLevel": 2,
+                        "MovementType": 0,
+                        "Inactive": 0,
+                        "EmulationTitleID": 55,
+                        "IsSystem": 1
+                    },
+                    {
+                        "EmulationTitleName": "Cờ thi đua cấp bộ",
+                        "EmulationTitleCode": "CTĐCB",
+                        "ApplyObject": 1,
+                        "CommendationLevel": 1,
+                        "MovementType": -1,
+                        "Inactive": 0,
+                        "EmulationTitleID": 52,
+                        "IsSystem": 1
+                    },
+                    {
+                        "EmulationTitleName": "Cờ thi đua cấp tỉnh",
+                        "EmulationTitleCode": "CTĐCT",
+                        "ApplyObject": 1,
+                        "CommendationLevel": 1,
+                        "MovementType": -1,
+                        "Inactive": 0,
+                        "EmulationTitleID": 53,
+                        "IsSystem": 1
+                    },
+                    {
+                        "EmulationTitleName": "Tập thể lao động xuất sắc",
+                        "EmulationTitleCode": "TTLĐXS",
+                        "ApplyObject": 1,
+                        "CommendationLevel": 1,
+                        "MovementType": 0,
+                        "Inactive": 0,
+                        "EmulationTitleID": 54,
+                        "IsSystem": 1
+                    },
+                    {
+                        "EmulationTitleName": "tẻwr343gdsgd",
+                        "EmulationTitleCode": "Tfdgsd",
+                        "ApplyObject": 1,
+                        "CommendationLevel": 0,
+                        "MovementType": 0,
+                        "Inactive": 0,
+                        "EmulationTitleID": 59,
+                        "IsSystem": 0
+                    },
+                    {
+                        "EmulationTitleName": "Cờ thi đua của Chính phủ",
+                        "EmulationTitleCode": "CTĐCP",
+                        "ApplyObject": 1,
+                        "CommendationLevel": 0,
+                        "MovementType": -1,
+                        "Inactive": 1,
+                        "EmulationTitleID": 51,
+                        "IsSystem": 1
+                    }
+                ]
+            }
+        }
+    }
+}
+</script>

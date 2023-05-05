@@ -60,7 +60,11 @@
     </div>
     <div>
         Table
-        <misa-table v-model="table" :header="headerTable" checkbox></misa-table>
+        <misa-table v-model="table" checkbox operator="operator">
+            <template #status="row">
+                <span style="color: greenyellow">{{ row.status }}</span>
+            </template>
+        </misa-table>
     </div>
 </template>
 <script>
@@ -95,18 +99,22 @@ export default {
                     label: 'Name',
                     prop: 'name'
                 },
-                { label: 'Age', prop: 'age' }],
+                { label: 'Age', prop: 'age' },
+                {label: 'Status', prop: 'status', slot:true}],
                 data: [{
                     name: 'a',
-                    age: 18
+                    age: 18,
+                    status: 'active'
                 },
                 {
                     name: 'b',
-                    age: 18
+                    age: 18,
+                    status: 'active'
                 },
                 {
                     name: 'c',
-                    age: 18
+                    age: 18,
+                    status: 'active'
                 }]
             }
         }

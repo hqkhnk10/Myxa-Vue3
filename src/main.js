@@ -9,6 +9,9 @@ import MisaDialogVue from './components/MisaDialog.vue'
 import MisaComboboxVue from './components/MisaCombobox.vue'
 import MisaCheckboxVue from './components/MisaCheckbox.vue'
 import MisaTableVue from './components/MisaTable.vue'
+import MisaPaginationVue from './components/MisaPagination.vue'
+
+
 import { router } from './routers/router'
 import { translate } from './lang/multipleLanguages'
 
@@ -24,6 +27,7 @@ vue.component("misa-dialog",MisaDialogVue)
 vue.component("misa-combobox",MisaComboboxVue)
 vue.component("misa-checkbox",MisaCheckboxVue)
 vue.component("misa-table",MisaTableVue)
+vue.component("misa-pagination",MisaPaginationVue)
 
 
 vue.config.globalProperties.t = function(word){

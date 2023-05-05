@@ -59,7 +59,6 @@ export default {
         }
     },
     mounted() {
-        console.log('mounted', this.currentRoute);
         this.routes.forEach(route => {
                 const child = route?.children?.find(child => child.path == this.currentRoute)
                 if (child) {
@@ -69,9 +68,6 @@ export default {
                 else {
                     if (route.path == this.currentRoute) {
                         route.selected = true
-                    }
-                    else {
-                        // router.push('/notFound')
                     }
                 }
             })

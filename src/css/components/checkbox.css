@@ -29,6 +29,9 @@ input[type="checkbox"] {
 .checkmark__checked{
     background-image: url('../../assets/icon/checkbox-filled.svg');
 }
-input:not(:disabled):not(:checked):focus~.checkmark {
-    background-image: url("https://cegovapp.misacdn.net/cegov/img/ic_checkbox_hover.d04300f4.svg");
+.checkmark__half{
+    background-image: url("../../assets/icon/checkbox-table-icon.svg");
 }
+/* input:not(:disabled):not(:checked):focus~.checkmark {
+    background-image: url("https://cegovapp.misacdn.net/cegov/img/ic_checkbox_hover.d04300f4.svg");
+} */
