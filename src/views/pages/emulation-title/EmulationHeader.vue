@@ -133,10 +133,10 @@ export default {
     name:'EmulationHeader',
     methods: {
         openDialogAddTitle() {
-            this.dialogAdd = true
+            this.emitter.emit("toggle-emulation-dialog", true);
         },
         closeDialogAdd() {
-            this.dialogAdd = false
+            this.emitter.emit("toggle-emulation-dialog", false);
         }
     },
 }

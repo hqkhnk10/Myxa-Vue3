@@ -1,5 +1,5 @@
 <template>
-    <misa-dialog v-model="dialogAdd" title="Thêm danh hiệu thi đua" width="60%" top="10vh">
+    <misa-dialog v-model="dialogAdd" title="Thêm danh hiệu thi đua" width="50%" top="20vh">
         <div class="dialog__body">
             <form class="form" style="padding: 0;" id="form-add-title">
                 <div class="form-item"><label class="form-item__label">Tên danh hiệu thi đua<span
@@ -7,7 +7,7 @@
                     <div class="form-item__content">
                         <input label="Tên danh hiệu thi đua" required id="first-input" type="text" autocomplete="off"
                             class="input" style="width: 100%;" placeholder="Nhập danh hiệu thi đua">
-                        <div class="error">123</div>
+                        <div class="error"></div>
                     </div>
                 </div>
                 <div class="form-item" style="display: flex;gap: 10px;">
@@ -15,14 +15,14 @@
                         <label class="form-item__label">Mã danh hiệu<span class="required">*</span></label>
                         <div class="form-item__content">
                             <input label="Mã danh hiệu" required type="text" style="min-width: 0;width: 100%;">
-                            <div class="error">123</div>
+                            <div class="error"></div>
                         </div>
                     </div>
                     <div style="flex:1">
                         <label class="form-item__label">Đối tượng khen thưởng</label>
                         <div class="form-item__content flex items-center">
-                            <misa-checkbox>Cá nhân</misa-checkbox>
-                            <misa-checkbox>Tập thể</misa-checkbox>
+                            <misa-checkbox style="flex:1">Cá nhân</misa-checkbox>
+                            <misa-checkbox style="flex:1">Tập thể</misa-checkbox>
                         </div>
                     </div>
                 </div>
@@ -36,8 +36,8 @@
                     <div style="flex:1">
                         <label class="form-item__label">Loại phong trào áp dụng</label>
                         <div class="form-item__content flex items-center">
-                            <misa-checkbox>Thường xuyên</misa-checkbox>
-                            <misa-checkbox>Theo đợt</misa-checkbox>
+                            <misa-checkbox style="flex:1">Thường xuyên</misa-checkbox>
+                            <misa-checkbox style="flex:1">Theo đợt</misa-checkbox>
                         </div>
                     </div>
                 </div>
@@ -69,6 +69,11 @@ export default {
             dialogAdd: false
         }
     },
+    mounted() {
+    this.emitter.on("toggle-emulation-dialog", (isShow) => {
+      this.dialogAdd = isShow;
+    });
+  },
 }
 </script>
 

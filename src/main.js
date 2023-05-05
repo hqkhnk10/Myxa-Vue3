@@ -1,6 +1,7 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import vClickOutside from "click-outside-vue3"
+import mitt from "mitt";
 
 import App from './App.vue'
 import MisaButtonVue from './components/MisaButton.vue'
@@ -15,6 +16,7 @@ import MisaPaginationVue from './components/MisaPagination.vue'
 import { router } from './routers/router'
 import { translate } from './lang/multipleLanguages'
 
+const emitter = mitt();
 const pinia = createPinia()
 const vue = createApp(App)
 vue.use(router)
@@ -29,7 +31,7 @@ vue.component("misa-checkbox",MisaCheckboxVue)
 vue.component("misa-table",MisaTableVue)
 vue.component("misa-pagination",MisaPaginationVue)
 
-
+vue.config.globalProperties.emitter = emitter;
 vue.config.globalProperties.t = function(word){
     return translate(word)
 }

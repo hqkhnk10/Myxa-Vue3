@@ -1,9 +1,11 @@
 <template>
-  <div class="checkbox">
-    <input type="checkbox" class="checkbox__input" @click="toogleCheckbox()" :disabled="disabled">
-    <span class="checkmark" :class="imageCheckbox()"></span>
+  <div class="flex" style="width: fit-content;">
+    <div class="checkbox flex items-center">
+      <input type="checkbox" class="checkbox__input" @click="toogleCheckbox()" :disabled="disabled">
+      <span class="checkmark" :class="imageCheckbox()"></span>
+    </div>
+    <slot></slot>
   </div>
-  <slot></slot>
 </template>
 
 <script>
@@ -16,7 +18,7 @@ export default {
   },
   props: {
     modelValue: {
-      type: [Boolean,String],
+      type: [Boolean, String],
       default: false
     },
     type: {

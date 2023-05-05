@@ -32,6 +32,6 @@ input[type="checkbox"] {
 .checkmark__half{
     background-image: url("../../assets/icon/checkbox-table-icon.svg");
 }
-/* input:not(:disabled):not(:checked):focus~.checkmark {
+input:not(:disabled):not(:checked):not(:hover):focus~.checkmark {
     background-image: url("https://cegovapp.misacdn.net/cegov/img/ic_checkbox_hover.d04300f4.svg");
-} */
+}
