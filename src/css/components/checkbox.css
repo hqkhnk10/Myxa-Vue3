@@ -19,8 +19,8 @@ input[type="checkbox"] {
     background-size: 24px;
     width: 24px;
     height: 24px;
-    vertical-align: bottom;
     position: relative;
+    background-position: center;
 }
 .checkbox{
     display: inline-block;
@@ -32,6 +32,9 @@ input[type="checkbox"] {
 .checkmark__half{
     background-image: url("../../assets/icon/checkbox-table-icon.svg");
 }
-input:not(:disabled):not(:checked):not(:hover):focus~.checkmark {
-    background-image: url("https://cegovapp.misacdn.net/cegov/img/ic_checkbox_hover.d04300f4.svg");
+/* input:not(:disabled):not(:checked):not(:hover):focus~.checkmark {
+    border: green;
+} */
+input[type="checkbox"]:focus ~ .checkmark{
+    border: 1px solid var(--color-green);
 }

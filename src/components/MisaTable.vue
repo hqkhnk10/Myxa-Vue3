@@ -6,7 +6,7 @@
           <th style="width: 50px;" class="sticky-col first-col" v-if="checkbox">
             <misa-checkbox v-model="headerBox" @click-box="checkAll"></misa-checkbox>
           </th>
-          <th v-for="(header, index) in modelValue.header" :key="index">
+          <th v-for="(header, index) in modelValue.header" :key="index" :style="{width: header.width}">
             {{ header.label }}
           </th>
         </tr>
@@ -14,34 +14,15 @@
       <tbody>
         <tr v-for="(row, index) in modelValue.data" :key="index">
           <td class="sticky-col first-col" v-if="checkbox">
-            <misa-checkbox v-model="row.select" @click-box="value => checkBoxRow(index, value)"></misa-checkbox>
+            <misa-checkbox v-model="row.select" @click-box="checkBoxRow(value)"></misa-checkbox>
           </td>
           <td v-for="(header, index) in  modelValue.header" :key="index">
             <slot :name="header.prop" v-bind="row" v-if="header.slot"></slot>
             <div v-else>{{ row[header.prop] }}</div>
           </td>
-          <td style="width:0;padding:0">
             <div class="button__table">
-              <div class="button-icon-table">
-                <div class="tooltip">
-                  <div class="icon__pencil"></div>
-                  <span class="tooltiptext tooltiptext-top">Sửa</span>
-                </div>
-              </div>
-              <div class="button-icon-table">
-                <div class="tooltip">
-                  <div class="icon__threedots"></div>
-                  <span class="tooltiptext tooltiptext-top dropdown">Thêm
-                    nữa...</span>
-                  <div id="myDropdown" class="dropdown-content">
-                    <a style="color: #d2d2d2;">Sử dụng</a>
-                    <a>Ngưng sử dụng</a>
-                    <a style="color:red">Xóa</a>
-                  </div>
-                </div>
-              </div>
+              <slot name="operator" v-bind="row"></slot>
             </div>
-          </td>
         </tr>
       </tbody>
     </table>
@@ -51,6 +32,7 @@
 
 <script>
 export default {
+  expose: ['getSelectedRows'],
   name: 'MisaTable',
   data() {
     return {
@@ -65,15 +47,24 @@ export default {
     },
     checkbox: {
       type: Boolean,
-      default: false
+      default: false,
+      description: 'show checkbox or not'
     },
     pagination: {
       type: Boolean,
-      default: false
+      default: false,
+      description: 'show pagination or not'
     }
   },
   watch: {
+    /**
+     * This code checks the value of newValue and sets the value of headerBox accordingly. 
+     * If newValue is equal to the length of modelValue.data , then headerBox is set to true. 
+     * If newValue is equal to 0, headerBox is set to false. Otherwise, headerBox is set to 'half'.
+     * @param {*} newValue 
+     */
     checkBoxes(newValue) {
+      this.$emit('select')
       if (newValue == this.modelValue.data.length) {
         this.headerBox = true
         return
@@ -86,24 +77,32 @@ export default {
       }
     }
   },
-  emits: ['update:modelValue'],
+  emits: ['update:modelValue','select'],
+  computed: {
+    getSelectedRows(){
+      return this.modelValue.data.filter(row=>row.select)
+    },
+  },
   methods: {
     updateValue() {
       this.$emit('update:modelValue', !this.modelValue)
     },
-    checkBoxRow(index, value) {
+    checkBoxRow(value) {
       if (value) {
         this.checkBoxes++;
       } else {
         this.checkBoxes--;
       }
     },
+    /**
+     * used to check or uncheck all checkboxes in the modelValue.data array.
+     */
     checkAll() {
       if (this.checkBoxes == 0) {
-        this.modelValue.data.forEach(row => { row.select = true, this.checkBoxes = this.modelValue.data.length })
+        this.modelValue.data.forEach(row => { row.select = true; this.checkBoxes = this.modelValue.data.length })
       }
       else {
-        this.modelValue.data.forEach(row => { row.select = false, this.checkBoxes = 0 })
+        this.modelValue.data.forEach(row => { row.select = false; this.checkBoxes = 0 })
       }
     }
   }

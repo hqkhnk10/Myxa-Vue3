@@ -63,3 +63,9 @@ border-right: 1px solid white;
 .overflow-auto{
     overflow: auto;
 }
+.left{
+    left: 0;
+}
+.right{
+    right: 0;
+}

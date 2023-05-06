@@ -11,10 +11,14 @@ import MisaComboboxVue from './components/MisaCombobox.vue'
 import MisaCheckboxVue from './components/MisaCheckbox.vue'
 import MisaTableVue from './components/MisaTable.vue'
 import MisaPaginationVue from './components/MisaPagination.vue'
+import MisaDropdownVue from './components/MisaDropdown.vue'
+import MisaLoadingVue from './components/MisaLoading.vue'
 
+import MisaEnum from './js/base/enum'
 
 import { router } from './routers/router'
 import { translate } from './lang/multipleLanguages'
+import { useLangStore } from './store/lang';
 
 const emitter = mitt();
 const pinia = createPinia()
@@ -30,9 +34,14 @@ vue.component("misa-combobox",MisaComboboxVue)
 vue.component("misa-checkbox",MisaCheckboxVue)
 vue.component("misa-table",MisaTableVue)
 vue.component("misa-pagination",MisaPaginationVue)
+vue.component("misa-dropdown",MisaDropdownVue)
+vue.component("misa-loading",MisaLoadingVue)
 
+vue.config.globalProperties.$enum=MisaEnum;
 vue.config.globalProperties.emitter = emitter;
+
+const locale = useLangStore();
 vue.config.globalProperties.t = function(word){
-    return translate(word)
+    return translate(locale.getLocale,word)
 }
 vue.mount('#app')

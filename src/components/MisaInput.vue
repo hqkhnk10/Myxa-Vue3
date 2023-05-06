@@ -1,11 +1,13 @@
 <template>
-  <div style="width:100%">
-    <input v-model="inputValue" on-blur="blurEvent" :disabled="disabled" @change="changeEvent" on-focus="focusEvent">
+  <div style="width:100%" class="input-container">
+    <input ref="input" v-model="inputValue" :class="isValid ? '' : 'invalid'" on-blur="blurEvent" :disabled="disabled"
+      @change="changeEvent" on-focus="focusEvent" :placeholder="placeholder">
+    <slot name="icon"></slot>
     <span class="input__icon">
-      <image src="../assets/icon/loading-icon.svg" class="loading"></image>
+      <img src="@/assets/icon/loading-icon.svg" class="loading" alt="loading" width="25" height="25"/>
     </span>
     <span class="input__icon">
-      <image src="../assets/icon/approve-icon.svg" class="approve"></image>
+      <img src="@/assets/icon/approve-icon.svg" class="approve" alt="approve" width="25" height="25"/>
     </span>
     <p class="error"></p>
   </div>
@@ -16,16 +18,13 @@ export default {
   name: 'MisaInput',
   data() {
     return {
-      inputValue: ''
+      inputValue: this.modelValue
     };
   },
   props: {
     modelValue: {
       type: [String, Number],
       default: ''
-    },
-    type: {
-      type: String,
     },
     disabled: {
       type: Boolean,
@@ -34,6 +33,11 @@ export default {
     placeholder: {
       type: String
     },
+    isValid: {
+      type: Boolean,
+      default: true
+    },
+    //TODO: validate input value
     validateEvent: {
       type: Function
     },
@@ -43,15 +47,26 @@ export default {
     }
   },
   watch: {
-    modelValue(value){
+    /**
+     *  set value of input when prop change
+     * @param {*} value 
+     */
+    modelValue(value) {
       this.inputValue = value
     },
+    /**
+ *  setting up a two-way data binding
+ * @param {*} value 
+ */
     inputValue(newValue) {
       this.$emit('update:modelValue', newValue)
     }
   },
   emits: ['update:modelValue', 'change', 'focus'],
   methods: {
+    focus() {
+      this.$refs.input.focus();
+    },
     renderButton() {
       console.log('type', this.type);
       return `button__${this.type}`;

@@ -44,6 +44,9 @@
 .bot100{
   bottom: 100%;
 }
+a.mcombobox-item{
+  display: flex;
+}
 .mcombobox-item {
   height: 36px;
   cursor: pointer;
@@ -86,12 +89,12 @@ a{
   text-decoration: none;
   color: inherit;
 }
-.loading {
+/* .loading {
 	width: 20px;
 	display: none;
 	content: url('../../mcombobox/icon/loading-icon.svg');
 	animation: spin 2s linear infinite;
-}
+} */
 .input__icon{
 	display: flex;
 	justify-content: center;

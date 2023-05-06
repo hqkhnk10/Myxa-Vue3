@@ -1,14 +1,15 @@
 <template>
-    <div class="mcombobox" @click="toggleOptions">
-        <misa-input type="text" :modelValue="modelValue"></misa-input>
-        <span class="input__icon" style="right: 40px;">
-            <img src="/libs/mcombobox/icon/loading-icon.svg" class="loading" alt="loading" />
-        </span>
-        <button class="mcombobox__button"></button>
-        <div class="mcombobox__data" :class="positionStyle" v-if="optionsBox">
-          <a v-for="(item,index) in options" class="mcombobox-item" :key="index" @click="selectOption(item)">{{ item.label }}</a>
-        </div>
+  <div class="mcombobox" @click="toggleOptions">
+    <misa-input type="text" :modelValue="label"></misa-input>
+    <span class="input__icon" style="right: 40px;">
+      <img src="/libs/mcombobox/icon/loading-icon.svg" class="loading" alt="loading" />
+    </span>
+    <button class="mcombobox__button"></button>
+    <div class="mcombobox__data" :class="positionStyle" v-if="optionsBox">
+      <a v-for="(item, index) in options" class="mcombobox-item" :class="item.selected ? 'selected' : ''" :key="index"
+        @click="selectOption(item)">{{ item.label }}</a>
     </div>
+  </div>
 </template>
 
 <script>
@@ -20,30 +21,51 @@ export default {
     };
   },
   props: {
-    modelValue:{
-      type: [String,Number],
+    modelValue: {
+      type: [String, Number],
       required: true
     },
-    options:{
+    options: {
       type: Object
     },
-    position:{
+    position: {
       type: String,
-      default: 'top'
+      default: 'bot'
     }
   },
-  computed:{
-    widthDialog(){
+  computed: {
+    /**
+     * Search value in option array and return label to display
+     */
+    label() {
+      const objValue = this.options?.find(option => option.value == this.modelValue)
+      if (objValue) {
+        this.options.forEach(option => {
+          if (option == objValue) {
+            option.selected = true
+          } else {
+            option.selected = false
+          }
+        })
+        return objValue?.label
+      } else {
+        return ''
+      }
+    },
+    /**
+     * Set style of the combobox
+     */
+    widthDialog() {
       return `width: ${this.width}`
     },
-    paddingTop(){
+    paddingTop() {
       return `padding-top: ${this.top}`
     },
-    positionStyle(){
-      if(this.position == 'top'){
+    positionStyle() {
+      if (this.position == 'top') {
         return 'bot100'
       }
-      if(this.position == 'bot'){
+      if (this.position == 'bot') {
         return 'top100'
       }
       return ''
@@ -52,13 +74,14 @@ export default {
   emits: ['update:modelValue', 'change'],
   methods: {
     toggleDialog() {
-      this.$emit('update:modelValue',!this.modelValue)
+      this.$emit('update:modelValue', !this.modelValue)
     },
-    toggleOptions(){
-      this.optionsBox= !this.optionsBox
+    toggleOptions() {
+      this.optionsBox = !this.optionsBox
     },
-    selectOption(item){
-      this.$emit('update:modelValue',item.value)
+    selectOption(item) {
+      this.$emit('update:modelValue', item.value)
+      this.$emit('change', item.value)
     }
   }
 }

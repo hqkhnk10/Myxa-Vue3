@@ -355,8 +355,19 @@ export const router = createRouter({
   history: createWebHashHistory(),
   routes: mainRoutes,
 });
-router.beforeEach((to, from) => {
-  console.log("tofrom", to, from);
-  // ...
-  // explicitly return false to cancel the navigation
-});
+router.beforeEach((to, from, next) => {
+  const loading = document.querySelector('.loading-screen')
+  if (loading) {
+    loading.style.display = 'flex'
+  }
+  setTimeout(()=>{
+    next()
+  },400)
+})
+
+router.afterEach(() => {
+  const loading = document.querySelector('.loading-screen')
+  if (loading) {
+    loading.style.display = 'none'
+  }
+})

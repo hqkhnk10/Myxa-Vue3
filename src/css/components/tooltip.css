@@ -13,12 +13,13 @@
   margin-left: -50px;
   /* Position the tooltip */
   position: absolute;
-  z-index: 1;
+  z-index: 999;
   line-height: normal;
 }
 
 .tooltip:hover .tooltiptext {
   visibility: visible;
+  z-index: 999;
 }
 .tooltip .tooltiptext-top {
   width: 120px;

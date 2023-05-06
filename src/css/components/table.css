@@ -6,35 +6,43 @@ table {
   background-color: white;
   overflow-x: auto;
 }
-th, td{
+th,
+td {
   height: 32px;
   max-height: 32px;
-  border-bottom: 1px solid #ddd;
-  border-top: 1px solid #ddd;
+  border: 1px solid #ddd;
   border-collapse: collapse;
   padding: 8px;
   word-break: break-word;
   white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-th{
+th {
   text-align: left;
   font-weight: 700;
 }
-td{
+td {
   max-width: 50px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
-tr{
+td > div {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+tr {
   position: relative;
 }
-tr:has(td:hover) > td{
+tr:has(td:hover) > td {
   background-color: var(--table-color-green-hover);
 }
-tr:focus > td{
+tr:focus > td {
   background-color: var(--table-color-green-hover);
 }
-.focus__table{
+.focus__table {
   background-color: var(--table-color-green-hover);
 }
 .table {
@@ -62,16 +70,11 @@ tr:focus > td{
 }
 
 tr:hover .button__table {
+  width: fit-content;
   display: flex;
   gap: 4px;
-  background-color: white;
 }
-tr:hover .button__table {
-  display: flex;
-  gap: 4px;
-  background-color: white;
-}
-tr:hover .button__table .button-icon-table{
+tr:hover .button__table .button-icon-table {
   display: flex;
   min-width: 32px;
   width: 32px;
@@ -82,21 +85,21 @@ tr:hover .button__table .button-icon-table{
   background-color: white;
   cursor: pointer;
 }
-.icon-round-active{
+.icon-round-active {
   background-color: var(--color-green);
   min-width: 8px;
   width: 8px;
   height: 8px;
   border-radius: 4px;
 }
-.icon-round-inactive{
+.icon-round-inactive {
   background-color: var(--color-red);
   min-width: 8px;
   width: 8px;
   height: 8px;
   border-radius: 4px;
 }
-.button__table img{
+.button__table img {
   cursor: pointer;
 }
 .sticky-col {
@@ -111,9 +114,9 @@ tr:hover .button__table .button-icon-table{
   max-width: 50px;
   left: 0px;
 }
-.table__header{
+.table__header {
   position: sticky;
-    top: 0;
-    background: white;
-    z-index: 99;
+  top: 0;
+  background: white;
+  z-index: 1;
 }

@@ -1,11 +1,16 @@
 <template>
+  <loading-screen />
   <router-view></router-view>
 </template>
 <script>
 import { watch } from 'vue'
 import { useRouter } from 'vue-router'
+import LoadingScreen from './components/LoadingScreen.vue'
 export default {
   name: 'App',
+  components: {
+      LoadingScreen
+    },
   mounted(){
     const router = useRouter()
     // Set the initial page title

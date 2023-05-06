@@ -1,5 +1,9 @@
 <template>
     <div>
+        Change Lang:
+        <misa-combobox v-model="lang" :options="langOptions" @change="changeLang"></misa-combobox>
+    </div>
+    <div>
         Nút chính:
         <misa-button type="primary" @click="click">Button</misa-button>
         <misa-button type="primary" @click="click" disabled>Butsadfsadfsdfasdfton</misa-button>
@@ -26,6 +30,10 @@
     <div>
         Input: {{ input }}
         <misa-input placeholder="Xin vui lòng nhập" v-model="input" @focus="focusEvent" @change="changeEvent"
+            :validateEvent="minLength" style="width:300px;position: relative;"></misa-input>
+
+            Error Input: {{ input2 }}
+        <misa-input placeholder="Xin vui lòng nhập" v-model="input2" @focus="focusEvent" @change="changeEvent" :isValid="false"
             :validateEvent="minLength" style="width:300px;position: relative;"></misa-input>
     </div>
     <div>
@@ -66,12 +74,40 @@
             </template>
         </misa-table>
     </div>
+    <div>
+        <misa-dropdown position="bottomRight" title="Title">
+            <template #click>Dropdown</template>
+            <template #content>This is dropdown</template>
+        </misa-dropdown>
+    </div>
+    <div>
+        <misa-button @click="showLoading">Loading</misa-button>
+        <misa-loading v-model="loading"></misa-loading>
+    </div>
 </template>
 <script>
+import { useLangStore } from '@/store/lang';
+
 export default {
     name: 'BaseStyle',
+    setup() {
+        const langStore = useLangStore()
+        return { langStore }
+    },
     data() {
         return {
+            loading: false,
+            langOptions: [
+                {
+                    label: 'Tiếng Việt',
+                    value: this.$enum.Lang.Vietnamese
+                },
+                {
+                    label: 'Tiếng Anh',
+                    value: this.$enum.Lang.English
+                }
+            ],
+            lang: this.$enum.Lang.Vietnamese,
             input: '',
             input2: '',
             dialogShow: false,
@@ -100,7 +136,7 @@ export default {
                     prop: 'name'
                 },
                 { label: 'Age', prop: 'age' },
-                {label: 'Status', prop: 'status', slot:true}],
+                { label: 'Status', prop: 'status', slot: true }],
                 data: [{
                     name: 'a',
                     age: 18,
@@ -120,6 +156,12 @@ export default {
         }
     },
     methods: {
+        showLoading(){
+            this.loading = true
+        },
+        changeLang(lang) {
+            this.langStore.changeLanguage(lang)
+        },
         minLength() {
             return true;
         },

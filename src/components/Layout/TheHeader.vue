@@ -3,7 +3,7 @@
         <div class="flex items-center justify-center">
             <div class="icon__launcher" style="margin: 0 16px"></div>
             <div class="logo-content">
-                <i src="https://cegovapp.misacdn.net/cegov/img/ic_cegoLogo_new.89475e3e.svg" class="nav-logo"
+                <img src="@/assets/icon/logo.svg" class="nav-logo"
                     alt="MISA Logo" style="cursor: pointer;" onclick="changeMenuItem()" />
                 <a class="logo-title">MISA CeGov</a>
             </div>

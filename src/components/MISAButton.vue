@@ -13,6 +13,8 @@ export default {
     };
   },
   props: {
+    //primary,link,secondary
+    //TODO: enum
     type: {
       type: String,
       default: 'primary'

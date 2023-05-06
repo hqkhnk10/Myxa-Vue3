@@ -38,6 +38,9 @@ export default {
     }
   },
   computed:{
+    /**
+     * Set style of the dialog
+     */
     widthDialog(){
       return `width: ${this.width}`
     },

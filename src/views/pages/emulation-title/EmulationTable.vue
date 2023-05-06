@@ -1,7 +1,7 @@
 <template>
     <div class="main__body">
         <div class="main__body-table">
-            <misa-table v-model="table" checkbox pagination>
+            <misa-table v-model="table" checkbox pagination ref="misaTable" @select="selectRow">
                 <template #ApplyObject="row">
                     {{ row.ApplyObject == 2 ? 'Cá nhân' : 'Tập thể' }}
                 </template>
@@ -30,6 +30,31 @@
                         <div>Ngưng sử dụng</div>
                     </div>
                 </template>
+                <template #operator="row">
+                    <div class="button-icon-table" @click="formEdit(row)">
+                        <div class="tooltip">
+                            <div class="icon__pencil"></div>
+                            <span class="tooltiptext tooltiptext-top">Sửa</span>
+                        </div>
+                    </div>
+                    <div class="button-icon-table">
+                        <misa-dropdown :header="false" position="right">
+                            <template #click>
+                                <div class="tooltip flex items-center" style="height: 100%;">
+                                    <div class="icon__threedots"></div>
+                                    <span class="tooltiptext tooltiptext-top dropdown">Thêm
+                                        nữa...</span>
+                                </div>
+                            </template>
+                            <template #content>
+                                <a style="color: #d2d2d2;" @click="changeStatus(row, 1)">Sử dụng</a>
+                                <a @click="changeStatus(row, 2)">Ngưng sử dụng</a>
+                                <a style="color:red" @click="changeStatus(row, 3)">Xóa</a>
+                            </template>
+                        </misa-dropdown>
+
+                    </div>
+                </template>
             </misa-table>
         </div>
     </div>
@@ -43,13 +68,13 @@ export default {
             table: {
                 header: [{
                     label: 'Tên danh hiệu thi đua',
-                    prop: 'EmulationTitleName'
+                    prop: 'EmulationTitleName', width: '30%',
                 },
-                { label: 'Mã danh hiệu', prop: 'EmulationTitleCode' },
-                { label: 'Đối tượng khen thưởng', prop: 'ApplyObject', slot: true },
-                { label: 'Cấp khen thưởng', prop: 'CommendationLevel', slot: true },
-                { label: 'Loại phong trào', prop: 'MovementType', slot: true },
-                { label: 'Trạng thái', prop: 'Inactive', slot: true }],
+                { label: 'Mã danh hiệu', prop: 'EmulationTitleCode', width: '15%', },
+                { label: 'Đối tượng khen thưởng', prop: 'ApplyObject', width: '15%', slot: true },
+                { label: 'Cấp khen thưởng', prop: 'CommendationLevel', width: '15%', slot: true },
+                { label: 'Loại phong trào', prop: 'MovementType', width: '15%', slot: true },
+                { label: 'Trạng thái', prop: 'Inactive', width: '15%', slot: true }],
                 data: [
                     {
                         "EmulationTitleName": "Lao động tiên tiến",
@@ -220,7 +245,18 @@ export default {
             },
         }
     },
+    emits: ['select', 'select-row'],
+    methods: {
+        selectRow() {
+            this.$emit('select',this.$refs.misaTable.getSelectedRows)
+        },
+        formEdit(row) {
+            this.emitter.emit("toggle-emulation-dialog", true);
+            this.$emit('select-row', this.$enum.FormActions.Edit, row)
+        },
+        changeStatus(row, status) {
+            console.log('row: ', row, status)
+        }
+    },
 }
 </script>
-
-<style></style>

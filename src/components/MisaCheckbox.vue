@@ -38,13 +38,16 @@ export default {
       this.$emit("update:modelValue", !this.modelValue)
       this.$emit("click-box", !this.modelValue)
     },
+    /**
+     * Change image of checkbox base on value
+     */
     imageCheckbox() {
       switch (this.modelValue) {
-        case true:
+        case true://checked
           return 'checkmark__checked'
-        case 'half':
+        case 'half'://half check (use in table header)
           return 'checkmark__half'
-        case false:
+        case false://unchecked
           return ''
         default:
           return ''
