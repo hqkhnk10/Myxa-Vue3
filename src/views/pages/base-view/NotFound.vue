@@ -4,7 +4,7 @@
         <h1> OPSSS! Không tìm thấy trang. </h1>
         <p> Tính năng đang được hoàn thiện </p>
         <button class="button button__primary" @click="backToHomepage()">
-            <div class="text"> Quay lại trang chủ </div>
+            <div class="text"> Quay lại trang bài tập </div>
         </button>
     </div>
 </template>
@@ -20,6 +20,6 @@
 import { router } from '@/routers/router';
 
 const backToHomepage = () =>{
-    router.push('/')
+    router.push('/emulationTitle')
 }
 </script>

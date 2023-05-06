@@ -1,8 +1,7 @@
 <template>
     <aside class="aside" aria-label="menu" :class="shrinkMenu ? 'small' : ''">
         <ul role="menubar" class="menu">
-            <li v-for="(item, index) in routes" :key="index" role="menuitem"
-                @click="selectMenuItem(item)">
+            <li v-for="(item, index) in routes" :key="index" role="menuitem" @click="selectMenuItem(item)">
                 <div class="submenu" :class="item.selected ? 'menu-item-selected' : ' '" v-if="!item.meta.hidden">
                     <div class="menu-item-icon" v-if="item.meta.icon">
                         <img :src=item.meta.icon alt="logo">
@@ -58,19 +57,29 @@ export default {
             return this.routes.filter(route => route.selected)[0]?.children
         }
     },
+    /**
+     * push to emulationTitle when open the site
+     */
+    beforeMount() {
+        if(this.currentRoute == '/')
+        {
+            router.push('/emulationTitle')
+        }
+    }
+    ,
     mounted() {
         this.routes.forEach(route => {
-                const child = route?.children?.find(child => child.path == this.currentRoute)
-                if (child) {
+            const child = route?.children?.find(child => child.path == this.currentRoute)
+            if (child) {
+                route.selected = true
+                child.selected = true
+            }
+            else {
+                if (route.path == this.currentRoute) {
                     route.selected = true
-                    child.selected = true
                 }
-                else {
-                    if (route.path == this.currentRoute) {
-                        route.selected = true
-                    }
-                }
-            })
+            }
+        })
     },
     methods: {
         log() {
@@ -84,7 +93,7 @@ export default {
             if (item.children) {
                 this.openSubMenu = true
             }
-            else{
+            else {
                 router.push(item.path)
             }
         },
