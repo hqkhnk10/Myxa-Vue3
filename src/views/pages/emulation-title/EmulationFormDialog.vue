@@ -51,11 +51,18 @@
             </div>
             <div class="form-item" v-if="type == this.$enum.FormActions.Edit">
                 <label class="form-item__label">Trạng thái</label>
-                <div class="form-item__content">
-                    <input v-model="form.Inactive" type="radio" :value="0">
-                    <span>Sử dụng</span>
-                    <input v-model="form.Inactive" type="radio" :value="1">
-                    <span>Ngưng sử dụng</span>
+                <div class="form-item__content flex" style="gap: 12px;">
+                    <!-- TODO: MisaRadio -->
+                    <div class="radio__container" @click="form.Inactive = 0">
+                        <span>Sử dụng</span>
+                        <input v-model="form.Inactive" type="radio" :value="0" :checked="form.Inactive == 0" >
+                        <span class="radio__checkmark"></span>
+                    </div>
+                    <div class="radio__container" @click="form.Inactive = 1">
+                        <span>Ngưng sử dụng</span>
+                        <input v-model="form.Inactive" type="radio" :value="1" :checked="form.Inactive == 1" >
+                        <span class="radio__checkmark"></span>
+                    </div>
                 </div>
             </div>
             <div class="form__footer">

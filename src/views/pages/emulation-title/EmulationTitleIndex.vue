@@ -69,14 +69,14 @@ export default {
         selectRow(type,row){
             this.type = type;
             this.formValue.EmulationTitleName= row.EmulationTitleName;
-            this.formValue.EmulationTitleCode= row.EmulationTitleCode,
-            this.formValue.ApplyObject2= row.ApplyObject == 2,
-            this.formValue.ApplyObject0= row.ApplyObject != 2,
-            this.formValue.CommendationLevel= row.CommendationLevel,
-            this.formValue.MovementType0= row.MovementType == 0,
-            this.formValue.MovementType1= row.MovementType == -1,
-            this.formValue.Inactive= row.Inactive,
-            this.formValue.EmulationTitleID= row.EmulationTitleID,
+            this.formValue.EmulationTitleCode= row.EmulationTitleCode;
+            this.formValue.ApplyObject2= row.ApplyObject == 2;
+            this.formValue.ApplyObject0= row.ApplyObject != 2;
+            this.formValue.CommendationLevel= row.CommendationLevel;
+            this.formValue.MovementType0= row.MovementType == 0;
+            this.formValue.MovementType1= row.MovementType == -1;
+            this.formValue.Inactive= row.Inactive;
+            this.formValue.EmulationTitleID= row.EmulationTitleID;
             this.formValue.IsSystem= row.IsSystem
         },
         totalSelectedRows(rows){

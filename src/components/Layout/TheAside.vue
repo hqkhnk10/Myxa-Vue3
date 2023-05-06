@@ -67,6 +67,9 @@ export default {
         }
     }
     ,
+    /**
+     * Find route in router array
+     */
     mounted() {
         this.routes.forEach(route => {
             const child = route?.children?.find(child => child.path == this.currentRoute)
@@ -82,9 +85,10 @@ export default {
         })
     },
     methods: {
-        log() {
-            console.log('abc', this.currentRoute)
-        },
+        /**
+         * push router if menu has no children, open sidebar if there are
+         * @param {*} item 
+         */
         selectMenuItem(item) {
             routes.forEach(route => {
                 route.selected = false
@@ -97,6 +101,10 @@ export default {
                 router.push(item.path)
             }
         },
+        /**
+         * select and close submenu when click child route
+         * @param {*} item 
+         */
         selectSubMenuItem(item) {
             this.childrenRoutes.forEach(route => {
                 route.selected = false
