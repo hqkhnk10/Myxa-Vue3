@@ -6,28 +6,26 @@
                 <misa-input style="width:250px" placeholder="Nhập mã hoặc tên danh hiệu ...">
                     <template #icon>
                         <span class="input__icon">
-                            <img src="@/assets/icon/search-icon.svg" alt="search" width="25" height="25"/>
+                            <img src="@/assets/icon/search-icon.svg" alt="search" width="25" height="25" />
                         </span>
                     </template>
                 </misa-input>
                 <div class="flex">
-                    <EmulationDropdownFilter />
-                    <misa-button type="link" v-if="false" class="filter-button">
-                        Bỏ lọc
-                    </misa-button>
+                    <EmulationDropdownFilter v-model:filterValue="filterValue" @change-filter="changeFilter" />
                 </div>
             </div>
             <div>
 
                 <div v-if="selectedRows && selectedRows.length > 0" class="flex items-center" style="gap:4px">
-                    <div>Đã chọn<span id="row-selected-count" style="margin-left: 4px;font-weight: bold;">{{ selectedRows.length }}</span>
+                    <div>Đã chọn<span id="row-selected-count" style="margin-left: 4px;font-weight: bold;">{{
+                        selectedRows.length }}</span>
                     </div>
-                    <div><button button class="button button__link" onclick="removeSelectedRow()">Bỏ
-                            chọn</button>
+                    <div><misa-button type="link" @click="unSelectedRows()">Bỏ
+                            chọn</misa-button>
                     </div>
                     <div><button class="button button__primary-border">Sử dụng</button></div>
                     <div><button class="button button__secondary">Ngưng sử dụng</button></div>
-                    <div><button class="button button__warning-border">Xóa</button></div>
+                    <div><misa-button type="warning-border" @click="removeRow">Xóa</misa-button></div>
                 </div>
                 <div v-else>
                     <misa-button type="primary" @click="openDialogAddTitle"> <img src="@/assets/icon/plus-icon.svg"
@@ -43,15 +41,34 @@
 import EmulationDropdownFilter from './EmulationDropdownFilter.vue';
 export default {
     name: 'EmulationHeader',
-    props:{
-        selectedRows:{
-            type: Object,
-        }
-    },
     components: {
         EmulationDropdownFilter
     },
+    data() {
+        return {
+            filterValue: {
+                ApplyObject: -1,
+                CommendationLevel: -1,
+                MovementType: -1,
+                Inactive: -1,
+            },
+        }
+    },
+    props: {
+        selectedRows: {
+            type: Object,
+        }
+    },
     methods: {
+        changeFilter() {
+            this.emitter.emit("filter-table-emulation",this.filterValue);
+        },
+        unSelectedRows() {
+            this.emitter.emit("unselect-row-emulation");
+        },
+        removeRow() {
+            this.emitter.emit("remove-row-emulation");
+        },
         openDialogAddTitle() {
             this.emitter.emit("toggle-emulation-dialog", true);
         },

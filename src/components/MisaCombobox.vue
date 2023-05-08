@@ -4,7 +4,7 @@
     <span class="input__icon" style="right: 40px;">
       <img src="/libs/mcombobox/icon/loading-icon.svg" class="loading" alt="loading" />
     </span>
-    <button class="mcombobox__button"></button>
+    <button type="button" class="mcombobox__button"></button>
     <div class="mcombobox__data" :class="positionStyle" v-if="optionsBox">
       <a v-for="(item, index) in options" class="mcombobox-item" :class="item.selected ? 'selected' : ''" :key="index"
         @click="selectOption(item)">{{ item.label }}</a>

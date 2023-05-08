@@ -1,7 +1,8 @@
 <template>
     <div class="main__body">
         <div class="main__body-table">
-            <misa-table v-model="table" checkbox pagination ref="misaTable" @select="selectRow">
+            <misa-table v-model="table" checkbox :pagination="pagination" ref="misaTable" @select="selectRow"
+                @dbclick-row="formEdit">
                 <template #ApplyObject="row">
                     {{ row.ApplyObject == 2 ? 'Cá nhân' : 'Tập thể' }}
                 </template>
@@ -237,18 +238,46 @@ export default {
                         "IsSystem": 1
                     }
                 ],
-                pagination: {
-                    pageSize: 10,
-                    pageIndex: 1,
-                    total: 100,
-                }
+
             },
+            pagination: {
+                pageSize: 10,
+                pageIndex: 1,
+                total: 16,
+            }
         }
+    },
+    watch: {
+        table:{
+            handler(){
+                this.pagination.total = this.table.data.length;
+            },
+            deep: true
+        }
+    },
+    mounted() {
+        this.emitter.on("remove-row-emulation", this.removeRow);
+        this.emitter.on("unselect-row-emulation", this.unSelect);
+        this.emitter.on("filter-table-emulation", (filterValue)=>{
+            this.filter(filterValue)
+        });
     },
     emits: ['select', 'select-row'],
     methods: {
+        filter(filterValue){
+            this.$refs.misaTable.filterTable(filterValue)
+        },
+        unSelect(){
+            this.$refs.misaTable.unSelectedRows(this.$refs.misaTable.getSelectedRows)
+        },
+        removeRow() {
+            console.log('rows', this.$refs.misaTable.getSelectedRows);
+            this.table.data = this.table.data.filter((tableRow) =>
+                !this.$refs.misaTable.getSelectedRows.includes(tableRow)
+            );
+        },
         selectRow() {
-            this.$emit('select',this.$refs.misaTable.getSelectedRows)
+            this.$emit('select', this.$refs.misaTable.getSelectedRows)
         },
         formEdit(row) {
             this.emitter.emit("toggle-emulation-dialog", true);

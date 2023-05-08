@@ -6,13 +6,13 @@
           <th style="width: 50px;" class="sticky-col first-col" v-if="checkbox">
             <misa-checkbox v-model="headerBox" @click-box="checkAll"></misa-checkbox>
           </th>
-          <th v-for="(header, index) in modelValue.header" :key="index" :style="{width: header.width}">
+          <th v-for="(header, index) in modelValue.header" :key="index" :style="{ width: header.width }">
             {{ header.label }}
           </th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(row, index) in modelValue.data" :key="index">
+        <tr v-for="(row, index) in tableData" :key="index" @dblclick="dbClickRow(row)">
           <td class="sticky-col first-col" v-if="checkbox">
             <misa-checkbox v-model="row.select" @click-box="checkBoxRow(value)"></misa-checkbox>
           </td>
@@ -20,25 +20,26 @@
             <slot :name="header.prop" v-bind="row" v-if="header.slot"></slot>
             <div v-else>{{ row[header.prop] }}</div>
           </td>
-            <div class="button__table">
-              <slot name="operator" v-bind="row"></slot>
-            </div>
+          <div class="button__table">
+            <slot name="operator" v-bind="row"></slot>
+          </div>
         </tr>
       </tbody>
     </table>
   </div>
-  <misa-pagination v-if="pagination" :total="modelValue.data.length"></misa-pagination>
+  <misa-pagination v-if="pagination" :pagination="pagination" :startIndex="startIndex"
+    :endIndex="endIndex"></misa-pagination>
 </template>
 
 <script>
 export default {
-  expose: ['getSelectedRows'],
+  expose: ['getSelectedRows','unSelectedRows'],
   name: 'MisaTable',
   data() {
     return {
       checkBoxes: 0,
       headerBox: false,
-      headerArray: []
+      headerArray: [],
     };
   },
   props: {
@@ -51,9 +52,10 @@ export default {
       description: 'show checkbox or not'
     },
     pagination: {
-      type: Boolean,
-      default: false,
-      description: 'show pagination or not'
+      type: Object,
+    },
+    filterValue:{
+      type:Object
     }
   },
   watch: {
@@ -75,13 +77,38 @@ export default {
       else {
         this.headerBox = 'half'
       }
-    }
-  },
-  emits: ['update:modelValue','select'],
-  computed: {
-    getSelectedRows(){
-      return this.modelValue.data.filter(row=>row.select)
     },
+    modelValue: {
+      handler() {
+        this.checkBoxes = this.modelValue.data.filter(row => row.select).length
+      },
+      deep: true
+    },
+  },
+  emits: ['update:modelValue', 'select', 'dbclick-row'],
+  computed: {
+    getSelectedRows() {
+      return this.modelValue.data.filter(row => row.select)
+    },
+    tableData() {
+      let table = []
+      if (this.pagination) {
+        table = this.modelValue.data.slice(this.startIndex, this.endIndex)
+      }
+      if(this.filterValue){
+        console.log('this filter value', this.filterValue);
+      }
+      else {
+        return this.modelValue
+      }
+      return table
+    },
+    startIndex() {
+      return (this.pagination.pageIndex - 1) * this.pagination.pageSize
+    },
+    endIndex() {
+      return this.pagination.pageIndex * this.pagination.pageSize + 1
+    }
   },
   methods: {
     updateValue() {
@@ -104,6 +131,17 @@ export default {
       else {
         this.modelValue.data.forEach(row => { row.select = false; this.checkBoxes = 0 })
       }
+    },
+    dbClickRow(row) {
+      this.$emit('dbclick-row', row)
+    },
+    unSelectedRows(rows) {
+      console.log('rows', rows);
+      this.modelValue.data.forEach(row => {
+        if (rows.includes(row)) {
+          row.select = false
+        }
+      })
     }
   }
 }
