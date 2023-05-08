@@ -1,7 +1,7 @@
 <template>
     <div class="main__body">
         <div class="main__body-table">
-            <misa-table v-model="table" checkbox :pagination="pagination" :filterValue="filterValue" ref="misaTable" @select="selectRow"
+            <misa-table v-model="table" checkbox :pagination="pagination" :filterValue="filterValue" :keyword="keyword" ref="misaTable" @select="selectRow"
                 @dbclick-row="formEdit">
                 <template #ApplyObject="row">
                     {{ row.ApplyObject == 2 ? 'Cá nhân' : 'Tập thể' }}
@@ -245,7 +245,8 @@ export default {
                 pageIndex: 1,
                 total: 16,
             },
-            filterValue:{}
+            filterValue:{},
+            keyword: ''
         }
     },
     watch: {
@@ -260,12 +261,18 @@ export default {
         this.emitter.on("remove-row-emulation", this.removeRow);
         this.emitter.on("unselect-row-emulation", this.unSelect);
         this.emitter.on("filter-table-emulation", (filterValue)=>{
-            this.filter(filterValue)
+            this.filterTable(filterValue)
+        });
+        this.emitter.on("search-table-emulation", (keyword)=>{
+            this.searchTable(keyword)
         });
     },
     emits: ['select', 'select-row'],
     methods: {
-        filter(filterValue){
+        searchTable(keyword){
+            this.keyword = keyword;
+        },
+        filterTable(filterValue){
             for (const key in filterValue) {
                 if(filterValue[key] !==-1){
                     this.filterValue[key] = filterValue[key];

@@ -3,7 +3,7 @@
         <div class="main__title">Danh hiệu thi đua </div>
         <div style="margin-bottom: 10px;justify-content: space-between;" class="flex">
             <div class="flex" style="gap:15px">
-                <misa-input style="width:250px" placeholder="Nhập mã hoặc tên danh hiệu ...">
+                <misa-input v-model="keyword" style="width:250px" placeholder="Nhập mã hoặc tên danh hiệu ..." @keydown.enter="search">
                     <template #icon>
                         <span class="input__icon">
                             <img src="@/assets/icon/search-icon.svg" alt="search" width="25" height="25" />
@@ -52,6 +52,7 @@ export default {
                 MovementType: -1,
                 Inactive: -1,
             },
+            keyword:''
         }
     },
     props: {
@@ -60,6 +61,9 @@ export default {
         }
     },
     methods: {
+        search(){
+            this.emitter.emit("search-table-emulation",this.keyword);
+        },
         changeFilter(value) {
             this.filterValue.ApplyObject = value.ApplyObject
             this.filterValue.CommendationLevel = value.CommendationLevel

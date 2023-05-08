@@ -53,9 +53,15 @@ export default {
     },
     pagination: {
       type: Object,
+      default: (() => { })
     },
     filterValue: {
-      type: Object
+      type: Object,
+      default: (() => { })
+    },
+    keyword: {
+      type: String,
+      default: ''
     }
   },
   watch: {
@@ -96,11 +102,17 @@ export default {
         table = this.modelValue.data.slice(this.startIndex, this.endIndex)
       }
       if (this.filterValue) {
-        table = this.modelValue.data.filter(row => 
-          Object.keys(this.filterValue).every(key => 
+        table = this.modelValue.data.filter(row =>
+          Object.keys(this.filterValue).every(key =>
             this.filterValue[key] ? row[key] === this.filterValue[key] : true
           )
         );
+      }
+      if (this.keyword) {
+        console.log('keyword: ' + this.keyword);
+        table = this.modelValue.data.filter(row =>
+          Object.keys(row).some(key =>
+            typeof row[key] == 'string' ? row[key].includes(this.keyword) : false))
       }
       return table
     },

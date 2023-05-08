@@ -62,8 +62,11 @@ export default {
       this.$emit('update:modelValue', newValue)
     }
   },
-  emits: ['update:modelValue', 'change', 'focus'],
+  emits: ['update:modelValue', 'change', 'focus', 'click-icon'],
   methods: {
+    clickIcon(){
+      this.$emit('click-icon')
+    },
     focus() {
       this.$refs.input.focus();
     },
