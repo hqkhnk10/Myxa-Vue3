@@ -61,9 +61,11 @@ export default {
         }
     },
     methods: {
+        //Lọc dữ liệu theo keyword
         search(){
             this.emitter.emit("search-table-emulation",this.keyword);
         },
+        //Lọc dữ liệu theo Thẻ lọc
         changeFilter(value) {
             this.filterValue.ApplyObject = value.ApplyObject
             this.filterValue.CommendationLevel = value.CommendationLevel
@@ -71,15 +73,19 @@ export default {
             this.filterValue.Inactive = value.Inactive
             this.emitter.emit("filter-table-emulation",this.filterValue);
         },
+        //Bỏ chọn trong table
         unSelectedRows() {
             this.emitter.emit("unselect-row-emulation");
         },
+        //Xóa dữ liệu trong table
         removeRow() {
             this.emitter.emit("remove-row-emulation");
         },
+        //mở form thêm sửa
         openDialogAddTitle() {
             this.emitter.emit("toggle-emulation-dialog", true);
         },
+        //đóng form thêm sửa
         closeDialogAdd() {
             this.emitter.emit("toggle-emulation-dialog", false);
         }

@@ -84,6 +84,9 @@ export default {
         this.headerBox = 'half'
       }
     },
+    /**
+     * Get box that has been selected in the table
+     */
     modelValue: {
       handler() {
         this.checkBoxes = this.modelValue.data.filter(row => row.select).length
@@ -93,9 +96,15 @@ export default {
   },
   emits: ['update:modelValue', 'select', 'dbclick-row'],
   computed: {
+    /**
+     * return selected rows
+     */
     getSelectedRows() {
       return this.modelValue.data.filter(row => row.select)
     },
+    /**
+     * Filter table data base on keyword or filter or pagination
+     */
     tableData() {
       let table = this.modelValue
       if (this.pagination) {
@@ -109,16 +118,21 @@ export default {
         );
       }
       if (this.keyword) {
-        console.log('keyword: ' + this.keyword);
         table = this.modelValue.data.filter(row =>
           Object.keys(row).some(key =>
             typeof row[key] == 'string' ? row[key].includes(this.keyword) : false))
       }
       return table
     },
+    /**
+     * calculate the startIndex
+     */
     startIndex() {
       return (this.pagination.pageIndex - 1) * this.pagination.pageSize
     },
+        /**
+     * calculate the endIndex
+     */
     endIndex() {
       return this.pagination.pageIndex * this.pagination.pageSize + 1
     }
@@ -145,9 +159,17 @@ export default {
         this.modelValue.data.forEach(row => { row.select = false; this.checkBoxes = 0 })
       }
     },
+    /**
+     * emits event double click
+     * @param {*} row 
+     */
     dbClickRow(row) {
       this.$emit('dbclick-row', row)
     },
+      /**
+     * set rows to  unchecked
+     * @param {*} rows 
+     */
     unSelectedRows(rows) {
       console.log('rows', rows);
       this.modelValue.data.forEach(row => {

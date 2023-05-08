@@ -257,6 +257,9 @@ export default {
             deep: true
         }
     },
+    /**
+     * Tiny emmiter(Eventbus) function
+     */
     mounted() {
         this.emitter.on("remove-row-emulation", this.removeRow);
         this.emitter.on("unselect-row-emulation", this.unSelect);
@@ -269,9 +272,17 @@ export default {
     },
     emits: ['select', 'select-row'],
     methods: {
+        /**
+         * send keyword to Table component to filter
+         * @param {*} keyword 
+         */
         searchTable(keyword){
             this.keyword = keyword;
         },
+        /**
+         * send filterValue to Table component to filter
+         * @param {*} filterValue 
+         */
         filterTable(filterValue){
             for (const key in filterValue) {
                 if(filterValue[key] !==-1){
@@ -281,22 +292,35 @@ export default {
                 }
             }
         },
+        /**
+         * call unSelectedRows method in Table component
+         */
         unSelect(){
             this.$refs.misaTable.unSelectedRows(this.$refs.misaTable.getSelectedRows)
         },
+        /**
+         * Remove rows if selected
+         */
         removeRow() {
-            console.log('rows', this.$refs.misaTable.getSelectedRows);
             this.table.data = this.table.data.filter((tableRow) =>
                 !this.$refs.misaTable.getSelectedRows.includes(tableRow)
             );
         },
+        /**
+         * call getSelectedRows function in Table component to get select rows
+         */
         selectRow() {
             this.$emit('select', this.$refs.misaTable.getSelectedRows)
         },
+        /**
+         * pass value to Form
+         * @param {*} row 
+         */
         formEdit(row) {
             this.emitter.emit("toggle-emulation-dialog", true);
             this.$emit('select-row', this.$enum.FormActions.Edit, row)
         },
+        //TODO: Change value status
         changeStatus(row, status) {
             console.log('row: ', row, status)
         }

@@ -128,6 +128,9 @@ export default {
         }
     },
     watch: {
+        /**
+         * Reassgin the value of the filter value
+         */
         filterValue: {
             handler(){
                 this.ApplyObject = this.filterValue.ApplyObject;
@@ -140,6 +143,10 @@ export default {
         }
     },
     computed: {
+        /**
+         * Check if the filter is change or not
+         * Default: -1
+         */
         filterChange() {
             return (this.filterValue.ApplyObject != -1
                 || this.filterValue.CommendationLevel != -1
@@ -149,9 +156,13 @@ export default {
     },
     emits: ['change-filter'],
     methods: {
+        //Remove all filters (set to -1)
         removeFilter() {
             this.$emit('change-filter', { ApplyObject: -1, CommendationLevel: -1, MovementType: -1, Inactive: -1 })
         },
+        /**
+         * Cancel change in the drop down options
+         */
         cancelFilter() {
             this.ApplyObject = this.filterValue.ApplyObject;
             this.CommendationLevel = this.filterValue.CommendationLevel;
@@ -159,10 +170,16 @@ export default {
             this.Inactive = this.filterValue.Inactive
             this.closeDropdown()
         },
+        /**
+         * Save filter change and send it to the table
+         */
         applyFilter() {
             this.$emit('change-filter', { ApplyObject: this.ApplyObject, CommendationLevel: this.CommendationLevel, MovementType: this.MovementType, Inactive: this.Inactive })
             this.closeDropdown()
         },
+        /**
+         * Close drop donwn
+         */
         closeDropdown() {
             this.$refs.misaDropdown.toggleDropdown();
         }

@@ -131,12 +131,20 @@ export default {
         }
     },
     mounted() {
+        /**
+         * Focus first input
+         */
         this.$refs.firstInput.focus()
     },
     methods: {
+        //close dialog
         closeDialog() {
             this.emitter.emit("toggle-emulation-dialog", false);
         },
+        /**
+         * Validate form if this.validate has value 
+         * Validte contains validate function
+         */
         validateForm() {
             let isValid = true
             Object.keys(this.validate).forEach(
@@ -149,8 +157,10 @@ export default {
                 })
             return isValid
         },
+        /**
+         * Check validate before submit
+         */
         submitForm() {
-            console.log('form', this.form);
             if (this.validateForm()) {
                 this.closeDialog();
             }
