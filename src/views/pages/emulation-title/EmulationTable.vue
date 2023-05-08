@@ -1,7 +1,7 @@
 <template>
     <div class="main__body">
         <div class="main__body-table">
-            <misa-table v-model="table" checkbox :pagination="pagination" ref="misaTable" @select="selectRow"
+            <misa-table v-model="table" checkbox :pagination="pagination" :filterValue="filterValue" ref="misaTable" @select="selectRow"
                 @dbclick-row="formEdit">
                 <template #ApplyObject="row">
                     {{ row.ApplyObject == 2 ? 'Cá nhân' : 'Tập thể' }}
@@ -244,7 +244,8 @@ export default {
                 pageSize: 10,
                 pageIndex: 1,
                 total: 16,
-            }
+            },
+            filterValue:{}
         }
     },
     watch: {
@@ -265,7 +266,13 @@ export default {
     emits: ['select', 'select-row'],
     methods: {
         filter(filterValue){
-            this.$refs.misaTable.filterTable(filterValue)
+            for (const key in filterValue) {
+                if(filterValue[key] !==-1){
+                    this.filterValue[key] = filterValue[key];
+                }else{
+                    delete this.filterValue[key];
+                }
+            }
         },
         unSelect(){
             this.$refs.misaTable.unSelectedRows(this.$refs.misaTable.getSelectedRows)

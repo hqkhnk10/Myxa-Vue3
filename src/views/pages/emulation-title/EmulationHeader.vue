@@ -11,7 +11,7 @@
                     </template>
                 </misa-input>
                 <div class="flex">
-                    <EmulationDropdownFilter v-model:filterValue="filterValue" @change-filter="changeFilter" />
+                    <EmulationDropdownFilter :filterValue="filterValue" @change-filter="changeFilter" />
                 </div>
             </div>
             <div>
@@ -60,7 +60,11 @@ export default {
         }
     },
     methods: {
-        changeFilter() {
+        changeFilter(value) {
+            this.filterValue.ApplyObject = value.ApplyObject
+            this.filterValue.CommendationLevel = value.CommendationLevel
+            this.filterValue.MovementType = value.MovementType
+            this.filterValue.Inactive = value.Inactive
             this.emitter.emit("filter-table-emulation",this.filterValue);
         },
         unSelectedRows() {

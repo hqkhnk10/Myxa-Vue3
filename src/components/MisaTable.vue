@@ -33,7 +33,7 @@
 
 <script>
 export default {
-  expose: ['getSelectedRows','unSelectedRows'],
+  expose: ['getSelectedRows', 'unSelectedRows', 'filterTable'],
   name: 'MisaTable',
   data() {
     return {
@@ -54,8 +54,8 @@ export default {
     pagination: {
       type: Object,
     },
-    filterValue:{
-      type:Object
+    filterValue: {
+      type: Object
     }
   },
   watch: {
@@ -91,15 +91,16 @@ export default {
       return this.modelValue.data.filter(row => row.select)
     },
     tableData() {
-      let table = []
+      let table = this.modelValue
       if (this.pagination) {
         table = this.modelValue.data.slice(this.startIndex, this.endIndex)
       }
-      if(this.filterValue){
-        console.log('this filter value', this.filterValue);
-      }
-      else {
-        return this.modelValue
+      if (this.filterValue) {
+        table = this.modelValue.data.filter(row => 
+          Object.keys(this.filterValue).every(key => 
+            this.filterValue[key] ? row[key] === this.filterValue[key] : true
+          )
+        );
       }
       return table
     },

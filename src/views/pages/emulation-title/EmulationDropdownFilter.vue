@@ -3,7 +3,8 @@
     <misa-dropdown title="Lọc danh hiệu" ref="misaDropdown">
         <template #click>
             <misa-button type="secondary">
-                <div id="filter-icon" style="position: relative" class="icon-margin-right " :class="filterChange ? 'icon__filter--status' : 'icon__filter'"></div>
+                <div id="filter-icon" style="position: relative" class="icon-margin-right "
+                    :class="filterChange ? 'icon__filter--status' : 'icon__filter'"></div>
                 <span style="font-weight: 400;">Bộ lọc</span>
             </misa-button>
         </template>
@@ -46,8 +47,8 @@
         </template>
     </misa-dropdown>
     <misa-button type="link" v-if="filterChange" class="filter-button" @click="removeFilter">
-                        Bỏ lọc
-                    </misa-button>
+        Bỏ lọc
+    </misa-button>
 </template>
 
 <script>
@@ -121,46 +122,48 @@ export default {
             ]
         }
     },
+    props: {
+        filterValue: {
+            type: Object
+        }
+    },
     watch: {
-        filterValue() {
-            this.ApplyObject = this.filterValue.object,
-            this.CommendationLevel = this.filterValue.level,
-            this.MovementType = this.filterValue.type,
-            this.Inactive = this.filterValue.status
+        filterValue: {
+            handler(){
+                this.ApplyObject = this.filterValue.ApplyObject;
+                    this.CommendationLevel = this.filterValue.CommendationLevel;
+                    this.MovementType = this.filterValue.MovementType;
+                    this.Inactive = this.filterValue.Inactive
+            },
+            immediate: true,
+            deep: true
         }
     },
     computed: {
         filterChange() {
-            return (this.filterValue.object != -1
-                || this.filterValue.type != -1
-                || this.filterValue.level != -1
-                || this.filterValue.status != -1);
+            return (this.filterValue.ApplyObject != -1
+                || this.filterValue.CommendationLevel != -1
+                || this.filterValue.MovementType != -1
+                || this.filterValue.Inactive != -1);
         }
     },
-    props:{
-        filterValue:{
-            type: Object
-        }
-    },
-    emits: ['update:filterValue', 'change-filter'],
-    methods:{
-        removeFilter(){
-            this.$emit('update:filterValue',{object:-1,level:-1,type:-1,status:-1} )
-
+    emits: ['change-filter'],
+    methods: {
+        removeFilter() {
+            this.$emit('change-filter', { ApplyObject: -1, CommendationLevel: -1, MovementType: -1, Inactive: -1 })
         },
-        cancelFilter(){
-            this.ApplyObject = this.filterValue.object,
-            this.CommendationLevel = this.filterValue.level,
-            this.MovementType = this.filterValue.type,
-            this.Inactive = this.filterValue.status
+        cancelFilter() {
+            this.ApplyObject = this.filterValue.ApplyObject;
+            this.CommendationLevel = this.filterValue.CommendationLevel;
+            this.MovementType = this.filterValue.MovementType;
+            this.Inactive = this.filterValue.Inactive
             this.closeDropdown()
         },
-        applyFilter(){
+        applyFilter() {
+            this.$emit('change-filter', { ApplyObject: this.ApplyObject, CommendationLevel: this.CommendationLevel, MovementType: this.MovementType, Inactive: this.Inactive })
             this.closeDropdown()
-            this.$emit('update:filterValue',{object:this.ApplyObject,level:this.CommendationLevel,type:this.MovementType,status:this.Inactive} )
-            this.$emit('change-filter')
         },
-        closeDropdown(){
+        closeDropdown() {
             this.$refs.misaDropdown.toggleDropdown();
         }
     }
