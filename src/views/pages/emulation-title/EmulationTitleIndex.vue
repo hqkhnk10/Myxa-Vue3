@@ -65,20 +65,22 @@ export default {
     },
     methods: {
         /**
-         * Pass custom value to form
+         * Pass handled value to form
          */
-        selectRow(type,row){
+        selectRow(type, row) {
             this.type = type;
-            this.formValue.EmulationTitleName= row.EmulationTitleName;
-            this.formValue.EmulationTitleCode= row.EmulationTitleCode;
-            this.formValue.ApplyObject2= row.ApplyObject == 2;
-            this.formValue.ApplyObject0= row.ApplyObject != 2;
-            this.formValue.CommendationLevel= row.CommendationLevel;
-            this.formValue.MovementType0= row.MovementType == 0;
-            this.formValue.MovementType1= row.MovementType == -1;
-            this.formValue.Inactive= row.Inactive;
-            this.formValue.EmulationTitleID= row.EmulationTitleID;
-            this.formValue.IsSystem= row.IsSystem
+            this.formValue = {
+                EmulationTitleName: row.EmulationTitleName,
+                EmulationTitleCode: row.EmulationTitleCode,
+                ApplyObject2: row.ApplyObject == 2,
+                ApplyObject0: row.ApplyObject != 2,
+                CommendationLevel: row.CommendationLevel,
+                MovementType0: row.MovementType == 0,
+                MovementType1: row.MovementType == -1,
+                Inactive: row.Inactive,
+                EmulationTitleID: row.EmulationTitleID,
+                IsSystem: row.IsSystem
+            }
         },
         totalSelectedRows(rows){
             this.selectedRows = rows;

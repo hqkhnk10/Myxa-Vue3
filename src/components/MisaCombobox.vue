@@ -1,89 +1,101 @@
 <template>
   <div class="mcombobox" @click="toggleOptions">
     <misa-input type="text" :modelValue="label"></misa-input>
-    <span class="input__icon" style="right: 40px;">
-      <img src="/libs/mcombobox/icon/loading-icon.svg" class="loading" alt="loading" />
+    <span class="input__icon" style="right: 40px">
+      <img
+        src="/libs/mcombobox/icon/loading-icon.svg"
+        class="loading"
+        alt="loading"
+      />
     </span>
     <button type="button" class="mcombobox__button"></button>
     <div class="mcombobox__data" :class="positionStyle" v-if="optionsBox">
-      <a v-for="(item, index) in options" class="mcombobox-item" :class="item.selected ? 'selected' : ''" :key="index"
-        @click="selectOption(item)">{{ item.label }}</a>
+      <a
+        v-for="(item, index) in options"
+        class="mcombobox-item"
+        :class="item.selected ? 'selected' : ''"
+        :key="index"
+        @click="selectOption(item)"
+        >{{ item.label }}</a
+      >
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'MisaCombobox',
+  name: "MisaCombobox",
   data() {
     return {
-      optionsBox: false
+      optionsBox: false,
     };
   },
   props: {
     modelValue: {
       type: [String, Number],
-      required: true
+      required: true,
     },
     options: {
-      type: Object
+      type: Object,
     },
     position: {
       type: String,
-      default: 'bot'
-    }
+      default: "bot",
+    },
   },
   computed: {
     /**
      * Search value in option array and return label to display
      */
     label() {
-      const objValue = this.options?.find(option => option.value == this.modelValue)
+      const objValue = this.options?.find(
+        (option) => option.value == this.modelValue
+      );
       if (objValue) {
-        this.options.forEach(option => {
+        this.options.forEach((option) => {
           if (option == objValue) {
-            option.selected = true
+            option.selected = true;
           } else {
-            option.selected = false
+            option.selected = false;
           }
-        })
-        return objValue?.label
+        });
+        return objValue?.label;
       } else {
-        return ''
+        return "";
       }
     },
     /**
      * Set style of the combobox
      */
     widthDialog() {
-      return `width: ${this.width}`
+      return `width: ${this.width}`;
     },
     paddingTop() {
-      return `padding-top: ${this.top}`
+      return `padding-top: ${this.top}`;
     },
     positionStyle() {
-      if (this.position == 'top') {
-        return 'bot100'
+      if (this.position == "top") {
+        return "bot100";
       }
-      if (this.position == 'bot') {
-        return 'top100'
+      if (this.position == "bot") {
+        return "top100";
       }
-      return ''
-    }
+      return "";
+    },
   },
-  emits: ['update:modelValue', 'change'],
+  emits: ["update:modelValue", "change"],
   methods: {
     toggleDialog() {
-      this.$emit('update:modelValue', !this.modelValue)
+      this.$emit("update:modelValue", !this.modelValue);
     },
     toggleOptions() {
-      this.optionsBox = !this.optionsBox
+      this.optionsBox = !this.optionsBox;
     },
     selectOption(item) {
-      this.$emit('update:modelValue', item.value)
-      this.$emit('change', item.value)
-    }
-  }
-}
+      this.$emit("update:modelValue", item.value);
+      this.$emit("change", item.value);
+    },
+  },
+};
 </script>
 

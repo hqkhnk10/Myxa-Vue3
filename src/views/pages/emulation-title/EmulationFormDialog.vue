@@ -146,45 +146,47 @@ export default {
          * Validte contains validate function
          */
         validateForm() {
-            let isValid = true
-            Object.keys(this.validate).forEach(
-                item => {
-                    const valid = this.validate[item].validator(this.form[item]);
-                    if (!valid) {
-                        this.validate[item].valid = false;
-                        isValid = false
-                    }
-                })
-            return isValid
+            let isValid = true;
+            Object.keys(this.validate).forEach(item => {
+                const valid = this.validate[item].validator(this.form[item]);
+                this.validate[item].valid = valid;
+                isValid = isValid && valid;
+            });
+            return isValid;
         },
         /**
          * Check validate before submit
+         * if type == add then call add function
+         * if type == edit then call edit function
          */
         submitForm() {
             if (this.validateForm()) {
-                console.log('type', this.type);
-                if (this.type == this.$enum.FormActions.Add) {
-                    this.addEmulation();
-                } else if (this.type == this.$enum.FormActions.Edit) {
-                    this.editEmulation();
+                switch (this.type) {
+                    case this.$enum.FormActions.Add:
+                        this.addEmulation();
+                        break;
+                    case this.$enum.FormActions.Edit:
+                        this.editEmulation();
+                        break;
                 }
                 this.closeDialog();
             }
         },
         customFormValue() {
             let customValue = { ...this.formValue }
-
-            if (this.formValue.ApplyObject2) {
-                customValue.ApplyObject = this.$enum.EmulationTitle.ApplyObject.Person
+            const { ApplyObject2, ApplyObject0, MovementType0, MovementType1 } = this.formValue;
+            const { ApplyObject, MovementType } = this.$enum.EmulationTitle;
+            if (ApplyObject2) {
+                customValue.ApplyObject = ApplyObject.Person
             }
-            if (this.formValue.ApplyObject0) {
-                customValue.ApplyObject = this.$enum.EmulationTitle.ApplyObject.Organization
+            if (ApplyObject0) {
+                customValue.ApplyObject = ApplyObject.Organization
             }
-            if (this.formValue.MovementType0) {
-                customValue.MovementType = this.$enum.EmulationTitle.MovementType.Sometimes
+            if (MovementType0) {
+                customValue.MovementType = MovementType.Sometimes
             }
-            if (this.formValue.MovementType1) {
-                customValue.MovementType = this.$enum.EmulationTitle.MovementType.Period
+            if (MovementType1) {
+                customValue.MovementType = MovementType.Period
             }
             console.log('custom', customValue);
             return customValue
@@ -194,14 +196,12 @@ export default {
          */
         addEmulation() {
             this.emitter.emit("add-table-emulation", this.customFormValue());
-
         },
         /**
          * Edit emulation
          */
         editEmulation() {
             this.emitter.emit("edit-table-emulation", this.customFormValue());
-
         }
     },
 }

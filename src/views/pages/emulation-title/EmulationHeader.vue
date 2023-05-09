@@ -3,7 +3,8 @@
         <div class="main__title">Danh hiệu thi đua </div>
         <div style="margin-bottom: 10px;justify-content: space-between;" class="flex">
             <div class="flex" style="gap:15px">
-                <misa-input v-model="keyword" style="width:250px" placeholder="Nhập mã hoặc tên danh hiệu ..." @keydown.enter="search">
+                <misa-input v-model="keyword" style="width:250px" placeholder="Nhập mã hoặc tên danh hiệu ..."
+                    @keydown.enter="search">
                     <template #icon>
                         <span class="input__icon">
                             <img src="@/assets/icon/search-icon.svg" alt="search" width="25" height="25" />
@@ -52,7 +53,7 @@ export default {
                 MovementType: null,
                 Inactive: null,
             },
-            keyword:''
+            keyword: ''
         }
     },
     props: {
@@ -62,16 +63,14 @@ export default {
     },
     methods: {
         //Lọc dữ liệu theo keyword
-        search(){
-            this.emitter.emit("search-table-emulation",this.keyword);
+        search() {
+            this.emitter.emit("search-table-emulation", this.keyword);
         },
         //Lọc dữ liệu theo Thẻ lọc
         changeFilter(value) {
-            this.filterValue.ApplyObject = value.ApplyObject
-            this.filterValue.CommendationLevel = value.CommendationLevel
-            this.filterValue.MovementType = value.MovementType
-            this.filterValue.Inactive = value.Inactive
-            this.emitter.emit("filter-table-emulation",this.filterValue);
+            const { ApplyObject, CommendationLevel, MovementType, Inactive } = value;
+            this.filterValue = { ApplyObject, CommendationLevel, MovementType, Inactive };
+            this.emitter.emit("filter-table-emulation", this.filterValue);
         },
         //Bỏ chọn trong table
         unSelectedRows() {

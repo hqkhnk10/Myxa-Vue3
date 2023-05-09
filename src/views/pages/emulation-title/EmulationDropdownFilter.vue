@@ -132,11 +132,12 @@ export default {
          * Reassgin the value of the filter value
          */
         filterValue: {
-            handler(){
-                this.ApplyObject = this.filterValue.ApplyObject;
-                    this.CommendationLevel = this.filterValue.CommendationLevel;
-                    this.MovementType = this.filterValue.MovementType;
-                    this.Inactive = this.filterValue.Inactive
+            handler() {
+                const { ApplyObject, CommendationLevel, MovementType, Inactive } = this.filterValue;
+                this.ApplyObject = ApplyObject;
+                this.CommendationLevel = CommendationLevel;
+                this.MovementType = MovementType;
+                this.Inactive = Inactive;
             },
             immediate: true,
             deep: true
@@ -148,10 +149,8 @@ export default {
          * Default: null
          */
         filterChange() {
-            return (this.filterValue.ApplyObject != null
-                || this.filterValue.CommendationLevel != null
-                || this.filterValue.MovementType != null
-                || this.filterValue.Inactive != null);
+            const { ApplyObject, CommendationLevel, MovementType, Inactive } = this.filterValue;
+            return (ApplyObject || CommendationLevel || MovementType || Inactive);
         }
     },
     emits: ['change-filter'],
@@ -161,14 +160,17 @@ export default {
             this.$emit('change-filter', { ApplyObject: null, CommendationLevel: null, MovementType: null, Inactive: null })
         },
         /**
-         * Cancel change in the drop down options
+         * Cancel changes in the drop down options
          */
         cancelFilter() {
-            this.ApplyObject = this.filterValue.ApplyObject;
-            this.CommendationLevel = this.filterValue.CommendationLevel;
-            this.MovementType = this.filterValue.MovementType;
-            this.Inactive = this.filterValue.Inactive
-            this.closeDropdown()
+            // Assign filter values to variables
+            const { ApplyObject, CommendationLevel, MovementType, Inactive } = this.filterValue;
+            this.ApplyObject = ApplyObject;
+            this.CommendationLevel = CommendationLevel;
+            this.MovementType = MovementType;
+            this.Inactive = Inactive;
+            // Close dropdown
+            this.closeDropdown();
         },
         /**
          * Save filter change and send it to the table

@@ -61,46 +61,41 @@ export default {
      * push to emulationTitle when open the site
      */
     beforeMount() {
-        if(this.currentRoute == '/')
-        {
+        if (this.currentRoute == '/') {
             router.push('/emulationTitle')
         }
     }
     ,
-    /**
-     * Find route in router array
-     */
-    mounted() {
-        this.routes.forEach(route => {
-            const child = route?.children?.find(child => child.path == this.currentRoute)
-            if (child) {
-                route.selected = true
-                child.selected = true
-            }
-            else {
-                if (route.path == this.currentRoute) {
-                    route.selected = true
-                }
-            }
-        })
-    },
+/**
+ * Find route in router array
+ */
+mounted() {
+    this.routes.forEach(route => {
+        const child = route?.children?.find(child => child.path == this.currentRoute)
+        if (child) {
+            route.selected = true
+            child.selected = true
+        } else {
+            route.selected = route.path == this.currentRoute
+        }
+    })
+},
     methods: {
-        /**
-         * push router if menu has no children, open sidebar if there are
-         * @param {*} item 
-         */
-        selectMenuItem(item) {
-            routes.forEach(route => {
-                route.selected = false
-            })
-            item.selected = true
-            if (item.children) {
-                this.openSubMenu = true
-            }
-            else {
-                router.push(item.path)
-            }
-        },
+     /**
+      * updates the selected menu item and navigates to the correct route
+      * @param {*} item 
+      */
+     selectMenuItem(item) {
+         routes.forEach(route => {
+             route.selected = false
+         });
+         item.selected = true;
+         if (item.children) {
+             this.openSubMenu = true;
+         } else {
+             router.push(item.path);
+         }
+     },
         /**
          * select and close submenu when click child route
          * @param {*} item 

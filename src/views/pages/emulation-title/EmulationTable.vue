@@ -280,16 +280,21 @@ export default {
     },
     emits: ['select', 'select-row'],
     methods: {
-        addEmulationTable(form){
-            let row = {EmulationTitleID: this.id++}
-            Object.assign(row, form);
-            this.table.data.unshift(row)
+        /**
+         * Add value at the top of the table
+         * @param {*} form value get from Form
+         */
+        addEmulationTable(form) {
+            const row = { EmulationTitleID: this.id++, ...form };
+            this.table.data.unshift(row);
         },
-        editEmulationTable(form){
-            console.log('123');
-            let findIndex = this.table.data.findIndex(row => row.EmulationTitleID == form.EmulationTitleID)
-            console.log('form', findIndex);
-            Object.assign(this.table.data[findIndex], form);
+        /**
+         * edit value at the top of the table
+         * @param {*} form value get from Form
+         */
+        editEmulationTable(form) {
+            const findIndex = this.table.data.findIndex(row => row.EmulationTitleID == form.EmulationTitleID);
+            this.table.data[findIndex] = { ...this.table.data[findIndex], ...form };
         },
         /**
          * send keyword to Table component to filter

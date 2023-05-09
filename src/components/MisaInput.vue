@@ -1,7 +1,15 @@
 <template>
   <div style="width:100%" class="input-container">
-    <input ref="input" v-model="inputValue" :class="isValid ? '' : 'invalid'" on-blur="blurEvent" :disabled="disabled"
-      @change="changeEvent" on-focus="focusEvent" :placeholder="placeholder">
+    <input 
+      ref="input" 
+      v-model="inputValue" 
+      :class="{'invalid': !isValid}" 
+      @blur="blurEvent" 
+      :disabled="disabled"
+      @change="changeEvent" 
+      @focus="focusEvent" 
+      :placeholder="placeholder"
+    />
     <slot name="icon"></slot>
     <span class="input__icon">
       <img src="@/assets/icon/loading-icon.svg" class="loading" alt="loading" width="25" height="25"/>
