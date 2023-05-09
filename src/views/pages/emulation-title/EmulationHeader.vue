@@ -47,10 +47,10 @@ export default {
     data() {
         return {
             filterValue: {
-                ApplyObject: -1,
-                CommendationLevel: -1,
-                MovementType: -1,
-                Inactive: -1,
+                ApplyObject: null,
+                CommendationLevel: null,
+                MovementType: null,
+                Inactive: null,
             },
             keyword:''
         }

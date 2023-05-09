@@ -37,6 +37,7 @@ export default {
          * @param isShow: to show the dialog
          */
         this.emitter.on("toggle-emulation-dialog", (isShow) => {
+            this.type = this.$enum.FormActions.Add
             this.dialogAdd = isShow;
         });
     },

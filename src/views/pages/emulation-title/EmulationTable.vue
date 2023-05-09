@@ -1,32 +1,33 @@
 <template>
     <div class="main__body">
         <div class="main__body-table">
-            <misa-table v-model="table" checkbox :pagination="pagination" :filterValue="filterValue" :keyword="keyword" ref="misaTable" @select="selectRow"
-                @dbclick-row="formEdit">
+            <misa-table v-model="table" checkbox :pagination="pagination" :filterValue="filterValue" :keyword="keyword"
+                ref="misaTable" @select="selectRow" @dbclick-row="formEdit">
                 <template #ApplyObject="row">
-                    {{ row.ApplyObject == 2 ? 'Cá nhân' : 'Tập thể' }}
+                    {{ row.ApplyObject == $enum.EmulationTitle.ApplyObject.Person ? 'Cá nhân' : 'Tập thể' }}
                 </template>
                 <template #CommendationLevel="row">
-                    <div v-if="row.CommendationLevel == 3">
+                    <div v-if="row.CommendationLevel == $enum.EmulationTitle.CommendationLevel.CapXa">
                         Cấp Xã/tương đương</div>
-                    <div v-if="row.CommendationLevel == 2">
+                    <div v-if="row.CommendationLevel == $enum.EmulationTitle.CommendationLevel.CapHuyen">
                         Cấp Huyện/tương đương</div>
-                    <div v-if="row.CommendationLevel == 1">
+                    <div v-if="row.CommendationLevel == $enum.EmulationTitle.CommendationLevel.CapTinh">
                         Cấp Tỉnh/tương đương</div>
-                    <div v-if="row.CommendationLevel == 0">Cấp nhà nước</div>
+                    <div v-if="row.CommendationLevel == $enum.EmulationTitle.CommendationLevel.CapNhaNuoc">Cấp nhà nước
+                    </div>
                 </template>
                 <template #MovementType="row">
-                    <div v-if="row.MovementType == 0">
+                    <div v-if="row.MovementType == $enum.EmulationTitle.MovementType.Sometimes">
                         Thường xuyên</div>
-                    <div v-if="row.MovementType == -1">
+                    <div v-if="row.MovementType == $enum.EmulationTitle.MovementType.Period">
                         Theo đợt</div>
                 </template>
                 <template #Inactive="row">
-                    <div v-if="row.Inactive == 0" class="flex items-center" style="gap: 4px">
+                    <div v-if="row.Inactive == $enum.EmulationTitle.Active" class="flex items-center" style="gap: 4px">
                         <div class="icon-round-active"></div>
                         <div>Sử dụng</div>
                     </div>
-                    <div v-if="row.Inactive == 1" class="flex items-center" style="gap: 4px">
+                    <div v-if="row.Inactive == $enum.EmulationTitle.Inactive" class="flex items-center" style="gap: 4px">
                         <div class="icon-round-inactive"></div>
                         <div>Ngưng sử dụng</div>
                     </div>
@@ -245,13 +246,14 @@ export default {
                 pageIndex: 1,
                 total: 16,
             },
-            filterValue:{},
-            keyword: ''
+            filterValue: {},
+            keyword: '',
+            id: 999
         }
     },
     watch: {
-        table:{
-            handler(){
+        table: {
+            handler() {
                 this.pagination.total = this.table.data.length;
             },
             deep: true
@@ -263,31 +265,49 @@ export default {
     mounted() {
         this.emitter.on("remove-row-emulation", this.removeRow);
         this.emitter.on("unselect-row-emulation", this.unSelect);
-        this.emitter.on("filter-table-emulation", (filterValue)=>{
+        this.emitter.on("filter-table-emulation", (filterValue) => {
             this.filterTable(filterValue)
         });
-        this.emitter.on("search-table-emulation", (keyword)=>{
+        this.emitter.on("search-table-emulation", (keyword) => {
             this.searchTable(keyword)
+        });
+        this.emitter.on("add-table-emulation", (row) => {
+            this.addEmulationTable(row)
+        });
+        this.emitter.on("edit-table-emulation", (row) => {
+            this.editEmulationTable(row)
         });
     },
     emits: ['select', 'select-row'],
     methods: {
+        addEmulationTable(form){
+            let row = {EmulationTitleID: this.id++}
+            Object.assign(row, form);
+            this.table.data.unshift(row)
+        },
+        editEmulationTable(form){
+            console.log('123');
+            let findIndex = this.table.data.findIndex(row => row.EmulationTitleID == form.EmulationTitleID)
+            console.log('form', findIndex);
+            Object.assign(this.table.data[findIndex], form);
+        },
         /**
          * send keyword to Table component to filter
          * @param {*} keyword 
          */
-        searchTable(keyword){
+        searchTable(keyword) {
             this.keyword = keyword;
         },
         /**
          * send filterValue to Table component to filter
+         * if value is null then remove attribue from object filter
          * @param {*} filterValue 
          */
-        filterTable(filterValue){
+        filterTable(filterValue) {
             for (const key in filterValue) {
-                if(filterValue[key] !==-1){
+                if (filterValue[key] !== null) {
                     this.filterValue[key] = filterValue[key];
-                }else{
+                } else {
                     delete this.filterValue[key];
                 }
             }
@@ -295,7 +315,7 @@ export default {
         /**
          * call unSelectedRows method in Table component
          */
-        unSelect(){
+        unSelect() {
             this.$refs.misaTable.unSelectedRows(this.$refs.misaTable.getSelectedRows)
         },
         /**

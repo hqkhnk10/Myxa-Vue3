@@ -55,12 +55,12 @@
                     <!-- TODO: MisaRadio -->
                     <div class="radio__container" @click="form.Inactive = 0">
                         <span>Sử dụng</span>
-                        <input v-model="form.Inactive" type="radio" :value="0" :checked="form.Inactive == 0" >
+                        <input v-model="form.Inactive" type="radio" :value="0" :checked="form.Inactive == 0">
                         <span class="radio__checkmark"></span>
                     </div>
                     <div class="radio__container" @click="form.Inactive = 1">
                         <span>Ngưng sử dụng</span>
-                        <input v-model="form.Inactive" type="radio" :value="1" :checked="form.Inactive == 1" >
+                        <input v-model="form.Inactive" type="radio" :value="1" :checked="form.Inactive == 1">
                         <span class="radio__checkmark"></span>
                     </div>
                 </div>
@@ -112,22 +112,22 @@ export default {
             },
             levelOptions: [
                 {
-                    label: 'Cấp Nhà nước',
-                    value: 0
-                },
-                {
+                    label: 'Tất cả',
+                    value: null
+                }, {
+                    label: 'Cấp nhà nước',
+                    value: this.$enum.EmulationTitle.CommendationLevel.CapNhaNuoc
+                }, {
                     label: 'Cấp Tỉnh/tương đương',
-                    value: 1
-                },
-                {
+                    value: this.$enum.EmulationTitle.CommendationLevel.CapTinh
+                }, {
                     label: 'Cấp Huyện/tương đương',
-                    value: 2
-                },
-                {
+                    value: this.$enum.EmulationTitle.CommendationLevel.CapHuyen
+                }, {
                     label: 'Cấp Xã/tương đương',
-                    value: 3
-                }
-            ]
+                    value: this.$enum.EmulationTitle.CommendationLevel.CapXa
+                },
+            ],
         }
     },
     mounted() {
@@ -162,8 +162,46 @@ export default {
          */
         submitForm() {
             if (this.validateForm()) {
+                console.log('type', this.type);
+                if (this.type == this.$enum.FormActions.Add) {
+                    this.addEmulation();
+                } else if (this.type == this.$enum.FormActions.Edit) {
+                    this.editEmulation();
+                }
                 this.closeDialog();
             }
+        },
+        customFormValue() {
+            let customValue = { ...this.formValue }
+
+            if (this.formValue.ApplyObject2) {
+                customValue.ApplyObject = this.$enum.EmulationTitle.ApplyObject.Person
+            }
+            if (this.formValue.ApplyObject0) {
+                customValue.ApplyObject = this.$enum.EmulationTitle.ApplyObject.Organization
+            }
+            if (this.formValue.MovementType0) {
+                customValue.MovementType = this.$enum.EmulationTitle.MovementType.Sometimes
+            }
+            if (this.formValue.MovementType1) {
+                customValue.MovementType = this.$enum.EmulationTitle.MovementType.Period
+            }
+            console.log('custom', customValue);
+            return customValue
+        },
+        /**
+         * Add emulation
+         */
+        addEmulation() {
+            this.emitter.emit("add-table-emulation", this.customFormValue());
+
+        },
+        /**
+         * Edit emulation
+         */
+        editEmulation() {
+            this.emitter.emit("edit-table-emulation", this.customFormValue());
+
         }
     },
 }

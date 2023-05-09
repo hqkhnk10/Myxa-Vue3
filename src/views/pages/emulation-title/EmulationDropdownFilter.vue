@@ -56,23 +56,23 @@
 export default {
     data() {
         return {
-            ApplyObject: -1,
-            CommendationLevel: -1,
-            MovementType: -1,
-            Inactive: -1,
+            ApplyObject: null,
+            CommendationLevel: null,
+            MovementType: null,
+            Inactive: null,
             object: [
                 {
                     label: 'Tất cả',
-                    value: -1
+                    value: null
                 }, {
                     label: 'Gia đình',
                     value: 1
                 }, {
                     label: 'Tập thể',
-                    value: 2
+                    value: this.$enum.EmulationTitle.ApplyObject.Organization
                 }, {
                     label: 'Cá nhân',
-                    value: 3
+                    value: this.$enum.EmulationTitle.ApplyObject.Person
                 }, {
                     label: 'Cá nhân và tập thể',
                     value: 4
@@ -81,43 +81,43 @@ export default {
             level: [
                 {
                     label: 'Tất cả',
-                    value: -1
+                    value: null
                 }, {
                     label: 'Cấp nhà nước',
-                    value: 1
+                    value: this.$enum.EmulationTitle.CommendationLevel.CapNhaNuoc
                 }, {
                     label: 'Cấp Tỉnh/tương đương',
-                    value: 2
+                    value: this.$enum.EmulationTitle.CommendationLevel.CapTinh
                 }, {
                     label: 'Cấp Huyện/tương đương',
-                    value: 3
+                    value: this.$enum.EmulationTitle.CommendationLevel.CapHuyen
                 }, {
                     label: 'Cấp Xã/tương đương',
-                    value: 4
+                    value: this.$enum.EmulationTitle.CommendationLevel.CapXa
                 },
             ],
             type: [
                 {
                     label: 'Tất cả',
-                    value: -1
+                    value: null
                 }, {
                     label: 'Thường xuyên',
-                    value: 1
+                    value: this.$enum.EmulationTitle.MovementType.Sometimes
                 }, {
                     label: 'Theo đợt',
-                    value: 2
+                    value: this.$enum.EmulationTitle.MovementType.Period
                 },
             ],
             status: [
                 {
                     label: 'Tất cả',
-                    value: -1
+                    value: null
                 }, {
                     label: 'Sử dụng',
-                    value: 1
+                    value: this.$enum.EmulationTitle.Active
                 }, {
                     label: 'Ngưng sử dụng',
-                    value: 2
+                    value: this.$enum.EmulationTitle.Inactive
                 },
             ]
         }
@@ -145,20 +145,20 @@ export default {
     computed: {
         /**
          * Check if the filter is change or not
-         * Default: -1
+         * Default: null
          */
         filterChange() {
-            return (this.filterValue.ApplyObject != -1
-                || this.filterValue.CommendationLevel != -1
-                || this.filterValue.MovementType != -1
-                || this.filterValue.Inactive != -1);
+            return (this.filterValue.ApplyObject != null
+                || this.filterValue.CommendationLevel != null
+                || this.filterValue.MovementType != null
+                || this.filterValue.Inactive != null);
         }
     },
     emits: ['change-filter'],
     methods: {
-        //Remove all filters (set to -1)
+        //Remove all filters (set to null)
         removeFilter() {
-            this.$emit('change-filter', { ApplyObject: -1, CommendationLevel: -1, MovementType: -1, Inactive: -1 })
+            this.$emit('change-filter', { ApplyObject: null, CommendationLevel: null, MovementType: null, Inactive: null })
         },
         /**
          * Cancel change in the drop down options
