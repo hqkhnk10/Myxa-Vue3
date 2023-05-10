@@ -260,6 +260,46 @@ export default {
             EmulationTitleID: 59,
             IsSystem: 0,
           },
+                    {
+                        "EmulationTitleName": "Cờ thi đua của Chính phủ",
+                        "EmulationTitleCode": "CTĐCP",
+                        "ApplyObject": 1,
+                        "CommendationLevel": 0,
+                        "MovementType": -1,
+                        "Inactive": 1,
+                        "EmulationTitleID": 51,
+                        "IsSystem": 1
+                    },
+                    {
+                        "EmulationTitleName": "Cờ thi đua của Chính phủ",
+                        "EmulationTitleCode": "CTĐCP",
+                        "ApplyObject": 1,
+                        "CommendationLevel": 0,
+                        "MovementType": -1,
+                        "Inactive": 1,
+                        "EmulationTitleID": 51,
+                        "IsSystem": 1
+                    },
+                    {
+                        "EmulationTitleName": "Cờ thi đua của Chính phủ",
+                        "EmulationTitleCode": "CTĐCP",
+                        "ApplyObject": 1,
+                        "CommendationLevel": 0,
+                        "MovementType": -1,
+                        "Inactive": 1,
+                        "EmulationTitleID": 51,
+                        "IsSystem": 1
+                    },
+                    {
+                        "EmulationTitleName": "Cờ thi đua của Chính phủ",
+                        "EmulationTitleCode": "CTĐCP",
+                        "ApplyObject": 1,
+                        "CommendationLevel": 0,
+                        "MovementType": -1,
+                        "Inactive": 1,
+                        "EmulationTitleID": 51,
+                        "IsSystem": 1
+                    },
           {
             EmulationTitleName: "Cờ thi đua của Chính phủ",
             EmulationTitleCode: "CTĐCP",
@@ -275,7 +315,7 @@ export default {
       pagination: {
         pageSize: 10,
         pageIndex: 1,
-        total: 16,
+        total: 20,
       },
       filterValue: {},
       keyword: "",

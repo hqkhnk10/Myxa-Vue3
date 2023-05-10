@@ -123,3 +123,7 @@ tr:hover .button__table .button-icon-table {
   background: white;
   z-index: 1;
 }
+.pagination{
+ padding: 4px 12px;
+  border-top: 1px solid var(--input-border-color-gray);
+}

@@ -41,79 +41,82 @@
     </aside>
 </template>
 <script>
-import { router, routes } from '@/routers/router';
+import { router, routes } from "@/routers/router";
 export default {
-    name: 'TheAside',
-    data() {
-        return {
-            routes: routes,
-            openSubMenu: false,
-            shrinkMenu: false,
-            currentRoute: router.currentRoute.value.path
-        }
+  name: "TheAside",
+  data() {
+    return {
+      routes: routes,
+      openSubMenu: false,
+      shrinkMenu: false,
+      currentRoute: router.currentRoute.value.path,
+    };
+  },
+  computed: {
+    childrenRoutes() {
+      return this.routes.filter((route) => route.selected)[0]?.children;
     },
-    computed: {
-        childrenRoutes() {
-            return this.routes.filter(route => route.selected)[0]?.children
-        }
+  },
+  /**
+   * push to emulationTitle when open the site
+   */
+  beforeMount() {
+    console.log("beforeMount");
+    if (this.currentRoute == "/") {
+      router.push("/emulationTitle");
+    }
+  },
+  /**
+   * Find route in router array
+   */
+  mounted() {
+    console.log("mounted: " + this.currentRoute);
+    this.routes.forEach((route) => {
+      const child = route?.children?.find(
+        (child) => child.path == this.currentRoute
+      );
+      if (child) {
+        route.selected = true;
+        child.selected = true;
+      } else {
+        route.selected = route.path == this.currentRoute;
+      }
+    });
+  },
+  methods: {
+    /**
+     * updates the selected menu item and navigates to the correct route
+     * @param {*} item
+     */
+    selectMenuItem(item) {
+      routes.forEach((route) => {
+        route.selected = false;
+      });
+      item.selected = true;
+      if (item.children) {
+        this.openSubMenu = true;
+      } else {
+        router.push(item.path);
+      }
     },
     /**
-     * push to emulationTitle when open the site
+     * select and close submenu when click child route
+     * @param {*} item
      */
-    beforeMount() {
-        if (this.currentRoute == '/') {
-            router.push('/emulationTitle')
-        }
-    }
-    ,
-/**
- * Find route in router array
- */
-mounted() {
-    this.routes.forEach(route => {
-        const child = route?.children?.find(child => child.path == this.currentRoute)
-        if (child) {
-            route.selected = true
-            child.selected = true
-        } else {
-            route.selected = route.path == this.currentRoute
-        }
-    })
-},
-    methods: {
-     /**
-      * updates the selected menu item and navigates to the correct route
-      * @param {*} item 
-      */
-     selectMenuItem(item) {
-         routes.forEach(route => {
-             route.selected = false
-         });
-         item.selected = true;
-         if (item.children) {
-             this.openSubMenu = true;
-         } else {
-             router.push(item.path);
-         }
-     },
-        /**
-         * select and close submenu when click child route
-         * @param {*} item 
-         */
-        selectSubMenuItem(item) {
-            this.childrenRoutes.forEach(route => {
-                route.selected = false
-            })
-            item.selected = true
-            this.openSubMenu = !this.openSubMenu
-            router.push(item.path)
-        },
-        toogleMenu() {
-            this.shrinkMenu = !this.shrinkMenu
-        },
-        onClickOutside() {
-            this.openSubMenu = !this.openSubMenu
-        }
-    }
-}
+    selectSubMenuItem(item) {
+      this.childrenRoutes.forEach((route) => {
+        route.selected = false;
+      });
+      item.selected = true;
+      this.openSubMenu = !this.openSubMenu;
+      router.push(item.path);
+    },
+    toogleMenu() {
+      this.shrinkMenu = !this.shrinkMenu;
+    },
+    onClickOutside() {
+      this.openSubMenu = !this.openSubMenu;
+    },
+  },
+};
 </script>

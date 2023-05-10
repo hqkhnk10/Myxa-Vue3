@@ -38,12 +38,14 @@
       </tbody>
     </table>
   </div>
-  <misa-pagination
-    v-if="pagination"
-    :pagination="pagination"
-    :startIndex="startIndex"
-    :endIndex="endIndex"
-  ></misa-pagination>
+  <div class="pagination">
+    <misa-pagination
+      v-if="pagination"
+      :pagination="pagination"
+      :startIndex="startIndex"
+      :endIndex="endIndex"
+    ></misa-pagination>
+  </div>
 </template>
 
 <script>
@@ -78,7 +80,7 @@ export default {
     keyword: {
       type: String,
       default: "",
-    }
+    },
   },
   watch: {
     /**
@@ -131,19 +133,19 @@ export default {
      * @author QTNgo
      */
     tableData() {
-      let table = this.modelValue;
+      let table = this.modelValue.data;
       if (this.pagination) {
         table = this.modelValue.data.slice(this.startIndex, this.endIndex);
       }
       if (this.filterValue) {
-        table = this.modelValue.data.filter((row) =>
+        table = table.filter((row) =>
           Object.keys(this.filterValue).every((key) =>
             this.filterValue[key] ? row[key] === this.filterValue[key] : true
           )
         );
       }
       if (this.keyword) {
-        table = this.modelValue.data.filter((row) =>
+        table = table.filter((row) =>
           Object.keys(row).some((key) =>
             typeof row[key] == "string"
               ? row[key].includes(this.keyword)
@@ -178,7 +180,7 @@ export default {
      * set value when click checkbox
      * decreased if unchecked
      * increased if checked
-     * @param {*} value 
+     * @param {*} value
      * Created At: 10/05/2023
      * @author QTNgo
      */
@@ -223,7 +225,6 @@ export default {
      * @author QTNgo
      */
     unSelectedRows(rows) {
-      console.log("rows", rows);
       this.modelValue.data.forEach((row) => {
         if (rows.includes(row)) {
           row.select = false;
@@ -233,4 +234,3 @@ export default {
   },
 };
 </script>
-
