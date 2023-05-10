@@ -5,31 +5,27 @@
             <misa-button type="secondary">
                 <div class="icon-margin-right"
                     :class="filterChange ? 'icon__filter--status' : 'icon__filter'"></div>
-                <span>Bộ lọc</span>
+                <span>{{ t('reuse.filter') }}</span>
             </misa-button>
         </template>
         <template #content>
             <form class="form">
-                <div class="form-item"><label class="form-item__label">Đối tượng
-                        khen thưởng</label>
+                <div class="form-item"><label class="form-item__label">{{t('emulationTitle.applyObject')}}</label>
                     <div class="form-item__content">
                         <misa-combobox v-model="ApplyObject" :options="object"></misa-combobox>
                     </div>
                 </div>
-                <div class="form-item"><label class="form-item__label">Cấp khen
-                        thưởng</label>
+                <div class="form-item"><label class="form-item__label">{{t('emulationTitle.commendationLevel')}}</label>
                     <div class="form-item__content">
                         <misa-combobox v-model="CommendationLevel" :options="level"></misa-combobox>
                     </div>
                 </div>
-                <div class="form-item"><label class="form-item__label">Loại phong
-                        trào</label>
+                <div class="form-item"><label class="form-item__label">{{ t('emulationTitle.movementType') }}</label>
                     <div class="form-item__content">
                         <misa-combobox v-model="MovementType" :options="type"></misa-combobox>
                     </div>
                 </div>
-                <div class="form-item"><label class="form-item__label">Trạng
-                        thái</label>
+                <div class="form-item"><label class="form-item__label">{{ t('emulationTitle.status') }}</label>
                     <div class="form-item__content">
                         <misa-combobox v-model="Inactive" :options="status"></misa-combobox>
                     </div>
@@ -39,15 +35,15 @@
         </template>
         <template #footer>
             <button class="button button__secondary" type="button" @click="cancelFilter()">
-                <span>Hủy</span>
+                <span>{{t('reuse.cancel')}}</span>
             </button>
             <button class="button button__primary" type="button" @click="applyFilter()">
-                <span>Áp dụng</span>
+                <span>{{ t('reuse.apply') }}</span>
             </button>
         </template>
     </misa-dropdown>
     <misa-button type="link" v-if="filterChange" class="filter-button" @click="removeFilter">
-        Bỏ lọc
+        {{ t('reuse.removeFilter') }}
     </misa-button>
 </template>
 
@@ -62,61 +58,61 @@ export default {
             Inactive: null,
             object: [
                 {
-                    label: 'Tất cả',
+                    label: this.t('reuse.all'),
                     value: null
                 }, {
-                    label: 'Gia đình',
+                    label: this.t('emulationTitle.family'),
                     value: 1
                 }, {
-                    label: 'Tập thể',
+                    label: this.t('emulationTitle.group'),
                     value: this.$enum.EmulationTitle.ApplyObject.Organization
                 }, {
-                    label: 'Cá nhân',
+                    label: this.t('emulationTitle.personal'),
                     value: this.$enum.EmulationTitle.ApplyObject.Person
                 }, {
-                    label: 'Cá nhân và tập thể',
+                    label: this.t('emulationTitle.personalAndFamily'),
                     value: 4
                 },
             ],
             level: [
                 {
-                    label: 'Tất cả',
+                    label: this.t('reuse.all'),
                     value: null
                 }, {
-                    label: 'Cấp nhà nước',
+                    label: this.t('countryLevel'),
                     value: this.$enum.EmulationTitle.CommendationLevel.CapNhaNuoc
                 }, {
-                    label: 'Cấp Tỉnh/tương đương',
+                    label: this.t('provinceLevel'),
                     value: this.$enum.EmulationTitle.CommendationLevel.CapTinh
                 }, {
-                    label: 'Cấp Huyện/tương đương',
+                    label: this.t('districtLevel'),
                     value: this.$enum.EmulationTitle.CommendationLevel.CapHuyen
                 }, {
-                    label: 'Cấp Xã/tương đương',
+                    label: this.t('communeLevel'),
                     value: this.$enum.EmulationTitle.CommendationLevel.CapXa
                 },
             ],
             type: [
                 {
-                    label: 'Tất cả',
+                    label: this.t('reuse.all'),
                     value: null
                 }, {
-                    label: 'Thường xuyên',
+                    label: this.t('regular'),
                     value: this.$enum.EmulationTitle.MovementType.Sometimes
                 }, {
-                    label: 'Theo đợt',
+                    label: this.t('period'),
                     value: this.$enum.EmulationTitle.MovementType.Period
                 },
             ],
             status: [
                 {
-                    label: 'Tất cả',
+                    label: this.t('reuse.all'),
                     value: null
                 }, {
-                    label: 'Sử dụng',
+                    label: this.t('using'),
                     value: this.$enum.EmulationTitle.Active
                 }, {
-                    label: 'Ngưng sử dụng',
+                    label: this.t('shutdown'),
                     value: this.$enum.EmulationTitle.Inactive
                 },
             ]
@@ -130,6 +126,8 @@ export default {
     watch: {
         /**
          * Reassgin the value of the filter value
+         * Created At: 10/05/2023
+         * @author QTNgo
          */
         filterValue: {
             handler() {
@@ -147,6 +145,8 @@ export default {
         /**
          * Check if the filter is change or not
          * Default: null
+         * Created At: 10/05/2023
+         * @author QTNgo
          */
         filterChange() {
             const { ApplyObject, CommendationLevel, MovementType, Inactive } = this.filterValue;
@@ -155,12 +155,15 @@ export default {
     },
     emits: ['change-filter'],
     methods: {
-        //Remove all filters (set to null)
+        //Remove reuse.all filters (set to null)
         removeFilter() {
             this.$emit('change-filter', { ApplyObject: null, CommendationLevel: null, MovementType: null, Inactive: null })
         },
         /**
          * Cancel changes in the drop down options
+         * Created At: 10/05/2023
+         * @author QTNgo
+         * @author
          */
         cancelFilter() {
             // Assign filter values to variables
@@ -174,6 +177,9 @@ export default {
         },
         /**
          * Save filter change and send it to the table
+         * Created At: 10/05/2023
+         * @author QTNgo
+         * @author
          */
         applyFilter() {
             this.$emit('change-filter', { ApplyObject: this.ApplyObject, CommendationLevel: this.CommendationLevel, MovementType: this.MovementType, Inactive: this.Inactive })
@@ -181,6 +187,9 @@ export default {
         },
         /**
          * Close drop donwn
+         * Created At: 10/05/2023
+         * @author QTNgo
+         * @author
          */
         closeDropdown() {
             this.$refs.misaDropdown.toggleDropdown();

@@ -20,7 +20,7 @@ export const routes = [
     name: "Summary",
     component: BaseStyle,
     meta: {
-      title: "summary",
+      title: "router.summary",
       icon: "https://cegovapp.misacdn.net/cegov/img/ic_dashboard_default.110fa5f3.svg",
     },
   },
@@ -29,7 +29,7 @@ export const routes = [
     name: "Competition",
     component: NotFound,
     meta: {
-      title: "competition",
+      title: "router.competition",
       icon: "https://cegovapp.misacdn.net/cegov/img/ic_movement_default.102c9e3d.svg",
     },
     children: [
@@ -38,7 +38,7 @@ export const routes = [
         name: "emulationMovement",
         component: NotFound,
         meta: {
-          title: "emulationMovement",
+          title: "router.emulationMovement",
           icon: "",
         },
       },
@@ -47,7 +47,7 @@ export const routes = [
         name: "registerCompetition",
         component: NotFound,
         meta: {
-          title: "registerCompetition",
+          title: "router.registerCompetition",
           icon: "",
         },
       },
@@ -56,7 +56,7 @@ export const routes = [
         name: "summaryRegister",
         component: NotFound,
         meta: {
-          title: "summaryRegister",
+          title: "router.summaryRegister",
           icon: "",
         },
       }
@@ -67,7 +67,7 @@ export const routes = [
     name: "reward",
     component: NotFound,
     meta: {
-      title: "reward",
+      title: "router.reward",
       icon: "https://cegovapp.misacdn.net/cegov/img/ic_reward_default.156d6945.svg",
     },
     children: [
@@ -76,7 +76,7 @@ export const routes = [
         name: "soldiersAtTheUnit",
         component: NotFound,
         meta: {
-          title: "soldiersAtTheUnit",
+          title: "router.soldiersAtTheUnit",
           icon: "",
         },
       },
@@ -85,7 +85,7 @@ export const routes = [
         name: "subordinateAppraisal",
         component: NotFound,
         meta: {
-          title: "subordinateAppraisal",
+          title: "router.subordinateAppraisal",
           icon: "",
         },
       },
@@ -94,7 +94,7 @@ export const routes = [
         name: "militaryReview",
         component: NotFound,
         meta: {
-          title: "militaryReview",
+          title: "router.militaryReview",
           icon: "",
         },
       },
@@ -103,7 +103,7 @@ export const routes = [
         name: "votationCommendation",
         component: NotFound,
         meta: {
-          title: "votationCommendation",
+          title: "router.votationCommendation",
           icon: "",
         },
       }
@@ -114,7 +114,7 @@ export const routes = [
     name: "decide",
     component: NotFound,
     meta: {
-      title: "decide",
+      title: "router.decide",
       icon: "https://cegovapp.misacdn.net/cegov/img/ic_decision_menu_default.cae653f2.svg",
     },
     children: [
@@ -123,7 +123,7 @@ export const routes = [
         name: "commendationDecision",
         component: NotFound,
         meta: {
-          title: "commendationDecision",
+          title: "router.commendationDecision",
           icon: "",
         },
       },
@@ -132,7 +132,7 @@ export const routes = [
         name: "commendationResistance",
         component: NotFound,
         meta: {
-          title: "commendationResistance",
+          title: "router.commendationResistance",
           icon: "",
         },
       },
@@ -141,7 +141,7 @@ export const routes = [
         name: "offsetCommendation",
         component: NotFound,
         meta: {
-          title: "offsetCommendation",
+          title: "router.offsetCommendation",
           icon: "",
         },
       }
@@ -152,7 +152,7 @@ export const routes = [
     name: "profile",
     component: NotFound,
     meta: {
-      title: "profile",
+      title: "router.profile",
       icon: "https://cegovapp.misacdn.net/cegov/img/ic_profile_default.d730fb8f.svg",
     },
     children: [
@@ -161,7 +161,7 @@ export const routes = [
         name: "employee",
         component: NotFound,
         meta: {
-          title: "employee",
+          title: "router.employee",
           icon: "",
         },
       },
@@ -170,7 +170,7 @@ export const routes = [
         name: "groupEmployee",
         component: NotFound,
         meta: {
-          title: "groupEmployee",
+          title: "router.groupEmployee",
           icon: "",
         },
       },
@@ -181,7 +181,7 @@ export const routes = [
     name: "search",
     component: NotFound,
     meta: {
-      title: "search",
+      title: "router.search",
       icon: "https://cegovapp.misacdn.net/cegov/img/ic_search_default.903d371b.svg",
     },
     children: [
@@ -190,7 +190,7 @@ export const routes = [
         name: "employee",
         component: NotFound,
         meta: {
-          title: "employee",
+          title: "router.employee",
           icon: "",
         },
       },
@@ -199,7 +199,7 @@ export const routes = [
         name: "groupEmployee",
         component: NotFound,
         meta: {
-          title: "groupEmployee",
+          title: "router.groupEmployee",
           icon: "",
         },
       },
@@ -210,7 +210,7 @@ export const routes = [
     name: "report",
     component: NotFound,
     meta: {
-      title: "report",
+      title: "router.report",
       icon: "https://cegovapp.misacdn.net/cegov/img/ic_report_default.67157268.svg",
       afterLine: true,
     },
@@ -220,7 +220,7 @@ export const routes = [
         name: "employee",
         component: NotFound,
         meta: {
-          title: "employee",
+          title: "router.employee",
           icon: "",
         },
       },
@@ -229,7 +229,7 @@ export const routes = [
         name: "groupEmployee",
         component: NotFound,
         meta: {
-          title: "groupEmployee",
+          title: "router.groupEmployee",
           icon: "",
         },
       },
@@ -239,7 +239,7 @@ export const routes = [
     path: "/category",
     name: "category",
     meta: {
-      title: "category",
+      title: "router.category",
       icon: "https://cegovapp.misacdn.net/cegov/img/ic_category.f257fcc6.svg",
     },
     children: [
@@ -248,7 +248,7 @@ export const routes = [
         name: "emulationTitle",
         component: EmulationTitle,
         meta: {
-          title: "emulationTitle",
+          title: "router.emulationTitle",
           icon: "",
         },
       },
@@ -257,7 +257,7 @@ export const routes = [
         name: "rewardCategory",
         component: NotFound,
         meta: {
-          title: "rewardCategory",
+          title: "router.rewardCategory",
           icon: "",
         },
       },
@@ -266,7 +266,7 @@ export const routes = [
         name: "jobPosition",
         component: NotFound,
         meta: {
-          title: "jobPosition",
+          title: "router.jobPosition",
           icon: "",
         },
       },
@@ -275,7 +275,7 @@ export const routes = [
         name: "conditionReward",
         component: NotFound,
         meta: {
-          title: "conditionReward",
+          title: "router.conditionReward",
           icon: "",
         },
       },
@@ -286,7 +286,7 @@ export const routes = [
     name: "setting",
     component: NotFound,
     meta: {
-      title: "setting",
+      title: "router.setting",
       icon: "https://cegovapp.misacdn.net/cegov/img/ic_setting_default.be222d4a.svg",
       afterLine: true,
     },
@@ -296,7 +296,7 @@ export const routes = [
         name: "employee",
         component: NotFound,
         meta: {
-          title: "employee",
+          title: "router.employee",
           icon: "",
         },
       },
@@ -305,7 +305,7 @@ export const routes = [
         name: "groupEmployee",
         component: NotFound,
         meta: {
-          title: "groupEmployee",
+          title: "router.groupEmployee",
           icon: "",
         },
       },
@@ -316,7 +316,7 @@ export const routes = [
     name: "guide",
     component: NotFound,
     meta: {
-      title: "guide",
+      title: "router.guide",
       icon: "https://cegovapp.misacdn.net/cegov/img/ic_guide_default.186420dc.svg",
     },
     children: [
@@ -325,7 +325,7 @@ export const routes = [
         name: "employee",
         component: NotFound,
         meta: {
-          title: "employee",
+          title: "router.employee",
           icon: "",
         },
       },
@@ -334,7 +334,7 @@ export const routes = [
         name: "groupEmployee",
         component: NotFound,
         meta: {
-          title: "groupEmployee",
+          title: "router.groupEmployee",
           icon: "",
         },
       },
@@ -345,7 +345,7 @@ export const routes = [
     name: "notFound",
     component: NotFound,
     meta: {
-      title: "notFound",
+      title: "router.notFound",
       hidden: true,
     },
   },

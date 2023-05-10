@@ -1,5 +1,5 @@
 <template>
-  <div class=".table-overflow-auto">
+  <div class="table-overflow-auto">
     <table aria-describedby="table">
       <thead class="table__header">
         <tr>
@@ -86,6 +86,8 @@ export default {
      * If newValue is equal to the length of modelValue.data , then headerBox is set to true.
      * If newValue is equal to 0, headerBox is set to false. Otherwise, headerBox is set to 'half'.
      * @param {*} newValue
+     * Created At: 10/05/2023
+     * @author QTNgo
      */
     checkBoxes(newValue) {
       this.$emit("select");
@@ -101,6 +103,8 @@ export default {
     },
     /**
      * Get box that has been selected in the table
+     * Created At: 10/05/2023
+     * @author QTNgo
      */
     modelValue: {
       handler() {
@@ -115,12 +119,16 @@ export default {
   computed: {
     /**
      * return selected rows
+     * Created At: 10/05/2023
+     * @author QTNgo
      */
     getSelectedRows() {
       return this.modelValue.data.filter((row) => row.select);
     },
     /**
      * Filter table data base on keyword or filter or pagination
+     * Created At: 10/05/2023
+     * @author QTNgo
      */
     tableData() {
       let table = this.modelValue;
@@ -147,12 +155,16 @@ export default {
     },
     /**
      * calculate the startIndex
+     * Created At: 10/05/2023
+     * @author QTNgo
      */
     startIndex() {
       return (this.pagination.pageIndex - 1) * this.pagination.pageSize;
     },
     /**
      * calculate the endIndex
+     * Created At: 10/05/2023
+     * @author QTNgo
      */
     endIndex() {
       return this.pagination.pageIndex * this.pagination.pageSize + 1;
@@ -162,6 +174,14 @@ export default {
     updateValue() {
       this.$emit("update:modelValue", !this.modelValue);
     },
+    /**
+     * set value when click checkbox
+     * decreased if unchecked
+     * increased if checked
+     * @param {*} value 
+     * Created At: 10/05/2023
+     * @author QTNgo
+     */
     checkBoxRow(value) {
       if (value) {
         this.checkBoxes++;
@@ -171,6 +191,8 @@ export default {
     },
     /**
      * used to check or uncheck all checkboxes in the modelValue.data array.
+     * Created At: 10/05/2023
+     * @author QTNgo
      */
     checkAll() {
       if (this.checkBoxes == 0) {
@@ -188,6 +210,8 @@ export default {
     /**
      * emits event double click
      * @param {*} row
+     * Created At: 10/05/2023
+     * @author QTNgo
      */
     dbClickRow(row) {
       this.$emit("dbclick-row", row);
@@ -195,6 +219,8 @@ export default {
     /**
      * set rows to  unchecked
      * @param {*} rows
+     * Created At: 10/05/2023
+     * @author QTNgo
      */
     unSelectedRows(rows) {
       console.log("rows", rows);

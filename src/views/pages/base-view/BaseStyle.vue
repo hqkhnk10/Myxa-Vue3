@@ -1,12 +1,12 @@
 <template>
     <div>
-        Change Lang:
-        <misa-combobox v-model="lang" :options="langOptions" @change="changeLang"></misa-combobox>
+        {{ t('lang.changeLanguage') }}
+        <misa-combobox :modelValue="lang" :options="langOptions" @change="changeLang"></misa-combobox>
     </div>
     <div>
         Nút chính:
         <misa-button type="primary" @click="click">Button</misa-button>
-        <misa-button type="primary" @click="click" disabled>Butsadfsadfsdfasdfton</misa-button>
+        <misa-button type="primary" @click="click" disabled>Button Disabled</misa-button>
         <div>Nút phụ:</div>
         <misa-button type="secondary" @click="click">Button</misa-button>
         <div>Nút link:</div>
@@ -99,15 +99,14 @@ export default {
             loading: false,
             langOptions: [
                 {
-                    label: 'Tiếng Việt',
+                    label: this.t('lang.vi'),
                     value: this.$enum.Lang.Vietnamese
                 },
                 {
-                    label: 'Tiếng Anh',
+                    label: this.t('lang.en'),
                     value: this.$enum.Lang.English
                 }
             ],
-            lang: this.$enum.Lang.Vietnamese,
             input: '',
             input2: '',
             dialogShow: false,
@@ -153,6 +152,11 @@ export default {
                     status: 'active'
                 }]
             }
+        }
+    },
+    computed: {
+        lang(){
+            return this.langStore.getLocale
         }
     },
     methods: {

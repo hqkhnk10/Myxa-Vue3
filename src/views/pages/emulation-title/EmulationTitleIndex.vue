@@ -35,6 +35,8 @@ export default {
         /**
          * Event bus toggle dialog
          * @param isShow: to show the dialog
+         * Created At: 10/05/2023
+         * @author QTNgo
          */
         this.emitter.on("toggle-emulation-dialog", (isShow) => {
             this.type = this.$enum.FormActions.Add
@@ -45,6 +47,8 @@ export default {
         /**
          * reset value when press add button
          * @param {*} value 
+         * Created At: 10/05/2023
+         * @author QTNgo
          */
         type(value){
             if(value == this.$enum.FormActions.Add){
@@ -66,17 +70,19 @@ export default {
     methods: {
         /**
          * Pass handled value to form
+         * Created At: 10/05/2023
+         * @author QTNgo
          */
         selectRow(type, row) {
             this.type = type;
             this.formValue = {
                 EmulationTitleName: row.EmulationTitleName,
                 EmulationTitleCode: row.EmulationTitleCode,
-                ApplyObject2: row.ApplyObject == 2,
-                ApplyObject0: row.ApplyObject != 2,
+                ApplyObject2: row.ApplyObject == this.$enum.EmulationTitle.ApplyObject.Person,
+                ApplyObject0: row.ApplyObject == this.$enum.EmulationTitle.ApplyObject.Organization,
                 CommendationLevel: row.CommendationLevel,
-                MovementType0: row.MovementType == 0,
-                MovementType1: row.MovementType == -1,
+                MovementType0: row.MovementType == this.$enum.EmulationTitle.Sometimes,
+                MovementType1: row.MovementType == this.$enum.EmulationTitle.Period,
                 Inactive: row.Inactive,
                 EmulationTitleID: row.EmulationTitleID,
                 IsSystem: row.IsSystem

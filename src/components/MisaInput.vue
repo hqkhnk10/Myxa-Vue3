@@ -1,21 +1,33 @@
 <template>
-  <div class="input-container">
-    <input 
-      ref="input" 
-      v-model="inputValue" 
-      :class="{'invalid': !isValid}" 
-      @blur="blurEvent" 
+  <div class="input-container" :style="{ width: width }">
+    <input
+      ref="input"
+      v-model="inputValue"
+      :class="{ invalid: !isValid }"
+      @blur="blurEvent"
       :disabled="disabled"
-      @change="changeEvent" 
-      @focus="focusEvent" 
+      @change="changeEvent"
+      @focus="focusEvent"
       :placeholder="placeholder"
     />
     <slot name="icon"></slot>
     <span class="input__icon">
-      <img src="@/assets/icon/loading-icon.svg" class="loading" alt="loading" width="25" height="25"/>
+      <img
+        src="@/assets/icon/loading-icon.svg"
+        class="loading"
+        alt="loading"
+        width="25"
+        height="25"
+      />
     </span>
     <span class="input__icon">
-      <img src="@/assets/icon/approve-icon.svg" class="approve" alt="approve" width="25" height="25"/>
+      <img
+        src="@/assets/icon/approve-icon.svg"
+        class="approve"
+        alt="approve"
+        width="25"
+        height="25"
+      />
     </span>
     <p class="error"></p>
   </div>
@@ -23,79 +35,82 @@
 
 <script>
 export default {
-  name: 'MisaInput',
+  name: "MisaInput",
   data() {
     return {
-      inputValue: this.modelValue
+      inputValue: this.modelValue,
     };
   },
   props: {
     modelValue: {
       type: [String, Number],
-      default: ''
+      default: "",
     },
     disabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     placeholder: {
-      type: String
+      type: String,
     },
     isValid: {
       type: Boolean,
-      default: true
+      default: true,
     },
     //TODO: validate input value
     validateEvent: {
-      type: Function
+      type: Function,
     },
     trigger: {
       type: String,
-      default: 'change'
+      default: "change",
     },
     class: {
       type: String,
-      default: ''
-    }
+      default: "",
+    },
+    width: {
+      type: String,
+      default: "100%",
+    },
   },
   watch: {
     /**
      *  set value of input when prop change
-     * @param {*} value 
+     * @param {*} value
      */
     modelValue(value) {
-      this.inputValue = value
+      this.inputValue = value;
     },
     /**
- *  setting up a two-way data binding
- * @param {*} value 
- */
+     *  setting up a two-way data binding
+     * @param {*} value
+     */
     inputValue(newValue) {
-      this.$emit('update:modelValue', newValue)
-    }
+      this.$emit("update:modelValue", newValue);
+    },
   },
-  emits: ['update:modelValue', 'change', 'focus', 'click-icon'],
+  emits: ["update:modelValue", "change", "focus", "click-icon"],
   methods: {
-    clickIcon(){
-      this.$emit('click-icon')
+    clickIcon() {
+      this.$emit("click-icon");
     },
     focus() {
       this.$refs.input.focus();
     },
     renderButton() {
-      console.log('type', this.type);
+      console.log("type", this.type);
       return `button__${this.type}`;
     },
     blurEvent() {
-      this.$emit('blur')
+      this.$emit("blur");
     },
     changeEvent() {
-      this.$emit('change', this.modelValue)
+      this.$emit("change", this.modelValue);
     },
     focusEvent() {
-      this.$emit('focus')
-    }
-  }
-}
+      this.$emit("focus");
+    },
+  },
+};
 </script>
-

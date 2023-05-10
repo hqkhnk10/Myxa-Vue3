@@ -42,6 +42,7 @@ vue.config.globalProperties.emitter = emitter;
 
 const locale = useLangStore();
 vue.config.globalProperties.t = function(word){
-    return translate(locale.getLocale,word)
+    return translate(word, locale.getLocale)
 }
+export const globals = vue.config.globalProperties;
 vue.mount('#app')
