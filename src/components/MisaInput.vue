@@ -1,5 +1,5 @@
 <template>
-  <div style="width:100%" class="input-container">
+  <div class="input-container">
     <input 
       ref="input" 
       v-model="inputValue" 
@@ -52,6 +52,10 @@ export default {
     trigger: {
       type: String,
       default: 'change'
+    },
+    class: {
+      type: String,
+      default: ''
     }
   },
   watch: {

@@ -1,7 +1,7 @@
 <template>
-    <section class="container-wrap" style="height: 100vh;">
+    <section class="container-wrap">
         <the-header></the-header>
-        <section class="container" style="border: 1px solid rgb(238, 238, 238)">
+        <section class="container container-border">
             <the-aside></the-aside>
             <section class="container is-vertical">
                 <main class="main">

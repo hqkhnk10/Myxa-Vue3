@@ -1,5 +1,5 @@
 <template>
-  <div class="flex" style="width: fit-content">
+  <div class="checkbox-container">
     <div class="checkbox flex items-center">
       <input
         type="checkbox"

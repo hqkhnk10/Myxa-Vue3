@@ -3,13 +3,13 @@
     <misa-dropdown title="Lọc danh hiệu" ref="misaDropdown">
         <template #click>
             <misa-button type="secondary">
-                <div id="filter-icon" style="position: relative" class="icon-margin-right "
+                <div class="icon-margin-right"
                     :class="filterChange ? 'icon__filter--status' : 'icon__filter'"></div>
-                <span style="font-weight: 400;">Bộ lọc</span>
+                <span>Bộ lọc</span>
             </misa-button>
         </template>
         <template #content>
-            <form class="form" style="padding: 0;">
+            <form class="form">
                 <div class="form-item"><label class="form-item__label">Đối tượng
                         khen thưởng</label>
                     <div class="form-item__content">

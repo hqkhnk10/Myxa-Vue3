@@ -8,9 +8,14 @@
     padding: 32px;
     min-width: 300px;
     box-sizing: content-box;
+    padding: 0;
 }
 .form-item{
     margin-bottom: 20px;
+}
+.form-item-flex{
+    display: flex;
+    gap: 12px;
 }
 .form-item__label{
     margin: 0 0 8px 0;

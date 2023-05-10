@@ -27,6 +27,7 @@
     cursor: pointer;
     font-size: 16px;
     background-color: transparent;
+    width: 15px;
 }
 .dialog__body {
     color: #606266;

@@ -13,6 +13,10 @@ input[type="checkbox"] {
     opacity: 0;
     z-index: 500;
 }
+.checkbox-container{
+    display: flex;
+    width: fit-content;
+}
 .checkmark {
     display: block;
     background-image: url('../../assets/icon/checkbox-icon.svg');

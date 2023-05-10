@@ -1,9 +1,9 @@
 <template>
-  <div style="overflow: auto">
+  <div class=".table-overflow-auto">
     <table aria-describedby="table">
       <thead class="table__header">
         <tr>
-          <th class="sticky-col first-col" v-if="checkbox" style="width: 50px">
+          <th class="sticky-col first-col" v-if="checkbox">
             <misa-checkbox v-model="headerBox" @click-box="checkAll" />
           </th>
           <th

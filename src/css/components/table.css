@@ -6,6 +6,9 @@ table {
   background-color: white;
   overflow-x: auto;
 }
+.table-overflow-auto{
+  overflow: auto;
+}
 th,
 td {
   height: 32px;

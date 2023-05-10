@@ -7,9 +7,8 @@
             <span class="custom-arrow" :class="position"></span>
             <div class="dropdown__header" v-if="header">
                 <div class="dropdown__header-title">{{ title }}</div>
-                <button type="button" aria-label="Close" class="dialog__headerbtn" @click="toggleDropdown"
-                    style="height:15px">
-                    <img src="@/assets/icon/x-icon.svg" alt="Exit" style="width:15px" />
+                <button type="button" aria-label="Close" class="dialog__headerbtn" @click="toggleDropdown">
+                    <img src="@/assets/icon/x-icon.svg" alt="Exit" style="width: 15px;" />
                 </button>
             </div>
             <div class="dropdown__body">

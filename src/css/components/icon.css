@@ -12,6 +12,7 @@
 	height: 16px;
 }
 .icon__filter, .icon__filter--status {
+	position: relative;
 	background: url('../../assets/icon/sprites.06b14dc5.svg') no-repeat -100px -52px;
 	width: 16px;
 	height: 16px;

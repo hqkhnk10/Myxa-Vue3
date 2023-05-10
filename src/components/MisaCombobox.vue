@@ -1,7 +1,7 @@
 <template>
   <div class="mcombobox" @click="toggleOptions">
-    <misa-input type="text" :modelValue="label"></misa-input>
-    <span class="input__icon" style="right: 40px">
+    <misa-input type="text" :modelValue="label" class="combobox-input"></misa-input>
+    <span class="mcombobox-input__icon">
       <img
         src="/libs/mcombobox/icon/loading-icon.svg"
         class="loading"

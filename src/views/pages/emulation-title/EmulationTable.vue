@@ -23,11 +23,11 @@
                         Theo đợt</div>
                 </template>
                 <template #Inactive="row">
-                    <div v-if="row.Inactive == $enum.EmulationTitle.Active" class="flex items-center" style="gap: 4px">
+                    <div v-if="row.Inactive == $enum.EmulationTitle.Active" class="flex items-center gap-4px">
                         <div class="icon-round-active"></div>
                         <div>Sử dụng</div>
                     </div>
-                    <div v-if="row.Inactive == $enum.EmulationTitle.Inactive" class="flex items-center" style="gap: 4px">
+                    <div v-if="row.Inactive == $enum.EmulationTitle.Inactive" class="flex items-center gap-4px">
                         <div class="icon-round-inactive"></div>
                         <div>Ngưng sử dụng</div>
                     </div>
@@ -42,16 +42,16 @@
                     <div class="button-icon-table">
                         <misa-dropdown :header="false" position="right">
                             <template #click>
-                                <div class="tooltip flex items-center" style="height: 100%;">
+                                <div class="tooltip flex items-center h-full">
                                     <div class="icon__threedots"></div>
                                     <span class="tooltiptext tooltiptext-top dropdown">Thêm
                                         nữa...</span>
                                 </div>
                             </template>
                             <template #content>
-                                <a style="color: #d2d2d2;" @click="changeStatus(row, 1)">Sử dụng</a>
+                                <a class="content-disabled" @click="changeStatus(row, 1)">Sử dụng</a>
                                 <a @click="changeStatus(row, 2)">Ngưng sử dụng</a>
-                                <a style="color:red" @click="changeStatus(row, 3)">Xóa</a>
+                                <a class="content-red" @click="changeStatus(row, 3)">Xóa</a>
                             </template>
                         </misa-dropdown>
 

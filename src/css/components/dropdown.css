@@ -79,7 +79,12 @@ width: 100%;
   text-decoration: none;
   display: block;
 }
-
+.dropdown-content a.content-disabled {
+  color: var(--color-gray);
+}
+.dropdown-content a.content-red {
+  color: var(--color-red);
+}
 /* Change color of dropdown links on hover */
 .dropdown-content a:hover {background: #eff7ff;}
 

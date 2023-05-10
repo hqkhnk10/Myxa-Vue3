@@ -1,57 +1,56 @@
 <template>
     <div class="dialog__body">
-        <form class="form" style="padding: 0;" id="form-add-title" ref="misaForm">
+        <form class="form" id="form-add-title" ref="misaForm">
             <div class="form-item"><label class="form-item__label">Tên danh hiệu thi đua<span
                         class="required">*</span></label>
                 <div class="form-item__content">
                     <misa-input ref="firstInput" v-model="form.EmulationTitleName" label="Tên danh hiệu thi đua" required
                         id="first-input" :isValid="validate.EmulationTitleName.valid" type="text" autocomplete="off"
-                        class="input" style="width: 100%;" placeholder="Nhập danh hiệu thi đua"></misa-input>
+                        class="input w-full" placeholder="Nhập danh hiệu thi đua"></misa-input>
                     <div class="error active" v-if="!validate.EmulationTitleName.valid">{{
                         validate.EmulationTitleName.message }}</div>
                 </div>
             </div>
-            <div class="form-item" style="display: flex;gap: 10px;">
-                <div style="flex:1">
+            <div class="form-item-flex">
+                <div class="flex-1">
                     <label class="form-item__label">Mã danh hiệu<span class="required">*</span></label>
                     <div class="form-item__content">
                         <misa-input v-model="form.EmulationTitleCode" label="Mã danh hiệu" required type="text"
-                            style="min-width: 0;width: 100%;"></misa-input>
+                            class="w-full"></misa-input>
                         <div class="error"></div>
                     </div>
                 </div>
-                <div style="flex:1">
+                <div class="flex-1">
                     <label class="form-item__label">Đối tượng khen thưởng</label>
                     <div class="form-item__content flex items-center">
-                        <misa-checkbox v-model="form.ApplyObject2" style="flex:1">Cá nhân</misa-checkbox>
-                        <misa-checkbox v-model="form.ApplyObject0" style="flex:1">Tập thể</misa-checkbox>
+                        <misa-checkbox v-model="form.ApplyObject2" class="flex-1">Cá nhân</misa-checkbox>
+                        <misa-checkbox v-model="form.ApplyObject0" class="flex-1">Tập thể</misa-checkbox>
                     </div>
                 </div>
             </div>
-            <div class="form-item" style="display: flex;gap: 10px;">
-                <div style="flex:1">
+            <div class="form-item-flex">
+                <div class="flex-1">
                     <label class="form-item__label">Cấp khen thưởng<span class="required">*</span></label>
                     <div class="form-item__content">
                         <misa-combobox v-model="form.CommendationLevel" :options="levelOptions"></misa-combobox>
                     </div>
                 </div>
-                <div style="flex:1">
+                <div class="flex-1">
                     <label class="form-item__label">Loại phong trào áp dụng</label>
                     <div class="form-item__content flex items-center">
-                        <misa-checkbox v-model="form.MovementType0" style="flex:1">Thường xuyên</misa-checkbox>
-                        <misa-checkbox v-model="form.MovementType1" style="flex:1">Theo đợt</misa-checkbox>
+                        <misa-checkbox v-model="form.MovementType0" class="flex-1">Thường xuyên</misa-checkbox>
+                        <misa-checkbox v-model="form.MovementType1" class="flex-1">Theo đợt</misa-checkbox>
                     </div>
                 </div>
             </div>
             <div class="form-item"><label class="form-item__label">Ghi chú</label>
                 <div class="form-item__content">
-                    <textarea v-model="form.note" class="textarea" placeholder="Nhập ghi chú"
-                        style="resize: none;"></textarea>
+                    <textarea v-model="form.note" class="textarea-resize" placeholder="Nhập ghi chú"></textarea>
                 </div>
             </div>
             <div class="form-item" v-if="type == this.$enum.FormActions.Edit">
                 <label class="form-item__label">Trạng thái</label>
-                <div class="form-item__content flex" style="gap: 12px;">
+                <div class="form-item__content flex gap-12px">
                     <!-- TODO: MisaRadio -->
                     <div class="radio__container" @click="form.Inactive = 0">
                         <span>Sử dụng</span>
@@ -69,7 +68,7 @@
                 <button class="button button__secondary" type="button" @click="closeDialog()">
                     <span>Hủy</span>
                 </button>
-                <div class="flex" style="gap:12px" v-if="type == this.$enum.FormActions.Add">
+                <div class="flex gap-12px" v-if="type == this.$enum.FormActions.Add">
                     <button class="button button__primary-border" type="button" @click="submitForm()">
                         <span>Lưu & thêm mới</span>
                     </button>

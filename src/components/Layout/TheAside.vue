@@ -9,7 +9,7 @@
                     <div class="menu__content" :class="shrinkMenu ? 'hide' : ''">
                         <div class="submenu__title">
                             {{ t(item.meta.title) }}</div>
-                        <div v-if="item.children" class="menu-item-icon-right" style="margin: 0;">
+                        <div v-if="item.children" class="menu-item-icon-right">
                             <img src="https://cegovapp.misacdn.net/cegov/img/ic_arrow_black_right.c6cd6189.svg"
                                 alt="arrow-right">
                         </div>
@@ -32,7 +32,7 @@
                 <div class="menu-item-icon" v-if="item.meta.icon">
                     <img :src=item.meta.icon alt="logo">
                 </div>
-                <div class="flex" style="justify-content: space-between;flex: 1">
+                <div class="flex justify-between flex-1">
                     <div class="submenu__title">
                         {{ t(item.meta.title) }}</div>
                 </div>

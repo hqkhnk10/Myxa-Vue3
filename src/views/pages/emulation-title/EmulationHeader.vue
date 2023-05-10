@@ -1,9 +1,9 @@
 <template>
     <div class="main__header">
         <div class="main__title">Danh hiệu thi đua </div>
-        <div style="margin-bottom: 10px;justify-content: space-between;" class="flex">
-            <div class="flex" style="gap:15px">
-                <misa-input v-model="keyword" style="width:250px" placeholder="Nhập mã hoặc tên danh hiệu ..."
+        <div class="main__title-filter">
+            <div class="flex gap-12px">
+                <misa-input v-model="keyword" class="main__title-input" placeholder="Nhập mã hoặc tên danh hiệu ..."
                     @keydown.enter="search">
                     <template #icon>
                         <span class="input__icon">
@@ -16,9 +16,8 @@
                 </div>
             </div>
             <div>
-
-                <div v-if="selectedRows && selectedRows.length > 0" class="flex items-center" style="gap:4px">
-                    <div>Đã chọn<span id="row-selected-count" style="margin-left: 4px;font-weight: bold;">{{
+                <div v-if="selectedRows && selectedRows.length > 0" class="flex items-center gap-4px">
+                    <div>Đã chọn<span class="main__title-tableCount">{{
                         selectedRows.length }}</span>
                     </div>
                     <div><misa-button type="link" @click="unSelectedRows()">Bỏ
@@ -30,7 +29,7 @@
                 </div>
                 <div v-else>
                     <misa-button type="primary" @click="openDialogAddTitle"> <img src="@/assets/icon/plus-icon.svg"
-                            alt="Plus icon" class="button__icon_pr6" style="width: 17px;">
+                            alt="Plus icon" class="button__icon_pr6" width="17">
                         <span>Thêm danh hiệu</span></misa-button>
                 </div>
             </div>
