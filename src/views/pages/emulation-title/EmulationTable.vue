@@ -358,15 +358,31 @@ export default {
   },
   emits: ["select", "select-row"],
   methods: {
+    /**
+     * format value to return label for apply object
+     * @param {*} value value of apply object
+     */
     formatApplyObjectTable(value) {
       return formatApplyObject(value);
     },
+        /**
+     * format value to return label for Commendation Level
+     * @param {*} value value of Commendation Level
+     */
     formatCommendationLevelTable(value) {
       return formatCommendationLevel(value);
     },
+        /**
+     * format value to return label for Movement Type
+     * @param {*} value value of Movement Type
+     */
     formatMovementTypeTable(value) {
       return formatMovementType(value);
     },
+        /**
+     * format value to return label for status
+     * @param {*} value value of status
+     */
     formatStatusTable(value) {
       return formatStatus(value);
     },
