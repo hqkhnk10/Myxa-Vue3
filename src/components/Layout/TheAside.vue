@@ -61,7 +61,6 @@ export default {
    * push to emulationTitle when open the site
    */
   beforeMount() {
-    console.log("beforeMount");
     if (this.currentRoute == "/") {
       router.push("/emulationTitle");
     }
@@ -70,7 +69,6 @@ export default {
    * Find route in router array
    */
   mounted() {
-    console.log("mounted: " + this.currentRoute);
     this.routes.forEach((route) => {
       const child = route?.children?.find(
         (child) => child.path == this.currentRoute
