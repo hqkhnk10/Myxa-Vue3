@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import request from '@/axios'
 
 export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
   state: () => ({
@@ -217,6 +218,10 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
     },
   },
   actions: {
+    async getAPI(){
+      const res = await request.get({url: 'entries'})
+      console.log('res', res);
+    },
     // since we rely on `this`, we cannot use an arrow function
     add(rowObj) {
       const row = { EmulationTitleID: this.id++, ...rowObj };

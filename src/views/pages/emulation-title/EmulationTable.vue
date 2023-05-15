@@ -153,6 +153,7 @@ export default {
    * @author QTNgo
    */
   mounted() {
+    this.getAPI()
     this.emitter.on("remove-row-emulation", this.removeRow);
     this.emitter.on("unselect-row-emulation", this.unSelect);
     this.emitter.on("filter-table-emulation", (filterValue) => {
@@ -203,7 +204,7 @@ export default {
      *    * Created At: 15/05/2023
      * @author QTNgo
      */
-    ...mapActions(useEmulationTitleStore, ["add", "edit", "removeRows"]),
+    ...mapActions(useEmulationTitleStore, ["add", "edit", "removeRows", 'getAPI']),
     /**
      * Add value at the top of the table
      * @param {*} form value get from Form
