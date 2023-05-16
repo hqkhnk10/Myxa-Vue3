@@ -8,6 +8,7 @@ table {
 }
 .table-overflow-auto{
   overflow: auto;
+  height: 100%;
 }
 th,
 td {
