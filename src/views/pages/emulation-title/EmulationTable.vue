@@ -11,26 +11,26 @@
         @select="selectRow"
         @dbclick-row="formEdit"
       >
-        <template #ApplyObject="row">
+        <template #applyObject="row">
           <div>
-            {{ formatApplyObjectTable(row.ApplyObject) }}
+            {{ formatApplyObjectTable(row.applyObject) }}
           </div>
         </template>
-        <template #CommendationLevel="row">
+        <template #commendationLevel="row">
           <div>
-            {{ formatCommendationLevelTable(row.CommendationLevel) }}
+            {{ formatCommendationLevelTable(row.commendationLevel) }}
           </div>
         </template>
-        <template #MovementType="row">
+        <template #movementType="row">
           <div>
-            {{ formatMovementTypeTable(row.MovementType) }}
+            {{ formatMovementTypeTable(row.movementType) }}
           </div>
         </template>
-        <template #Inactive="row">
+        <template #inactive="row">
           <div class="flex items-center gap-4px">
-            <div :class="formatStatusTable(row.Inactive).class"></div>
+            <div :class="formatStatusTable(row.inactive).class"></div>
             <div>
-              {{ formatStatusTable(row.Inactive).label }}
+              {{ formatStatusTable(row.inactive).label }}
             </div>
           </div>
         </template>
@@ -94,17 +94,9 @@ export default {
     };
   },
   watch: {
-    /**
-     * Recalculate the total Count of the table
-     *      * Created At: 10/05/2023
-     * @author QTNgo
-     */
-    table: {
-      handler() {
-        this.pagination.total = this.table.data.length;
-      },
-      deep: true,
-    },
+    total(newValue){
+      this.pagination.total = newValue
+    }
   },
   computed: {
     /**
@@ -118,32 +110,37 @@ export default {
           header: [
             {
               label: "Tên danh hiệu thi đua",
-              prop: "EmulationTitleName",
+              prop: "emulationTitleName",
               width: "30%",
             },
-            { label: "Mã danh hiệu", prop: "EmulationTitleCode", width: "15%" },
+            { label: "Mã danh hiệu", prop: "emulationTitleCode", width: "15%" },
             {
               label: "Đối tượng khen thưởng",
-              prop: "ApplyObject",
+              prop: "applyObject",
               width: "15%",
               slot: true,
             },
             {
               label: "Cấp khen thưởng",
-              prop: "CommendationLevel",
+              prop: "commendationLevel",
               width: "15%",
               slot: true,
             },
             {
               label: "Loại phong trào",
-              prop: "MovementType",
+              prop: "movementType",
               width: "15%",
               slot: true,
             },
-            { label: "Trạng thái", prop: "Inactive", width: "15%", slot: true },
+            { label: "Trạng thái", prop: "inactive", width: "15%", slot: true },
           ],
           data: store.data,
         };
+      },
+    }),
+    ...mapState(useEmulationTitleStore, {
+      total: (store) => {
+        return store.pagination.total;
       },
     }),
   },
@@ -153,7 +150,7 @@ export default {
    * @author QTNgo
    */
   mounted() {
-    this.getAPI()
+    this.getAPI();
     this.emitter.on("remove-row-emulation", this.removeRow);
     this.emitter.on("unselect-row-emulation", this.unSelect);
     this.emitter.on("filter-table-emulation", (filterValue) => {
@@ -204,7 +201,15 @@ export default {
      *    * Created At: 15/05/2023
      * @author QTNgo
      */
-    ...mapActions(useEmulationTitleStore, ["add", "edit", "removeRows", 'getAPI']),
+    ...mapActions(useEmulationTitleStore, [
+      "add",
+      "edit",
+      "removeRows",
+      "getAPI",
+      "addAPI",
+      "editAPI",
+      "deleteAPI"
+    ]),
     /**
      * Add value at the top of the table
      * @param {*} form value get from Form
@@ -212,7 +217,10 @@ export default {
      * @author QTNgo
      */
     addEmulationTable(form) {
-      this.add(form);
+      this.addAPI(form).then((res)=>{
+        if(res){
+        this.getAPI()}
+      });
     },
     /**
      * edit value at the top of the table
@@ -221,7 +229,10 @@ export default {
      * @author QTNgo
      */
     editEmulationTable(form) {
-      this.edit(form);
+      this.editAPI(form).then((res)=>{
+        if(res){
+        this.getAPI()}
+      });
     },
     /**
      * send keyword to Table component to filter

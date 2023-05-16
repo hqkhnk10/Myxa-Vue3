@@ -22,6 +22,9 @@ const request = (option) => {
     // `headers` are custom headers to be sent
     headers: {
       "Content-Type": headersType,
+      // 'Access-Control-Allow-Origin': '*',
+      // "Access-Control-Allow-Methods": "DELETE, POST, GET, OPTIONS",
+      // "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With"
     },
   });
 };

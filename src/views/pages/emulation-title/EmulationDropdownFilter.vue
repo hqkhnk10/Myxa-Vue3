@@ -79,16 +79,16 @@ export default {
                     label: this.t('reuse.all'),
                     value: null
                 }, {
-                    label: this.t('countryLevel'),
+                    label: this.t('emulationTitle.countryLevel'),
                     value: this.$enum.EmulationTitle.CommendationLevel.CapNhaNuoc
                 }, {
-                    label: this.t('provinceLevel'),
+                    label: this.t('emulationTitle.provinceLevel'),
                     value: this.$enum.EmulationTitle.CommendationLevel.CapTinh
                 }, {
-                    label: this.t('districtLevel'),
+                    label: this.t('emulationTitle.districtLevel'),
                     value: this.$enum.EmulationTitle.CommendationLevel.CapHuyen
                 }, {
-                    label: this.t('communeLevel'),
+                    label: this.t('emulationTitle.communeLevel'),
                     value: this.$enum.EmulationTitle.CommendationLevel.CapXa
                 },
             ],
@@ -97,10 +97,10 @@ export default {
                     label: this.t('reuse.all'),
                     value: null
                 }, {
-                    label: this.t('regular'),
+                    label: this.t('emulationTitle.regular'),
                     value: this.$enum.EmulationTitle.MovementType.Sometimes
                 }, {
-                    label: this.t('period'),
+                    label: this.t('emulationTitle.period'),
                     value: this.$enum.EmulationTitle.MovementType.Period
                 },
             ],
@@ -109,10 +109,10 @@ export default {
                     label: this.t('reuse.all'),
                     value: null
                 }, {
-                    label: this.t('using'),
+                    label: this.t('reuse.using'),
                     value: this.$enum.EmulationTitle.Active
                 }, {
-                    label: this.t('shutdown'),
+                    label: this.t('reuse.shutdown'),
                     value: this.$enum.EmulationTitle.Inactive
                 },
             ]

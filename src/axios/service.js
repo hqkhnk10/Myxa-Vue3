@@ -1,6 +1,6 @@
 import axios from "axios";
 
-axios.defaults.baseURL = 'https://api.publicapis.org';
+axios.defaults.baseURL = 'https://localhost:7097/api/v1';
 // axios.defaults.headers.common['Authorization'] = '';
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 axios.defaults.request_timeout = 60000;

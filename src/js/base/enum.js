@@ -21,7 +21,7 @@ const MisaEnum={
         },
         MovementType:{
             Sometimes: 0,
-            Period: -1
+            Period: 1
         },
             Active: 0,
             Inactive: 1

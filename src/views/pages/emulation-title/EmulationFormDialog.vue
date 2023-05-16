@@ -1,5 +1,6 @@
 <template>
   <div class="dialog__body">
+    {{ formValue }}
     <form class="form" id="form-add-title" ref="misaForm">
       <div class="form-item">
         <label class="form-item__label"
@@ -181,10 +182,6 @@ export default {
       },
       levelOptions: [
         {
-          label: this.t("reuse.all"),
-          value: null,
-        },
-        {
           label: this.t("emulationTitle.countryLevel"),
           value: this.$enum.EmulationTitle.CommendationLevel.CapNhaNuoc,
         },
@@ -257,8 +254,9 @@ export default {
      * @author QTNgo
      */
     customFormValue() {
+      // eslint-disable-next-line no-debugger
       let customValue = { ...this.formValue };
-      const { ApplyObject2, ApplyObject0, MovementType0, MovementType1 } =
+      const { ApplyObject2, ApplyObject0, MovementType0, MovementType1, Inactive } =
         this.formValue;
       const { ApplyObject, MovementType } = this.$enum.EmulationTitle;
       if (ApplyObject2) {
@@ -273,6 +271,7 @@ export default {
       if (MovementType1) {
         customValue.MovementType = MovementType.Period;
       }
+        customValue.Inactive = Inactive ? 1 : 0;
       return customValue;
     },
     /**

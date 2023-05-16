@@ -74,8 +74,10 @@ export default {
          * @author QTNgo
          */
         selectRow(type, row) {
+            console.log('row', row);
             this.type = type;
             this.formValue = {
+                Id: row.emulationTitleID,
                 EmulationTitleName: row.EmulationTitleName,
                 EmulationTitleCode: row.EmulationTitleCode,
                 ApplyObject2: row.ApplyObject == this.$enum.EmulationTitle.ApplyObject.Person,
