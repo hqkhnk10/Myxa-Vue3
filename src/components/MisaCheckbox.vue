@@ -23,7 +23,7 @@ export default {
   },
   props: {
     modelValue: {
-      type: [Boolean, String],
+      type: [Boolean, String, null, undefined],
       default: false,
     },
     type: {

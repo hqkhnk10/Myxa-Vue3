@@ -1,6 +1,5 @@
 <template>
   <div class="dialog__body">
-    {{ formValue }}
     <form class="form" id="form-add-title" ref="misaForm">
       <div class="form-item">
         <label class="form-item__label"
@@ -10,18 +9,18 @@
         <div class="form-item__content">
           <misa-input
             ref="firstInput"
-            v-model="form.EmulationTitleName"
+            v-model="form.emulationTitleName"
             label="Tên danh hiệu thi đua"
             required
             id="first-input"
-            :isValid="validate.EmulationTitleName.valid"
+            :isValid="validate.emulationTitleName.valid"
             type="text"
             autocomplete="off"
             class="input w-full"
             placeholder="Nhập danh hiệu thi đua"
           ></misa-input>
-          <div class="error active" v-if="!validate.EmulationTitleName.valid">
-            {{ validate.EmulationTitleName.message }}
+          <div class="error active" v-if="!validate.emulationTitleName.valid">
+            {{ validate.emulationTitleName.message }}
           </div>
         </div>
       </div>
@@ -33,7 +32,7 @@
           >
           <div class="form-item__content">
             <misa-input
-              v-model="form.EmulationTitleCode"
+              v-model="form.emulationTitleCode"
               label="Mã danh hiệu"
               required
               type="text"
@@ -47,10 +46,10 @@
             t("emulationTitle.applyObject")
           }}</label>
           <div class="form-item__content flex items-center">
-            <misa-checkbox v-model="form.ApplyObject2" class="flex-1">{{
+            <misa-checkbox v-model="form.applyObject2" class="flex-1">{{
               t("emulationTitle.personal")
             }}</misa-checkbox>
-            <misa-checkbox v-model="form.ApplyObject0" class="flex-1">{{
+            <misa-checkbox v-model="form.applyObject0" class="flex-1">{{
               t("emulationTitle.group")
             }}</misa-checkbox>
           </div>
@@ -63,7 +62,7 @@
           >
           <div class="form-item__content">
             <misa-combobox
-              v-model="form.CommendationLevel"
+              v-model="form.commendationLevel"
               :options="levelOptions"
             ></misa-combobox>
           </div>
@@ -73,10 +72,10 @@
             t("emulationTitle.movementType")
           }}</label>
           <div class="form-item__content flex items-center">
-            <misa-checkbox v-model="form.MovementType0" class="flex-1">{{
+            <misa-checkbox v-model="form.movementType0" class="flex-1">{{
               t("emulationTitle.regular")
             }}</misa-checkbox>
-            <misa-checkbox v-model="form.MovementType1" class="flex-1">{{
+            <misa-checkbox v-model="form.movementType1" class="flex-1">{{
               t("emulationTitle.period")
             }}</misa-checkbox>
           </div>
@@ -96,23 +95,23 @@
         <label class="form-item__label">Trạng thái</label>
         <div class="form-item__content flex gap-12px">
           <!-- TODO: MisaRadio -->
-          <div class="radio__container" @click="form.Inactive = 0">
+          <div class="radio__container" @click="form.inactive = 0">
             <span>{{ t("reuse.using") }}</span>
             <input
-              v-model="form.Inactive"
+              v-model="form.inactive"
               type="radio"
               :value="0"
-              :checked="form.Inactive == 0"
+              :checked="form.inactive == 0"
             />
             <span class="radio__checkmark"></span>
           </div>
-          <div class="radio__container" @click="form.Inactive = 1">
+          <div class="radio__container" @click="form.inactive = 1">
             <span>{{ t("reuse.shutdown") }}</span>
             <input
-              v-model="form.Inactive"
+              v-model="form.inactive"
               type="radio"
               :value="1"
-              :checked="form.Inactive == 1"
+              :checked="form.inactive == 1"
             />
             <span class="radio__checkmark"></span>
           </div>
@@ -144,7 +143,7 @@
         </div>
         <div v-if="type == this.$enum.FormActions.Edit">
           <misa-button type="primary" @click="submitForm()">{{
-            t("saveChange")
+            t("reuse.saveChange")
           }}</misa-button>
         </div>
       </div>
@@ -171,9 +170,9 @@ export default {
     return {
       dialogAdd: false,
       typeForm: this.type,
-      form: this.formValue,
+      form: {...this.formValue},
       validate: {
-        EmulationTitleName: {
+        emulationTitleName: {
           validator: required,
           trigger: "change",
           message: "Không được để trống",
@@ -199,6 +198,11 @@ export default {
         },
       ],
     };
+  },
+  watch: {
+    formValue(newValue){
+      this.form = {...newValue}
+    }
   },
   mounted() {
     /**
@@ -255,7 +259,7 @@ export default {
      */
     customFormValue() {
       // eslint-disable-next-line no-debugger
-      let customValue = { ...this.formValue };
+      let customValue = { ...this.form };
       const { ApplyObject2, ApplyObject0, MovementType0, MovementType1, Inactive } =
         this.formValue;
       const { ApplyObject, MovementType } = this.$enum.EmulationTitle;

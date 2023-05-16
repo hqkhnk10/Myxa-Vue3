@@ -9,6 +9,8 @@
 import  EmulationHeader  from './EmulationHeader.vue'
 import  EmulationTable  from './EmulationTable'
 import  EmulationFormDialog  from './EmulationFormDialog'
+import { useEmulationTitleStore } from '@/store/emulationTitle'
+import { mapActions } from 'pinia'
 export default {
     name: "EmulationTitle",
     components: {EmulationHeader, EmulationTable, EmulationFormDialog},
@@ -17,16 +19,16 @@ export default {
             dialogAdd: false,
             type: this.$enum.FormActions.Add,
             formValue: {
-                EmulationTitleName: "",
-                EmulationTitleCode: "MF1616",
-                ApplyObject2: true,
-                ApplyObject0: false,
-                CommendationLevel: 3,
-                MovementType0: true,
-                MovementType1: false,
-                Inactive: 0,
-                EmulationTitleID: 50,
-                IsSystem: 1
+                emulationTitleName: "",
+                emulationTitleCode: "MF1616",
+                applyObject2: true,
+                applyObject0: false,
+                commendationLevel: 3,
+                movementType0: true,
+                movementType1: false,
+                inactive: 0,
+                emulationTitleID: 50,
+                isSystem: 1
             },
             selectedRows:[]
         }
@@ -53,42 +55,34 @@ export default {
         type(value){
             if(value == this.$enum.FormActions.Add){
                 this.formValue= {
-                EmulationTitleName: "",
-                EmulationTitleCode: "MF1616",
-                ApplyObject2: true,
-                ApplyObject0: false,
-                CommendationLevel: 3,
-                MovementType0: true,
-                MovementType1: false,
-                Inactive: 0,
-                EmulationTitleID: 50,
-                IsSystem: 1
+                emulationTitleName: "",
+                emulationTitleCode: "MF1616",
+                applyObject2: true,
+                applyObject0: false,
+                commendationLevel: 3,
+                movementType0: true,
+                movementType1: false,
+                inactive: 0,
+                emulationTitleID: 50,
+                isSystem: 1
             }
             }
         }
     },
     methods: {
+        ...mapActions(useEmulationTitleStore, [
+      "getDetailAPI",
+    ]),
         /**
          * Pass handled value to form
          * Created At: 10/05/2023
          * @author QTNgo
          */
         selectRow(type, row) {
-            console.log('row', row);
             this.type = type;
-            this.formValue = {
-                Id: row.emulationTitleID,
-                EmulationTitleName: row.EmulationTitleName,
-                EmulationTitleCode: row.EmulationTitleCode,
-                ApplyObject2: row.ApplyObject == this.$enum.EmulationTitle.ApplyObject.Person,
-                ApplyObject0: row.ApplyObject == this.$enum.EmulationTitle.ApplyObject.Organization,
-                CommendationLevel: row.CommendationLevel,
-                MovementType0: row.MovementType == this.$enum.EmulationTitle.Sometimes,
-                MovementType1: row.MovementType == this.$enum.EmulationTitle.Period,
-                Inactive: row.Inactive,
-                EmulationTitleID: row.EmulationTitleID,
-                IsSystem: row.IsSystem
-            }
+            this.getDetailAPI({id: row.emulationTitleID}).then((res)=>{
+                this.formValue  = res.data
+            })
         },
         totalSelectedRows(rows){
             this.selectedRows = rows;

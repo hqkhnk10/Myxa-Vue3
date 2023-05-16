@@ -6,10 +6,12 @@
         checkbox
         :pagination="pagination"
         :filterValue="filterValue"
+        :filterApi="true"
         :keyword="keyword"
         ref="misaTable"
         @select="selectRow"
         @dbclick-row="formEdit"
+        @change-pagination="changePagination"
       >
         <template #applyObject="row">
           <div>
@@ -211,9 +213,9 @@ export default {
       "deleteAPI"
     ]),
     /**
-     * Add value at the top of the table
+     * Call api POST
      * @param {*} form value get from Form
-     * Created At: 10/05/2023
+     * Created At: 16/05/2023
      * @author QTNgo
      */
     addEmulationTable(form) {
@@ -223,16 +225,22 @@ export default {
       });
     },
     /**
-     * edit value at the top of the table
+     * call api PUT
      * @param {*} form value get from Form
-     * Created At: 10/05/2023
+     * Created At: 16/05/2023
      * @author QTNgo
      */
     editEmulationTable(form) {
-      this.editAPI(form).then((res)=>{
-        if(res){
-        this.getAPI()}
-      });
+      this.editAPI(form);
+    },
+    /**
+     * when change pagination call get api and pass new params
+     * @param {*} value pageSize, pageIndex
+     * Created At: 16/05/2023
+     * @author QTNgo
+     */
+    changePagination(value){
+      this.getAPI(value);
     },
     /**
      * send keyword to Table component to filter

@@ -29,10 +29,12 @@
           </td>
           <td v-for="(header, index) in modelValue.header" :key="index">
             <slot :name="header.prop" v-bind="row" v-if="header.slot" />
-              <div v-else class="tooltip">
-              <div class="cell">{{ row[header.prop]}}</div>
-              <span class="tooltiptext tooltiptext-top">{{ row[header.prop]}}</span>
-              </div>
+            <div v-else class="tooltip">
+              <div class="cell">{{ row[header.prop] }}</div>
+              <span class="tooltiptext tooltiptext-top">{{
+                row[header.prop]
+              }}</span>
+            </div>
           </td>
           <div class="button__table">
             <slot name="operator" v-bind="row" />
@@ -47,6 +49,7 @@
       :pagination="pagination"
       :startIndex="startIndex"
       :endIndex="endIndex"
+      @change-value="changePagination"
     ></misa-pagination>
   </div>
 </template>
@@ -84,6 +87,10 @@ export default {
       type: String,
       default: "",
     },
+    filterApi: {
+      type: Boolean,
+      default: false,
+    },
   },
   watch: {
     /**
@@ -119,8 +126,9 @@ export default {
       },
       deep: true,
     },
+
   },
-  emits: ["update:modelValue", "select", "dbclick-row"],
+  emits: ["update:modelValue", "select", "dbclick-row", "change-pagination"],
   computed: {
     /**
      * return selected rows
@@ -137,24 +145,26 @@ export default {
      */
     tableData() {
       let table = this.modelValue.data;
-      if (this.pagination) {
-        table = this.modelValue.data?.slice(this.startIndex, this.endIndex);
-      }
-      if (this.filterValue) {
-        table = table?.filter((row) =>
-          Object.keys(this.filterValue).every((key) =>
-            this.filterValue[key] ? row[key] === this.filterValue[key] : true
-          )
-        );
-      }
-      if (this.keyword) {
-        table = table?.filter((row) =>
-          Object.keys(row).some((key) =>
-            typeof row[key] == "string"
-              ? row[key].includes(this.keyword)
-              : false
-          )
-        );
+      if (this.filterApi == false) {
+        if (this.pagination) {
+          table = this.modelValue.data?.slice(this.startIndex, this.endIndex);
+        }
+        if (this.filterValue) {
+          table = table?.filter((row) =>
+            Object.keys(this.filterValue).every((key) =>
+              this.filterValue[key] ? row[key] === this.filterValue[key] : true
+            )
+          );
+        }
+        if (this.keyword) {
+          table = table?.filter((row) =>
+            Object.keys(row).some((key) =>
+              typeof row[key] == "string"
+                ? row[key].includes(this.keyword)
+                : false
+            )
+          );
+        }
       }
       return table;
     },
@@ -176,6 +186,9 @@ export default {
     },
   },
   methods: {
+    changePagination(value) {
+      this.$emit("change-pagination", value);
+    },
     updateValue() {
       this.$emit("update:modelValue", !this.modelValue);
     },

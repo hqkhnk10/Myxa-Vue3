@@ -5,6 +5,7 @@ const url = "EmulationTitle"
 export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
   state: () => ({
     tableData: [],
+    currentRow:{},
     id: 999,
     pagination: {
       pageSize: 10,
@@ -24,17 +25,19 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
         .then((res) => {
           this.tableData = res.data;
           this.pagination.total = res?.pagination?.count;
-          console.log("res", res);
         })
         .catch((err) => {
           console.log("err", err);
         });
     },
+    async getDetailAPI(params) {
+      return await request.get({ url: `${url}/Detail`, params: params })
+    },
     async addAPI(data) {
       await request
         .post({ url: url, data: data })
-        .then((res) => {
-          console.log("res", res);
+        .then(() => {
+          this.getAPI()
         })
         .catch((err) => {
           console.log("err", err);
@@ -43,8 +46,8 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
     async editAPI(data) {
       await request
         .post({ url: url, data: data })
-        .then((res) => {
-          console.log("res", res);
+        .then(() => {
+          this.getAPI()
         })
         .catch((err) => {
           console.log("err", err);

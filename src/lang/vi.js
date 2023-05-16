@@ -34,7 +34,8 @@ export const vi = {
     removeSelection: 'Bỏ chọn',
     using: "Đang sử dụng",
     shutdown: "Ngưng sử dụng",
-    saveChange: 'Lưu thay đổi'
+    saveChange: 'Lưu thay đổi',
+    remove: 'Xóa'
   },
   emulationTitle: {
     emulationTitle: "Danh hiệu thi đua",

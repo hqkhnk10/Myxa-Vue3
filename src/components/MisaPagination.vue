@@ -54,6 +54,15 @@ export default {
       return 'disabled'
     },
   },
+  emits:['change-value'],
+  watch: {
+    pagination: {
+     handler(val){
+      this.$emit('change-value', val)
+     },
+     deep: true
+  }
+  },
   methods: {
     // eslint-disable-next-line vue/no-mutating-props
     prev() { if (this.previousPage == '') { this.pagination.pageIndex-- } },
