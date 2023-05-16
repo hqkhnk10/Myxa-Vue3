@@ -77,241 +77,12 @@ import {
   formatMovementType,
   formatStatus,
 } from "@/js/format/emulation-title";
+import { useEmulationTitleStore } from "@/store/emulationTitle";
+import { mapActions, mapState } from "pinia";
 export default {
   name: "EmulationTable",
   data() {
     return {
-      table: {
-        header: [
-          {
-            label: "Tên danh hiệu thi đua",
-            prop: "EmulationTitleName",
-            width: "30%",
-          },
-          { label: "Mã danh hiệu", prop: "EmulationTitleCode", width: "15%" },
-          {
-            label: "Đối tượng khen thưởng",
-            prop: "ApplyObject",
-            width: "15%",
-            slot: true,
-          },
-          {
-            label: "Cấp khen thưởng",
-            prop: "CommendationLevel",
-            width: "15%",
-            slot: true,
-          },
-          {
-            label: "Loại phong trào",
-            prop: "MovementType",
-            width: "15%",
-            slot: true,
-          },
-          { label: "Trạng thái", prop: "Inactive", width: "15%", slot: true },
-        ],
-        data: [
-          {
-            EmulationTitleName: "Lao động tiên tiến",
-            EmulationTitleCode: "LĐTTCX",
-            ApplyObject: 2,
-            CommendationLevel: 3,
-            MovementType: 0,
-            Inactive: 0,
-            EmulationTitleID: 50,
-            IsSystem: 1,
-          },
-          {
-            EmulationTitleName: "Chiến sĩ thi đua cơ sở",
-            EmulationTitleCode: "CSTĐCS",
-            ApplyObject: 2,
-            CommendationLevel: 2,
-            MovementType: 0,
-            Inactive: 0,
-            EmulationTitleID: 48,
-            IsSystem: 1,
-          },
-          {
-            EmulationTitleName: "Lao động tiên tiến",
-            EmulationTitleCode: "LĐTTCH",
-            ApplyObject: 2,
-            CommendationLevel: 2,
-            MovementType: 0,
-            Inactive: 0,
-            EmulationTitleID: 49,
-            IsSystem: 1,
-          },
-          {
-            EmulationTitleName: "Chiến sĩ thi đua cấp bộ",
-            EmulationTitleCode: "CSTĐCB",
-            ApplyObject: 2,
-            CommendationLevel: 1,
-            MovementType: 0,
-            Inactive: 0,
-            EmulationTitleID: 46,
-            IsSystem: 1,
-          },
-          {
-            EmulationTitleName: "Chiến sĩ thi đua cấp tỉnh",
-            EmulationTitleCode: "CSTĐCT",
-            ApplyObject: 2,
-            CommendationLevel: 1,
-            MovementType: 0,
-            Inactive: 0,
-            EmulationTitleID: 47,
-            IsSystem: 1,
-          },
-          {
-            EmulationTitleName: "a",
-            EmulationTitleCode: "A",
-            ApplyObject: 2,
-            CommendationLevel: 0,
-            MovementType: 0,
-            Inactive: 0,
-            EmulationTitleID: 61,
-            IsSystem: 0,
-          },
-          {
-            EmulationTitleName: "Chiến sĩ thi đua toàn quốc",
-            EmulationTitleCode: "CSTĐTQ",
-            ApplyObject: 2,
-            CommendationLevel: 0,
-            MovementType: 0,
-            Inactive: 0,
-            EmulationTitleID: 45,
-            IsSystem: 1,
-          },
-          {
-            EmulationTitleName: "ds",
-            EmulationTitleCode: "D",
-            ApplyObject: 2,
-            CommendationLevel: 0,
-            MovementType: 0,
-            Inactive: 0,
-            EmulationTitleID: 63,
-            IsSystem: 0,
-          },
-          {
-            EmulationTitleName: "l d t t c x",
-            EmulationTitleCode: "LDTTCX",
-            ApplyObject: 2,
-            CommendationLevel: 0,
-            MovementType: 0,
-            Inactive: 0,
-            EmulationTitleID: 57,
-            IsSystem: 0,
-          },
-          {
-            EmulationTitleName: "sda",
-            EmulationTitleCode: "LĐTT",
-            ApplyObject: 2,
-            CommendationLevel: 0,
-            MovementType: 0,
-            Inactive: 0,
-            EmulationTitleID: 65,
-            IsSystem: 0,
-          },
-          {
-            EmulationTitleName: "Tập thể lao động tiên tiến",
-            EmulationTitleCode: "TTLĐTT",
-            ApplyObject: 1,
-            CommendationLevel: 2,
-            MovementType: 0,
-            Inactive: 0,
-            EmulationTitleID: 55,
-            IsSystem: 1,
-          },
-          {
-            EmulationTitleName: "Cờ thi đua cấp bộ",
-            EmulationTitleCode: "CTĐCB",
-            ApplyObject: 1,
-            CommendationLevel: 1,
-            MovementType: -1,
-            Inactive: 0,
-            EmulationTitleID: 52,
-            IsSystem: 1,
-          },
-          {
-            EmulationTitleName: "Cờ thi đua cấp tỉnh",
-            EmulationTitleCode: "CTĐCT",
-            ApplyObject: 1,
-            CommendationLevel: 1,
-            MovementType: -1,
-            Inactive: 0,
-            EmulationTitleID: 53,
-            IsSystem: 1,
-          },
-          {
-            EmulationTitleName: "Tập thể lao động xuất sắc",
-            EmulationTitleCode: "TTLĐXS",
-            ApplyObject: 1,
-            CommendationLevel: 1,
-            MovementType: 0,
-            Inactive: 0,
-            EmulationTitleID: 54,
-            IsSystem: 1,
-          },
-          {
-            EmulationTitleName: "tẻwr343gdsgd",
-            EmulationTitleCode: "Tfdgsd",
-            ApplyObject: 1,
-            CommendationLevel: 0,
-            MovementType: 0,
-            Inactive: 0,
-            EmulationTitleID: 59,
-            IsSystem: 0,
-          },
-                    {
-                        "EmulationTitleName": "Cờ thi đua của Chính phủ",
-                        "EmulationTitleCode": "CTĐCP",
-                        "ApplyObject": 1,
-                        "CommendationLevel": 0,
-                        "MovementType": -1,
-                        "Inactive": 1,
-                        "EmulationTitleID": 51,
-                        "IsSystem": 1
-                    },
-                    {
-                        "EmulationTitleName": "Cờ thi đua của Chính phủ",
-                        "EmulationTitleCode": "CTĐCP",
-                        "ApplyObject": 1,
-                        "CommendationLevel": 0,
-                        "MovementType": -1,
-                        "Inactive": 1,
-                        "EmulationTitleID": 51,
-                        "IsSystem": 1
-                    },
-                    {
-                        "EmulationTitleName": "Cờ thi đua của Chính phủ",
-                        "EmulationTitleCode": "CTĐCP",
-                        "ApplyObject": 1,
-                        "CommendationLevel": 0,
-                        "MovementType": -1,
-                        "Inactive": 1,
-                        "EmulationTitleID": 51,
-                        "IsSystem": 1
-                    },
-                    {
-                        "EmulationTitleName": "Cờ thi đua của Chính phủ",
-                        "EmulationTitleCode": "CTĐCP",
-                        "ApplyObject": 1,
-                        "CommendationLevel": 0,
-                        "MovementType": -1,
-                        "Inactive": 1,
-                        "EmulationTitleID": 51,
-                        "IsSystem": 1
-                    },
-          {
-            EmulationTitleName: "Cờ thi đua của Chính phủ",
-            EmulationTitleCode: "CTĐCP",
-            ApplyObject: 1,
-            CommendationLevel: 0,
-            MovementType: -1,
-            Inactive: 1,
-            EmulationTitleID: 51,
-            IsSystem: 1,
-          },
-        ],
-      },
       pagination: {
         pageSize: 10,
         pageIndex: 1,
@@ -335,12 +106,54 @@ export default {
       deep: true,
     },
   },
+  computed: {
+    /**
+     * get table data from EmulationTitleStore
+     *    * Created At: 15/05/2023
+     * @author QTNgo
+     */
+    ...mapState(useEmulationTitleStore, {
+      table: (store) => {
+        return {
+          header: [
+            {
+              label: "Tên danh hiệu thi đua",
+              prop: "EmulationTitleName",
+              width: "30%",
+            },
+            { label: "Mã danh hiệu", prop: "EmulationTitleCode", width: "15%" },
+            {
+              label: "Đối tượng khen thưởng",
+              prop: "ApplyObject",
+              width: "15%",
+              slot: true,
+            },
+            {
+              label: "Cấp khen thưởng",
+              prop: "CommendationLevel",
+              width: "15%",
+              slot: true,
+            },
+            {
+              label: "Loại phong trào",
+              prop: "MovementType",
+              width: "15%",
+              slot: true,
+            },
+            { label: "Trạng thái", prop: "Inactive", width: "15%", slot: true },
+          ],
+          data: store.data,
+        };
+      },
+    }),
+  },
   /**
    * Tiny emmiter(Eventbus) function
    * Created At: 10/05/2023
    * @author QTNgo
    */
   mounted() {
+    this.getAPI()
     this.emitter.on("remove-row-emulation", this.removeRow);
     this.emitter.on("unselect-row-emulation", this.unSelect);
     this.emitter.on("filter-table-emulation", (filterValue) => {
@@ -365,21 +178,21 @@ export default {
     formatApplyObjectTable(value) {
       return formatApplyObject(value);
     },
-        /**
+    /**
      * format value to return label for Commendation Level
      * @param {*} value value of Commendation Level
      */
     formatCommendationLevelTable(value) {
       return formatCommendationLevel(value);
     },
-        /**
+    /**
      * format value to return label for Movement Type
      * @param {*} value value of Movement Type
      */
     formatMovementTypeTable(value) {
       return formatMovementType(value);
     },
-        /**
+    /**
      * format value to return label for status
      * @param {*} value value of status
      */
@@ -387,14 +200,19 @@ export default {
       return formatStatus(value);
     },
     /**
+     * Register to use function in EmulationTitleStore
+     *    * Created At: 15/05/2023
+     * @author QTNgo
+     */
+    ...mapActions(useEmulationTitleStore, ["add", "edit", "removeRows", 'getAPI']),
+    /**
      * Add value at the top of the table
      * @param {*} form value get from Form
      * Created At: 10/05/2023
      * @author QTNgo
      */
     addEmulationTable(form) {
-      const row = { EmulationTitleID: this.id++, ...form };
-      this.table.data.unshift(row);
+      this.add(form);
     },
     /**
      * edit value at the top of the table
@@ -403,10 +221,7 @@ export default {
      * @author QTNgo
      */
     editEmulationTable(form) {
-      const findIndex = this.table.data.findIndex(
-        (row) => row.EmulationTitleID == form.EmulationTitleID
-      );
-      this.table.data[findIndex] = { ...this.table.data[findIndex], ...form };
+      this.edit(form);
     },
     /**
      * send keyword to Table component to filter
@@ -447,9 +262,7 @@ export default {
      * @author QTNgo
      */
     removeRow() {
-      this.table.data = this.table.data.filter(
-        (tableRow) => !this.$refs.misaTable.getSelectedRows.includes(tableRow)
-      );
+      this.removeRows(this.$refs.misaTable.getSelectedRows);
     },
     /**
      * call getSelectedRows function in Table component to get select rows

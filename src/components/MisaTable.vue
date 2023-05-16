@@ -138,17 +138,17 @@ export default {
     tableData() {
       let table = this.modelValue.data;
       if (this.pagination) {
-        table = this.modelValue.data.slice(this.startIndex, this.endIndex);
+        table = this.modelValue.data?.slice(this.startIndex, this.endIndex);
       }
       if (this.filterValue) {
-        table = table.filter((row) =>
+        table = table?.filter((row) =>
           Object.keys(this.filterValue).every((key) =>
             this.filterValue[key] ? row[key] === this.filterValue[key] : true
           )
         );
       }
       if (this.keyword) {
-        table = table.filter((row) =>
+        table = table?.filter((row) =>
           Object.keys(row).some((key) =>
             typeof row[key] == "string"
               ? row[key].includes(this.keyword)
