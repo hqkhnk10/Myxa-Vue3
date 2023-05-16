@@ -45,7 +45,7 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
     },
     async editAPI(data) {
       await request
-        .post({ url: url, data: data })
+        .put({ url: url, data: data })
         .then(() => {
           this.getAPI()
         })
