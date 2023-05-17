@@ -93,7 +93,7 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
      */
     async deleteMultipleAPI(data) {
       await request
-        .put({ url: url, data: data })
+        .delete({ url: `${url}/Multiple`, data: data })
         .then(() => {
           this.getAPI()
         })

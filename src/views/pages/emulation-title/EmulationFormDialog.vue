@@ -34,12 +34,15 @@
           <div class="form-item__content">
             <misa-input
               v-model="form.emulationTitleCode"
+              :isValid="validate.emulationTitleCode.valid"
               label="Mã danh hiệu"
               required
               type="text"
               class="w-full"
             ></misa-input>
-            <div class="error"></div>
+            <div class="error active" v-if="!validate.emulationTitleCode.valid">
+            {{ validate.emulationTitleCode.message }}
+          </div>
           </div>
         </div>
         <div class="flex-1">
@@ -176,7 +179,13 @@ export default {
         emulationTitleName: {
           validator: required,
           trigger: "change",
-          message: "Không được để trống",
+          message: "Tên danh hiệu không được để trống",
+          valid: true,
+        },
+        emulationTitleCode: {
+          validator: required,
+          trigger: "change",
+          message: "Mã danh hiệu không được để trống",
           valid: true,
         },
       },

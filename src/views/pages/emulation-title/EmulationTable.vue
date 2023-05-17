@@ -210,7 +210,8 @@ export default {
       "getAPI",
       "addAPI",
       "editAPI",
-      "deleteAPI"
+      "deleteAPI",
+      "deleteMultipleAPI"
     ]),
     /**
      * Call api POST
@@ -275,7 +276,6 @@ export default {
      * @author QTNgo
      */
     deleteRow(row){
-      console.log('delete');
       this.deleteAPI({id: row.emulationTitleID})
     },
     /**
@@ -292,7 +292,9 @@ export default {
      * @author QTNgo
      */
     removeRow() {
-      this.removeRows(this.$refs.misaTable.getSelectedRows);
+      const listId = this.$refs.misaTable.getSelectedRows.map(row=> row.emulationTitleID)
+      this.deleteMultipleAPI({id:listId})
+      // this.removeRows(this.$refs.misaTable.getSelectedRows);
     },
     /**
      * call getSelectedRows function in Table component to get select rows
