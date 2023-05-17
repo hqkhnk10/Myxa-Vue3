@@ -4,11 +4,12 @@
       <div class="form-item">
         <label class="form-item__label"
           >{{ t("emulationTitle.emulationTitleName")
-          }}<span class="required">*</span></label
+    }}<span class="required">*</span></label
         >
         <div class="form-item__content">
           <misa-input
             ref="firstInput"
+            :disabled="type=='detail'"
             v-model="form.emulationTitleName"
             label="Tên danh hiệu thi đua"
             required

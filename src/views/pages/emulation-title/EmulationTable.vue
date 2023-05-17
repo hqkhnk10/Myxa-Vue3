@@ -60,7 +60,7 @@
                   t("reuse.using")
                 }}</a>
                 <a @click="changeStatus(row, 2)">{{ t("reuse.shutdown") }}</a>
-                <a class="content-red" @click="changeStatus(row, 3)">{{
+                <a class="content-red" @click="deleteRow(row)">{{
                   t("reuse.remove")
                 }}</a>
               </template>
@@ -152,7 +152,7 @@ export default {
    * @author QTNgo
    */
   mounted() {
-    this.getAPI();
+    this.getAPI()
     this.emitter.on("remove-row-emulation", this.removeRow);
     this.emitter.on("unselect-row-emulation", this.unSelect);
     this.emitter.on("filter-table-emulation", (filterValue) => {
@@ -235,7 +235,7 @@ export default {
     },
     /**
      * when change pagination call get api and pass new params
-     * @param {*} value pageSize, pageIndex
+     * @param {*} value object {pageSize : Number, pageIndex: Number}}
      * Created At: 16/05/2023
      * @author QTNgo
      */
@@ -243,13 +243,13 @@ export default {
       this.getAPI(value);
     },
     /**
-     * send keyword to Table component to filter
-     * @param {*} keyword
-     * Created At: 10/05/2023
+     * send keyword to get api params
+     * @param {*} keyword object {keyword: string}
+     * Created At: 16/05/2023
      * @author QTNgo
      */
     searchTable(keyword) {
-      this.keyword = keyword;
+      this.getAPI({keyword: keyword});
     },
     /**
      * send filterValue to Table component to filter
@@ -266,6 +266,17 @@ export default {
           delete this.filterValue[key];
         }
       }
+      this.getAPI(this.filterValue)
+    },
+    /**
+     * Call api to Remove row
+     * @param {*} row row value 
+     * Created At: 17/05/2023
+     * @author QTNgo
+     */
+    deleteRow(row){
+      console.log('delete');
+      this.deleteAPI({id: row.emulationTitleID})
     },
     /**
      * call unSelectedRows method in Table component

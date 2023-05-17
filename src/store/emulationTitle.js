@@ -12,6 +12,7 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
       pageIndex: 1,
       total: 20,
     },
+    parameters:{}
   }),
   getters: {
     data(state) {
@@ -19,7 +20,13 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
     },
   },
   actions: {
+    /**
+     * Get data from backend
+     * @param {*} params (optional) to filter or pagination
+     */
     async getAPI(params) {
+      //TODO: remove params
+      Object.assign(this.parameters, params); //keep the original parameters
       await request
         .get({ url: url, params: params })
         .then((res) => {
@@ -30,9 +37,18 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
           console.log("err", err);
         });
     },
+    /**
+     * Get detail of table
+     * @param {*} params {id: Number} id of the row
+     * @returns Promise<axios>
+     */
     async getDetailAPI(params) {
       return await request.get({ url: `${url}/Detail`, params: params })
     },
+    /**
+     * Post data to backend
+     * @param {*} data fromBody all the data of the row
+     */
     async addAPI(data) {
       await request
         .post({ url: url, data: data })
@@ -43,6 +59,10 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
           console.log("err", err);
         });
     },
+    /**
+     * PUT data to backend
+     * @param {*} data Frombody all the data of the row
+     */
     async editAPI(data) {
       await request
         .put({ url: url, data: data })
@@ -53,7 +73,34 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
           console.log("err", err);
         });
     },
-    // since we rely on `this`, we cannot use an arrow function
+    /**
+     * Call API to remove the row
+     * @param {*} data id of row
+     */
+    async deleteAPI(data) {
+      await request
+        .delete({ url: url, params: data })
+        .then(() => {
+          this.getAPI()
+        })
+        .catch((err) => {
+          console.log("err", err);
+        });
+    },
+    /**
+     * Delete multiple items from the table
+     * @param {*} data Array of id
+     */
+    async deleteMultipleAPI(data) {
+      await request
+        .put({ url: url, data: data })
+        .then(() => {
+          this.getAPI()
+        })
+        .catch((err) => {
+          console.log("err", err);
+        });
+    },
     add(rowObj) {
       const row = { EmulationTitleID: this.id++, ...rowObj };
       this.tableData.unshift(row);
