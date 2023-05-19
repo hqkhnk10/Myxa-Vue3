@@ -1,18 +1,17 @@
 import { defineStore } from "pinia";
 import request from "@/axios";
+import { dispatchNotification } from "@/components/Notification";
 
-const url = "EmulationTitle"
+const url = "EmulationTitle";
 export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
   state: () => ({
     tableData: [],
-    currentRow:{},
+    loading: false,
+    currentRow: {},
     id: 999,
-    pagination: {
-      pageSize: 10,
-      pageIndex: 1,
-      total: 20,
+    total: 20,
+    parameters: {
     },
-    parameters:{}
   }),
   getters: {
     data(state) {
@@ -25,16 +24,25 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
      * @param {*} params (optional) to filter or pagination
      */
     async getAPI(params) {
-      //TODO: remove params
+      this.loading = true;
       Object.assign(this.parameters, params); //keep the original parameters
       await request
-        .get({ url: url, params: params })
+        .get({ url: url, params: this.parameters })
         .then((res) => {
+          dispatchNotification({
+            content: "Lấy dữ liệu thành công",
+            type: "success",
+          });
           this.tableData = res.data;
-          this.pagination.total = res?.pagination?.count;
+          this.total = res?.pagination?.count;
         })
         .catch((err) => {
-          console.log("err", err);
+          dispatchNotification({
+            content: err?.response?.data?.message ? err.response.data.message : err.message,
+            type: "error",
+          });
+        }).finally(()=>{
+      this.loading = false;
         });
     },
     /**
@@ -43,7 +51,7 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
      * @returns Promise<axios>
      */
     async getDetailAPI(params) {
-      return await request.get({ url: `${url}/Detail`, params: params })
+      return await request.get({ url: `${url}/Detail`, params: params });
     },
     /**
      * Post data to backend
@@ -53,10 +61,18 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
       await request
         .post({ url: url, data: data })
         .then(() => {
-          this.getAPI()
+          this.getAPI();
+          dispatchNotification({
+            content: "Thêm thành công",
+            type: "success",
+          });
         })
         .catch((err) => {
           console.log("err", err);
+          dispatchNotification({
+            content: err?.response?.data?.message ? err.response.data.message : err.message,
+            type: "error",
+          });
         });
     },
     /**
@@ -67,10 +83,19 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
       await request
         .put({ url: url, data: data })
         .then(() => {
-          this.getAPI()
+          dispatchNotification({
+            content: "Sửa thành công",
+            type: "success",
+          });
+          this.getAPI();
+
         })
         .catch((err) => {
           console.log("err", err);
+          dispatchNotification({
+            content: err?.response?.data?.message ? err.response.data.message : err.message,
+            type: "error",
+          });
         });
     },
     /**
@@ -81,9 +106,17 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
       await request
         .delete({ url: url, params: data })
         .then(() => {
-          this.getAPI()
+          dispatchNotification({
+            content: "Xóa thành công",
+            type: "success",
+          });
+          this.getAPI();
         })
         .catch((err) => {
+          dispatchNotification({
+            content: err?.response?.data?.message ? err.response.data.message : err.message,
+            type: "error",
+          });
           console.log("err", err);
         });
     },
@@ -95,9 +128,17 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
       await request
         .delete({ url: `${url}/Multiple`, data: data })
         .then(() => {
-          this.getAPI()
+          dispatchNotification({
+            content: "Xóa thành công",
+            type: "success",
+          });
+          this.getAPI();
         })
         .catch((err) => {
+          dispatchNotification({
+            content: err?.response?.data?.message ? err.response.data.message : err.message,
+            type: "error",
+          });
           console.log("err", err);
         });
     },

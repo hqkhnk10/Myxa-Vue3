@@ -1,5 +1,7 @@
 <template>
-    <div class="loading" :class="modelValue ? 'loading-show' : ''"></div>
+    <div class="loading-component" :class="modelValue ? '' : 'hide'">
+        <img class="loading" src="../assets/icon/loading-icon.svg" :class="modelValue ? 'loading-show' : ''" alt="loading">
+    </div>
 </template>
 
 <script>

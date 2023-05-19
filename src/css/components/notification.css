@@ -1,0 +1,53 @@
+svg{
+    min-width: 15px;
+}
+.notification{
+    position: fixed;
+    top: 0;
+    left: 40%;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: align-items;
+    width: 0;
+}
+.notification-button{
+    margin-right: 4px;
+    flex-shrink:0;
+    display:flex;
+    align-items: center;
+}
+.button-x{
+    width: fit-content;
+    height: fit-content;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+.notification-view{
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    width: 450px;
+}
+.notification-icon{
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+}
+.notification-title{
+    margin-left: 12px;
+    width: 0;
+    flex: 1;
+    padding-top: 2px;
+}
+.notification-text{
+    font-size:larger;
+    font-weight: 700;
+    color: black;
+}
+.notification-container{
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+}

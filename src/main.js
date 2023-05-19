@@ -13,6 +13,8 @@ import MisaTableVue from './components/MisaTable.vue'
 import MisaPaginationVue from './components/MisaPagination.vue'
 import MisaDropdownVue from './components/MisaDropdown.vue'
 import MisaLoadingVue from './components/MisaLoading.vue'
+import MisaNotification from './components/Notification/NotificationProvider.vue'
+import MisaConfirmDialog from './components/ConfirmDialog/ConfirmDialog.vue'
 
 import MisaEnum from './js/base/enum'
 
@@ -36,6 +38,9 @@ vue.component("misa-table",MisaTableVue)
 vue.component("misa-pagination",MisaPaginationVue)
 vue.component("misa-dropdown",MisaDropdownVue)
 vue.component("misa-loading",MisaLoadingVue)
+vue.component("misa-notification",MisaNotification)
+vue.component("misa-confirm-dialog",MisaConfirmDialog)
+
 
 vue.config.globalProperties.$enum=MisaEnum;
 vue.config.globalProperties.emitter = emitter;

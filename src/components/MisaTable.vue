@@ -42,6 +42,7 @@
         </tr>
       </tbody>
     </table>
+  <misa-loading :modelValue="loading"></misa-loading>
   </div>
   <div class="pagination">
     <misa-pagination
@@ -63,7 +64,6 @@ export default {
       checkBoxes: 0,
       headerBox: false,
       headerArray: [],
-      loading: false,
     };
   },
   props: {
@@ -91,6 +91,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    loading:{
+      type: Boolean,
+      default: false,
+    }
   },
   watch: {
     /**

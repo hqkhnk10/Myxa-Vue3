@@ -4,6 +4,7 @@
       <misa-table
         v-model="table"
         checkbox
+        :loading="loading"
         :pagination="pagination"
         :filterValue="filterValue"
         :filterApi="true"
@@ -142,8 +143,9 @@ export default {
     }),
     ...mapState(useEmulationTitleStore, {
       total: (store) => {
-        return store.pagination.total;
+        return store.total;
       },
+      ...mapState(useEmulationTitleStore, ['loading']),
     }),
   },
   /**
@@ -152,7 +154,7 @@ export default {
    * @author QTNgo
    */
   mounted() {
-    this.getAPI()
+    this.getAPI({pageSize: this.pagination.pageSize, pageIndex: this.pagination.pageIndex})
     this.emitter.on("remove-row-emulation", this.removeRow);
     this.emitter.on("unselect-row-emulation", this.unSelect);
     this.emitter.on("filter-table-emulation", (filterValue) => {

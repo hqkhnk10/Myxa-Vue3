@@ -9,6 +9,7 @@ table {
 .table-overflow-auto{
   overflow: auto;
   height: 100%;
+  z-index: 0;
 }
 th,
 td {
