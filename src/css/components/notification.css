@@ -3,7 +3,7 @@ svg{
 }
 .notification{
     position: fixed;
-    top: 0;
+    top: 10%;
     left: 40%;
     right: 0;
     bottom: 0;
@@ -25,15 +25,17 @@ svg{
     cursor: pointer;
 }
 .notification-view{
+    border: 1px solid #fafafa;
     background-color: white;
     border-radius: 8px;
     overflow: hidden;
     width: 450px;
+    height: 56px;
 }
 .notification-icon{
     flex-shrink: 0;
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 20px;
 }
 .notification-title{
     margin-left: 12px;
@@ -41,13 +43,10 @@ svg{
     flex: 1;
     padding-top: 2px;
 }
-.notification-text{
-    font-size:larger;
-    font-weight: 700;
-    color: black;
-}
 .notification-container{
+    height: 100%;
     padding: 8px 16px;
     display: flex;
     align-items: center;
+    justify-content: center;
 }

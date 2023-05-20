@@ -4,15 +4,10 @@
     @select="totalSelectedRows"
     @select-row="selectRow"
   ></emulation-table>
-  <misa-dialog
-    v-model="dialogAdd"
-    title="Thêm danh hiệu thi đua"
-    width="600px"
-    top="20vh"
-  >
+  <misa-dialog v-model="dialogAdd" :title="t(title)" width="600px" top="20vh">
     <emulation-form-dialog
       :type="type"
-      :formValue="formValue"
+      :formValue="form"
     ></emulation-form-dialog>
   </misa-dialog>
 </template>
@@ -28,21 +23,76 @@ export default {
   data() {
     return {
       dialogAdd: false,
+      title: "emulationTitle.addEmulationTitle",
       type: this.$enum.FormActions.Add,
       formValue: {
         emulationTitleName: "",
         emulationTitleCode: "MF1616",
-        applyObject2: true,
-        applyObject0: false,
+        applyObject: 3,
         commendationLevel: 3,
-        movementType0: true,
-        movementType1: false,
+        movementType: 2,
         inactive: 0,
-        emulationTitleID: 50,
-        isSystem: 1,
       },
       selectedRows: [],
     };
+  },
+  watch: {
+    type(value) {
+      switch (value) {
+        case this.$enum.FormActions.Add:
+          return "emulationTitle.addEmulationTitle";
+        case this.$enum.FormActions.Edit:
+          return "emulationTitle.editEmulationTitle";
+        case this.$enum.FormActions.Detail:
+          return "emulationTitle.editEmulationTitle";
+      }
+    },
+  },
+  computed: {
+    form() {
+      let form = {};
+      form.emulationTitleName = this.formValue.emulationTitleName;
+      form.emulationTitleCode = this.formValue.emulationTitleCode;
+      form.commendationLevel = this.formValue.commendationLevel;
+      form.inactive = this.formValue.inactive;
+      switch (this.formValue.applyObject) {
+        case this.$enum.EmulationTitle.ApplyObject.Person:
+          form.applyObject0 = true;
+          form.applyObject2 = false;
+          break;
+        case this.$enum.EmulationTitle.ApplyObject.Organization:
+          form.applyObject0 = false;
+          form.applyObject2 = true;
+          break;
+        case this.$enum.EmulationTitle.ApplyObject.PersonAndOrg:
+          form.applyObject0 = true;
+          form.applyObject2 = true;
+          break;
+        default:
+          form.applyObject0 = false;
+          form.applyObject2 = false;
+          break;
+      }
+      switch (this.formValue.movementType) {
+        case this.$enum.EmulationTitle.MovementType.Sometimes:
+          form.movementType0 = true;
+          form.movementType1 = false;
+          break;
+        case this.$enum.EmulationTitle.MovementType.Period:
+          form.movementType0 = false;
+          form.movementType1 = true;
+          break;
+        case this.$enum.EmulationTitle.MovementType.SometimesAndPeriod:
+          form.movementType0 = true;
+          form.movementType1 = true;
+          break;
+        default:
+          form.movementType0 = false;
+          form.movementType1 = false;
+          break;
+      }
+      return form;
+    },
   },
   mounted() {
     /**
@@ -56,44 +106,36 @@ export default {
       this.dialogAdd = isShow;
     });
   },
-  watch: {
-    /**
-     * reset value when press add button
-     * @param {*} value
-     * Created At: 10/05/2023
-     * @author QTNgo
-     */
-    type(value) {
-      if (value == this.$enum.FormActions.Add) {
-        this.formValue = {
-          emulationTitleName: "",
-          emulationTitleCode: "MF1616",
-          applyObject2: true,
-          applyObject0: false,
-          commendationLevel: 3,
-          movementType0: true,
-          movementType1: false,
-          inactive: 0,
-          emulationTitleID: 50,
-          isSystem: 1,
-        };
-      }
-    },
-  },
   methods: {
-
-
+    resetFormValue() {
+      this.formValue = {
+        emulationTitleName: "",
+        emulationTitleCode: "MF1616",
+        applyObject2: true,
+        applyObject0: false,
+        commendationLevel: 3,
+        movementType0: true,
+        movementType1: false,
+        inactive: 0,
+        emulationTitleID: 50,
+        isSystem: 1,
+      };
+    },
     ...mapActions(useEmulationTitleStore, ["getDetailAPI"]),
     /**
      * Pass handled value to form
      * Created At: 10/05/2023
      * @author QTNgo
      */
-    selectRow(type, row) {
-      this.type = type;
+    selectRow(_type, row) {
       this.getDetailAPI({ id: row.emulationTitleID }).then((res) => {
-        this.formValue = res.data;
+        this.formValue = {...res.data};
       });
+      if (this.formValue?.inactive == 1) {
+        this.type = this.$enum.FormActions.Detail;
+      } else {
+        this.type = this.$enum.FormActions.Edit;
+      }
     },
     totalSelectedRows(rows) {
       this.selectedRows = rows;

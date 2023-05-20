@@ -10,6 +10,7 @@ const MisaEnum={
     },
     EmulationTitle:{
         ApplyObject:{
+            PersonAndOrg: 3,
             Person: 2,
             Organization: 1
         },
@@ -21,7 +22,8 @@ const MisaEnum={
         },
         MovementType:{
             Sometimes: 0,
-            Period: 1
+            Period: 1,
+            SometimesAndPeriod:2,
         },
             Active: 0,
             Inactive: 1

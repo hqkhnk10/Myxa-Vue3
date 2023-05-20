@@ -58,22 +58,7 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
      * @param {*} data fromBody all the data of the row
      */
     async addAPI(data) {
-      await request
-        .post({ url: url, data: data })
-        .then(() => {
-          this.getAPI();
-          dispatchNotification({
-            content: "Thêm thành công",
-            type: "success",
-          });
-        })
-        .catch((err) => {
-          console.log("err", err);
-          dispatchNotification({
-            content: err?.response?.data?.message ? err.response.data.message : err.message,
-            type: "error",
-          });
-        });
+      return await request.post({ url: url, data: data })
     },
     /**
      * PUT data to backend

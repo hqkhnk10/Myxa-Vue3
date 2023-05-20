@@ -55,7 +55,7 @@
             </button>
           </div>
           <div>
-            <misa-button type="warning-border" @click="removeRow">{{
+            <misa-button type="warning-border" @click="openConfirmDialog">{{
               t("reuse.remove")
             }}</misa-button>
           </div>
@@ -69,13 +69,24 @@
               width="17"
             />
             <span>{{
-              t("emulationTitle.addEmulationTitle")
+              t("emulationTitle.addEmulation")
             }}</span></misa-button
           >
         </div>
       </div>
     </div>
   </div>
+  <misa-confirm-dialog v-model="confirmDialog" title="Xóa Danh hiệu thi đua">
+    <template #content>
+      <div>
+        Xóa <span style="font-weight: bold;">{{selectedRows.length}} danh hiệu </span>  đã chọn?
+      </div>
+    </template>
+    <template #button>
+      <misa-button type="secondary" @click="closeConfirmDialog">Không</misa-button>
+      <misa-button type="danger" @click="removeRow">Xóa danh hiệu</misa-button>
+    </template>
+  </misa-confirm-dialog>
 </template>
 
 <script>
@@ -94,6 +105,7 @@ export default {
         Inactive: null,
       },
       keyword: "",
+      confirmDialog: false
     };
   },
   props: {
@@ -102,6 +114,12 @@ export default {
     },
   },
   methods: {
+    openConfirmDialog(){
+      this.confirmDialog = true
+    },
+    closeConfirmDialog(){
+      this.confirmDialog = false
+    },
     changeKeyword(keyword) {
         this.emitter.emit("search-table-emulation", keyword);
     },
@@ -135,6 +153,7 @@ export default {
     //@author QTNgo
     removeRow() {
       this.emitter.emit("remove-row-emulation");
+      this.closeConfirmDialog();
     },
     //mở form thêm sửa
     //Created At: 10/05/2023

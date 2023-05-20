@@ -9,6 +9,23 @@ defineProps({
 const closeNotification = (id) => {
   store.actions.removeNotification(id);
 };
+
+const formatColor = (type) => {
+  switch (type) {
+    case "success":
+      return "var(--color-green)";
+    case "warning":
+      return "var(--color-orange)";
+
+    case "error":
+      return "var(--color-red)";
+
+    case "infomation":
+      return "var(--color-blue)";
+    default:
+      return "black";
+  }
+};
 </script>
 
 <template>
@@ -16,17 +33,23 @@ const closeNotification = (id) => {
     <div class="notification-container">
       <div class="notification-icon" v-if="notification.type">
         <div
-        style="width: 100%;height: 100%;background: round;"
-        :style="{backgroundImage: `url(${require(`../../assets/icon/${notification.type}-icon.svg`)})`}"
+          style="width: 100%; height: 100%; background: round"
+          :style="{
+            backgroundImage: `url(${require(`../../assets/icon/${notification.type}-icon.svg`)})`,
+          }"
         ></div>
       </div>
       <div class="notification-title">
-        <p class="notification-text" v-if="notification.type">
-          {{ formatNotification(notification.type) }}
-        </p>
-        <p>
+        <span
+          class="notification-text"
+          :style="{ color: formatColor(notification.type) }"
+          v-if="notification.type"
+        >
+          {{ formatNotification(notification.type) }}!
+        </span>
+        <span>
           {{ notification.content }}
-        </p>
+        </span>
       </div>
       <div class="notification-button">
         <button

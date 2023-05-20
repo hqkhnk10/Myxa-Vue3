@@ -2,7 +2,6 @@
   <loading-screen />
   <router-view></router-view>
   <misa-notification />
-  <misa-confirm-dialog />
 </template>
 <script>
 import { watch } from 'vue'

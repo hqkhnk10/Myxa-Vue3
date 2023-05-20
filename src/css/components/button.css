@@ -43,6 +43,25 @@ button:focus{
 .button__primary-border:hover{
     background-color: #CEEAD9;
 }
+
+.button__danger{
+    border: 0;
+    background-color: var(--button-bg-color-red);
+}
+.button.button__danger:not(:disabled):active{
+    background-color: var(--button-bg-color-red-active);
+}
+.button__danger-border{
+    border-color: var(--button-bg-color-red);
+    color: var(--button-bg-color-red);
+}
+.button.button__danger-border:not(:disabled):active{
+    background-color: var(--button-bg-color-red-active);
+}
+.button__danger-border:hover{
+    background-color: #CEEAD9;
+}
+
 .button__warning-border{
     border-color: var(--color-red);
     color: var(--color-red);

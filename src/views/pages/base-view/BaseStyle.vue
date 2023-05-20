@@ -9,6 +9,7 @@
         <misa-button type="primary" @click="click" disabled>Button Disabled</misa-button>
         <div>Nút phụ:</div>
         <misa-button type="secondary" @click="click">Button</misa-button>
+        <misa-button type="danger" @click="click">Button</misa-button>
         <div>Nút link:</div>
         <misa-button type="link" @click="click">Button</misa-button>
         <div>Nút Icon:</div>
