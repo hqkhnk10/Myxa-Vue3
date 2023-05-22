@@ -56,12 +56,12 @@ export default {
   },
   emits:['change-value'],
   watch: {
-    pagination: {
-     handler(val){
-      this.$emit('change-value', val)
-     },
-     deep: true
-  }
+    'pagination.pageSize'(val){
+      this.$emit('change-value', {pageSize: val})
+    },
+    'pagination.pageIndex'(val){
+      this.$emit('change-value', {pageIndex: val})
+    }
   },
   methods: {
     // eslint-disable-next-line vue/no-mutating-props

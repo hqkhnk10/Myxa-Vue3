@@ -14,6 +14,7 @@
 @import './components/radio.css';
 @import '../libs/mcombobox/style/mcombobox.css';
 @import './inline-class.css';
+@import './components/notification.css';
 
 *{
     font-family: var(--default-font);

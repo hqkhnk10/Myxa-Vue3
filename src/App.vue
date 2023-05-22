@@ -1,6 +1,7 @@
 <template>
   <loading-screen />
   <router-view></router-view>
+  <misa-notification />
 </template>
 <script>
 import { watch } from 'vue'

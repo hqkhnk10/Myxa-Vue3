@@ -1,15 +1,17 @@
 <template>
+  {{ form }}
   <div class="dialog__body">
     <form class="form" id="form-add-title" ref="misaForm">
       <div class="form-item">
         <label class="form-item__label"
           >{{ t("emulationTitle.emulationTitleName")
-    }}<span class="required">*</span></label
+          }}<span class="required">*</span></label
         >
         <div class="form-item__content">
           <misa-input
             ref="firstInput"
-            :disabled="type=='detail'"
+            :disabled="disabled"
+            :reset="true"
             v-model="form.emulationTitleName"
             label="Tên danh hiệu thi đua"
             required
@@ -19,6 +21,7 @@
             autocomplete="off"
             class="input w-full"
             placeholder="Nhập danh hiệu thi đua"
+            @change="validateForm"
           ></misa-input>
           <div class="error active" v-if="!validate.emulationTitleName.valid">
             {{ validate.emulationTitleName.message }}
@@ -34,32 +37,51 @@
           <div class="form-item__content">
             <misa-input
               v-model="form.emulationTitleCode"
+              :disabled="disabled"
+              :reset="true"
+              :isValid="validate.emulationTitleCode.valid"
               label="Mã danh hiệu"
               required
               type="text"
               class="w-full"
+              @change="validateForm"
             ></misa-input>
-            <div class="error"></div>
+            <div class="error active" v-if="!validate.emulationTitleCode.valid">
+              {{ validate.emulationTitleCode.message }}
+            </div>
           </div>
         </div>
         <div class="flex-1">
-          <label class="form-item__label">{{
-            t("emulationTitle.applyObject")
-          }}</label>
+          <label class="form-item__label flex"
+            >{{ t("emulationTitle.applyObject") }}
+            <span class="required">*</span>
+          </label>
           <div class="form-item__content flex items-center">
-            <misa-checkbox v-model="form.applyObject2" class="flex-1">{{
-              t("emulationTitle.personal")
-            }}</misa-checkbox>
-            <misa-checkbox v-model="form.applyObject0" class="flex-1">{{
-              t("emulationTitle.group")
-            }}</misa-checkbox>
+            <misa-checkbox
+              v-model="form.applyObject2"
+              :disabled="disabled"
+              @change="validateForm"
+              class="flex-1"
+              >{{ t("emulationTitle.personal") }}</misa-checkbox
+            >
+            <misa-checkbox
+              v-model="form.applyObject0"
+              :disabled="disabled"
+              @change="validateForm"
+              class="flex-1"
+              >{{ t("emulationTitle.group") }}</misa-checkbox
+            >
+          </div>
+          <div class="error active" v-if="!validate.applyObject.valid">
+            {{ validate.applyObject.message }}
           </div>
         </div>
       </div>
       <div class="form-item form-item-flex">
         <div class="flex-1">
-          <label class="form-item__label"
-            >Cấp khen thưởng<span class="required">*</span></label
+          <label class="form-item__label flex"
+            >{{ t("emulationTitle.commendationLevel")
+            }}<span class="required">*</span></label
           >
           <div class="form-item__content">
             <misa-combobox
@@ -69,16 +91,28 @@
           </div>
         </div>
         <div class="flex-1">
-          <label class="form-item__label">{{
-            t("emulationTitle.movementType")
-          }}</label>
+          <label class="form-item__label flex"
+            >{{ t("emulationTitle.movementType") }}
+            <span class="required">*</span>
+          </label>
           <div class="form-item__content flex items-center">
-            <misa-checkbox v-model="form.movementType0" class="flex-1">{{
-              t("emulationTitle.regular")
-            }}</misa-checkbox>
-            <misa-checkbox v-model="form.movementType1" class="flex-1">{{
-              t("emulationTitle.period")
-            }}</misa-checkbox>
+            <misa-checkbox
+              v-model="form.movementType0"
+              :disabled="disabled"
+              @change="validateForm"
+              class="flex-1"
+              >{{ t("emulationTitle.regular") }}</misa-checkbox
+            >
+            <misa-checkbox
+              v-model="form.movementType1"
+              :disabled="disabled"
+              @change="validateForm"
+              class="flex-1"
+              >{{ t("emulationTitle.period") }}</misa-checkbox
+            >
+          </div>
+          <div class="error active" v-if="!validate.movementType.valid">
+            {{ validate.movementType.message }}
           </div>
         </div>
       </div>
@@ -130,7 +164,7 @@
           <button
             class="button button__primary-border"
             type="button"
-            @click="submitForm()"
+            @click="submitAndRestForm()"
           >
             <span>{{ t("reuse.saveAndAdd") }}</span>
           </button>
@@ -153,7 +187,10 @@
 </template>
 
 <script>
+import { dispatchNotification } from "@/components/Notification";
 import { required } from "@/js/validate/validate";
+import { useEmulationTitleStore } from "@/store/emulationTitle";
+import { mapActions } from "pinia";
 
 //TODO: MisaForm
 export default {
@@ -167,16 +204,32 @@ export default {
       default: "Add",
     },
   },
+
   data() {
     return {
+      disabled: false,
       dialogAdd: false,
       typeForm: this.type,
       form: {...this.formValue},
       validate: {
         emulationTitleName: {
-          validator: required,
-          trigger: "change",
-          message: "Không được để trống",
+          required: true,
+          message: "Tên danh hiệu không được để trống",
+          valid: true,
+        },
+        emulationTitleCode: {
+          required: true,
+          message: "Mã danh hiệu không được để trống",
+          valid: true,
+        },
+        applyObject: {
+          validator: this.validateApplyObject,
+          message: "Đối tượng khen thưởng không được để trống",
+          valid: true,
+        },
+        movementType: {
+          validator: this.validateMovementType,
+          message: "Loại phong trào không được để trống",
           valid: true,
         },
       },
@@ -200,10 +253,22 @@ export default {
       ],
     };
   },
+
   watch: {
-    formValue(newValue){
-      this.form = {...newValue}
-    }
+    /**
+     * reset value when press add button
+     * @param {*} value
+     * Created At: 10/05/2023
+     * @author QTNgo
+     */
+    type(value) {
+      if (value == this.$enum.FormActions.Add) {
+        this.resetFormValue();
+      }
+      if (value == this.$enum.FormActions.Detail) {
+        this.disabled = true;
+      }
+    },
   },
   mounted() {
     /**
@@ -214,6 +279,18 @@ export default {
     this.$refs.firstInput.focus();
   },
   methods: {
+    /**
+     * Register to use function in EmulationTitleStore
+     *    * Created At: 15/05/2023
+     * @author QTNgo
+     */
+    ...mapActions(useEmulationTitleStore, ["addAPI", "editAPI"]),
+    validateApplyObject() {
+      return this.form.applyObject0 || this.form.applyObject2;
+    },
+    validateMovementType() {
+      return this.form.movementType0 || this.form.movementType1;
+    },
     //close dialog
     closeDialog() {
       this.emitter.emit("toggle-emulation-dialog", false);
@@ -227,11 +304,19 @@ export default {
     validateForm() {
       let isValid = true;
       Object.keys(this.validate).forEach((item) => {
-        const valid = this.validate[item].validator(this.form[item]);
+        let valid = false;
+        if (this?.validate[item]?.required) {
+          valid = required(this.form[item]);
+        } else {
+          valid = this.validate[item].validator();
+        }
         this.validate[item].valid = valid;
         isValid = isValid && valid;
       });
       return isValid;
+    },
+    submitAndRestForm() {
+      this.submitForm();
     },
     /**
      * Check validate before submit
@@ -259,10 +344,14 @@ export default {
      * @author QTNgo
      */
     customFormValue() {
-      // eslint-disable-next-line no-debugger
       let customValue = { ...this.form };
-      const { ApplyObject2, ApplyObject0, MovementType0, MovementType1, Inactive } =
-        this.formValue;
+      const {
+        ApplyObject2,
+        ApplyObject0,
+        MovementType0,
+        MovementType1,
+        Inactive,
+      } = this.formValue;
       const { ApplyObject, MovementType } = this.$enum.EmulationTitle;
       if (ApplyObject2) {
         customValue.ApplyObject = ApplyObject.Person;
@@ -270,13 +359,19 @@ export default {
       if (ApplyObject0) {
         customValue.ApplyObject = ApplyObject.Organization;
       }
+      if (ApplyObject0 && ApplyObject2) {
+        customValue.ApplyObject = ApplyObject.PersonAndOrg;
+      }
       if (MovementType0) {
         customValue.MovementType = MovementType.Sometimes;
       }
       if (MovementType1) {
         customValue.MovementType = MovementType.Period;
       }
-        customValue.Inactive = Inactive ? 1 : 0;
+      if (MovementType0 && MovementType1) {
+        customValue.MovementType = MovementType.SometimesAndPeriod;
+      }
+      customValue.Inactive = Inactive ? 1 : 0;
       return customValue;
     },
     /**
@@ -285,7 +380,23 @@ export default {
      * @author QTNgo
      */
     addEmulation() {
-      this.emitter.emit("add-table-emulation", this.customFormValue());
+      this.addAPI(this.customFormValue())
+        .then(() => {
+          this.getAPI();
+          dispatchNotification({
+            content: "Thêm thành công",
+            type: "success",
+          });
+        })
+        .catch((err) => {
+          console.log("err", err);
+          dispatchNotification({
+            content: err?.response?.data?.message
+              ? err.response.data.message
+              : err.message,
+            type: "error",
+          });
+        });
     },
     /**
      * Edit emulation table row
@@ -293,7 +404,23 @@ export default {
      * @author QTNgo
      */
     editEmulation() {
-      this.emitter.emit("edit-table-emulation", this.customFormValue());
+      this.editAPI(this.customFormValue())
+        .then(() => {
+          this.getAPI();
+          dispatchNotification({
+            content: "Sửa thành công",
+            type: "success",
+          });
+        })
+        .catch((err) => {
+          console.log("err", err);
+          dispatchNotification({
+            content: err?.response?.data?.message
+              ? err.response.data.message
+              : err.message,
+            type: "error",
+          });
+        });
     },
   },
 };

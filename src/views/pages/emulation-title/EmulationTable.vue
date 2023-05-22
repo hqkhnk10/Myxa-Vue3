@@ -4,6 +4,7 @@
       <misa-table
         v-model="table"
         checkbox
+        :loading="loading"
         :pagination="pagination"
         :filterValue="filterValue"
         :filterApi="true"
@@ -60,7 +61,7 @@
                   t("reuse.using")
                 }}</a>
                 <a @click="changeStatus(row, 2)">{{ t("reuse.shutdown") }}</a>
-                <a class="content-red" @click="deleteRow(row)">{{
+                <a class="content-red" @click="openConfirmDialog(row)">{{
                   t("reuse.remove")
                 }}</a>
               </template>
@@ -70,6 +71,17 @@
       </misa-table>
     </div>
   </div>
+  <misa-confirm-dialog v-model="confirmDialog" title="Xóa Danh hiệu thi đua">
+    <template #content>
+      <div>
+        Xóa danh hiệu thi đua <span style="font-weight: bold;">{{selectedRow?.emulationTitleName}}</span>   đã chọn?
+      </div>
+    </template>
+    <template #button>
+      <misa-button type="secondary" @click="closeConfirmDialog">Không</misa-button>
+      <misa-button type="danger" @click="deleteRow">Xóa danh hiệu</misa-button>
+    </template>
+  </misa-confirm-dialog>
 </template>
 
 <script>
@@ -93,6 +105,8 @@ export default {
       filterValue: {},
       keyword: "",
       id: 999,
+      confirmDialog: false,
+      selectedRow: {}
     };
   },
   watch: {
@@ -142,8 +156,9 @@ export default {
     }),
     ...mapState(useEmulationTitleStore, {
       total: (store) => {
-        return store.pagination.total;
+        return store.total;
       },
+      ...mapState(useEmulationTitleStore, ['loading']),
     }),
   },
   /**
@@ -152,7 +167,7 @@ export default {
    * @author QTNgo
    */
   mounted() {
-    this.getAPI()
+    this.getAPI({pageSize: this.pagination.pageSize, pageIndex: this.pagination.pageIndex})
     this.emitter.on("remove-row-emulation", this.removeRow);
     this.emitter.on("unselect-row-emulation", this.unSelect);
     this.emitter.on("filter-table-emulation", (filterValue) => {
@@ -170,6 +185,13 @@ export default {
   },
   emits: ["select", "select-row"],
   methods: {
+    openConfirmDialog(row){
+      this.confirmDialog = true
+      this.selectedRow = {...row}
+    },
+    closeConfirmDialog(){
+      this.confirmDialog = false
+    },
     /**
      * format value to return label for apply object
      * @param {*} value value of apply object
@@ -210,7 +232,8 @@ export default {
       "getAPI",
       "addAPI",
       "editAPI",
-      "deleteAPI"
+      "deleteAPI",
+      "deleteMultipleAPI"
     ]),
     /**
      * Call api POST
@@ -274,9 +297,9 @@ export default {
      * Created At: 17/05/2023
      * @author QTNgo
      */
-    deleteRow(row){
-      console.log('delete');
-      this.deleteAPI({id: row.emulationTitleID})
+    deleteRow(){
+      this.deleteAPI({id: this.selectedRow.emulationTitleID})
+      this.closeConfirmDialog()
     },
     /**
      * call unSelectedRows method in Table component
@@ -292,7 +315,8 @@ export default {
      * @author QTNgo
      */
     removeRow() {
-      this.removeRows(this.$refs.misaTable.getSelectedRows);
+      const listId = this.$refs.misaTable.getSelectedRows.map(row=> row.emulationTitleID)
+      this.deleteMultipleAPI({id:listId})
     },
     /**
      * call getSelectedRows function in Table component to get select rows
