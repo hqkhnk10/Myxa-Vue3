@@ -184,6 +184,16 @@
       </div>
     </form>
   </div>
+  <misa-dialog title="Cảnh báo" v-model="validateDialog" top="30%" width="40%">
+    <div class="dialog__body">
+      <span>Mã danh hiệu thi đua <span style="font-weight: bold;">{{ form.emulationTitleCode }}</span> đã tồn tại trong danh sách. Xin vui lòng kiểm tra lại.</span>
+    </div>
+    <div class="dialog__footer">
+                <misa-button type="danger" @click="validateDialog = false">
+                    <span>{{ t('reuse.close') }}</span>
+                </misa-button>
+            </div>
+  </misa-dialog>
 </template>
 
 <script>
@@ -207,6 +217,7 @@ export default {
 
   data() {
     return {
+      validateDialog: false,
       disabled: false,
       dialogAdd: false,
       typeForm: this.type,
@@ -269,6 +280,9 @@ export default {
         this.disabled = true;
       }
     },
+    formValue(value){
+      this.form = value;
+    }
   },
   mounted() {
     /**
@@ -284,7 +298,7 @@ export default {
      *    * Created At: 15/05/2023
      * @author QTNgo
      */
-    ...mapActions(useEmulationTitleStore, ["addAPI", "editAPI"]),
+    ...mapActions(useEmulationTitleStore, ["getAPI","addAPI", "editAPI"]),
     validateApplyObject() {
       return this.form.applyObject0 || this.form.applyObject2;
     },
@@ -335,7 +349,6 @@ export default {
             this.editEmulation();
             break;
         }
-        this.closeDialog();
       }
     },
     /**
@@ -344,34 +357,39 @@ export default {
      * @author QTNgo
      */
     customFormValue() {
-      let customValue = { ...this.form };
+      let customValue = {};
+      customValue.emulationTitleCode = this.form.emulationTitleCode
+      customValue.emulationTitleName = this.form.emulationTitleName
+      customValue.emulationTitleID = this.form.emulationTitleID
+      customValue.commendationLevel = this.form.commendationLevel
       const {
-        ApplyObject2,
-        ApplyObject0,
-        MovementType0,
-        MovementType1,
-        Inactive,
-      } = this.formValue;
+        applyObject2,
+        applyObject0,
+        movementType0,
+        movementType1,
+        inactive,
+      } = this.form;
       const { ApplyObject, MovementType } = this.$enum.EmulationTitle;
-      if (ApplyObject2) {
+      if (applyObject0) {
         customValue.ApplyObject = ApplyObject.Person;
       }
-      if (ApplyObject0) {
+      if (applyObject2) {
         customValue.ApplyObject = ApplyObject.Organization;
       }
-      if (ApplyObject0 && ApplyObject2) {
+      if (applyObject0 && applyObject2) {
         customValue.ApplyObject = ApplyObject.PersonAndOrg;
       }
-      if (MovementType0) {
+      if (movementType0) {
         customValue.MovementType = MovementType.Sometimes;
       }
-      if (MovementType1) {
+      if (movementType1) {
         customValue.MovementType = MovementType.Period;
       }
-      if (MovementType0 && MovementType1) {
+      if (movementType0 && movementType1) {
         customValue.MovementType = MovementType.SometimesAndPeriod;
       }
-      customValue.Inactive = Inactive ? 1 : 0;
+      customValue.Inactive = inactive ? 1 : 0;
+      
       return customValue;
     },
     /**
@@ -380,23 +398,29 @@ export default {
      * @author QTNgo
      */
     addEmulation() {
-      this.addAPI(this.customFormValue())
+      var abc = this.customFormValue()
+      this.addAPI(abc)
         .then(() => {
           this.getAPI();
           dispatchNotification({
             content: "Thêm thành công",
             type: "success",
           });
+          this.closeDialog();
         })
         .catch((err) => {
           console.log("err", err);
+          if(err.response.status == 302){
+            this.validateDialog = true
+          }
+          else{
           dispatchNotification({
             content: err?.response?.data?.message
               ? err.response.data.message
               : err.message,
             type: "error",
           });
-        });
+        }})
     },
     /**
      * Edit emulation table row
@@ -411,16 +435,21 @@ export default {
             content: "Sửa thành công",
             type: "success",
           });
+          this.closeDialog();
         })
         .catch((err) => {
           console.log("err", err);
+          if(err.response.status == 302){
+            this.validateDialog = true
+          }
+          else{
           dispatchNotification({
             content: err?.response?.data?.message
               ? err.response.data.message
               : err.message,
             type: "error",
           });
-        });
+        }})
     },
   },
 };

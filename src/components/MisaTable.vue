@@ -1,6 +1,6 @@
 <template>
-  <div class="table-overflow-auto">
-    <table aria-describedby="table">
+  <div class="table-overflow-auto" ref="tableScreen">
+    <table aria-describedby="table" >
       <thead class="table__header">
         <tr>
           <th class="sticky-col first-col" v-if="checkbox">
@@ -9,7 +9,7 @@
           <th
             v-for="(header, index) in modelValue.header"
             :key="index"
-            :style="{ width: header.width }"
+            :style="{ minWidth: header.width }"
           >
             {{ header.label }}
           </th>
@@ -20,6 +20,7 @@
           v-for="(row, index) in tableData"
           :key="index"
           @dblclick="dbClickRow(row)"
+          @mouseenter="hover"
         >
           <td class="sticky-col first-col" v-if="checkbox">
             <misa-checkbox
@@ -31,7 +32,7 @@
             <slot :name="header.prop" v-bind="row" v-if="header.slot" />
             <div v-else>{{ row[header.prop] }}</div>
           </td>
-          <div class="button__table">
+          <div class="button__table" v-bind:style="{left:left}">
             <slot name="operator" v-bind="row" />
           </div>
         </tr>
@@ -59,6 +60,7 @@ export default {
       checkBoxes: 0,
       headerBox: false,
       headerArray: [],
+      left: "80%",
     };
   },
   props: {
@@ -185,6 +187,10 @@ export default {
     },
   },
   methods: {
+    hover(){
+      console.log('log', this.$refs.tableScreen.offsetWidth)
+      this.left = `${this.$refs.tableScreen.offsetWidth} px`
+    },
     changePagination(value) {
       this.$emit("change-pagination", value);
     },

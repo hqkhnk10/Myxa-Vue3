@@ -127,28 +127,28 @@ export default {
             {
               label: "Tên danh hiệu thi đua",
               prop: "emulationTitleName",
-              width: "30%",
+              width: "310px",
             },
-            { label: "Mã danh hiệu", prop: "emulationTitleCode", width: "15%" },
+            { label: "Mã danh hiệu", prop: "emulationTitleCode", width: "160px" },
             {
               label: "Đối tượng khen thưởng",
               prop: "applyObject",
-              width: "15%",
+              width: "180px",
               slot: true,
             },
             {
               label: "Cấp khen thưởng",
               prop: "commendationLevel",
-              width: "15%",
+              width: "200px",
               slot: true,
             },
             {
               label: "Loại phong trào",
               prop: "movementType",
-              width: "15%",
+              width: "200px",
               slot: true,
             },
-            { label: "Trạng thái", prop: "inactive", width: "15%", slot: true },
+            { label: "Trạng thái", prop: "inactive", width: "180px", slot: true },
           ],
           data: store.data,
         };
@@ -298,7 +298,7 @@ export default {
      * @author QTNgo
      */
     deleteRow(){
-      this.deleteAPI({id: this.selectedRow.emulationTitleID})
+      this.deleteAPI(this.selectedRow.emulationTitleID)
       this.closeConfirmDialog()
     },
     /**

@@ -29,10 +29,10 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
       await request
         .get({ url: url, params: this.parameters })
         .then((res) => {
-          dispatchNotification({
-            content: "Lấy dữ liệu thành công",
-            type: "success",
-          });
+          // dispatchNotification({
+          //   content: "Lấy dữ liệu thành công",
+          //   type: "success",
+          // });
           this.tableData = res.data;
           this.total = res?.pagination?.count;
         })
@@ -47,11 +47,11 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
     },
     /**
      * Get detail of table
-     * @param {*} params {id: Number} id of the row
+     * @param {*} id {id: Number} id of the row
      * @returns Promise<axios>
      */
-    async getDetailAPI(params) {
-      return await request.get({ url: `${url}/Detail`, params: params });
+    async getDetailAPI(id) {
+      return await request.get({ url: `${url}/${id}` });
     },
     /**
      * Post data to backend
@@ -65,31 +65,15 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
      * @param {*} data Frombody all the data of the row
      */
     async editAPI(data) {
-      await request
-        .put({ url: url, data: data })
-        .then(() => {
-          dispatchNotification({
-            content: "Sửa thành công",
-            type: "success",
-          });
-          this.getAPI();
-
-        })
-        .catch((err) => {
-          console.log("err", err);
-          dispatchNotification({
-            content: err?.response?.data?.message ? err.response.data.message : err.message,
-            type: "error",
-          });
-        });
+      await request.put({ url: `${url}/${data.emulationTitleID}`, data: data });
     },
     /**
      * Call API to remove the row
-     * @param {*} data id of row
+     * @param {*} id id of row
      */
-    async deleteAPI(data) {
+    async deleteAPI(id) {
       await request
-        .delete({ url: url, params: data })
+        .delete({ url: `${url}/${id}` })
         .then(() => {
           dispatchNotification({
             content: "Xóa thành công",

@@ -28,10 +28,11 @@ export default {
       formValue: {
         emulationTitleName: "",
         emulationTitleCode: "MF1616",
-        applyObject: 3,
-        commendationLevel: 3,
-        movementType: 2,
+        applyObject: 1,
+        commendationLevel: 1,
+        movementType: 0,
         inactive: 0,
+        emulationTitleID: null,
       },
       selectedRows: [],
     };
@@ -50,10 +51,12 @@ export default {
   },
   computed: {
     form() {
+        console.log('this.formValue', this.formValue);
       let form = {};
       form.emulationTitleName = this.formValue.emulationTitleName;
       form.emulationTitleCode = this.formValue.emulationTitleCode;
       form.commendationLevel = this.formValue.commendationLevel;
+      form.emulationTitleID = this.formValue.emulationTitleID;
       form.inactive = this.formValue.inactive;
       switch (this.formValue.applyObject) {
         case this.$enum.EmulationTitle.ApplyObject.Person:
@@ -128,8 +131,8 @@ export default {
      * @author QTNgo
      */
     selectRow(_type, row) {
-      this.getDetailAPI({ id: row.emulationTitleID }).then((res) => {
-        this.formValue = {...res.data};
+      this.getDetailAPI(row.emulationTitleID).then((res) => {
+        this.formValue = { ...res.data };
       });
       if (this.formValue?.inactive == 1) {
         this.type = this.$enum.FormActions.Detail;
