@@ -29,12 +29,7 @@
           </td>
           <td v-for="(header, index) in modelValue.header" :key="index">
             <slot :name="header.prop" v-bind="row" v-if="header.slot" />
-            <div v-else class="tooltip">
-              <div class="cell">{{ row[header.prop] }}</div>
-              <span class="tooltiptext tooltiptext-top">{{
-                row[header.prop]
-              }}</span>
-            </div>
+            <div v-else>{{ row[header.prop] }}</div>
           </td>
           <div class="button__table">
             <slot name="operator" v-bind="row" />
