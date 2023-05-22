@@ -133,13 +133,7 @@ export default {
     //Created At: 10/05/2023
     //@author QTNgo
     changeFilter(value) {
-      const { ApplyObject, CommendationLevel, MovementType, Inactive } = value;
-      this.filterValue = {
-        ApplyObject,
-        CommendationLevel,
-        MovementType,
-        Inactive,
-      };
+      this.filterValue = {...value}
       this.emitter.emit("filter-table-emulation", this.filterValue);
     },
     //Bỏ chọn trong table

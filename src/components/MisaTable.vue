@@ -10,8 +10,13 @@
             v-for="(header, index) in modelValue.header"
             :key="index"
             :style="{ minWidth: header.width }"
+            class="cursor-pointer"
+            @click="changeSort(header, index)"
           >
-            {{ header.label }}
+          <div class="flex items-center">
+            <div style="text-align: left;">{{ header.label }}</div>
+            <div data-v-6467733b="" class="ml-4 icon-sort" :class="header.sort ? 'asc' : 'desc'" v-if="header.sort !== null"></div>
+          </div>
           </th>
         </tr>
       </thead>
@@ -19,8 +24,8 @@
         <tr
           v-for="(row, index) in tableData"
           :key="index"
-          @dblclick="dbClickRow(row)"
           @mouseenter="hover"
+          :class="row.select ? 'selected' : ''"
         >
           <td class="sticky-col first-col" v-if="checkbox">
             <misa-checkbox
@@ -28,11 +33,13 @@
               @click-box="checkBoxRow(value)"
             />
           </td>
-          <td v-for="(header, index) in modelValue.header" :key="index">
+          <td v-for="(header, index) in modelValue.header" :key="index"
+          @dblclick="dbClickRow(row)"
+          >
             <slot :name="header.prop" v-bind="row" v-if="header.slot" />
             <div v-else>{{ row[header.prop] }}</div>
           </td>
-          <div class="button__table" v-bind:style="{left:left}">
+          <div class="button__table operator">
             <slot name="operator" v-bind="row" />
           </div>
         </tr>
@@ -59,7 +66,6 @@ export default {
     return {
       checkBoxes: 0,
       headerBox: false,
-      headerArray: [],
       left: "80%",
     };
   },
@@ -129,7 +135,7 @@ export default {
     },
 
   },
-  emits: ["update:modelValue", "select", "dbclick-row", "change-pagination"],
+  emits: ["update:modelValue", "select", "dbclick-row", "change-pagination","change-sort"],
   computed: {
     /**
      * return selected rows
@@ -146,7 +152,7 @@ export default {
      */
     tableData() {
       let table = this.modelValue.data;
-      if (this.filterApi == false) {
+      if (!this.filterApi) {
         if (this.pagination) {
           table = this.modelValue.data?.slice(this.startIndex, this.endIndex);
         }
@@ -187,13 +193,40 @@ export default {
     },
   },
   methods: {
-    hover(){
-      console.log('log', this.$refs.tableScreen.offsetWidth)
-      this.left = `${this.$refs.tableScreen.offsetWidth} px`
+    /**
+     * Change sort value
+     * @param {*} header header value
+     * @param {*} index index of header
+     * Created At: 15/05/2023
+     * @author QTNgo
+     */
+    changeSort(header,index){
+      const value = header.sort === true ? false : (header?.sort == false ? null : true);
+      this.$emit("change-sort", header,index, value);
     },
+    /**
+     * Show the button float when hover the table
+     * Set the LEFT: VALUE
+     * Created At: 15/05/2023
+     * @author QTNgo
+     */
+    hover(){
+      this.left = `${this.$refs.tableScreen.offsetWidth + this.$refs.tableScreen.scrollLeft - 100}px`
+    },
+        /**
+     * Change pagination value
+     * @param {*} value {pageSize: Number, pageIndex: Number}
+     * Created At: 15/05/2023
+     * @author QTNgo
+     */
     changePagination(value) {
       this.$emit("change-pagination", value);
     },
+    /**
+     * 2-ways binding
+     * Created At: 15/05/2023
+     * @author QTNgo
+     */
     updateValue() {
       this.$emit("update:modelValue", !this.modelValue);
     },
@@ -255,3 +288,9 @@ export default {
   },
 };
 </script>
+<style scoped>
+.operator{
+  left: v-bind(left);
+
+}
+</style>

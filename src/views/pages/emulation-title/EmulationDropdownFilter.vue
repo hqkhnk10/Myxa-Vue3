@@ -62,7 +62,7 @@ export default {
                     value: null
                 }, {
                     label: this.t('emulationTitle.family'),
-                    value: 1
+                    value: null
                 }, {
                     label: this.t('emulationTitle.group'),
                     value: this.$enum.EmulationTitle.ApplyObject.Organization
@@ -71,7 +71,7 @@ export default {
                     value: this.$enum.EmulationTitle.ApplyObject.Person
                 }, {
                     label: this.t('emulationTitle.personalAndFamily'),
-                    value: 4
+                    value: this.$enum.EmulationTitle.ApplyObject.PersonAndOrg
                 },
             ],
             level: [

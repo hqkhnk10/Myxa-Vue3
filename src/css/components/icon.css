@@ -83,3 +83,20 @@
 .disabled{
 	opacity: 0.4;
 }
+.icon-sort::before{
+		content: "";
+		background: transparent url('../../assets/icon/sprites.06b14dc5.svg') no-repeat;
+		height: 24px;
+		width: 24px;
+		display: block;
+}
+.icon-sort.asc::before{
+    background-position: -160px -117px;
+    width: 16px;
+    top: 2px;
+}
+.icon-sort.desc::before{
+    background-position: -143px -117px;
+    width: 16px;
+    top: 2px;
+}

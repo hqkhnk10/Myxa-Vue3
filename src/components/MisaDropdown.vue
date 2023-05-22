@@ -3,7 +3,7 @@
         <div @click="toggleDropdown">
             <slot name="click"></slot>
         </div>
-        <div class="dropdown-content" :class="position" v-if="showDropdown">
+        <div class="dropdown-content" :class="position" v-if="showDropdown"  @mouseleave="showDropdown = false">
             <span class="custom-arrow" :class="position"></span>
             <div class="dropdown__header" v-if="header">
                 <div class="dropdown__header-title">{{ title }}</div>

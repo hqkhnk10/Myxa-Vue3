@@ -13,6 +13,7 @@
         @select="selectRow"
         @dbclick-row="formEdit"
         @change-pagination="changePagination"
+        @change-sort="changeSort"
       >
         <template #applyObject="row">
           <div>
@@ -74,11 +75,17 @@
   <misa-confirm-dialog v-model="confirmDialog" title="Xóa Danh hiệu thi đua">
     <template #content>
       <div>
-        Xóa danh hiệu thi đua <span style="font-weight: bold;">{{selectedRow?.emulationTitleName}}</span>   đã chọn?
+        Xóa danh hiệu thi đua
+        <span style="font-weight: bold">{{
+          selectedRow?.emulationTitleName
+        }}</span>
+        đã chọn?
       </div>
     </template>
     <template #button>
-      <misa-button type="secondary" @click="closeConfirmDialog">Không</misa-button>
+      <misa-button type="secondary" @click="closeConfirmDialog"
+        >Không</misa-button
+      >
       <misa-button type="danger" @click="deleteRow">Xóa danh hiệu</misa-button>
     </template>
   </misa-confirm-dialog>
@@ -106,13 +113,17 @@ export default {
       keyword: "",
       id: 999,
       confirmDialog: false,
-      selectedRow: {}
+      selectedRow: {},
     };
   },
   watch: {
-    total(newValue){
-      this.pagination.total = newValue
-    }
+    /**
+     * Recalculate the total number of pages in the table
+     * @param {*} newValue 
+     */
+    total(newValue) {
+      this.pagination.total = newValue;
+    },
   },
   computed: {
     /**
@@ -123,33 +134,7 @@ export default {
     ...mapState(useEmulationTitleStore, {
       table: (store) => {
         return {
-          header: [
-            {
-              label: "Tên danh hiệu thi đua",
-              prop: "emulationTitleName",
-              width: "310px",
-            },
-            { label: "Mã danh hiệu", prop: "emulationTitleCode", width: "160px" },
-            {
-              label: "Đối tượng khen thưởng",
-              prop: "applyObject",
-              width: "180px",
-              slot: true,
-            },
-            {
-              label: "Cấp khen thưởng",
-              prop: "commendationLevel",
-              width: "200px",
-              slot: true,
-            },
-            {
-              label: "Loại phong trào",
-              prop: "movementType",
-              width: "200px",
-              slot: true,
-            },
-            { label: "Trạng thái", prop: "inactive", width: "180px", slot: true },
-          ],
+          header: store.header,
           data: store.data,
         };
       },
@@ -158,7 +143,7 @@ export default {
       total: (store) => {
         return store.total;
       },
-      ...mapState(useEmulationTitleStore, ['loading']),
+      ...mapState(useEmulationTitleStore, ["loading"]),
     }),
   },
   /**
@@ -167,7 +152,10 @@ export default {
    * @author QTNgo
    */
   mounted() {
-    this.getAPI({pageSize: this.pagination.pageSize, pageIndex: this.pagination.pageIndex})
+    this.getAPI({
+      pageSize: this.pagination.pageSize,
+      pageIndex: this.pagination.pageIndex,
+    });
     this.emitter.on("remove-row-emulation", this.removeRow);
     this.emitter.on("unselect-row-emulation", this.unSelect);
     this.emitter.on("filter-table-emulation", (filterValue) => {
@@ -185,12 +173,34 @@ export default {
   },
   emits: ["select", "select-row"],
   methods: {
-    openConfirmDialog(row){
-      this.confirmDialog = true
-      this.selectedRow = {...row}
+    /**
+     * Call change sort API method
+     * @param {*} _header header value
+     * @param {*} index index : Bumber
+     * @param {*} value sort value {true/false}
+     * Created At: 15/05/2023
+     * @author QTNgo
+     */
+    changeSort(_header, index, value){
+      this.changeSortStore(index,value)
     },
-    closeConfirmDialog(){
-      this.confirmDialog = false
+    /**
+     * Open confirm dialog before remove row
+     * @param {*} row row data
+     * Created At: 15/05/2023
+     * @author QTNgo
+     */
+    openConfirmDialog(row) {
+      this.confirmDialog = true;
+      this.selectedRow = { ...row };
+    },
+    /**
+     * Close confirm dialog
+     * Created At: 15/05/2023
+     * @author QTNgo
+     */
+    closeConfirmDialog() {
+      this.confirmDialog = false;
     },
     /**
      * format value to return label for apply object
@@ -233,7 +243,8 @@ export default {
       "addAPI",
       "editAPI",
       "deleteAPI",
-      "deleteMultipleAPI"
+      "deleteMultipleAPI",
+      "changeSortStore"
     ]),
     /**
      * Call api POST
@@ -242,9 +253,10 @@ export default {
      * @author QTNgo
      */
     addEmulationTable(form) {
-      this.addAPI(form).then((res)=>{
-        if(res){
-        this.getAPI()}
+      this.addAPI(form).then((res) => {
+        if (res) {
+          this.getAPI();
+        }
       });
     },
     /**
@@ -262,7 +274,7 @@ export default {
      * Created At: 16/05/2023
      * @author QTNgo
      */
-    changePagination(value){
+    changePagination(value) {
       this.getAPI(value);
     },
     /**
@@ -272,7 +284,7 @@ export default {
      * @author QTNgo
      */
     searchTable(keyword) {
-      this.getAPI({keyword: keyword});
+      this.getAPI({ keyword: keyword });
     },
     /**
      * send filterValue to Table component to filter
@@ -282,24 +294,17 @@ export default {
      * @author QTNgo
      */
     filterTable(filterValue) {
-      for (const key in filterValue) {
-        if (filterValue[key] !== null) {
-          this.filterValue[key] = filterValue[key];
-        } else {
-          delete this.filterValue[key];
-        }
-      }
-      this.getAPI(this.filterValue)
+      this.getAPI(filterValue);
     },
     /**
      * Call api to Remove row
-     * @param {*} row row value 
+     * @param {*} row row value
      * Created At: 17/05/2023
      * @author QTNgo
      */
-    deleteRow(){
-      this.deleteAPI(this.selectedRow.emulationTitleID)
-      this.closeConfirmDialog()
+    deleteRow() {
+      this.deleteAPI(this.selectedRow.emulationTitleID);
+      this.closeConfirmDialog();
     },
     /**
      * call unSelectedRows method in Table component
@@ -315,8 +320,10 @@ export default {
      * @author QTNgo
      */
     removeRow() {
-      const listId = this.$refs.misaTable.getSelectedRows.map(row=> row.emulationTitleID)
-      this.deleteMultipleAPI({id:listId})
+      const listId = this.$refs.misaTable.getSelectedRows.map(
+        (row) => row.emulationTitleID
+      );
+      this.deleteMultipleAPI({ id: listId });
     },
     /**
      * call getSelectedRows function in Table component to get select rows

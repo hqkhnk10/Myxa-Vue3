@@ -295,10 +295,16 @@ export default {
   methods: {
     /**
      * Register to use function in EmulationTitleStore
-     *    * Created At: 15/05/2023
+     * Created At: 15/05/2023
      * @author QTNgo
      */
     ...mapActions(useEmulationTitleStore, ["getAPI","addAPI", "editAPI"]),
+
+    /**
+     * valudate function for Form
+     * Created At: 15/05/2023
+     * @author QTNgo
+     */
     validateApplyObject() {
       return this.form.applyObject0 || this.form.applyObject2;
     },

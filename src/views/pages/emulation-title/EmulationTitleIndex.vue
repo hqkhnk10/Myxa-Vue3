@@ -110,6 +110,11 @@ export default {
     });
   },
   methods: {
+    /**
+     * Reset value of the form
+     * Created At: 15/05/2023
+     * @author QTNgo
+     */
     resetFormValue() {
       this.formValue = {
         emulationTitleName: "",
@@ -140,6 +145,12 @@ export default {
         this.type = this.$enum.FormActions.Edit;
       }
     },
+    /**
+     * Get all the rows that currently selected
+     * @param {*} rows 
+     * Created At: 10/05/2023
+     * @author QTNgo
+     */
     totalSelectedRows(rows) {
       this.selectedRows = rows;
     },

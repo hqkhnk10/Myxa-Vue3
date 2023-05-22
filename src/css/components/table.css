@@ -45,6 +45,12 @@ tr {
 tr:has(td:hover) > td {
   background-color: var(--table-color-green-hover);
 }
+tr:has(div:hover) > td{
+  background-color: var(--table-color-green-hover);
+}
+/* tr.selected > td{
+  background-color: var(--table-color-green-hover);
+} */
 tr:focus > td {
   background-color: var(--table-color-green-hover);
 }

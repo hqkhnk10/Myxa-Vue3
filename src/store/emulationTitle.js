@@ -12,6 +12,48 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
     total: 20,
     parameters: {
     },
+    header: [
+      {
+        label: "Tên danh hiệu thi đua",
+        prop: "emulationTitleName",
+        width: "310px",
+        sort: null,
+      },
+      {
+        label: "Mã danh hiệu",
+        prop: "emulationTitleCode",
+        width: "160px",
+        sort: null,
+      },
+      {
+        label: "Đối tượng khen thưởng",
+        prop: "applyObject",
+        width: "180px",
+        slot: true,
+        sort: null,
+      },
+      {
+        label: "Cấp khen thưởng",
+        prop: "commendationLevel",
+        width: "200px",
+        slot: true,
+        sort: null,
+      },
+      {
+        label: "Loại phong trào",
+        prop: "movementType",
+        width: "200px",
+        slot: true,
+        sort: null,
+      },
+      {
+        label: "Trạng thái",
+        prop: "inactive",
+        width: "180px",
+        slot: true,
+        sort: false,
+      },
+    ],
   }),
   getters: {
     data(state) {
@@ -25,6 +67,7 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
      */
     async getAPI(params) {
       this.loading = true;
+      console.log('params', params);
       Object.assign(this.parameters, params); //keep the original parameters
       await request
         .get({ url: url, params: this.parameters })
@@ -110,6 +153,10 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
           });
           console.log("err", err);
         });
+    },
+    changeSortStore(index,value){
+      this.header[index].sort = value
+      this.getAPI({[`${this.header[index].prop}Sort`] : value})
     },
     add(rowObj) {
       const row = { EmulationTitleID: this.id++, ...rowObj };

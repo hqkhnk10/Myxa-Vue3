@@ -1,8 +1,14 @@
 .w-full{
     width: 100%;
 }
+.cursor-pointer{
+    cursor: pointer;
+}
 .mt-12{
     margin-top: 12px;
+}
+.ml-4{
+    margin-left: 4px;
 }
 .h-full{
     height: 100%;
