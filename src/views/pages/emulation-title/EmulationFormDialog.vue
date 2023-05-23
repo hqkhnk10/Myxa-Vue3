@@ -1,5 +1,5 @@
 <template>
-  {{ form }}
+  {{ levelOptions }}
   <div class="dialog__body">
     <form class="form" id="form-add-title" ref="misaForm">
       <div class="form-item">
@@ -200,6 +200,7 @@
 import { dispatchNotification } from "@/components/Notification";
 import { required } from "@/js/validate/validate";
 import { useEmulationTitleStore } from "@/store/emulationTitle";
+import { useEmulationCommendationStore } from "@/store/emulationCommendation";
 import { mapActions } from "pinia";
 
 //TODO: MisaForm
@@ -244,24 +245,7 @@ export default {
           valid: true,
         },
       },
-      levelOptions: [
-        {
-          label: this.t("emulationTitle.countryLevel"),
-          value: this.$enum.EmulationTitle.CommendationLevel.CapNhaNuoc,
-        },
-        {
-          label: this.t("emulationTitle.provinceLevel"),
-          value: this.$enum.EmulationTitle.CommendationLevel.CapTinh,
-        },
-        {
-          label: this.t("emulationTitle.districtLevel"),
-          value: this.$enum.EmulationTitle.CommendationLevel.CapHuyen,
-        },
-        {
-          label: this.t("emulationTitle.communeLevel"),
-          value: this.$enum.EmulationTitle.CommendationLevel.CapXa,
-        },
-      ],
+      levelOptions: [],
     };
   },
 
@@ -284,13 +268,21 @@ export default {
       this.form = value;
     }
   },
-  mounted() {
+  async mounted() {
     /**
      * Focus first input
      * Created At: 10/05/2023
      * @author QTNgo
      */
     this.$refs.firstInput.focus();
+    await this.getEmulationCommendation().then((res)=>{
+      this.levelOptions = res.data
+    }).catch((err)=>{
+      dispatchNotification({
+            content: err?.response?.data?.userMsg ? err.response.data.message : err.message,
+            type: "error",
+          });
+    });
   },
   methods: {
     /**
@@ -299,7 +291,7 @@ export default {
      * @author QTNgo
      */
     ...mapActions(useEmulationTitleStore, ["getAPI","addAPI", "editAPI"]),
-
+    ...mapActions(useEmulationCommendationStore, ["getEmulationCommendation"]),
     /**
      * valudate function for Form
      * Created At: 15/05/2023
@@ -421,7 +413,7 @@ export default {
           }
           else{
           dispatchNotification({
-            content: err?.response?.data?.message
+            content: err?.response?.data?.userMsg
               ? err.response.data.message
               : err.message,
             type: "error",
@@ -450,7 +442,7 @@ export default {
           }
           else{
           dispatchNotification({
-            content: err?.response?.data?.message
+            content: err?.response?.data?.userMsg
               ? err.response.data.message
               : err.message,
             type: "error",

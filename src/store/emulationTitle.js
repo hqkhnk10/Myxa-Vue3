@@ -51,7 +51,7 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
         prop: "inactive",
         width: "180px",
         slot: true,
-        sort: false,
+        sort: null,
       },
     ],
   }),
@@ -81,7 +81,7 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
         })
         .catch((err) => {
           dispatchNotification({
-            content: err?.response?.data?.message ? err.response.data.message : err.message,
+            content: err?.response?.data?.userMsg ? err.response.data.message : err.message,
             type: "error",
           });
         }).finally(()=>{
@@ -126,7 +126,7 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
         })
         .catch((err) => {
           dispatchNotification({
-            content: err?.response?.data?.message ? err.response.data.message : err.message,
+            content: err?.response?.data?.userMsg ? err.response.data.message : err.message,
             type: "error",
           });
           console.log("err", err);
@@ -148,7 +148,7 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
         })
         .catch((err) => {
           dispatchNotification({
-            content: err?.response?.data?.message ? err.response.data.message : err.message,
+            content: err?.response?.data?.userMsg ? err.response.data.message : err.message,
             type: "error",
           });
           console.log("err", err);
