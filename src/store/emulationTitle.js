@@ -67,7 +67,6 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
      */
     async getAPI(params) {
       this.loading = true;
-      console.log('params', params);
       Object.assign(this.parameters, params); //keep the original parameters
       await request
         .get({ url: url, params: this.parameters })
@@ -129,7 +128,6 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
             content: err?.response?.data?.userMsg ? err.response.data.message : err.message,
             type: "error",
           });
-          console.log("err", err);
         });
     },
     /**
@@ -151,7 +149,6 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
             content: err?.response?.data?.userMsg ? err.response.data.message : err.message,
             type: "error",
           });
-          console.log("err", err);
         });
     },
     changeSortStore(index,value){

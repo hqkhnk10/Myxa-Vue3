@@ -1,5 +1,4 @@
 <template>
-  {{ levelOptions }}
   <div class="dialog__body">
     <form class="form" id="form-add-title" ref="misaForm">
       <div class="form-item">
@@ -426,6 +425,7 @@ export default {
      * @author QTNgo
      */
     editEmulation() {
+
       this.editAPI(this.customFormValue())
         .then(() => {
           this.getAPI();

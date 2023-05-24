@@ -1,5 +1,5 @@
 <template>
-  <div class="table-overflow-auto" ref="tableScreen">
+  <div class="table-container" ref="tableScreen">
     <table aria-describedby="table" >
       <thead class="table__header">
         <tr>
@@ -20,7 +20,7 @@
           </th>
         </tr>
       </thead>
-      <tbody>
+      <tbody >
         <tr
           v-for="(row, index) in tableData"
           :key="index"
@@ -43,6 +43,7 @@
             <slot name="operator" v-bind="row" />
           </div>
         </tr>
+      <div v-if="tableData.length <= 0 && !loading" class="table-nodata">Không có dữ liệu</div>
       </tbody>
     </table>
   <misa-loading :modelValue="loading"></misa-loading>
