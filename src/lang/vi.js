@@ -37,6 +37,7 @@ export const vi = {
     saveChange: 'Lưu thay đổi',
     remove: 'Xóa',
     close: "Đóng",
+    use: "Sử dụng"
   },
   emulationTitle: {
     emulationTitle: "Danh hiệu thi đua",
@@ -60,5 +61,6 @@ export const vi = {
     addEmulationTitle: "Thêm danh hiệu thi đua",
     emulationTitleName: "Tên danh hiệu thi đua",
     emulationTitleCode: "Mã danh hiệu",
+    editEmulationTitle: "Sửa danh hiệu thi đua"
   },
 };

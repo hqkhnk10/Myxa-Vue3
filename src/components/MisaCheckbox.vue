@@ -8,6 +8,7 @@
         :disabled="disabled"
       />
       <span class="checkmark" :class="imageCheckbox()"></span>
+      <span :class="{'checkmark-disabled' : disabled}"></span>
     </div>
     <slot></slot>
   </div>

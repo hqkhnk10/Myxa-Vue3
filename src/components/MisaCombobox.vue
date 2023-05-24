@@ -1,14 +1,14 @@
 <template>
   <div class="mcombobox" @click="toggleOptions">
-    <misa-input type="text" :modelValue="label" class="combobox-input"></misa-input>
-    <span class="mcombobox-input__icon">
+    <misa-input type="text" :modelValue="label" class="combobox-input" :disabled="disabled"></misa-input>
+    <span class="mcombobox-input__icon" v-if="loading">
       <img
         src="/libs/mcombobox/icon/loading-icon.svg"
         class="loading"
         alt="loading"
       />
     </span>
-    <button type="button" class="mcombobox__button"></button>
+    <misa-button type="button" class="mcombobox__button" :disabled="disabled"></misa-button>
     <div class="mcombobox__data" :class="positionStyle" v-if="optionsBox">
       <a
         v-for="(item, index) in options"
@@ -28,12 +28,12 @@ export default {
   data() {
     return {
       optionsBox: false,
+      loading: false
     };
   },
   props: {
     modelValue: {
-      type: [String, Number, null],
-      required: true,
+      type: [String, Number, null, undefined],
     },
     options: {
       type: Object,
@@ -42,6 +42,10 @@ export default {
       type: String,
       default: "bot",
     },
+    disabled:{
+      type: Boolean,
+      default: false,
+    }
   },
   computed: {
     /**
@@ -89,7 +93,9 @@ export default {
       this.$emit("update:modelValue", !this.modelValue);
     },
     toggleOptions() {
-      this.optionsBox = !this.optionsBox;
+      if(!this.disabled){
+        this.optionsBox = !this.optionsBox;
+      }
     },
     selectOption(item) {
       this.$emit("update:modelValue", item.value);

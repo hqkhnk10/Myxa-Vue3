@@ -168,6 +168,14 @@ input[type="radio"] {
     top: 11px;
     right: 32px;
 }
-.input-container:hover >  .input-button-x{
+.input-container:hover > input:not([disabled]) ~  .input-button-x{
 	display: block;
+}
+input[disabled]{
+	background-color: #ebebeb!important;
+	cursor: not-allowed!important;
+}
+textarea[disabled]{
+	background-color: #ebebeb!important;
+	cursor: not-allowed!important;
 }

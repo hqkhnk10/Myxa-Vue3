@@ -12,13 +12,7 @@
             :disabled="disabled"
             :reset="true"
             v-model="form.emulationTitleName"
-            label="Tên danh hiệu thi đua"
-            required
-            id="first-input"
             :isValid="validate.emulationTitleName.valid"
-            type="text"
-            autocomplete="off"
-            class="input w-full"
             placeholder="Nhập danh hiệu thi đua"
             @change="validateForm"
           ></misa-input>
@@ -84,6 +78,7 @@
           >
           <div class="form-item__content">
             <misa-combobox
+              :disabled="disabled"
               v-model="form.commendationLevel"
               :options="levelOptions"
             ></misa-combobox>
@@ -122,10 +117,11 @@
             v-model="form.note"
             class="textarea-resize"
             placeholder="Nhập ghi chú"
+            :disabled="disabled"
           ></textarea>
         </div>
       </div>
-      <div class="form-item" v-if="type == this.$enum.FormActions.Edit">
+      <div class="form-item" v-if="showStatus()">
         <label class="form-item__label">Trạng thái</label>
         <div class="form-item__content flex gap-12px">
           <!-- TODO: MisaRadio -->
@@ -175,7 +171,7 @@
             <span>{{ t("reuse.save") }}</span>
           </button>
         </div>
-        <div v-if="type == this.$enum.FormActions.Edit">
+        <div v-if="showStatus()">
           <misa-button type="primary" @click="submitForm()">{{
             t("reuse.saveChange")
           }}</misa-button>
@@ -183,15 +179,19 @@
       </div>
     </form>
   </div>
-  <misa-dialog title="Cảnh báo" v-model="validateDialog" top="30%" width="40%">
+  <misa-dialog title="Cảnh báo" v-model="validateDialog" width="40%">
     <div class="dialog__body">
-      <span>Mã danh hiệu thi đua <span style="font-weight: bold;">{{ form.emulationTitleCode }}</span> đã tồn tại trong danh sách. Xin vui lòng kiểm tra lại.</span>
+      <span
+        >Mã danh hiệu thi đua
+        <span style="font-weight: bold">{{ form.emulationTitleCode }}</span> đã
+        tồn tại trong danh sách. Xin vui lòng kiểm tra lại.</span
+      >
     </div>
     <div class="dialog__footer">
-                <misa-button type="danger" @click="validateDialog = false">
-                    <span>{{ t('reuse.close') }}</span>
-                </misa-button>
-            </div>
+      <misa-button type="danger" @click="validateDialog = false">
+        <span>{{ t("reuse.close") }}</span>
+      </misa-button>
+    </div>
   </misa-dialog>
 </template>
 
@@ -206,7 +206,7 @@ import { mapActions } from "pinia";
 export default {
   name: "EmulationFormDialog",
   props: {
-    formValue: {
+    row: {
       type: Object,
     },
     type: {
@@ -218,10 +218,9 @@ export default {
   data() {
     return {
       validateDialog: false,
-      disabled: false,
       dialogAdd: false,
       typeForm: this.type,
-      form: {...this.formValue},
+      form: {},
       validate: {
         emulationTitleName: {
           required: true,
@@ -247,25 +246,24 @@ export default {
       levelOptions: [],
     };
   },
-
-  watch: {
+  computed: {
     /**
-     * reset value when press add button
-     * @param {*} value
-     * Created At: 10/05/2023
+     * Nếu type là detail thì trả ra true để disable form
+     * Created At: 24/05/2023
      * @author QTNgo
      */
-    type(value) {
-      if (value == this.$enum.FormActions.Add) {
-        this.resetFormValue();
-      }
-      if (value == this.$enum.FormActions.Detail) {
-        this.disabled = true;
-      }
+    disabled() {
+      return this.type == this.$enum.FormActions.Detail ? true : false;
     },
-    formValue(value){
-      this.form = value;
-    }
+    /**
+     * Tự động sinh code khi thay đổi tên
+     * Created At: 24/05/2023
+     * @author QTNgo
+     */
+    inputCode() {
+      let code = this.getFirstLetters(this.form?.emulationTitleName);
+      return code;
+    },
   },
   async mounted() {
     /**
@@ -274,22 +272,181 @@ export default {
      * @author QTNgo
      */
     this.$refs.firstInput.focus();
-    await this.getEmulationCommendation().then((res)=>{
-      this.levelOptions = res.data
-    }).catch((err)=>{
-      dispatchNotification({
-            content: err?.response?.data?.userMsg ? err.response.data.message : err.message,
-            type: "error",
-          });
-    });
+
+    /**
+     * Lấy cấp phong trào
+     * Created At: 24/05/2023
+     * @author QTNgo
+     */
+    await this.getEmulationCommendation()
+      .then((res) => {
+        this.levelOptions = res.data;
+      })
+      .catch((err) => {
+        dispatchNotification({
+          content: err?.response?.data?.userMsg
+            ? err.response.data.message
+            : err.message,
+          type: "error",
+        });
+      });
+  },
+  watch: {
+    /**
+     * Thay đổi mã theo tên
+     * Created At: 24/05/2023
+     * @author QTNgo
+     */
+    inputCode(newValue, oldValue) {
+      if (
+        oldValue == this.form["emulationTitleCode"] ||
+        this.form["emulationTitleCode"] == "" ||
+        this.form["emulationTitleCode"] == "MF1616" ||
+        newValue == ""
+      ) {
+        this.form["emulationTitleCode"] = newValue;
+      }
+    },
+    /**
+     * Xử lí khi thay đổi type
+     * Created At: 24/05/2023
+     * @author QTNgo
+     */
+    type: {
+      handler(value) {
+        switch (value) {
+          case this.$enum.FormActions.Add:
+            this.resetFormValue();
+            break;
+          case this.$enum.FormActions.Edit:
+            this.getFormValue();
+            break;
+          case this.$enum.FormActions.Detail:
+            this.getFormValue();
+            break;
+        }
+      },
+      immediate: true,
+    },
   },
   methods: {
+    /**
+     * Lấy chữ cái đầu của các từ trong một chuỗi
+     * @param {*} str chuỗi
+     * Created At: 24/05/2023
+     * @author QTNgo
+     */
+    getFirstLetters(str) {
+      if (!str) {
+        return "";
+      }
+      const words = str.split(" ");
+      const firstLetters = words.map((word) => word.charAt(0).toUpperCase());
+      return firstLetters.join("");
+    },
+    /**
+     * Hiện ô trạng thái
+     * Created At: 24/05/2023
+     * @author QTNgo
+     */
+    showStatus() {
+      if (
+        this.type == this.$enum.FormActions.Edit ||
+        this.type == this.$enum.FormActions.Detail
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    /**
+     * Xử lí dữ liệu từ API
+     * @param {*} formValue dữ liệu từ APi
+     * Created At: 24/05/2023
+     * @author QTNgo*/
+    customGetValue(formValue) {
+      this.form.emulationTitleName = formValue?.emulationTitleName;
+      this.form.emulationTitleCode = formValue?.emulationTitleCode;
+      this.form.commendationLevel = formValue?.commendationLevel;
+      this.form.emulationTitleID = formValue?.emulationTitleID;
+      this.form.inactive = formValue?.inactive;
+      switch (formValue?.applyObject) {
+        case this.$enum.EmulationTitle.ApplyObject.Person:
+          this.form.applyObject0 = true;
+          this.form.applyObject2 = false;
+          break;
+        case this.$enum.EmulationTitle.ApplyObject.Organization:
+          this.form.applyObject0 = false;
+          this.form.applyObject2 = true;
+          break;
+        case this.$enum.EmulationTitle.ApplyObject.PersonAndOrg:
+          this.form.applyObject0 = true;
+          this.form.applyObject2 = true;
+          break;
+        default:
+          this.form.applyObject0 = false;
+          this.form.applyObject2 = false;
+          break;
+      }
+      switch (formValue?.movementType) {
+        case this.$enum.EmulationTitle.MovementType.Sometimes:
+          this.form.movementType0 = true;
+          this.form.movementType1 = false;
+          break;
+        case this.$enum.EmulationTitle.MovementType.Period:
+          this.form.movementType0 = false;
+          this.form.movementType1 = true;
+          break;
+        case this.$enum.EmulationTitle.MovementType.SometimesAndPeriod:
+          this.form.movementType0 = true;
+          this.form.movementType1 = true;
+          break;
+        default:
+          this.form.movementType0 = false;
+          this.form.movementType1 = false;
+          break;
+      }
+    },
+    /**
+     * Gọi API lấy chi tiết
+     * Created At: 24/05/2023
+     * @author QTNgo
+     */
+    async getFormValue() {
+      await this.getDetailAPI(this.row.emulationTitleID).then((res) => {
+        this.customGetValue(res?.data);
+      });
+    },
+    /**
+     * Reset value of the form
+     * Created At: 15/05/2023
+     * @author QTNgo
+     */
+    resetFormValue() {
+      this.form = {
+        emulationTitleName: "",
+        emulationTitleCode: "MF1616",
+        applyObject2: true,
+        applyObject0: false,
+        commendationLevel: 3,
+        movementType0: true,
+        movementType1: false,
+        inactive: 0,
+        emulationTitleID: 50,
+        isSystem: 1,
+      };
+    },
     /**
      * Register to use function in EmulationTitleStore
      * Created At: 15/05/2023
      * @author QTNgo
      */
-    ...mapActions(useEmulationTitleStore, ["getAPI","addAPI", "editAPI"]),
+    ...mapActions(useEmulationTitleStore, [
+      "getAPI",
+      "addAPI",
+      "editAPI",
+      "getDetailAPI",
+    ]),
     ...mapActions(useEmulationCommendationStore, ["getEmulationCommendation"]),
     /**
      * valudate function for Form
@@ -345,6 +502,9 @@ export default {
           case this.$enum.FormActions.Edit:
             this.editEmulation();
             break;
+          case this.$enum.FormActions.Detail:
+            this.editEmulation();
+            break;
         }
       }
     },
@@ -355,10 +515,10 @@ export default {
      */
     customFormValue() {
       let customValue = {};
-      customValue.emulationTitleCode = this.form.emulationTitleCode
-      customValue.emulationTitleName = this.form.emulationTitleName
-      customValue.emulationTitleID = this.form.emulationTitleID
-      customValue.commendationLevel = this.form.commendationLevel
+      customValue.emulationTitleCode = this.form.emulationTitleCode;
+      customValue.emulationTitleName = this.form.emulationTitleName;
+      customValue.emulationTitleID = this.form.emulationTitleID;
+      customValue.commendationLevel = this.form.commendationLevel;
       const {
         applyObject2,
         applyObject0,
@@ -386,7 +546,7 @@ export default {
         customValue.MovementType = MovementType.SometimesAndPeriod;
       }
       customValue.Inactive = inactive ? 1 : 0;
-      
+
       return customValue;
     },
     /**
@@ -395,7 +555,7 @@ export default {
      * @author QTNgo
      */
     addEmulation() {
-      var abc = this.customFormValue()
+      var abc = this.customFormValue();
       this.addAPI(abc)
         .then(() => {
           this.getAPI();
@@ -407,17 +567,17 @@ export default {
         })
         .catch((err) => {
           console.log("err", err);
-          if(err.response.status == 302){
-            this.validateDialog = true
+          if (err.response.status == 302) {
+            this.validateDialog = true;
+          } else {
+            dispatchNotification({
+              content: err?.response?.data?.userMsg
+                ? err.response.data.message
+                : err.message,
+              type: "error",
+            });
           }
-          else{
-          dispatchNotification({
-            content: err?.response?.data?.userMsg
-              ? err.response.data.message
-              : err.message,
-            type: "error",
-          });
-        }})
+        });
     },
     /**
      * Edit emulation table row
@@ -425,7 +585,6 @@ export default {
      * @author QTNgo
      */
     editEmulation() {
-
       this.editAPI(this.customFormValue())
         .then(() => {
           this.getAPI();
@@ -437,17 +596,17 @@ export default {
         })
         .catch((err) => {
           console.log("err", err);
-          if(err.response.status == 302){
-            this.validateDialog = true
+          if (err.response.status == 302) {
+            this.validateDialog = true;
+          } else {
+            dispatchNotification({
+              content: err?.response?.data?.userMsg
+                ? err.response.data.message
+                : err.message,
+              type: "error",
+            });
           }
-          else{
-          dispatchNotification({
-            content: err?.response?.data?.userMsg
-              ? err.response.data.message
-              : err.message,
-            type: "error",
-          });
-        }})
+        });
     },
   },
 };

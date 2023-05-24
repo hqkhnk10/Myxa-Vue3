@@ -3,7 +3,7 @@
     <input
       ref="input"
       v-model="inputValue"
-      :class="{ invalid: !isValid }"
+      :class="{ invalid: !isValid,'disabled-input' : disabled }"
       @blur="blurEvent"
       @input="handleInput"
       :disabled="disabled"
@@ -11,7 +11,7 @@
       :placeholder="placeholder"
     />
     <slot name="icon"></slot>
-    <span class="input__icon">
+    <span class="input__icon" v-if="loading">
       <img
         src="@/assets/icon/loading-icon.svg"
         class="loading"
@@ -20,7 +20,7 @@
         height="25"
       />
     </span>
-    <span class="input__icon">
+    <span class="input__icon" v-if="approve">
       <img
         src="@/assets/icon/approve-icon.svg"
         class="approve"
@@ -52,6 +52,8 @@ export default {
   data() {
     return {
       inputValue: this.modelValue,
+      loading: false,
+      approve: false
     };
   },
   props: {

@@ -46,7 +46,7 @@
           </div>
           <div>
             <button class="button button__primary-border">
-              {{ t("reuse.using") }}
+              {{ t("reuse.use") }}
             </button>
           </div>
           <div>
