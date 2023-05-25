@@ -156,9 +156,19 @@ export default {
     },
     emits: ['change-filter'],
     methods: {
+        /**
+         * Toggle visibility of drop down filter
+                  * Created At: 10/05/2023
+         * @author QTNgo
+         */
         toogleDropDownFilter(){
             this.dropDownFilter = !this.dropDownFilter
         },
+        /**
+         * Remove all filter, remove params in getAPI func
+                  * Created At: 10/05/2023
+         * @author QTNgo
+         */
         //Remove reuse.all filters (set to null)
         removeFilter() {
             this.$emit('change-filter', { ApplyObject: null, CommendationLevel: null, MovementType: null, Inactive: null })
@@ -167,7 +177,6 @@ export default {
          * Cancel changes in the drop down options
          * Created At: 10/05/2023
          * @author QTNgo
-         * @author
          */
         cancelFilter() {
             // Assign filter values to variables

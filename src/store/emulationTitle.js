@@ -1,7 +1,13 @@
 import { defineStore } from "pinia";
 import request from "@/axios";
 import { dispatchNotification } from "@/components/Notification";
-
+import { globals } from "@/main";
+const defaultSort = {
+  inactiveSort: true,
+  applyObjectSort: false,
+  commendationLevelSort: false,
+  emulationTitleNameSort: true,
+};
 const url = "EmulationTitle";
 export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
   state: () => ({
@@ -10,8 +16,7 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
     currentRow: {},
     id: 999,
     total: 20,
-    parameters: {
-    },
+    parameters: {},
     header: [
       {
         label: "Tên danh hiệu thi đua",
@@ -23,7 +28,6 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
         label: "Mã danh hiệu",
         prop: "emulationTitleCode",
         width: "160px",
-        sort: null,
       },
       {
         label: "Đối tượng khen thưởng",
@@ -64,10 +68,14 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
     /**
      * Get data from backend
      * @param {*} params (optional) to filter or pagination
+     * Created At: 25/05/2023
+     * Created By: QTNgo
      */
     async getAPI(params) {
       this.loading = true;
-      Object.assign(this.parameters, params); //keep the original parameters
+      let defaultsort = { ...defaultSort };
+      Object.assign(defaultsort, params);
+      Object.assign(this.parameters, defaultsort); //keep the original parameters
       await request
         .get({ url: url, params: this.parameters })
         .then((res) => {
@@ -80,17 +88,22 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
         })
         .catch((err) => {
           dispatchNotification({
-            content: err?.response?.data?.userMsg ? err.response.data.message : err.message,
+            content: err?.response?.data?.userMsg
+              ? err.response.data.message
+              : err.message,
             type: "error",
           });
-        }).finally(()=>{
-      this.loading = false;
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
     /**
      * Get detail of table
      * @param {*} id {id: Number} id of the row
      * @returns Promise<axios>
+     * Created At: 25/05/2023
+     * Created By: QTNgo
      */
     async getDetailAPI(id) {
       return await request.get({ url: `${url}/${id}` });
@@ -98,13 +111,17 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
     /**
      * Post data to backend
      * @param {*} data fromBody all the data of the row
+     * Created At: 25/05/2023
+     * Created By: QTNgo
      */
     async addAPI(data) {
-      return await request.post({ url: url, data: data })
+      return await request.post({ url: url, data: data });
     },
     /**
      * PUT data to backend
      * @param {*} data Frombody all the data of the row
+     * Created At: 25/05/2023
+     * Created By: QTNgo
      */
     async editAPI(data) {
       await request.put({ url: `${url}/${data.emulationTitleID}`, data: data });
@@ -112,20 +129,24 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
     /**
      * Call API to remove the row
      * @param {*} id id of row
+     * Created At: 25/05/2023
+     * Created By: QTNgo
      */
     async deleteAPI(id) {
       await request
         .delete({ url: `${url}/${id}` })
         .then(() => {
           dispatchNotification({
-            content: "Xóa thành công",
+            content: globals.t("reuse.deleteSuccess"),
             type: "success",
           });
           this.getAPI();
         })
         .catch((err) => {
           dispatchNotification({
-            content: err?.response?.data?.userMsg ? err.response.data.message : err.message,
+            content: err?.response?.data?.userMsg
+              ? err.response.data.message
+              : err.message,
             type: "error",
           });
         });
@@ -133,38 +154,123 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
     /**
      * Delete multiple items from the table
      * @param {*} data Array of id
+     * Created At: 25/05/2023
+     * Created By: QTNgo
      */
     async deleteMultipleAPI(data) {
       await request
         .delete({ url: `${url}/Multiple`, data: data })
         .then(() => {
           dispatchNotification({
-            content: "Xóa thành công",
+            content: globals.t("reuse.deleteSuccess"),
             type: "success",
           });
           this.getAPI();
         })
         .catch((err) => {
           dispatchNotification({
-            content: err?.response?.data?.userMsg ? err.response.data.message : err.message,
+            content: err?.response?.data?.userMsg
+              ? err.response.data.message
+              : err.message,
             type: "error",
           });
         });
     },
-    changeSortStore(index,value){
-      this.header[index].sort = value
-      this.getAPI({[`${this.header[index].prop}Sort`] : value})
+    /**
+     * Change status of emulation title
+     * @param {*} data
+     * Created At: 25/05/2023
+     * Created By: QTNgo
+     */
+    async updateStatusAPI(data) {
+      await request
+        .put({ url: `${url}/Status`, data: data })
+        .then(() => {
+          dispatchNotification({
+            content: globals.t("reuse.editSuccess"),
+            type: "success",
+          });
+          this.getAPI();
+        })
+        .catch((err) => {
+          dispatchNotification({
+            content: err?.response?.data?.userMsg
+              ? err.response.data.message
+              : err.message,
+            type: "error",
+          });
+        });
     },
+    /**
+     * edit multiple status from the table
+     * @param {*} data Array of id
+     * Created At: 25/05/2023
+     * Created By: QTNgo
+     */
+    async updateMultipleStatusAPI(data) {
+      await request
+        .put({ url: `${url}/MulitpleStatus`, data: data })
+        .then(() => {
+          dispatchNotification({
+            content: globals.t("reuse.editSuccess"),
+            type: "success",
+          });
+          this.getAPI();
+        })
+        .catch((err) => {
+          dispatchNotification({
+            content: err?.response?.data?.userMsg
+              ? err.response.data.message
+              : err.message,
+            type: "error",
+          });
+        });
+    },
+    /**
+     * If sort value change => call API
+     * @param {*} index
+     * @param {*} value
+     * Created At: 25/05/2023
+     * Created By: QTNgo
+     */
+    changeSortStore(index, value) {
+      if (this.header[index].sort !== undefined) {
+        this.header[index].sort = value;
+        if (value == null) {
+          this.getAPI();
+        } else {
+          this.getAPI({ [`${this.header[index].prop}Sort`]: value });
+        }
+      }
+    },
+    /**
+     * Add state only (only in FE)
+     * @param {*} rowObj
+     * Created At: 25/05/2023
+     * Created By: QTNgo
+     */
     add(rowObj) {
       const row = { EmulationTitleID: this.id++, ...rowObj };
       this.tableData.unshift(row);
     },
+    /**
+     * Edit state only (only in FE)
+     * @param {*} rowObj
+     * Created At: 25/05/2023
+     * Created By: QTNgo
+     */
     edit(rowObj) {
       const findIndex = this.tableData.findIndex(
         (row) => row.EmulationTitleID == rowObj.EmulationTitleID
       );
       this.tableData[findIndex] = { ...this.tableData[findIndex], ...rowObj };
     },
+    /**
+     * Remove state only (only in FE)
+     * @param {*} rowObj
+     * Created At: 25/05/2023
+     * Created By: QTNgo
+     */
     removeRows(rowArray) {
       this.tableData = this.tableData.filter(
         (tableRow) => !rowArray.includes(tableRow)

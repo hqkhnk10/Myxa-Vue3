@@ -45,14 +45,14 @@
             }}</misa-button>
           </div>
           <div>
-            <button class="button button__primary-border">
+            <misa-button type="primary-border" @click="updateStatus(0)">
               {{ t("reuse.use") }}
-            </button>
+            </misa-button>
           </div>
           <div>
-            <button class="button button__secondary">
+            <misa-button type="secondary" @click="updateStatus(1)">
               {{ t("reuse.shutdown") }}
-            </button>
+            </misa-button>
           </div>
           <div>
             <misa-button type="warning-border" @click="openConfirmDialog">{{
@@ -68,9 +68,7 @@
               class="button__icon_pr6"
               width="17"
             />
-            <span>{{
-              t("emulationTitle.addEmulation")
-            }}</span></misa-button
+            <span>{{ t("emulationTitle.addEmulation") }}</span></misa-button
           >
         </div>
       </div>
@@ -79,11 +77,17 @@
   <misa-confirm-dialog v-model="confirmDialog" title="Xóa Danh hiệu thi đua">
     <template #content>
       <div>
-        Xóa <span style="font-weight: bold;">{{selectedRows.length}} danh hiệu </span>  đã chọn?
+        Xóa
+        <span style="font-weight: bold"
+          >{{ selectedRows.length }} danh hiệu
+        </span>
+        đã chọn?
       </div>
     </template>
     <template #button>
-      <misa-button type="secondary" @click="closeConfirmDialog">Không</misa-button>
+      <misa-button type="secondary" @click="closeConfirmDialog"
+        >Không</misa-button
+      >
       <misa-button type="danger" @click="removeRow">Xóa danh hiệu</misa-button>
     </template>
   </misa-confirm-dialog>
@@ -91,6 +95,8 @@
 
 <script>
 import EmulationDropdownFilter from "./EmulationDropdownFilter.vue";
+import { useEmulationTitleStore } from "@/store/emulationTitle";
+import { mapActions } from "pinia";
 export default {
   name: "EmulationHeader",
   components: {
@@ -105,7 +111,7 @@ export default {
         Inactive: null,
       },
       keyword: "",
-      confirmDialog: false
+      confirmDialog: false,
     };
   },
   props: {
@@ -114,14 +120,44 @@ export default {
     },
   },
   methods: {
-    openConfirmDialog(){
-      this.confirmDialog = true
+    /**
+     * Get function from pinia
+     */
+    ...mapActions(useEmulationTitleStore, ["updateMultipleStatusAPI"]),
+
+    /**
+     * Call update status api
+     */
+    updateStatus(status) {
+      this.updateMultipleStatusAPI({
+        id: this.selectedRows.map((row) => row.emulationTitleID),
+        inactive: status,
+      });
     },
-    closeConfirmDialog(){
-      this.confirmDialog = false
+    /**
+     * open confirm dialog before delete row
+         //Created At: 10/05/2023
+    //@author QTNgo
+     */
+    openConfirmDialog() {
+      this.confirmDialog = true;
     },
+    /**
+     * close confirm dialog 
+         //Created At: 10/05/2023
+    //@author QTNgo
+     */
+    closeConfirmDialog() {
+      this.confirmDialog = false;
+    },
+    /**
+     * Send keyword to GetAPI to filter
+     * @param {*} keyword 
+         //Created At: 10/05/2023
+    //@author QTNgo
+     */
     changeKeyword(keyword) {
-        this.emitter.emit("search-table-emulation", keyword);
+      this.emitter.emit("search-table-emulation", keyword);
     },
     //Lọc dữ liệu theo keyword
     //Created At: 10/05/2023
@@ -133,7 +169,7 @@ export default {
     //Created At: 10/05/2023
     //@author QTNgo
     changeFilter(value) {
-      this.filterValue = {...value}
+      this.filterValue = { ...value };
       this.emitter.emit("filter-table-emulation", this.filterValue);
     },
     //Bỏ chọn trong table

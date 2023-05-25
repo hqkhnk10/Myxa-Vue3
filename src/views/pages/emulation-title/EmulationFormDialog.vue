@@ -124,7 +124,6 @@
       <div class="form-item" v-if="showStatus()">
         <label class="form-item__label">Trạng thái</label>
         <div class="form-item__content flex gap-12px">
-          <!-- TODO: MisaRadio -->
           <div class="radio__container" @click="form.inactive = 0">
             <span>{{ t("reuse.using") }}</span>
             <input
@@ -202,7 +201,6 @@ import { useEmulationTitleStore } from "@/store/emulationTitle";
 import { useEmulationCommendationStore } from "@/store/emulationCommendation";
 import { mapActions } from "pinia";
 
-//TODO: MisaForm
 export default {
   name: "EmulationFormDialog",
   props: {

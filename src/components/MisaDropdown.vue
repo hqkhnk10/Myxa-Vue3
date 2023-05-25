@@ -59,7 +59,6 @@ export default {
             this.$emit("update:modelValue", !this.showDropdown)
         },
         closeDropDown(){
-            console.log('leave');
             this.$emit("update:modelValue", false)
         }
     },

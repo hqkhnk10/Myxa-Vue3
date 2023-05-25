@@ -48,20 +48,33 @@
             </div>
           </div>
           <div class="button-icon-table">
-            <misa-dropdown :header="false" position="right" v-model="showDropdownEdit" :arrow="false">
-              <template #click >
+            <misa-dropdown
+              :header="false"
+              position="right"
+              v-model="showDropdownEdit"
+              :arrow="false"
+            >
+              <template #click>
                 <div class="tooltip flex items-center h-full">
-                  <div class="table-dropdown-icon"  @click="toogleDropdownEdit"><div class="icon__threedots"></div></div>
+                  <div class="table-dropdown-icon" @click="toogleDropdownEdit">
+                    <div class="icon__threedots"></div>
+                  </div>
                   <span class="tooltiptext tooltiptext-top dropdown"
                     >{{ t("reuse.more") }}...</span
                   >
                 </div>
               </template>
               <template #content>
-                  <a :class="{'content-disabled': !row?.inactive}" @click="changeStatus(row, 0)">{{
-                  t("reuse.using")
-                }}</a>
-                <a :class="{'content-disabled': row?.inactive}" @click="changeStatus(row, 1)">{{ t("reuse.shutdown") }}</a>
+                <a
+                  :class="{ 'content-disabled': !row?.inactive }"
+                  @click="changeStatus(row, 0)"
+                  >{{ t("reuse.using") }}</a
+                >
+                <a
+                  :class="{ 'content-disabled': row?.inactive }"
+                  @click="changeStatus(row, 1)"
+                  >{{ t("reuse.shutdown") }}</a
+                >
                 <a class="content-red" @click="openConfirmDialog(row)">{{
                   t("reuse.remove")
                 }}</a>
@@ -120,7 +133,7 @@ export default {
   watch: {
     /**
      * Recalculate the total number of pages in the table
-     * @param {*} newValue 
+     * @param {*} newValue
      */
     total(newValue) {
       this.pagination.total = newValue;
@@ -174,8 +187,13 @@ export default {
   },
   emits: ["select", "select-row"],
   methods: {
-    toogleDropdownEdit(){
-      this.showDropdownEdit = !this.showDropdownEdit
+    /**
+     * Toogle the visibility of dorp down to change status
+     * Created At: 15/05/2023
+     * @author QTNgo
+     */
+    toogleDropdownEdit() {
+      this.showDropdownEdit = !this.showDropdownEdit;
     },
     /**
      * Call change sort API method
@@ -185,8 +203,8 @@ export default {
      * Created At: 15/05/2023
      * @author QTNgo
      */
-    changeSort(_header, index, value){
-      this.changeSortStore(index,value)
+    changeSort(_header, index, value) {
+      this.changeSortStore(index, value);
     },
     /**
      * Open confirm dialog before remove row
@@ -248,7 +266,8 @@ export default {
       "editAPI",
       "deleteAPI",
       "deleteMultipleAPI",
-      "changeSortStore"
+      "changeSortStore",
+      "updateStatusAPI",
     ]),
     /**
      * Call api POST
@@ -348,6 +367,10 @@ export default {
       this.$emit("select-row", this.$enum.FormActions.Edit, row);
     },
     changeStatus(row, status) {
+      this.updateStatusAPI({
+        emulationTitleID: row.emulationTitleID,
+        inactive: status,
+      });
       console.log("row: ", row, status);
     },
   },

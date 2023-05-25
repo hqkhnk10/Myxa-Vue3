@@ -15,7 +15,7 @@
           >
           <div class="flex items-center">
             <div style="text-align: left;">{{ header.label }}</div>
-            <div data-v-6467733b="" class="ml-4 icon-sort" :class="header.sort ? 'asc' : 'desc'" v-if="header.sort !== null"></div>
+            <div data-v-6467733b="" class="ml-4 icon-sort" :class="header.sort ? 'asc' : 'desc'" v-if="header.sort == true || header.sort == false"></div>
           </div>
           </th>
         </tr>

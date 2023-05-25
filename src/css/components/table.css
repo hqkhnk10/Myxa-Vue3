@@ -24,6 +24,7 @@ td {
   text-overflow: ellipsis;
 }
 th {
+  cursor: pointer;
   text-align: left;
   font-weight: 700;
 }
