@@ -2,9 +2,13 @@
     position: relative;
     display: inline-block;
   }
-  
+  .dropdown-content-marigin{
+    margin-top: 12px;
+  }
+  .dropdown-content.right{
+    right: 0;
+  }
 .dropdown-content {
-  margin-top: 12px;
   position: absolute;
   background-color: white;
   min-width: 160px;
@@ -92,4 +96,12 @@ width: 100%;
 .show {display:block;}
 #myDropdown{
   background-color: white;
+}
+.table-dropdown-icon{
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

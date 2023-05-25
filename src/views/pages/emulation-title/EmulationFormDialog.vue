@@ -4,7 +4,7 @@
       <div class="form-item">
         <label class="form-item__label"
           >{{ t("emulationTitle.emulationTitleName")
-          }}<span class="required">*</span></label
+          }}<span class="required" v-if="validate.emulationTitleName.required">*</span></label
         >
         <div class="form-item__content">
           <misa-input
@@ -25,7 +25,7 @@
         <div class="flex-1">
           <label class="form-item__label"
             >{{ t("emulationTitle.emulationTitleCode")
-            }}<span class="required">*</span></label
+            }}<span class="required" v-if="validate.emulationTitleCode.required">*</span></label
           >
           <div class="form-item__content">
             <misa-input
@@ -47,7 +47,7 @@
         <div class="flex-1">
           <label class="form-item__label flex"
             >{{ t("emulationTitle.applyObject") }}
-            <span class="required">*</span>
+            <span class="required" >*</span>
           </label>
           <div class="form-item__content flex items-center">
             <misa-checkbox
@@ -87,7 +87,7 @@
         <div class="flex-1">
           <label class="form-item__label flex"
             >{{ t("emulationTitle.movementType") }}
-            <span class="required">*</span>
+            <span class="required" >*</span>
           </label>
           <div class="form-item__content flex items-center">
             <misa-checkbox
@@ -114,7 +114,7 @@
         <label class="form-item__label">{{ t("reuse.note") }}</label>
         <div class="form-item__content">
           <textarea
-            v-model="form.note"
+            v-model="form.emulationTitleNote"
             class="textarea-resize"
             placeholder="Nhập ghi chú"
             :disabled="disabled"
@@ -159,7 +159,7 @@
           <button
             class="button button__primary-border"
             type="button"
-            @click="submitAndRestForm()"
+            @click="submitAndResetForm()"
           >
             <span>{{ t("reuse.saveAndAdd") }}</span>
           </button>
@@ -217,10 +217,12 @@ export default {
 
   data() {
     return {
+      successContent: '',
       validateDialog: false,
       dialogAdd: false,
       typeForm: this.type,
       form: {},
+      apiFunc: null,
       validate: {
         emulationTitleName: {
           required: true,
@@ -316,12 +318,14 @@ export default {
       handler(value) {
         switch (value) {
           case this.$enum.FormActions.Add:
+            this.apiFunc = this.addAPI;
+            this.successContent = this.t('reuse.addSuccess')
             this.resetFormValue();
             break;
           case this.$enum.FormActions.Edit:
-            this.getFormValue();
-            break;
           case this.$enum.FormActions.Detail:
+            this.apiFunc = this.editAPI;
+            this.successContent = this.t('reuse.editSuccess')
             this.getFormValue();
             break;
         }
@@ -367,6 +371,7 @@ export default {
     customGetValue(formValue) {
       this.form.emulationTitleName = formValue?.emulationTitleName;
       this.form.emulationTitleCode = formValue?.emulationTitleCode;
+      this.form.emulationTitleNote = formValue?.emulationTitleNote;
       this.form.commendationLevel = formValue?.commendationLevel;
       this.form.emulationTitleID = formValue?.emulationTitleID;
       this.form.inactive = formValue?.inactive;
@@ -483,8 +488,14 @@ export default {
       });
       return isValid;
     },
-    submitAndRestForm() {
-      this.submitForm();
+    async submitAndResetForm(){
+      if (this.validateForm()) {
+        const res = await this.submitAPI(false)
+        if(res){
+          alert('reset')
+          this.resetFormValue();
+        }
+      }
     },
     /**
      * Check validate before submit
@@ -495,17 +506,7 @@ export default {
      */
     submitForm() {
       if (this.validateForm()) {
-        switch (this.type) {
-          case this.$enum.FormActions.Add:
-            this.addEmulation();
-            break;
-          case this.$enum.FormActions.Edit:
-            this.editEmulation();
-            break;
-          case this.$enum.FormActions.Detail:
-            this.editEmulation();
-            break;
-        }
+        this.submitAPI()
       }
     },
     /**
@@ -513,10 +514,11 @@ export default {
      * Created At: 10/05/2023
      * @author QTNgo
      */
-    customFormValue() {
+    customPostValue() {
       let customValue = {};
       customValue.emulationTitleCode = this.form.emulationTitleCode;
       customValue.emulationTitleName = this.form.emulationTitleName;
+      customValue.emulationTitleNote = this.form.emulationTitleNote;
       customValue.emulationTitleID = this.form.emulationTitleID;
       customValue.commendationLevel = this.form.commendationLevel;
       const {
@@ -550,20 +552,21 @@ export default {
       return customValue;
     },
     /**
-     * Add emulation table row
+     * Thêm hoặc sửa tùy thuộc theo Type
      * Created At: 10/05/2023
      * @author QTNgo
      */
-    addEmulation() {
-      var abc = this.customFormValue();
-      this.addAPI(abc)
+    async submitAPI(closeDialog = true) {
+      let postValue = this.customPostValue()
+      return await this.apiFunc(postValue)
         .then(() => {
           this.getAPI();
           dispatchNotification({
-            content: "Thêm thành công",
+            content: this.successContent,
             type: "success",
           });
-          this.closeDialog();
+          if(closeDialog) {this.closeDialog();}
+          return true
         })
         .catch((err) => {
           console.log("err", err);
@@ -577,35 +580,7 @@ export default {
               type: "error",
             });
           }
-        });
-    },
-    /**
-     * Edit emulation table row
-     * Created At: 10/05/2023
-     * @author QTNgo
-     */
-    editEmulation() {
-      this.editAPI(this.customFormValue())
-        .then(() => {
-          this.getAPI();
-          dispatchNotification({
-            content: "Sửa thành công",
-            type: "success",
-          });
-          this.closeDialog();
-        })
-        .catch((err) => {
-          console.log("err", err);
-          if (err.response.status == 302) {
-            this.validateDialog = true;
-          } else {
-            dispatchNotification({
-              content: err?.response?.data?.userMsg
-                ? err.response.data.message
-                : err.message,
-              type: "error",
-            });
-          }
+          return false
         });
     },
   },

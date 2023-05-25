@@ -1,8 +1,8 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-    <misa-dropdown title="Lọc danh hiệu" ref="misaDropdown">
+    <misa-dropdown title="Lọc danh hiệu" ref="misaDropdown" v-model="dropDownFilter">
         <template #click>
-            <misa-button type="secondary">
+            <misa-button type="secondary"  @click="toogleDropDownFilter">
                 <div class="icon-margin-right"
                     :class="filterChange ? 'icon__filter--status' : 'icon__filter'"></div>
                 <span>{{ t('reuse.filter') }}</span>
@@ -52,6 +52,7 @@
 export default {
     data() {
         return {
+            dropDownFilter: false,
             ApplyObject: null,
             CommendationLevel: null,
             MovementType: null,
@@ -155,6 +156,9 @@ export default {
     },
     emits: ['change-filter'],
     methods: {
+        toogleDropDownFilter(){
+            this.dropDownFilter = !this.dropDownFilter
+        },
         //Remove reuse.all filters (set to null)
         removeFilter() {
             this.$emit('change-filter', { ApplyObject: null, CommendationLevel: null, MovementType: null, Inactive: null })

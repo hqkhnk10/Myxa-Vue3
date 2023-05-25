@@ -1,5 +1,5 @@
 @import '../var.css';
-button:disabled{
+a:disabled, button:disabled{
     opacity: 56%;
     cursor: not-allowed;
 }

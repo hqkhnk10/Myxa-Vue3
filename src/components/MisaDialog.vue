@@ -5,7 +5,6 @@
     aria-modal="true"
     aria-label="Tips"
     class="dialog-show"
-    :style="paddingTop"
   >
     <div class="dialog__padding" :style="widthDialog">
       <div class="dialog__header">

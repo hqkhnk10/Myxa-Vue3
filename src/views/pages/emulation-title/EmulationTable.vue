@@ -48,20 +48,20 @@
             </div>
           </div>
           <div class="button-icon-table">
-            <misa-dropdown :header="false" position="right">
-              <template #click>
+            <misa-dropdown :header="false" position="right" v-model="showDropdownEdit" :arrow="false">
+              <template #click >
                 <div class="tooltip flex items-center h-full">
-                  <div class="icon__threedots"></div>
+                  <div class="table-dropdown-icon"  @click="toogleDropdownEdit"><div class="icon__threedots"></div></div>
                   <span class="tooltiptext tooltiptext-top dropdown"
                     >{{ t("reuse.more") }}...</span
                   >
                 </div>
               </template>
               <template #content>
-                <a class="content-disabled" @click="changeStatus(row, 1)">{{
+                  <a :class="{'content-disabled': !row?.inactive}" @click="changeStatus(row, 0)">{{
                   t("reuse.using")
                 }}</a>
-                <a @click="changeStatus(row, 2)">{{ t("reuse.shutdown") }}</a>
+                <a :class="{'content-disabled': row?.inactive}" @click="changeStatus(row, 1)">{{ t("reuse.shutdown") }}</a>
                 <a class="content-red" @click="openConfirmDialog(row)">{{
                   t("reuse.remove")
                 }}</a>
@@ -113,6 +113,7 @@ export default {
       keyword: "",
       id: 999,
       confirmDialog: false,
+      showDropdownEdit: false,
       selectedRow: {},
     };
   },
@@ -173,6 +174,9 @@ export default {
   },
   emits: ["select", "select-row"],
   methods: {
+    toogleDropdownEdit(){
+      this.showDropdownEdit = !this.showDropdownEdit
+    },
     /**
      * Call change sort API method
      * @param {*} _header header value
@@ -343,7 +347,6 @@ export default {
       this.emitter.emit("toggle-emulation-dialog", true);
       this.$emit("select-row", this.$enum.FormActions.Edit, row);
     },
-    //TODO: Change value status
     changeStatus(row, status) {
       console.log("row: ", row, status);
     },

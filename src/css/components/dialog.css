@@ -52,6 +52,7 @@
     gap: 24px;
 }
 .dialog-show{
+    display: flex;
     background: rgb(0, 0, 0, 0.6);
     z-index: 999;
     position: fixed;
