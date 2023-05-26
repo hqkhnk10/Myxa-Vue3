@@ -1,18 +1,19 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 
-const TheLayout = () => import('@/components/Layout/TheLayout.vue')
-const NotFound = () => import('@/views/pages/base-view/NotFound.vue')
-const BaseStyle = () => import('@/views/pages/base-view/BaseStyle.vue')
-const EmulationTitle = () => import('@/views/pages/emulation-title/EmulationTitleIndex.vue')
+const TheLayout = () => import("@/components/Layout/TheLayout.vue");
+const NotFound = () => import("@/views/pages/base-view/NotFound.vue");
+const BaseStyle = () => import("@/views/pages/base-view/BaseStyle.vue");
+const EmulationTitle = () =>
+  import("@/views/pages/emulation-title/EmulationTitleIndex.vue");
 
-const mainRoutes =[
+const mainRoutes = [
   {
-    path: '/',
-    name: 'home',
+    path: "/",
+    name: "home",
     component: TheLayout,
-    children: []
-  }
-]
+    children: [],
+  },
+];
 
 export const routes = [
   {
@@ -59,7 +60,7 @@ export const routes = [
           title: "router.summaryRegister",
           icon: "",
         },
-      }
+      },
     ],
   },
   {
@@ -106,7 +107,7 @@ export const routes = [
           title: "router.votationCommendation",
           icon: "",
         },
-      }
+      },
     ],
   },
   {
@@ -144,7 +145,7 @@ export const routes = [
           title: "router.offsetCommendation",
           icon: "",
         },
-      }
+      },
     ],
   },
   {
@@ -350,24 +351,32 @@ export const routes = [
     },
   },
 ];
-routes.forEach(route => mainRoutes[0].children.push(route))
+routes.forEach((route) => mainRoutes[0].children.push(route));
 export const router = createRouter({
   history: createWebHashHistory(),
   routes: mainRoutes,
 });
-router.beforeEach((to, from, next) => {
-  const loading = document.querySelector('.loading-screen')
-  if (loading) {
-    loading.style.display = 'flex'
-  }
-  setTimeout(()=>{
-    next()
-  },400)
-})
 
-router.afterEach(() => {
-  const loading = document.querySelector('.loading-screen')
+/**
+ * Show loading when change route
+ * CreatedBy: QTNgo(15/05/2023)
+ */
+router.beforeEach((to, from, next) => {
+  const loading = document.querySelector(".loading-screen");
   if (loading) {
-    loading.style.display = 'none'
+    loading.style.display = "flex";
   }
-})
+  setTimeout(() => {
+    next();
+  }, 400);
+});
+/**
+ * Hide loading when finish change route
+ * CreatedBy: QTNgo(15/05/2023)
+ */
+router.afterEach(() => {
+  const loading = document.querySelector(".loading-screen");
+  if (loading) {
+    loading.style.display = "none";
+  }
+});

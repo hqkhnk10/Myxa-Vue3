@@ -121,7 +121,8 @@ export default {
     },
     props: {
         filterValue: {
-            type: Object
+            type: Object,
+            description: 'Dữ liệu filter, { ApplyObject : 1/2/3, CommendationLevel:0/1/2/3, MovementType:0/1/2, Inactive:0/1 }'
         }
     },
     watch: {
