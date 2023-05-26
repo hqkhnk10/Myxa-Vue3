@@ -80,7 +80,7 @@
                 }}</a>
               </template>
             </misa-dropdown>
-          </div>
+        </div>
         </template>
       </misa-table>
     </div>

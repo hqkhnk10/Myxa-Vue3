@@ -1,5 +1,5 @@
 <template>
-  <div class="mcombobox" @click="toggleOptions">
+  <div class="mcombobox" @click="toggleOptions" @mouseleave="closeCombobox">
     <misa-input
       type="text"
       :modelValue="label"
@@ -93,6 +93,9 @@ export default {
   },
   emits: ["update:modelValue", "change"],
   methods: {
+    closeCombobox(){
+      this.optionsBox = false
+    },
     /**
      * Toggle the visibility of the options
      * CreatedBy: QTNgo (15/05/2023)

@@ -44,7 +44,7 @@ input::placeholder{
   	font-size: 14px;
 	
 }
-input:hover{
+.input-container:hover input{
 	background-color: var(--input-border-color-gray);
   	cursor: pointer;
 }
