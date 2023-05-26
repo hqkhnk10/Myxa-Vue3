@@ -147,28 +147,25 @@
         </div>
       </div>
       <div class="form__footer">
-        <button
-          class="button button__secondary"
-          type="button"
+        <misa-button
+          type="secondary"
           @click="closeDialog()"
         >
           <span>{{ t("reuse.cancel") }}</span>
-        </button>
+        </misa-button>
         <div class="flex gap-12px" v-if="type == this.$enum.FormActions.Add">
-          <button
-            class="button button__primary-border"
-            type="button"
+          <misa-button
+            type="primary-border"
             @click="submitAndResetForm()"
           >
             <span>{{ t("reuse.saveAndAdd") }}</span>
-          </button>
-          <button
-            class="button button__primary"
-            type="button"
+          </misa-button>
+          <misa-button
+            type="primary"
             @click="submitForm()"
           >
             <span>{{ t("reuse.save") }}</span>
-          </button>
+          </misa-button>
         </div>
         <div v-if="showStatus()">
           <misa-button type="primary" @click="submitForm()">{{
@@ -206,10 +203,12 @@ export default {
   props: {
     row: {
       type: Object,
+      description: 'Dữ liệu của được chọn, được truyền từ EmulationTItleIndex.vue'
     },
     type: {
       type: String,
       default: "Add",
+      description: 'Kiểu type, được truyền từ EmulationTItleIndex.vue'
     },
   },
 

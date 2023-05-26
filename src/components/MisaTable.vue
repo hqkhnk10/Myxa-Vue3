@@ -9,13 +9,13 @@
           <th
             v-for="(header, index) in modelValue.header"
             :key="index"
-            :style="{ minWidth: header.width }"
+            :style="{ minWidth: header?.width }"
             class="cursor-pointer"
             @click="changeSort(header, index)"
           >
           <div class="flex items-center">
-            <div style="text-align: left;">{{ header.label }}</div>
-            <div data-v-6467733b="" class="ml-4 icon-sort" :class="header.sort ? 'asc' : 'desc'" v-if="header.sort == true || header.sort == false"></div>
+            <div style="text-align: left;">{{ header?.label }}</div>
+            <div data-v-6467733b="" class="ml-4 icon-sort" :class="header?.sort ? 'asc' : 'desc'" v-if="header?.sort == true || header?.sort == false"></div>
           </div>
           </th>
         </tr>
@@ -36,8 +36,8 @@
           <td v-for="(header, index) in modelValue.header" :key="index"
           @dblclick="dbClickRow(row)"
           >
-            <slot :name="header.prop" v-bind="row" v-if="header.slot" />
-            <div v-else>{{ row[header.prop] }}</div>
+            <slot :name="header?.prop" v-bind="row" v-if="header?.slot" />
+            <div v-else>{{ row[header?.prop] }}</div>
           </td>
           <div class="button__table operator">
             <slot name="operator" v-bind="row" />
@@ -73,6 +73,7 @@ export default {
   props: {
     modelValue: {
       type: Object,
+      description: '{header:{prop:string,label:string,sort?:boolean,width:string},data:[{}]}'
     },
     checkbox: {
       type: Boolean,
@@ -82,22 +83,27 @@ export default {
     pagination: {
       type: Object,
       default: () => {},
+      description: "show pagination",
     },
     filterValue: {
       type: Object,
       default: () => {},
+      description: "filter value",
     },
     keyword: {
       type: String,
       default: "",
+      description: "keyword to filter",
     },
     filterApi: {
       type: Boolean,
       default: false,
+      description: "if(true) it will not filter locally, it will send value to api",
     },
     loading:{
       type: Boolean,
       default: false,
+      description: "show loading icon in the table",
     }
   },
   watch: {

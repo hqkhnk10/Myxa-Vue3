@@ -1,34 +1,40 @@
 <template>
-  <button type="button" class="button" :class="renderButton()" :disabled="disabled">
-    <slot>
-    </slot>
+  <button
+    type="button"
+    class="button"
+    :class="renderButton()"
+    :disabled="disabled"
+  >
+    <slot> </slot>
   </button>
 </template>
 
 <script>
 export default {
-  name: 'MisaButton',
+  name: "MisaButton",
   data() {
-    return {
-    };
+    return {};
   },
   props: {
     //primary,link,secondary
     //TODO: enum
     type: {
       type: String,
-      default: 'primary'
+      default: "primary",
     },
     disabled: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   methods: {
+    /**
+     * Return class of the button
+     * CreatedBy: QTNgo (15/05/2023)
+     */
     renderButton() {
       return `button__${this.type}`;
-    }
-  }
-}
+    },
+  },
+};
 </script>
-

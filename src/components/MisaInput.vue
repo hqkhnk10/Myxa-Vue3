@@ -60,43 +60,38 @@ export default {
     modelValue: {
       type: [String, Number],
       default: "",
+      description: "value of input",
     },
     disabled: {
       type: Boolean,
       default: false,
+      description: "disable input",
     },
     placeholder: {
       type: String,
+      description: "Placeholder for the input",
     },
     isValid: {
       type: Boolean,
       default: true,
-    },
-    //TODO: validate input value
-    validateEvent: {
-      type: Function,
-    },
-    trigger: {
-      type: String,
-      default: "change",
-    },
-    class: {
-      type: String,
-      default: "",
+      description: "Change border color to red",
     },
     width: {
       type: String,
       default: "100%",
+      description: "Custom width of input",
     },
     reset:{
       type: Boolean,
       default: false,
+      description: "Show X button to reset value to ''",
     }
   },
   watch: {
     /**
      *  set value of input when prop change
      * @param {*} value
+     * CreatedBy: QTNgo (15/05/2023)
      */
     modelValue(value) {
       this.inputValue = value;
@@ -104,6 +99,7 @@ export default {
     /**
      *  setting up a two-way data binding
      * @param {*} value
+     * CreatedBy: QTNgo (15/05/2023)
      */
     inputValue(newValue) {
       this.$emit("update:modelValue", newValue);
@@ -112,6 +108,10 @@ export default {
   },
   emits: ["update:modelValue", "change", "focus", "click-icon", "debounce"],
   methods: {
+        /**
+     *  Debounce the value
+     * CreatedBy: QTNgo (15/05/2023)
+     */
     handleInput(){
       clearTimeout(this.timeout)
       this.timeout = setTimeout(() => {

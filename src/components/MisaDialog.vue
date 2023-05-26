@@ -49,17 +49,26 @@ export default {
   },
   computed: {
     /**
-     * Set style of the dialog
+     * Set wid of the dialog
+     * CreatedBy: QTNgo (15/05/2023)
      */
     widthDialog() {
       return `width: ${this.width}`;
     },
+    /**
+     * Set padding top of the dialog
+     * CreatedBy: QTNgo (15/05/2023)
+     */
     paddingTop() {
       return `padding-top: ${this.top}`;
     },
   },
   emits: ["update:modelValue"],
   methods: {
+    /**
+     * Toggle the visibility of the dialog
+     * CreatedBy: QTNgo (15/05/2023)
+     */
     toggleDialog() {
       this.$emit("update:modelValue", !this.modelValue);
     },

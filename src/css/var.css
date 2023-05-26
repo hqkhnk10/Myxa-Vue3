@@ -1,5 +1,6 @@
 :root {
     --button-bg-color-green: var(--color-green);
+    --button-bg-color-green-focus:#ebfde7;
     --button-bg-color-green-hover:#57C841;
     --button-bg-color-green-active:#30881f;
     --button-bg-color-white:#FFFFFF;

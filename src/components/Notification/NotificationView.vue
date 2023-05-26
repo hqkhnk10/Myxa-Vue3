@@ -5,11 +5,19 @@ import { formatNotification } from "./index";
 defineProps({
   notification: Object,
 });
-
+/**
+ * Call function to close notification
+ * @param {*} id id of the notification
+ * CreatedBy: QTNgo (15/05/2023)
+ */
 const closeNotification = (id) => {
   store.actions.removeNotification(id);
 };
-
+/**
+ * Return color base on type of notification
+ * @param {*} type "success" or "warning" or "danger" or "infomation"
+ * CreatedBy: QTNgo (15/05/2023)
+ */
 const formatColor = (type) => {
   switch (type) {
     case "success":

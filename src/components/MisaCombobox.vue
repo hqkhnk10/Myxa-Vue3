@@ -1,6 +1,11 @@
 <template>
   <div class="mcombobox" @click="toggleOptions">
-    <misa-input type="text" :modelValue="label" class="combobox-input" :disabled="disabled"></misa-input>
+    <misa-input
+      type="text"
+      :modelValue="label"
+      class="combobox-input"
+      :disabled="disabled"
+    ></misa-input>
     <span class="mcombobox-input__icon" v-if="loading">
       <img
         src="/libs/mcombobox/icon/loading-icon.svg"
@@ -8,7 +13,11 @@
         alt="loading"
       />
     </span>
-    <misa-button type="button" class="mcombobox__button" :disabled="disabled"></misa-button>
+    <misa-button
+      type="button"
+      class="mcombobox__button"
+      :disabled="disabled"
+    ></misa-button>
     <div class="mcombobox__data" :class="positionStyle" v-if="optionsBox">
       <a
         v-for="(item, index) in options"
@@ -28,7 +37,7 @@ export default {
   data() {
     return {
       optionsBox: false,
-      loading: false
+      loading: false,
     };
   },
   props: {
@@ -42,10 +51,10 @@ export default {
       type: String,
       default: "bot",
     },
-    disabled:{
+    disabled: {
       type: Boolean,
       default: false,
-    }
+    },
   },
   computed: {
     /**
@@ -69,14 +78,9 @@ export default {
       }
     },
     /**
-     * Set style of the combobox
+     * Set position of the combobox option
+     * CreatedBy: QTNgo (15/05/2023)
      */
-    widthDialog() {
-      return `width: ${this.width}`;
-    },
-    paddingTop() {
-      return `padding-top: ${this.top}`;
-    },
     positionStyle() {
       if (this.position == "top") {
         return "bot100";
@@ -89,14 +93,19 @@ export default {
   },
   emits: ["update:modelValue", "change"],
   methods: {
-    toggleDialog() {
-      this.$emit("update:modelValue", !this.modelValue);
-    },
+    /**
+     * Toggle the visibility of the options
+     * CreatedBy: QTNgo (15/05/2023)
+     */
     toggleOptions() {
-      if(!this.disabled){
+      if (!this.disabled) {
         this.optionsBox = !this.optionsBox;
       }
     },
+    /**
+     * Update value when click item
+     * CreatedBy: QTNgo (15/05/2023)
+     */
     selectOption(item) {
       this.$emit("update:modelValue", item.value);
       this.$emit("change", item.value);
@@ -104,4 +113,3 @@ export default {
   },
 };
 </script>
-

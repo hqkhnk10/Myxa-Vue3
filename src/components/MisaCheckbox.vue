@@ -8,7 +8,7 @@
         :disabled="disabled"
       />
       <span class="checkmark" :class="imageCheckbox()"></span>
-      <span :class="{'checkmark-disabled' : disabled}"></span>
+      <span :class="{ 'checkmark-disabled': disabled }"></span>
     </div>
     <slot></slot>
   </div>
@@ -40,12 +40,17 @@ export default {
   },
   emits: ["update:modelValue", "click-box"],
   methods: {
+    /**
+     * update value of checkbox
+     * CreatedBy: QTNgo (15/05/2023)
+     */
     toogleCheckbox() {
       this.$emit("update:modelValue", !this.modelValue);
       this.$emit("click-box", !this.modelValue);
     },
     /**
      * Change image of checkbox base on value
+     * CreatedBy: QTNgo (15/05/2023)
      */
     imageCheckbox() {
       switch (this.modelValue) {
@@ -62,4 +67,3 @@ export default {
   },
 };
 </script>
-

@@ -117,6 +117,7 @@ export default {
   props: {
     selectedRows: {
       type: Object,
+      description: 'Những rows đang được chọn, được truyền từ EmulationTItleIndex.vue'
     },
   },
   methods: {

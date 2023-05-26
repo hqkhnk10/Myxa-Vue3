@@ -37,6 +37,7 @@ button:focus{
     border-color: var(--button-bg-color-green);
     color: var(--button-bg-color-green);
 }
+
 .button.button__primary-border:not(:disabled):active{
     background-color: var(--button-bg-color-green-active);
 }
@@ -85,6 +86,15 @@ button:focus{
     color: var(--text-black);
     background-color: var(--text-white);
     border-color: var(--button-border-color-white);
+}
+.button__primary:focus{
+    background-color: var(--button-bg-color-green-hover);
+}
+.button__secondary:focus{
+    background-color: var(--input-border-color-gray);
+}
+.button__primary-border:focus{
+    background-color: var(--button-bg-color-green-focus);
 }
 .button__secondary:hover{
     background-color:var(--button-bg-color-white-hover);
