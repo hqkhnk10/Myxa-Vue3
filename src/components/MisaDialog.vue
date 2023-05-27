@@ -9,14 +9,30 @@
     <div class="dialog__padding" :style="widthDialog">
       <div class="dialog__header">
         <span class="dialog__title">{{ title }}</span>
+        <div class="dialog__header-button">
+        <button
+          type="button"
+          aria-label="Close"
+          class="dialog__headerbtn"
+        >
+        <div class="tooltip">
+          <div class="icon__help"></div>
+          <span class="tooltiptext tooltiptext-top">Hướng dẫn</span>
+        </div>
+        </button>
         <button
           type="button"
           aria-label="Close"
           class="dialog__headerbtn"
           @click="toggleDialog"
         >
-          <img src="@/assets/icon/x-icon.svg" alt="Exit" style="width: 12px" />
+
+        <div class="tooltip">
+          <div class="icon__x"></div>
+          <span class="tooltiptext tooltiptext-top">Đóng</span>
+        </div>
         </button>
+      </div>
       </div>
       <slot></slot>
     </div>

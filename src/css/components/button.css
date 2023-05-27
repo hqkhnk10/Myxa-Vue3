@@ -44,7 +44,6 @@ button:focus{
 .button__primary-border:hover{
     background-color: #CEEAD9;
 }
-
 .button__danger{
     border: 0;
     background-color: var(--button-bg-color-red);
@@ -86,6 +85,12 @@ button:focus{
     color: var(--text-black);
     background-color: var(--text-white);
     border-color: var(--button-border-color-white);
+}
+.button__secondary-noborder{
+    color: var(--text-black);
+    background-color: var(--text-white);
+    border: none;
+    padding: 0 8px;
 }
 .button__primary:focus{
     background-color: var(--button-bg-color-green-hover);

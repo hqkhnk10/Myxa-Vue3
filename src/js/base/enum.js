@@ -10,6 +10,7 @@ const MisaEnum={
     },
     EmulationTitle:{
         ApplyObject:{
+            Family: 4,
             PersonAndOrg: 3,
             Person: 2,
             Organization: 1

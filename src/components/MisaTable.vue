@@ -1,6 +1,6 @@
 <template>
   <div class="table-container" ref="tableScreen">
-    <table aria-describedby="table" >
+    <table aria-describedby="table">
       <thead class="table__header">
         <tr>
           <th class="sticky-col first-col" v-if="checkbox">
@@ -13,14 +13,19 @@
             class="cursor-pointer"
             @click="changeSort(header, index)"
           >
-          <div class="flex items-center">
-            <div style="text-align: left;">{{ header?.label }}</div>
-            <div data-v-6467733b="" class="ml-4 icon-sort" :class="header?.sort ? 'asc' : 'desc'" v-if="header?.sort == true || header?.sort == false"></div>
-          </div>
+            <div class="flex items-center">
+              <div class="table__header-title">{{ header?.label }}</div>
+              <div
+                data-v-6467733b=""
+                class="ml-4 icon-sort"
+                :class="header?.sort ? 'asc' : 'desc'"
+                v-if="header?.sort == true || header?.sort == false"
+              ></div>
+            </div>
           </th>
         </tr>
       </thead>
-      <tbody >
+      <tbody>
         <tr
           v-for="(row, index) in tableData"
           :key="index"
@@ -30,11 +35,13 @@
           <td class="sticky-col first-col" v-if="checkbox">
             <misa-checkbox
               v-model="row.select"
-              @click-box="checkBoxRow(value)"
+              @click-box="(value) => checkBoxRow(value, index)"
             />
           </td>
-          <td v-for="(header, index) in modelValue.header" :key="index"
-          @dblclick="dbClickRow(row)"
+          <td
+            v-for="(header, index) in modelValue.header"
+            :key="index"
+            @dblclick="dbClickRow(row)"
           >
             <slot :name="header?.prop" v-bind="row" v-if="header?.slot" />
             <div v-else>{{ row[header?.prop] }}</div>
@@ -43,10 +50,12 @@
             <slot name="operator" v-bind="row" />
           </div>
         </tr>
-      <div v-if="tableData.length <= 0 && !loading" class="table-nodata">Không có dữ liệu</div>
+        <div v-if="tableData.length <= 0 && !loading" class="table-nodata">
+          Không có dữ liệu
+        </div>
       </tbody>
     </table>
-  <misa-loading :modelValue="loading"></misa-loading>
+    <misa-loading :modelValue="loading"></misa-loading>
   </div>
   <div class="pagination">
     <misa-pagination
@@ -68,12 +77,14 @@ export default {
       checkBoxes: 0,
       headerBox: false,
       left: "80%",
+      selectedRows: [],
     };
   },
   props: {
     modelValue: {
       type: Object,
-      description: '{header:{prop:string,label:string,sort?:boolean,width:string},data:[{}]}'
+      description:
+        "{header:{prop:string,label:string,sort?:boolean,width:string},data:[{}]}",
     },
     checkbox: {
       type: Boolean,
@@ -98,13 +109,14 @@ export default {
     filterApi: {
       type: Boolean,
       default: false,
-      description: "if(true) it will not filter locally, it will send value to api",
+      description:
+        "if(true) it will not filter locally, it will send value to api",
     },
-    loading:{
+    loading: {
       type: Boolean,
       default: false,
       description: "show loading icon in the table",
-    }
+    },
   },
   watch: {
     /**
@@ -127,22 +139,29 @@ export default {
         this.headerBox = "half";
       }
     },
-    /**
-     * Get box that has been selected in the table
-     * Created At: 10/05/2023
-     * @author QTNgo
-     */
     modelValue: {
       handler() {
-        this.checkBoxes = this.modelValue.data.filter(
-          (row) => row.select
-        ).length;
+        this.tableData.forEach((tableRow) => {
+          const found = this.selectedRows.find((selectedRow) => 
+            JSON.stringify(selectedRow) === JSON.stringify(tableRow)
+          );
+          if (found) {
+            tableRow.select = true;
+          }else{
+            tableRow.select = false;
+          }
+        });
       },
-      deep: true,
+      immediate: true,
     },
-
   },
-  emits: ["update:modelValue", "select", "dbclick-row", "change-pagination","change-sort"],
+  emits: [
+    "update:modelValue",
+    "select",
+    "dbclick-row",
+    "change-pagination",
+    "change-sort",
+  ],
   computed: {
     /**
      * return selected rows
@@ -150,7 +169,7 @@ export default {
      * @author QTNgo
      */
     getSelectedRows() {
-      return this.modelValue.data.filter((row) => row.select);
+      return this.selectedRows;
     },
     /**
      * Filter table data base on keyword or filter or pagination
@@ -207,9 +226,10 @@ export default {
      * Created At: 15/05/2023
      * @author QTNgo
      */
-    changeSort(header,index){
-      const value = header.sort === true ? false : (header?.sort == false ? null : true);
-      this.$emit("change-sort", header,index, value);
+    changeSort(header, index) {
+      const value =
+        header.sort === true ? false : header?.sort == false ? null : true;
+      this.$emit("change-sort", header, index, value);
     },
     /**
      * Show the button float when hover the table
@@ -217,10 +237,14 @@ export default {
      * Created At: 15/05/2023
      * @author QTNgo
      */
-    hover(){
-      this.left = `${this.$refs.tableScreen.offsetWidth + this.$refs.tableScreen.scrollLeft - 100}px`
+    hover() {
+      this.left = `${
+        this.$refs.tableScreen.offsetWidth +
+        this.$refs.tableScreen.scrollLeft -
+        120
+      }px`;
     },
-        /**
+    /**
      * Change pagination value
      * @param {*} value {pageSize: Number, pageIndex: Number}
      * Created At: 15/05/2023
@@ -245,10 +269,15 @@ export default {
      * Created At: 10/05/2023
      * @author QTNgo
      */
-    checkBoxRow(value) {
+    checkBoxRow(value, index) {
       if (value) {
+        this.selectedRows.push({ ...this.modelValue.data[index] });
+        delete this.selectedRows[this.selectedRows.length - 1].select;
         this.checkBoxes++;
       } else {
+        this.selectedRows = this.selectedRows.filter(
+          (row) => row == this.modelValue.data[index]
+        );
         this.checkBoxes--;
       }
     },
@@ -285,19 +314,18 @@ export default {
      * Created At: 10/05/2023
      * @author QTNgo
      */
-    unSelectedRows(rows) {
+    unSelectedRows() {
       this.modelValue.data.forEach((row) => {
-        if (rows.includes(row)) {
           row.select = false;
-        }
       });
+      this.checkBoxes = 0
+      this.selectedRows = []
     },
   },
 };
 </script>
 <style scoped>
-.operator{
+.operator {
   left: v-bind(left);
-
 }
 </style>

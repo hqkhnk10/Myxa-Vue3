@@ -21,10 +21,14 @@
         bản ghi
       </div>
       <div class="flex items-center">
-        <div class="icon__leftarrow" :class="previousPage" @click="prev"></div>
+        <misa-button type="secondary-noborder" :class="previousPage" @click="prev">
+          <div class="icon__leftarrow" :class="previousPage"></div>
+        </misa-button>
       </div>
       <div class="flex items-center">
-        <div class="icon__rightarrow" :class="nextPage" @click="next"></div>
+        <misa-button type="secondary-noborder" :class="nextPage" @click="next">
+          <div class="icon__rightarrow" :class="nextPage"></div>
+        </misa-button>
       </div>
     </div>
   </div>

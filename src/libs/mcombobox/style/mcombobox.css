@@ -9,9 +9,12 @@
 	width: 25px;
 	background-color: transparent;
 	padding: 0 7px;
-  right: 40px;
+}
+.combobox-input{
+  border-radius: 4px 0 0 4px;
 }
 .mcombobox {
+  cursor: pointer;
   position: relative;
   display: flex;
   width: 100%;
@@ -22,8 +25,9 @@
   box-sizing: content-box;
 }
 .mcombobox input{
+  cursor: pointer;
   border: 0;
-  border-radius: 0;
+  border-radius: 4px 0 0 4px;
 }
 .mcombobox__input {
   height: 36px;
@@ -76,9 +80,10 @@ a.mcombobox-item{
 }
 .mcombobox-item:focus {
   background-color: rgba(80, 184, 60, 0.1);
+  outline: 0;
 }
 .mcombobox-item:hover {
-  background-color: rgba(80, 184, 60, 0.1);
+  background-color: rgba(80, 184, 60, 0.1) !important;
 }
 .mcombobox-item.selected {
   background-color: rgba(80, 184, 60, 0.1);
@@ -131,4 +136,17 @@ a{
 }
 .show{
   display: block;
+}
+.mcombobox:hover > button{
+  background-color: var(--input-border-color-gray) !important;
+  border-left: 1px solid rgb(190, 190, 190);
+  border-radius: 0;
+}
+.mcombobox:hover > .input-container > input{
+  background-color: var(--input-border-color-gray) !important;
+  border-radius: 0;
+}
+.mcombobox:hover > button{
+  background-color: var(--input-border-color-gray) !important;
+  border-left: 1px solid rgb(194, 194, 194);
 }

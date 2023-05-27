@@ -17,7 +17,7 @@
           type="button"
           aria-label="Close"
           class="dialog__headerbtn"
-          @click="toggleDropdown"
+          @click="closeDropDown"
         >
           <img src="@/assets/icon/x-icon.svg" alt="Exit" style="width: 15px" />
         </button>
@@ -34,7 +34,7 @@
 
 <script>
 export default {
-  expose: ["toggleDropdown"],
+  expose: ["closeDropDown"],
   name: "MisaDropdown",
   props: {
     title: {
@@ -67,13 +67,6 @@ export default {
     };
   },
   methods: {
-    /**
-     * Toggle the visibility of the dropdown
-     * CreatedBy: QTNgo (15/05/2023)
-     */
-    toggleDropdown() {
-      this.$emit("update:modelValue", !this.showDropdown);
-    },
     /**
      * close  the dropdown
      * CreatedBy: QTNgo (15/05/2023)

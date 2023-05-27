@@ -63,7 +63,7 @@ export default {
                     value: null
                 }, {
                     label: this.t('emulationTitle.family'),
-                    value: null
+                    value: this.$enum.EmulationTitle.ApplyObject.Family
                 }, {
                     label: this.t('emulationTitle.group'),
                     value: this.$enum.EmulationTitle.ApplyObject.Organization
@@ -206,7 +206,7 @@ export default {
          * @author
          */
         closeDropdown() {
-            this.$refs.misaDropdown.toggleDropdown();
+            this.$refs.misaDropdown.closeDropDown();
         }
     }
 }

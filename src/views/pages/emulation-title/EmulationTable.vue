@@ -40,7 +40,7 @@
         </template>
         <template #operator="row">
           <div class="button-icon-table" @click="formEdit(row)">
-            <div class="tooltip">
+            <div class="tooltip tooltip__icon-pencil">
               <div class="icon__pencil"></div>
               <span class="tooltiptext tooltiptext-top">{{
                 t("reuse.edit")
@@ -170,7 +170,6 @@ export default {
       pageSize: this.pagination.pageSize,
       pageIndex: this.pagination.pageIndex,
     });
-    this.emitter.on("remove-row-emulation", this.removeRow);
     this.emitter.on("unselect-row-emulation", this.unSelect);
     this.emitter.on("filter-table-emulation", (filterValue) => {
       this.filterTable(filterValue);
@@ -265,7 +264,6 @@ export default {
       "addAPI",
       "editAPI",
       "deleteAPI",
-      "deleteMultipleAPI",
       "changeSortStore",
       "updateStatusAPI",
     ]),
@@ -337,17 +335,7 @@ export default {
     unSelect() {
       this.$refs.misaTable.unSelectedRows(this.$refs.misaTable.getSelectedRows);
     },
-    /**
-     * Remove rows if selected
-     * Created At: 10/05/2023
-     * @author QTNgo
-     */
-    removeRow() {
-      const listId = this.$refs.misaTable.getSelectedRows.map(
-        (row) => row.emulationTitleID
-      );
-      this.deleteMultipleAPI({ id: listId });
-    },
+
     /**
      * call getSelectedRows function in Table component to get select rows
      * Created At: 10/05/2023

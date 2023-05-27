@@ -71,18 +71,14 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
      * Created At: 25/05/2023
      * Created By: QTNgo
      */
-    async getAPI(params) {
+     getAPI(params) {
       this.loading = true;
       let defaultsort = { ...defaultSort };
       Object.assign(defaultsort, params);
       Object.assign(this.parameters, defaultsort); //keep the original parameters
-      await request
+       request
         .get({ url: url, params: this.parameters })
         .then((res) => {
-          // dispatchNotification({
-          //   content: "Lấy dữ liệu thành công",
-          //   type: "success",
-          // });
           this.tableData = res.data;
           this.total = res?.pagination?.count;
         })
@@ -132,8 +128,8 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
      * Created At: 25/05/2023
      * Created By: QTNgo
      */
-    async deleteAPI(id) {
-      await request
+     deleteAPI(id) {
+       request
         .delete({ url: `${url}/${id}` })
         .then(() => {
           dispatchNotification({
@@ -157,24 +153,10 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
      * Created At: 25/05/2023
      * Created By: QTNgo
      */
-    async deleteMultipleAPI(data) {
-      await request
+     async deleteMultipleAPI(data) {
+       await request
         .delete({ url: `${url}/Multiple`, data: data })
-        .then(() => {
-          dispatchNotification({
-            content: globals.t("reuse.deleteSuccess"),
-            type: "success",
-          });
-          this.getAPI();
-        })
-        .catch((err) => {
-          dispatchNotification({
-            content: err?.response?.data?.userMsg
-              ? err.response.data.message
-              : err.message,
-            type: "error",
-          });
-        });
+;
     },
     /**
      * Change status of emulation title
@@ -182,8 +164,8 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
      * Created At: 25/05/2023
      * Created By: QTNgo
      */
-    async updateStatusAPI(data) {
-      await request
+     updateStatusAPI(data) {
+       request
         .put({ url: `${url}/Status`, data: data })
         .then(() => {
           dispatchNotification({
@@ -207,24 +189,9 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
      * Created At: 25/05/2023
      * Created By: QTNgo
      */
-    async updateMultipleStatusAPI(data) {
-      await request
-        .put({ url: `${url}/MulitpleStatus`, data: data })
-        .then(() => {
-          dispatchNotification({
-            content: globals.t("reuse.editSuccess"),
-            type: "success",
-          });
-          this.getAPI();
-        })
-        .catch((err) => {
-          dispatchNotification({
-            content: err?.response?.data?.userMsg
-              ? err.response.data.message
-              : err.message,
-            type: "error",
-          });
-        });
+     async updateMultipleStatusAPI(data) {
+       return await request.put({ url: `${url}/MulitpleStatus`, data: data })
+
     },
     /**
      * If sort value change => call API

@@ -97,6 +97,8 @@
 import EmulationDropdownFilter from "./EmulationDropdownFilter.vue";
 import { useEmulationTitleStore } from "@/store/emulationTitle";
 import { mapActions } from "pinia";
+import { dispatchNotification } from "@/components/Notification";
+
 export default {
   name: "EmulationHeader",
   components: {
@@ -117,14 +119,19 @@ export default {
   props: {
     selectedRows: {
       type: Object,
-      description: 'Những rows đang được chọn, được truyền từ EmulationTItleIndex.vue'
+      description:
+        "Những rows đang được chọn, được truyền từ EmulationTItleIndex.vue",
     },
   },
   methods: {
     /**
      * Get function from pinia
      */
-    ...mapActions(useEmulationTitleStore, ["updateMultipleStatusAPI"]),
+    ...mapActions(useEmulationTitleStore, [
+      "updateMultipleStatusAPI",
+      "getAPI",
+      "deleteMultipleAPI"
+    ]),
 
     /**
      * Call update status api
@@ -133,7 +140,23 @@ export default {
       this.updateMultipleStatusAPI({
         id: this.selectedRows.map((row) => row.emulationTitleID),
         inactive: status,
-      });
+      })
+        .then(() => {
+          dispatchNotification({
+            content: this.t("reuse.editSuccess"),
+            type: "success",
+          });
+          this.getAPI();
+          this.unSelectedRows();
+        })
+        .catch((err) => {
+          dispatchNotification({
+            content: err?.response?.data?.userMsg
+              ? err.response.data.message
+              : err.message,
+            type: "error",
+          });
+        });
     },
     /**
      * open confirm dialog before delete row
@@ -179,12 +202,31 @@ export default {
     unSelectedRows() {
       this.emitter.emit("unselect-row-emulation");
     },
-    //Xóa dữ liệu trong table
-    //Created At: 10/05/2023
-    //@author QTNgo
+    /**
+     * Remove rows if selected
+     * Created At: 10/05/2023
+     * @author QTNgo
+     */
     removeRow() {
-      this.emitter.emit("remove-row-emulation");
       this.closeConfirmDialog();
+      const listId = this.selectedRows.map((row) => row.emulationTitleID);
+      this.deleteMultipleAPI({ id: listId })
+        .then(() => {
+          dispatchNotification({
+            content: this.t("reuse.deleteSuccess"),
+            type: "success",
+          });
+          this.getAPI();
+          this.unSelectedRows();
+        })
+        .catch((err) => {
+          dispatchNotification({
+            content: err?.response?.data?.userMsg
+              ? err.response.data.message
+              : err.message,
+            type: "error",
+          });
+        });
     },
     //mở form thêm sửa
     //Created At: 10/05/2023

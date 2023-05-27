@@ -4,7 +4,9 @@
       <div class="form-item">
         <label class="form-item__label"
           >{{ t("emulationTitle.emulationTitleName")
-          }}<span class="required" v-if="validate.emulationTitleName.required">*</span></label
+          }}<span class="required" v-if="validate.emulationTitleName.required"
+            >*</span
+          ></label
         >
         <div class="form-item__content">
           <misa-input
@@ -25,7 +27,9 @@
         <div class="flex-1">
           <label class="form-item__label"
             >{{ t("emulationTitle.emulationTitleCode")
-            }}<span class="required" v-if="validate.emulationTitleCode.required">*</span></label
+            }}<span class="required" v-if="validate.emulationTitleCode.required"
+              >*</span
+            ></label
           >
           <div class="form-item__content">
             <misa-input
@@ -47,7 +51,7 @@
         <div class="flex-1">
           <label class="form-item__label flex"
             >{{ t("emulationTitle.applyObject") }}
-            <span class="required" >*</span>
+            <span class="required">*</span>
           </label>
           <div class="form-item__content flex items-center">
             <misa-checkbox
@@ -87,7 +91,7 @@
         <div class="flex-1">
           <label class="form-item__label flex"
             >{{ t("emulationTitle.movementType") }}
-            <span class="required" >*</span>
+            <span class="required">*</span>
           </label>
           <div class="form-item__content flex items-center">
             <misa-checkbox
@@ -147,23 +151,14 @@
         </div>
       </div>
       <div class="form__footer">
-        <misa-button
-          type="secondary"
-          @click="closeDialog()"
-        >
+        <misa-button type="secondary" @click="closeDialog()">
           <span>{{ t("reuse.cancel") }}</span>
         </misa-button>
         <div class="flex gap-12px" v-if="type == this.$enum.FormActions.Add">
-          <misa-button
-            type="primary-border"
-            @click="submitAndResetForm()"
-          >
+          <misa-button type="primary-border" @click="submitAndResetForm()">
             <span>{{ t("reuse.saveAndAdd") }}</span>
           </misa-button>
-          <misa-button
-            type="primary"
-            @click="submitForm()"
-          >
+          <misa-button type="primary" @click="submitForm()">
             <span>{{ t("reuse.save") }}</span>
           </misa-button>
         </div>
@@ -203,18 +198,19 @@ export default {
   props: {
     row: {
       type: Object,
-      description: 'Dữ liệu của được chọn, được truyền từ EmulationTItleIndex.vue'
+      description:
+        "Dữ liệu của được chọn, được truyền từ EmulationTItleIndex.vue",
     },
     type: {
       type: String,
       default: "Add",
-      description: 'Kiểu type, được truyền từ EmulationTItleIndex.vue'
+      description: "Kiểu type, được truyền từ EmulationTItleIndex.vue",
     },
   },
 
   data() {
     return {
-      successContent: '',
+      successContent: "",
       validateDialog: false,
       dialogAdd: false,
       typeForm: this.type,
@@ -264,7 +260,7 @@ export default {
       return code;
     },
   },
-  async mounted() {
+  mounted() {
     /**
      * Focus first input
      * Created At: 10/05/2023
@@ -277,7 +273,7 @@ export default {
      * Created At: 24/05/2023
      * @author QTNgo
      */
-    await this.getEmulationCommendation()
+    this.getEmulationCommendation()
       .then((res) => {
         this.levelOptions = res.data;
       })
@@ -316,13 +312,13 @@ export default {
         switch (value) {
           case this.$enum.FormActions.Add:
             this.apiFunc = this.addAPI;
-            this.successContent = this.t('reuse.addSuccess')
+            this.successContent = this.t("reuse.addSuccess");
             this.resetFormValue();
             break;
           case this.$enum.FormActions.Edit:
           case this.$enum.FormActions.Detail:
             this.apiFunc = this.editAPI;
-            this.successContent = this.t('reuse.editSuccess')
+            this.successContent = this.t("reuse.editSuccess");
             this.getFormValue();
             break;
         }
@@ -414,10 +410,19 @@ export default {
      * Created At: 24/05/2023
      * @author QTNgo
      */
-    async getFormValue() {
-      await this.getDetailAPI(this.row.emulationTitleID).then((res) => {
-        this.customGetValue(res?.data);
-      });
+    getFormValue() {
+      this.getDetailAPI(this.row.emulationTitleID)
+        .then((res) => {
+          this.customGetValue(res?.data);
+        })
+        .catch((err) => {
+          dispatchNotification({
+            content: err?.response?.data?.userMsg
+              ? err.response.data.message
+              : err.message,
+            type: "error",
+          });
+        });
     },
     /**
      * Reset value of the form
@@ -485,11 +490,11 @@ export default {
       });
       return isValid;
     },
-    async submitAndResetForm(){
+    async submitAndResetForm() {
       if (this.validateForm()) {
-        const res = await this.submitAPI(false)
-        if(res){
-          alert('reset')
+        const res = await this.submitAPI(false);
+        if (res) {
+          alert("reset");
           this.resetFormValue();
         }
       }
@@ -503,7 +508,7 @@ export default {
      */
     submitForm() {
       if (this.validateForm()) {
-        this.submitAPI()
+        this.submitAPI();
       }
     },
     /**
@@ -554,16 +559,18 @@ export default {
      * @author QTNgo
      */
     async submitAPI(closeDialog = true) {
-      let postValue = this.customPostValue()
-      return await this.apiFunc(postValue)
+      let postValue = this.customPostValue();
+      return this.apiFunc(postValue)
         .then(() => {
           this.getAPI();
           dispatchNotification({
             content: this.successContent,
             type: "success",
           });
-          if(closeDialog) {this.closeDialog();}
-          return true
+          if (closeDialog) {
+            this.closeDialog();
+          }
+          return true;
         })
         .catch((err) => {
           console.log("err", err);
@@ -577,7 +584,7 @@ export default {
               type: "error",
             });
           }
-          return false
+          return false;
         });
     },
   },
