@@ -10,22 +10,22 @@
         </template>
         <template #content>
             <form class="form">
-                <div class="form-item"><label class="form-item__label">{{t('emulationTitle.applyObject')}}</label>
+                <div class="form-item"><div class="form-item__label">{{t('emulationTitle.applyObject')}}</div>
                     <div class="form-item__content">
                         <misa-combobox v-model="ApplyObject" :options="object"></misa-combobox>
                     </div>
                 </div>
-                <div class="form-item"><label class="form-item__label">{{t('emulationTitle.commendationLevel')}}</label>
+                <div class="form-item"><div class="form-item__label">{{t('emulationTitle.commendationLevel')}}</div>
                     <div class="form-item__content">
                         <misa-combobox v-model="CommendationLevel" :options="level"></misa-combobox>
                     </div>
                 </div>
-                <div class="form-item"><label class="form-item__label">{{ t('emulationTitle.movementType') }}</label>
+                <div class="form-item"><div class="form-item__label">{{ t('emulationTitle.movementType') }}</div>
                     <div class="form-item__content">
                         <misa-combobox v-model="MovementType" :options="type"></misa-combobox>
                     </div>
                 </div>
-                <div class="form-item"><label class="form-item__label">{{ t('emulationTitle.status') }}</label>
+                <div class="form-item"><div class="form-item__label">{{ t('emulationTitle.status') }}</div>
                     <div class="form-item__content">
                         <misa-combobox v-model="Inactive" :options="status"></misa-combobox>
                     </div>

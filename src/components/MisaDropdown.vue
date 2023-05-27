@@ -14,6 +14,7 @@
       <div class="dropdown__header" v-if="header">
         <div class="dropdown__header-title">{{ title }}</div>
         <button
+          tabindex="-1"
           type="button"
           aria-label="Close"
           class="dialog__headerbtn"

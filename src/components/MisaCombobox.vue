@@ -5,12 +5,15 @@
     @keydown.down="pressArrowButton(false)"
     @keydown.up="pressArrowButton(true)"
     @keydown.enter="pressEnter"
+    :class="{invalid: !valid}"
+    @mouseleave="toggleOptions"
   >
     <misa-input
       type="text"
-      :modelValue="label"
+      :modelValue="labelShow"
       class="combobox-input"
       :disabled="disabled"
+      @input="(e) => inputChange(e.target.value)"
     ></misa-input>
     <span class="mcombobox-input__icon" v-if="loading">
       <img
@@ -20,11 +23,16 @@
       />
     </span>
     <misa-button
+      tabindex="-1"
       type="button"
       class="mcombobox__button"
       :disabled="disabled"
     ></misa-button>
-    <div class="mcombobox__data" :class="positionStyle" v-if="optionsBox">
+    <div
+      class="mcombobox__data"
+      :class="positionStyle"
+      v-show="optionsBox"
+    >
       <a
         v-for="(item, index) in options"
         ref="comboboxItems"
@@ -36,6 +44,9 @@
         >{{ item.label }}</a
       >
     </div>
+  </div>
+  <div class="error active" v-if="!valid">
+            asdasd
   </div>
 </template>
 
@@ -49,14 +60,14 @@ export default {
     };
   },
   props: {
-    // label:{
-    //   type: String,
-    //   default: 'label',
-    // },
-    // value:{
-    //   type: String,
-    //   default: 'value',
-    // },
+    label: {
+      type: String,
+      default: "label",
+    },
+    value: {
+      type: String,
+      default: "value",
+    },
     modelValue: {
       type: [String, Number, null, undefined],
     },
@@ -71,15 +82,17 @@ export default {
       type: Boolean,
       default: false,
     },
+    valid:{
+      type: Boolean,
+      default: true,
+    }
   },
   computed: {
     /**
      * Search value in option array and return label to display
      */
-    label() {
-      const objValue = this.options?.find(
-        (option) => option.value == this.modelValue
-      );
+    labelShow() {
+      const objValue = this.getLabelFromValue();
       if (objValue) {
         this.options.forEach((option) => {
           if (option == objValue) {
@@ -107,8 +120,18 @@ export default {
       return "";
     },
   },
-  emits: ["update:modelValue", "change"],
+  emits: ["update:modelValue", "change", "update:valid"],
   methods: {
+    inputChange(value) {
+      const objValue = this.options?.find((option) => option.value == this.value);
+      if (!objValue) {
+        this.$emit('update:valid', false);
+      }
+      console.log("value", value);
+    },
+    getLabelFromValue() {
+      return this.options?.find((option) => option.value == this.modelValue);
+    },
     /**
      * getFocusIndex
      * CreatedBy: QTNgo (15/05/2023)
@@ -131,8 +154,13 @@ export default {
      * CreatedBy: QTNgo (15/05/2023)
      */
     pressEnter() {
-      this.$emit("update:modelValue", this.options[this.getFocusIndex()].value);
-      this.toggleOptions();
+      if (this.getFocusIndex() != -1) {
+        this.$emit(
+          "update:modelValue",
+          this.options[this.getFocusIndex()].value
+        );
+        this.toggleOptions();
+      }
     },
     /**
      * Change the focus of combobox item
@@ -162,7 +190,6 @@ export default {
         }
         focusIndex--;
       }
-      console.log("index", focusIndex);
       this.$refs.comboboxItems[focusIndex].focus();
     },
     /**
@@ -179,6 +206,12 @@ export default {
     toggleOptions() {
       if (!this.disabled) {
         this.optionsBox = !this.optionsBox;
+        let selectedIndex = this.getSelectedIndex();
+        if (selectedIndex !== -1) {
+          this.$refs.comboboxItems[selectedIndex].focus();
+        } else {
+          this.$refs.comboboxItems[0].focus();
+        }
       }
     },
     /**

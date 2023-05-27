@@ -85,7 +85,9 @@
               :disabled="disabled"
               v-model="form.commendationLevel"
               :options="levelOptions"
+              v-model:valid="validate.commendationLevel.valid"
             ></misa-combobox>
+            
           </div>
         </div>
         <div class="flex-1">
@@ -236,6 +238,9 @@ export default {
           message: this.t('emulationTitle.requiredMovementType'),
           valid: true,
         },
+        commendationLevel:{
+          valid: true,
+        }
       },
       levelOptions: [],
     };

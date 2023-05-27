@@ -54,7 +54,7 @@ input:focus{
 }
   
 .invalid {
-	border-color: red;
+	border-color: red !important;
 }
   
 .error {
