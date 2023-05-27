@@ -1,6 +1,6 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
-    <misa-dropdown title="Lọc danh hiệu" ref="misaDropdown" v-model="dropDownFilter">
+    <misa-dropdown :title="t('emulationTitle.filterTitle')" ref="misaDropdown" v-model="dropDownFilter">
         <template #click>
             <misa-button type="secondary"  @click="toogleDropDownFilter">
                 <div class="icon-margin-right"

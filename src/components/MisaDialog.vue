@@ -5,6 +5,7 @@
     aria-modal="true"
     aria-label="Tips"
     class="dialog-show"
+    @keydown.esc="toggleDialog"
   >
     <div class="dialog__padding" :style="widthDialog">
       <div class="dialog__header">
@@ -17,7 +18,7 @@
         >
         <div class="tooltip">
           <div class="icon__help"></div>
-          <span class="tooltiptext tooltiptext-top">Hướng dẫn</span>
+          <span class="tooltiptext tooltiptext-top">{{ t('reuse.guide') }}</span>
         </div>
         </button>
         <button
@@ -29,7 +30,7 @@
 
         <div class="tooltip">
           <div class="icon__x"></div>
-          <span class="tooltiptext tooltiptext-top">Đóng</span>
+          <span class="tooltiptext tooltiptext-top">{{ t('reuse.close') }}</span>
         </div>
         </button>
       </div>

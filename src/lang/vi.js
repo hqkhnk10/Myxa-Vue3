@@ -39,7 +39,13 @@ export const vi = {
     close: "Đóng",
     use: "Sử dụng",
     addSuccess: "Thêm thành công",
-    editSuccess: "Sửa thành công"
+    editSuccess: "Sửa thành công",
+    selected: "Đã chọn",
+    no: "Không",
+    guide: "Hướng dẫn",
+    notification: "Thông báo",
+    bookRules: "Văn bản quy định",
+    settingSystem: "Thiết lập hệ thống"
   },
   emulationTitle: {
     emulationTitle: "Danh hiệu thi đua",
@@ -63,6 +69,19 @@ export const vi = {
     addEmulationTitle: "Thêm danh hiệu thi đua",
     emulationTitleName: "Tên danh hiệu thi đua",
     emulationTitleCode: "Mã danh hiệu",
-    editEmulationTitle: "Sửa danh hiệu thi đua"
+    emulationTitleCodes: "Mã danh hiệu thi đua",
+    editEmulationTitle: "Sửa danh hiệu thi đua",
+    enterEmulationTitle: "Nhập danh hiệu thi đua",
+    enterEmulationTitleNameOrCode: "Nhập mã hoặc tên danh hiệu ...",
+    existInTheList: "đã tồn tại trong danh sách. Xin vui lòng kiểm tra lại.",
+    requiredName: "Tên danh hiệu không được để trống",
+    requiredCode: "Tên danh hiệu không được để trống",
+    requiredApplyObject: "Tên danh hiệu không được để trống",
+    requiredMovementType: "Tên danh hiệu không được để trống",
+    filterTitle: "Lọc danh hiệu",
+    title: "Danh hiệu",
+    selected: "đã chọn",
+    removeEmulationTitle: "Xóa danh hiệu",
+    removeEmulationTitles: "Xóa danh hiệu thi đua",
   },
 };

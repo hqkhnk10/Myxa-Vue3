@@ -15,7 +15,7 @@
             :reset="true"
             v-model="form.emulationTitleName"
             :isValid="validate.emulationTitleName.valid"
-            placeholder="Nhập danh hiệu thi đua"
+            :placeholder="t('emulationTitle.enterEmulationTitle')"
             @change="validateForm"
           ></misa-input>
           <div class="error active" v-if="!validate.emulationTitleName.valid">
@@ -173,9 +173,8 @@
   <misa-dialog title="Cảnh báo" v-model="validateDialog" width="40%">
     <div class="dialog__body">
       <span
-        >Mã danh hiệu thi đua
-        <span style="font-weight: bold">{{ form.emulationTitleCode }}</span> đã
-        tồn tại trong danh sách. Xin vui lòng kiểm tra lại.</span
+        >{{ t('emulationTitle.emulationTitleCodes') }}
+        <span style="font-weight: bold">{{ form.emulationTitleCode }}</span> {{ t('emulationTitle.existInTheList') }}</span
       >
     </div>
     <div class="dialog__footer">
@@ -192,7 +191,7 @@ import { required } from "@/js/validate/validate";
 import { useEmulationTitleStore } from "@/store/emulationTitle";
 import { useEmulationCommendationStore } from "@/store/emulationCommendation";
 import { mapActions } from "pinia";
-
+const defaultCode = "D13"
 export default {
   name: "EmulationFormDialog",
   props: {
@@ -219,22 +218,22 @@ export default {
       validate: {
         emulationTitleName: {
           required: true,
-          message: "Tên danh hiệu không được để trống",
+          message: this.t('emulationTitle.requiredName'),
           valid: true,
         },
         emulationTitleCode: {
           required: true,
-          message: "Mã danh hiệu không được để trống",
+          message: this.t('emulationTitle.requiredCode'),
           valid: true,
         },
         applyObject: {
           validator: this.validateApplyObject,
-          message: "Đối tượng khen thưởng không được để trống",
+          message: this.t('emulationTitle.requiredApplyObject'),
           valid: true,
         },
         movementType: {
           validator: this.validateMovementType,
-          message: "Loại phong trào không được để trống",
+          message: this.t('emulationTitle.requiredMovementType'),
           valid: true,
         },
       },
@@ -296,7 +295,7 @@ export default {
       if (
         oldValue == this.form["emulationTitleCode"] ||
         this.form["emulationTitleCode"] == "" ||
-        this.form["emulationTitleCode"] == "MF1616" ||
+        this.form["emulationTitleCode"] == defaultCode ||
         newValue == ""
       ) {
         this.form["emulationTitleCode"] = newValue;
@@ -432,7 +431,7 @@ export default {
     resetFormValue() {
       this.form = {
         emulationTitleName: "",
-        emulationTitleCode: "MF1616",
+        emulationTitleCode: defaultCode,
         applyObject2: true,
         applyObject0: false,
         commendationLevel: 3,

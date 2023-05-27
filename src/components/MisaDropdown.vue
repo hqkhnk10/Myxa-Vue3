@@ -1,5 +1,5 @@
 <template>
-  <div class="dropdown">
+  <div class="dropdown" @keydown.esc="closeDropDown">
     <slot name="click"></slot>
     <div
       class="dropdown-content"
@@ -19,7 +19,12 @@
           class="dialog__headerbtn"
           @click="closeDropDown"
         >
-          <img src="@/assets/icon/x-icon.svg" alt="Exit" style="width: 15px" />
+          <div class="tooltip">
+            <div class="icon__x"></div>
+            <span class="tooltiptext tooltiptext-top">{{
+              t("reuse.close")
+            }}</span>
+          </div>
         </button>
       </div>
       <div class="dropdown__body">

@@ -7,7 +7,7 @@
           v-model="keyword"
           width="250px"
           :reset="true"
-          placeholder="Nhập mã hoặc tên danh hiệu ..."
+          :placeholder="t('emulationTitle.enterEmulationTitleNameOrCode')"
           @keydown.enter="search"
           @debounce="changeKeyword"
         >
@@ -35,7 +35,7 @@
           class="flex items-center gap-4px"
         >
           <div>
-            Đã chọn<span class="main__title-tableCount">{{
+            {{ t('reuse.selected') }}<span class="main__title-tableCount">{{
               selectedRows.length
             }}</span>
           </div>
@@ -74,21 +74,21 @@
       </div>
     </div>
   </div>
-  <misa-confirm-dialog v-model="confirmDialog" title="Xóa Danh hiệu thi đua">
+  <misa-confirm-dialog v-if="confirmDialog" v-model="confirmDialog" title="Xóa Danh hiệu thi đua">
     <template #content>
       <div>
-        Xóa
+        {{ t('reuse.remove') }}
         <span style="font-weight: bold"
-          >{{ selectedRows.length }} danh hiệu
+          >{{ selectedRows.length }} {{ t('emulationTitle.title') }}
         </span>
-        đã chọn?
+        {{ t('emulationTitle.selected') }}?
       </div>
     </template>
     <template #button>
       <misa-button type="secondary" @click="closeConfirmDialog"
-        >Không</misa-button
+        >{{ t('reuse.no') }}</misa-button
       >
-      <misa-button type="danger" @click="removeRow">Xóa danh hiệu</misa-button>
+      <misa-button type="danger" @click="removeRow">{{ t('emulationTitle.removeEmulationTitle') }}</misa-button>
     </template>
   </misa-confirm-dialog>
 </template>

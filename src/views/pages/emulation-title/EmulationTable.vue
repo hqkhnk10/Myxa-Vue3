@@ -85,21 +85,21 @@
       </misa-table>
     </div>
   </div>
-  <misa-confirm-dialog v-model="confirmDialog" title="Xóa Danh hiệu thi đua">
+  <misa-confirm-dialog v-if="confirmDialog" v-model="confirmDialog" :title="t('emulationTitle.removeEmulationTitles')">
     <template #content>
       <div>
-        Xóa danh hiệu thi đua
+        {{ t('emulationTitle.removeEmulationTitles') }}
         <span style="font-weight: bold">{{
           selectedRow?.emulationTitleName
         }}</span>
-        đã chọn?
+        {{t('emulationTitle.selected')}}?
       </div>
     </template>
     <template #button>
       <misa-button type="secondary" @click="closeConfirmDialog"
-        >Không</misa-button
+        >{{ t('reuse.no') }}</misa-button
       >
-      <misa-button type="danger" @click="deleteRow">Xóa danh hiệu</misa-button>
+      <misa-button type="danger" @click="deleteRow">{{ t('emulationTitle.removeEmulationTitle') }}</misa-button>
     </template>
   </misa-confirm-dialog>
 </template>
@@ -176,12 +176,6 @@ export default {
     });
     this.emitter.on("search-table-emulation", (keyword) => {
       this.searchTable(keyword);
-    });
-    this.emitter.on("add-table-emulation", (row) => {
-      this.addEmulationTable(row);
-    });
-    this.emitter.on("edit-table-emulation", (row) => {
-      this.editEmulationTable(row);
     });
   },
   emits: ["select", "select-row"],
@@ -268,28 +262,6 @@ export default {
       "updateStatusAPI",
     ]),
     /**
-     * Call api POST
-     * @param {*} form value get from Form
-     * Created At: 16/05/2023
-     * @author QTNgo
-     */
-    addEmulationTable(form) {
-      this.addAPI(form).then((res) => {
-        if (res) {
-          this.getAPI();
-        }
-      });
-    },
-    /**
-     * call api PUT
-     * @param {*} form value get from Form
-     * Created At: 16/05/2023
-     * @author QTNgo
-     */
-    editEmulationTable(form) {
-      this.editAPI(form);
-    },
-    /**
      * when change pagination call get api and pass new params
      * @param {*} value object {pageSize : Number, pageIndex: Number}}
      * Created At: 16/05/2023
@@ -335,7 +307,6 @@ export default {
     unSelect() {
       this.$refs.misaTable.unSelectedRows(this.$refs.misaTable.getSelectedRows);
     },
-
     /**
      * call getSelectedRows function in Table component to get select rows
      * Created At: 10/05/2023
@@ -359,7 +330,6 @@ export default {
         emulationTitleID: row.emulationTitleID,
         inactive: status,
       });
-      console.log("row: ", row, status);
     },
   },
 };
