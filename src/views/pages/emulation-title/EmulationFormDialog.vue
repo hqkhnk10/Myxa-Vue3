@@ -1,5 +1,5 @@
-<template>
-  <div class="dialog__body">
+<template >
+  <div class="dialog__body" @keydown.ctrl.shift.s="submitAndResetForm()">
     <form class="form" id="form-add-title" ref="misaForm">
       <div class="form-item">
         <label class="form-item__label"
@@ -87,7 +87,6 @@
               :options="levelOptions"
               v-model:valid="validate.commendationLevel.valid"
             ></misa-combobox>
-            
           </div>
         </div>
         <div class="flex-1">
@@ -153,30 +152,51 @@
         </div>
       </div>
       <div class="form__footer">
-        <misa-button type="secondary" @click="closeDialog()">
-          <span>{{ t("reuse.cancel") }}</span>
-        </misa-button>
-        <div class="flex gap-12px" v-if="type == this.$enum.FormActions.Add">
-          <misa-button type="primary-border" @click="submitAndResetForm()">
-            <span>{{ t("reuse.saveAndAdd") }}</span>
-          </misa-button>
-          <misa-button type="primary" @click="submitForm()">
-            <span>{{ t("reuse.save") }}</span>
-          </misa-button>
-        </div>
         <div v-if="showStatus()">
           <misa-button type="primary" @click="submitForm()">{{
             t("reuse.saveChange")
           }}</misa-button>
         </div>
+
+        <div class="tooltip">
+          <misa-button
+            v-if="type == this.$enum.FormActions.Add"
+            type="primary"
+            @click="submitForm()"
+          >
+            <span>{{ t("reuse.save") }}</span>
+          </misa-button>
+          <span class="arrow-top tooltiptext tooltiptext-top">
+            CRTL + S
+          </span>
+        </div>
+
+        <div class="tooltip">
+          <misa-button
+            v-if="type == this.$enum.FormActions.Add"
+            type="primary-border"
+            @click="submitAndResetForm()"
+          >
+            <span>{{ t("reuse.saveAndAdd") }}</span>
+          </misa-button>
+
+          <span
+            class="arrow-top tooltiptext tooltiptext-top"
+            >CRTL + SHIFT + S</span
+          >
+        </div>
+        <misa-button type="secondary" @click="closeDialog()">
+            <span>{{ t("reuse.cancel") }}</span>
+        </misa-button>
       </div>
     </form>
   </div>
   <misa-dialog title="Cảnh báo" v-model="validateDialog" width="40%">
     <div class="dialog__body">
       <span
-        >{{ t('emulationTitle.emulationTitleCodes') }}
-        <span style="font-weight: bold">{{ form.emulationTitleCode }}</span> {{ t('emulationTitle.existInTheList') }}</span
+        >{{ t("emulationTitle.emulationTitleCodes") }}
+        <span style="font-weight: bold">{{ form.emulationTitleCode }}</span>
+        {{ t("emulationTitle.existInTheList") }}</span
       >
     </div>
     <div class="dialog__footer">
@@ -193,7 +213,7 @@ import { required } from "@/js/validate/validate";
 import { useEmulationTitleStore } from "@/store/emulationTitle";
 import { useEmulationCommendationStore } from "@/store/emulationCommendation";
 import { mapActions } from "pinia";
-const defaultCode = "D13"
+const defaultCode = "D13";
 export default {
   name: "EmulationFormDialog",
   props: {
@@ -220,27 +240,27 @@ export default {
       validate: {
         emulationTitleName: {
           required: true,
-          message: this.t('emulationTitle.requiredName'),
+          message: this.t("emulationTitle.requiredName"),
           valid: true,
         },
         emulationTitleCode: {
           required: true,
-          message: this.t('emulationTitle.requiredCode'),
+          message: this.t("emulationTitle.requiredCode"),
           valid: true,
         },
         applyObject: {
           validator: this.validateApplyObject,
-          message: this.t('emulationTitle.requiredApplyObject'),
+          message: this.t("emulationTitle.requiredApplyObject"),
           valid: true,
         },
         movementType: {
           validator: this.validateMovementType,
-          message: this.t('emulationTitle.requiredMovementType'),
+          message: this.t("emulationTitle.requiredMovementType"),
           valid: true,
         },
-        commendationLevel:{
+        commendationLevel: {
           valid: true,
-        }
+        },
       },
       levelOptions: [],
     };
@@ -272,6 +292,8 @@ export default {
      */
     this.$refs.firstInput.focus();
 
+    window.addEventListener('keydown', this.handleKeyDown)
+
     /**
      * Lấy cấp phong trào
      * Created At: 24/05/2023
@@ -289,6 +311,10 @@ export default {
           type: "error",
         });
       });
+  },
+  beforeUnmount() {
+    // Remove event listener when component is unmounted
+    window.removeEventListener('keydown', this.handleKeyDown)
   },
   watch: {
     /**
@@ -331,6 +357,14 @@ export default {
     },
   },
   methods: {
+    handleKeyDown(event) {
+      // Check if Ctrl + S is pressed
+      if (event.ctrlKey && event.key === 's') {
+        event.preventDefault() // Prevent the default browser behavior
+        // Your custom logic when Ctrl + S is pressed
+        this.submitForm()
+      }
+    },
     /**
      * Lấy chữ cái đầu của các từ trong một chuỗi
      * @param {*} str chuỗi
@@ -487,7 +521,9 @@ export default {
         if (this?.validate[item]?.required) {
           valid = required(this.form[item]);
         } else {
-          valid = this.validate[item].validator();
+          this.validate[item].validator
+            ? (valid = this.validate[item].validator())
+            : (valid = this.validate[item].valid);
         }
         this.validate[item].valid = valid;
         isValid = isValid && valid;
@@ -498,7 +534,6 @@ export default {
       if (this.validateForm()) {
         const res = await this.submitAPI(false);
         if (res) {
-          alert("reset");
           this.resetFormValue();
         }
       }
@@ -578,7 +613,7 @@ export default {
         })
         .catch((err) => {
           console.log("err", err);
-          if (err.response.status == 302) {
+          if (err?.response?.status == 302) {
             this.validateDialog = true;
           } else {
             dispatchNotification({

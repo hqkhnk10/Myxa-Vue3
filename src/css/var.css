@@ -32,6 +32,7 @@
     --popup-success-color:#50B83C;
     --select-items-color:rgba(80,184,60,0.1);
     --table-color-green-hover:#CEEAD9;
+    --tooltip-bg-color: #182d4b
 }
 @font-face {
     font-family: MISA Font;

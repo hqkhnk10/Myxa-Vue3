@@ -12,25 +12,25 @@
                 <div class="icon-header">
                     <div class="icon-margin icon__notification"></div>
                 </div>
-                <span class="tooltiptext tooltiptext-bottom">{{ t('reuse.notification') }}</span>
+                <span class="arrow-bottom tooltiptext tooltiptext-bottom">{{ t('reuse.notification') }}</span>
             </div>
             <div class="tooltip">
                 <div class="icon-header">
                     <div class="icon-margin icon__help"></div>
                 </div>
-                <span class="tooltiptext tooltiptext-bottom">{{ t('reuse.guide') }}</span>
+                <span class="arrow-bottom tooltiptext tooltiptext-bottom">{{ t('reuse.guide') }}</span>
             </div>
             <div class="tooltip">
                 <div class="icon-header">
                     <div class="icon-margin icon__book"></div>
                 </div>
-                <span class="tooltiptext tooltiptext-bottom">{{ t('reuse.bookRules') }}</span>
+                <span class="arrow-bottom tooltiptext tooltiptext-bottom">{{ t('reuse.bookRules') }}</span>
             </div>
             <div class="tooltip">
                 <div class="icon-header">
                     <div class="icon-margin icon__setting"></div>
                 </div>
-                <span class="tooltiptext tooltiptext-bottom">{{ t('reuse.settingSystem') }}</span>
+                <span class="arrow-bottom tooltiptext tooltiptext-bottom">{{ t('reuse.settingSystem') }}</span>
             </div>
             <img src="https://id.misa.vn/image/getavatar?userId=74c75e29-bc30-4210-87e2-d61a38f91a21&width=64&height=64"
                 class="avatar" alt="avatar">

@@ -2,7 +2,7 @@
 <template>
   <div class="flex" style="justify-content: space-between; align-items: center">
     <div>
-      Tổng số: <span style="font-weight: 700">{{ pagination.total }}</span> bản
+      Tổng số: <span style="font-weight: 700">{{ formatNumber(pagination.total) }}</span> bản
       ghi
     </div>
     <div class="flex" style="gap: 10px">
@@ -34,8 +34,15 @@
   </div>
 </template>
 <script>
+import {formatNumber} from "@/js/format/format"
+
 export default {
   name: "MisaPagination",
+  setup(){
+    return {
+      formatNumber
+    }
+  },
   data() {
     return {
       paginationOptions: [

@@ -4,7 +4,7 @@
     @select="totalSelectedRows"
     @select-row="selectRow"
   ></emulation-table>
-  <misa-dialog v-model="dialogAdd" :title="t(title)" width="600px" top="20vh">
+  <misa-dialog v-model="dialogAdd" :title="t(title)" width="600px" top="20vh" :guide="true">
     <emulation-form-dialog
       :type="type"
       :row="rowSelected"

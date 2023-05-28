@@ -5,8 +5,8 @@
     @keydown.down="pressArrowButton(false)"
     @keydown.up="pressArrowButton(true)"
     @keydown.enter="pressEnter"
-    :class="{invalid: !valid}"
-    @mouseleave="toggleOptions"
+    :class="{ invalid: !valid }"
+    @mouseleave="closeOptions"
   >
     <misa-input
       type="text"
@@ -31,14 +31,14 @@
     <div
       class="mcombobox__data"
       :class="positionStyle"
-      v-show="optionsBox"
+      v-show="optionsBox && filterOptions.length > 0"
     >
       <a
-        v-for="(item, index) in options"
+        v-for="(item, index) in filterOptions"
         ref="comboboxItems"
         class="mcombobox-item"
         tabindex="-1"
-        :class="item.selected ? 'selected' : ''"
+        :class="{ selected: item.selected, focusOn: item.focus }"
         :key="index"
         @click="selectOption(item)"
         >{{ item.label }}</a
@@ -46,7 +46,8 @@
     </div>
   </div>
   <div class="error active" v-if="!valid">
-            asdasd
+    {{ message }} {{ t("reuse.notRight") }}. {{ t("reuse.pleaseChoose") }}
+    {{ message }} {{ t("reuse.inTheList") }}.
   </div>
 </template>
 
@@ -57,6 +58,7 @@ export default {
     return {
       optionsBox: false,
       loading: false,
+      inputValue: null,
     };
   },
   props: {
@@ -82,29 +84,50 @@ export default {
       type: Boolean,
       default: false,
     },
-    valid:{
+    valid: {
       type: Boolean,
       default: true,
-    }
+    },
+    message: {
+      type: String,
+      default: "Dữ liệu",
+    },
   },
   computed: {
     /**
      * Search value in option array and return label to display
+     * CreatedBy: QTNgo (15/05/2023)
      */
     labelShow() {
       const objValue = this.getLabelFromValue();
-      if (objValue) {
-        this.options.forEach((option) => {
-          if (option == objValue) {
-            option.selected = true;
-          } else {
-            option.selected = false;
-          }
-        });
-        return objValue?.label;
-      } else {
+      if (!objValue) {
         return "";
       }
+      this.options.forEach((option) => {
+        if (option == objValue) {
+          option.selected = true;
+        } else {
+          option.selected = false;
+        }
+      });
+      return objValue?.label;
+    },
+    /**
+     * Lấy danh sách sau khi đã filter theo dữ liệu input
+     * CreatedBy: QTNgo (15/05/2023)
+     */
+    filterOptions() {
+      if (!this.inputValue) {
+        return this.options;
+      }
+      if (
+        this.options.find((option) => option[this.label] == this.inputValue)
+      ) {
+        return this.options;
+      }
+      return this.options.filter((option) =>
+        option[this.label].includes(this.inputValue)
+      );
     },
     /**
      * Set position of the combobox option
@@ -122,52 +145,88 @@ export default {
   },
   emits: ["update:modelValue", "change", "update:valid"],
   methods: {
-    inputChange(value) {
-      const objValue = this.options?.find((option) => option.value == this.value);
-      if (!objValue) {
-        this.$emit('update:valid', false);
-      }
-      console.log("value", value);
+    /**
+     * Thêm class focus vào options
+     * @param {*} idx index cần focus
+     * CreatedBy: QTNgo (15/05/2023)
+     */
+    addClassFocusToItem(idx) {
+      this.filterOptions.forEach((option, index) => {
+        if (index == idx) {
+          this.filterOptions[index].focus = true;
+        } else {
+          this.filterOptions[index].focus = false;
+        }
+      });
     },
+        /**
+     * Mở options box nếu dữ liệu trong có dữ liệu trong options
+     * CreatedBy: QTNgo (15/05/2023)
+     */
+    openOptions() {
+      if (this.filterOptions.length > 0) {
+        this.optionsBox = true;
+        this.addClassFocusToItem(this.getIndex());
+      }
+    },
+            /**
+     * Đóng options box
+     * CreatedBy: QTNgo (15/05/2023)
+     */
+    closeOptions() {
+      this.optionsBox = false;
+    },
+                /**
+     * Khi dữ liệu input thay đổi, mở options box
+     * Nếu có trong list option thì gửi valid = true / không có thì valid = false
+     * CreatedBy: QTNgo (15/05/2023)
+     */
+    inputChange(value) {
+      this.inputValue = value;
+      this.openOptions();
+      const objValue = this.options?.find((option) => option.label == value);
+      if (!objValue) {
+        this.$emit("update:valid", false);
+      } else {
+        this.$emit("update:valid", true);
+      }
+    },
+    /**
+     * Láy tiêu đề từ dữ liệu trong list options
+     * CreatedBy: QTNgo (15/05/2023)
+     */
     getLabelFromValue() {
       return this.options?.find((option) => option.value == this.modelValue);
     },
     /**
-     * getFocusIndex
+     * Lấy index đang focus
      * CreatedBy: QTNgo (15/05/2023)
      */
     getFocusIndex() {
-      return this.$refs.comboboxItems.findIndex(
-        (e) => e == document.activeElement
-      );
+      return this.filterOptions.findIndex((e) => e.focus);
     },
     /**
-    getSelectedIndex() {
-     * 
+     * Lấy index của đang được chọn trong dánh sachs
      * CreatedBy: QTNgo (15/05/2023)
      */
     getSelectedIndex() {
-      return this.options.findIndex((row) => row.selected);
+      return this.filterOptions.findIndex((row) => row.selected);
     },
     /**
      * Select item when press enter
      * CreatedBy: QTNgo (15/05/2023)
      */
     pressEnter() {
-      if (this.getFocusIndex() != -1) {
-        this.$emit(
-          "update:modelValue",
-          this.options[this.getFocusIndex()].value
-        );
-        this.toggleOptions();
-      }
+      this.selectOption(this.filterOptions[this.getIndex()]);
+      this.toggleOptions();
     },
     /**
-     * Change the focus of combobox item
-     * @param {*} arrow True: Up / False: Down
+     * Lấy index cần focus
+     * Nếu đang focus thì trả ra index focus
+     * Nếu không có thì lấy dữ liệu đang được select
      * CreatedBy: QTNgo (15/05/2023)
      */
-    pressArrowButton(arrow) {
+    getIndex() {
       let focusIndex = this.getFocusIndex();
       //dont have focus
       if (focusIndex == -1) {
@@ -178,6 +237,15 @@ export default {
           focusIndex = 0;
         }
       }
+      return focusIndex;
+    },
+    /**
+     * Change the focus of combobox item
+     * @param {*} arrow True: Up / False: Down
+     * CreatedBy: QTNgo (15/05/2023)
+     */
+    pressArrowButton(arrow) {
+      let focusIndex = this.getIndex();
       if (!arrow) {
         if (focusIndex == this.options.length - 1) {
           return;
@@ -190,7 +258,7 @@ export default {
         }
         focusIndex--;
       }
-      this.$refs.comboboxItems[focusIndex].focus();
+      this.addClassFocusToItem(focusIndex);
     },
     /**
      * close the combobox
@@ -205,12 +273,10 @@ export default {
      */
     toggleOptions() {
       if (!this.disabled) {
-        this.optionsBox = !this.optionsBox;
-        let selectedIndex = this.getSelectedIndex();
-        if (selectedIndex !== -1) {
-          this.$refs.comboboxItems[selectedIndex].focus();
+        if (!this.optionsBox) {
+          this.openOptions();
         } else {
-          this.$refs.comboboxItems[0].focus();
+          this.closeOptions();
         }
       }
     },
@@ -219,8 +285,12 @@ export default {
      * CreatedBy: QTNgo (15/05/2023)
      */
     selectOption(item) {
+      this.addClassFocusToItem(
+        this.filterOptions.findIndex((e) => e.value == item.value)
+      );
       this.$emit("update:modelValue", item.value);
       this.$emit("change", item.value);
+      this.$emit("update:valid", true);
     },
   },
 };

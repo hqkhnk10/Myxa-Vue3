@@ -47,7 +47,8 @@ export const vi = {
     bookRules: "Văn bản quy định",
     settingSystem: "Thiết lập hệ thống",
     notRight: "không đúng",
-    pleaseChooseInTheList: "vui lòng chọn trong danh sách"
+    pleaseChoose: "vui lòng chọn",
+    inTheList: "trong danh sách"
   },
   emulationTitle: {
     emulationTitle: "Danh hiệu thi đua",

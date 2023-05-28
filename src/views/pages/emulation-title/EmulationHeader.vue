@@ -36,7 +36,7 @@
         >
           <div>
             {{ t('reuse.selected') }}<span class="main__title-tableCount">{{
-              selectedRows.length
+              formatNumber(selectedRows.length)
             }}</span>
           </div>
           <div>
@@ -98,11 +98,16 @@ import EmulationDropdownFilter from "./EmulationDropdownFilter.vue";
 import { useEmulationTitleStore } from "@/store/emulationTitle";
 import { mapActions } from "pinia";
 import { dispatchNotification } from "@/components/Notification";
-
+import {formatNumber} from "@/js/format/format"
 export default {
   name: "EmulationHeader",
   components: {
     EmulationDropdownFilter,
+  },
+  setup(){
+    return {
+      formatNumber
+    }
   },
   data() {
     return {

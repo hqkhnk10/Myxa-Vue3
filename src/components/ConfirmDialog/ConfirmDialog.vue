@@ -19,7 +19,7 @@
             >
               <div class="tooltip">
                 <div class="icon__x"></div>
-                <span class="tooltiptext tooltiptext-top">{{
+                <span class="arrow-top tooltip-margin-top tooltiptext tooltiptext-top">{{
                   t("reuse.close")
                 }}</span>
               </div>

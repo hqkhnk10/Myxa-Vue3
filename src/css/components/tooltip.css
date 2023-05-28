@@ -5,7 +5,7 @@
 
 .tooltip .tooltiptext {
   visibility: hidden;
-  background-color: rgb(23, 29, 112);
+  background-color: var(--tooltip-bg-color);
   color: #fff;
   text-align: center;
   border-radius: 6px;
@@ -16,16 +16,22 @@
   z-index: 999;
   line-height: normal;
 }
-
+button:focus ~ .tooltiptext{
+  visibility: visible;
+  z-index: 999;
+}
 .tooltip:hover .tooltiptext {
   visibility: visible;
   z-index: 999;
 }
 .tooltip .tooltiptext-top {
   width: 120px;
-  bottom: 100%;
+  bottom: 120%;
   left: 50%;
   margin-left: -60px; /* Use half of the width (120/2 = 60), to center the tooltip */
+}
+.tooltip-margin-top{
+  bottom: 150% !important;
 }
 .tooltip .tooltiptext-bottom {
   width: 120px;
@@ -40,4 +46,24 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.tooltip .arrow-top::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: var(--tooltip-bg-color) transparent transparent transparent;
+}
+.tooltip .arrow-bottom::after {
+  content: " ";
+  position: absolute;
+  bottom: 100%;  /* At the top of the tooltip */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent black transparent;
 }

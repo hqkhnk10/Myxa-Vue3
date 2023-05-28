@@ -21,7 +21,6 @@
   border-radius: 4px;
   align-items: center;
   border: 1px solid var(--input-border-color-gray);
-  height: 36px;
   box-sizing: content-box;
 }
 .mcombobox input{
@@ -79,14 +78,14 @@ a.mcombobox-item{
   justify-content: space-between;
 }
 .mcombobox-item:focus {
-  background-color: rgba(80, 184, 60, 0.1);
+  background-color: rgba(80, 184, 60, 0.1) !important;
   outline: 0;
+}
+.focusOn {
+  background-color: rgba(80, 184, 60, 0.1) !important;
 }
 .mcombobox-item:hover {
   background-color: rgba(80, 184, 60, 0.1) !important;
-}
-.mcombobox-item.selected {
-  background-color: rgba(80, 184, 60, 0.1);
 }
 .mcombobox-item.selected::after{
   content: '';
