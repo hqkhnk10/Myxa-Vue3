@@ -16,19 +16,13 @@
         @change-sort="changeSort"
       >
         <template #applyObject="row">
-          <div>
             {{ formatApplyObjectTable(row.applyObject) }}
-          </div>
         </template>
         <template #commendationLevel="row">
-          <div>
             {{ formatCommendationLevelTable(row.commendationLevel) }}
-          </div>
         </template>
         <template #movementType="row">
-          <div>
             {{ formatMovementTypeTable(row.movementType) }}
-          </div>
         </template>
         <template #inactive="row">
           <div class="flex items-center gap-4px">
@@ -53,6 +47,7 @@
               position="right"
               v-model="showDropdownEdit"
               :arrow="false"
+              :mouseleave="true"
             >
               <template #click>
                 <div class="tooltip flex items-center h-full">

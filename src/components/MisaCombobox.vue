@@ -6,14 +6,15 @@
     @keydown.up="pressArrowButton(true)"
     @keydown.enter="pressEnter"
     :class="{ invalid: !valid }"
-    @mouseleave="closeOptions"
+    v-click-outside="closeOptions"
   >
     <misa-input
+      ref="input"
       type="text"
       :modelValue="labelShow"
       class="combobox-input"
       :disabled="disabled"
-      @input="(e) => inputChange(e.target.value)"
+      @input="(e) => inputChange(e.target[this.value])"
     ></misa-input>
     <span class="mcombobox-input__icon" v-if="loading">
       <img
@@ -27,6 +28,7 @@
       type="button"
       class="mcombobox__button"
       :disabled="disabled"
+      @click="clickComboboxButton"
     ></misa-button>
     <div
       class="mcombobox__data"
@@ -41,7 +43,7 @@
         :class="{ selected: item.selected, focusOn: item.focus }"
         :key="index"
         @click="selectOption(item)"
-        >{{ item.label }}</a
+        >{{ item[label] }}</a
       >
     </div>
   </div>
@@ -103,14 +105,8 @@ export default {
       if (!objValue) {
         return "";
       }
-      this.options.forEach((option) => {
-        if (option == objValue) {
-          option.selected = true;
-        } else {
-          option.selected = false;
-        }
-      });
-      return objValue?.label;
+      objValue.selected = true
+      return objValue[this.label];
     },
     /**
      * Lấy danh sách sau khi đã filter theo dữ liệu input
@@ -121,12 +117,12 @@ export default {
         return this.options;
       }
       if (
-        this.options.find((option) => option[this.label] == this.inputValue)
+        this.options.find((option) => option[this[this.label]] == this.inputValue)
       ) {
         return this.options;
       }
       return this.options.filter((option) =>
-        option[this.label].includes(this.inputValue)
+        option[this[this.label]].includes(this.inputValue)
       );
     },
     /**
@@ -145,6 +141,9 @@ export default {
   },
   emits: ["update:modelValue", "change", "update:valid"],
   methods: {
+    clickComboboxButton(){
+      this.$refs.input.focus();
+    },
     /**
      * Thêm class focus vào options
      * @param {*} idx index cần focus
@@ -184,7 +183,7 @@ export default {
     inputChange(value) {
       this.inputValue = value;
       this.openOptions();
-      const objValue = this.options?.find((option) => option.label == value);
+      const objValue = this.options?.find((option) => option[this.label] == value);
       if (!objValue) {
         this.$emit("update:valid", false);
       } else {
@@ -196,7 +195,7 @@ export default {
      * CreatedBy: QTNgo (15/05/2023)
      */
     getLabelFromValue() {
-      return this.options?.find((option) => option.value == this.modelValue);
+      return this.options?.find((option) => option[this.value] === this.modelValue);
     },
     /**
      * Lấy index đang focus
@@ -285,11 +284,21 @@ export default {
      * CreatedBy: QTNgo (15/05/2023)
      */
     selectOption(item) {
+      this.$emit("update:modelValue", undefined);
+      this.options.forEach((option) => {
+        if (option[this.value] == item[this.value]) {
+          option.selected = true;
+        } else {
+          option.selected = false;
+        }
+      });
       this.addClassFocusToItem(
-        this.filterOptions.findIndex((e) => e.value == item.value)
+        this.filterOptions.findIndex((e) => e[this.value] == item[this.value])
       );
-      this.$emit("update:modelValue", item.value);
-      this.$emit("change", item.value);
+      this.$nextTick(()=>{
+        this.$emit("update:modelValue", item[this.value]);
+      })
+      this.$emit("change", item[this.value]);
       this.$emit("update:valid", true);
     },
   },

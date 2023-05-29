@@ -8,7 +8,7 @@
         'dropdown-content-marigin': arrow,
       }"
       v-if="modelValue"
-      @mouseleave="closeDropDown"
+      @mouseleave="mouseleaveEvent"
     >
       <span class="custom-arrow" v-if="arrow" :class="position"></span>
       <div class="dropdown__header" v-if="header">
@@ -28,7 +28,7 @@
           </div>
         </button>
       </div>
-      <div class="dropdown__body">
+      <div class="dropdown__body"  v-click-outside="closeDropDown">
         <slot name="content"></slot>
       </div>
       <div class="dropdown__footer">
@@ -66,6 +66,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    mouseleave:{
+      type: Boolean,
+      default: false,
+    }
   },
   data() {
     return {
@@ -79,6 +83,13 @@ export default {
      */
     closeDropDown() {
       this.$emit("update:modelValue", false);
+    },
+    mouseleaveEvent(){
+      console.log('leave');
+      if(!this.mouseleave){
+        return
+      }
+      this.closeDropDown();
     },
   },
 };

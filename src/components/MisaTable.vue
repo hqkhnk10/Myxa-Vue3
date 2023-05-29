@@ -43,8 +43,16 @@
             :key="index"
             @dblclick="dbClickRow(row)"
           >
-            <slot :name="header?.prop" v-bind="row" v-if="header?.slot" />
-            <div v-else>{{ row[header?.prop] }}</div>
+          <div class="tooltip w-full" v-if="header?.slot">
+                <div class="hide-text">
+                  <span class="tooltiphover"><slot :name="header?.prop" v-bind="row"  /></span>
+                </div>
+                <span class="tooltiptable"><slot :name="header?.prop" v-bind="row"  /></span>
+              </div>
+              <div class="tooltip w-full" v-else>
+                <div class="hide-text"><span class="tooltiphover">{{ row[header?.prop] }}</span></div>
+                <span class="tooltiptable">{{ row[header?.prop] }}</span>
+              </div>
           </td>
           <div class="button__table operator">
             <slot name="operator" v-bind="row" />
@@ -142,12 +150,13 @@ export default {
     modelValue: {
       handler() {
         this.tableData.forEach((tableRow) => {
-          const found = this.selectedRows.find((selectedRow) => 
-            JSON.stringify(selectedRow) === JSON.stringify(tableRow)
+          const found = this.selectedRows.find(
+            (selectedRow) =>
+              JSON.stringify(selectedRow) === JSON.stringify(tableRow)
           );
           if (found) {
             tableRow.select = true;
-          }else{
+          } else {
             tableRow.select = false;
           }
         });
@@ -316,10 +325,10 @@ export default {
      */
     unSelectedRows() {
       this.modelValue.data.forEach((row) => {
-          row.select = false;
+        row.select = false;
       });
-      this.checkBoxes = 0
-      this.selectedRows = []
+      this.checkBoxes = 0;
+      this.selectedRows = [];
     },
   },
 };

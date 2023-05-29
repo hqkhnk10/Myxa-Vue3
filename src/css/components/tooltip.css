@@ -2,7 +2,25 @@
   position: relative;
   display: inline-block;
 }
-
+.tooltiptable{
+  max-width: 500px;
+  min-width: 50px;
+  width: max-content;
+  visibility: hidden;
+  background-color: white;
+  height: fit-content;
+  word-break: break-all;
+  border: 1px solid black;
+  color: black;
+  text-align: center;
+  padding: 5px;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 999;
+  line-height: normal;
+  white-space: normal; 
+}
 .tooltip .tooltiptext {
   visibility: hidden;
   background-color: var(--tooltip-bg-color);
@@ -20,7 +38,7 @@ button:focus ~ .tooltiptext{
   visibility: visible;
   z-index: 999;
 }
-.tooltip:hover .tooltiptext {
+.tooltip:hover .tooltiptext, .hide-text:has(.tooltiphover:hover) ~ .tooltiptable {
   visibility: visible;
   z-index: 999;
 }

@@ -28,7 +28,7 @@ th {
   text-align: left;
   font-weight: 700;
 }
-td > div{
+.hide-text{
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -118,6 +118,7 @@ tr:hover .button__table .button-icon-table {
   cursor: pointer;
 }
 .sticky-col {
+  z-index: 1;
   position: -webkit-sticky;
   position: sticky;
   background-color: white;
@@ -131,7 +132,7 @@ tr:hover .button__table .button-icon-table {
   position: sticky;
   top: 0;
   background: white;
-  z-index: 1;
+  z-index: 2;
 }
 .pagination{
  padding: 4px 12px;
