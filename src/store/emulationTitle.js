@@ -69,7 +69,7 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
      * Get data from backend
      * @param {*} params (optional) to filter or pagination
      * Created At: 25/05/2023
-     * Created By: QTNgo
+     * Created By: NQTruong
      */
      getAPI(params) {
       this.loading = true;
@@ -85,7 +85,7 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
         .catch((err) => {
           dispatchNotification({
             content: err?.response?.data?.userMsg
-              ? err.response.data.message
+              ? err?.response?.data?.userMsg
               : err.message,
             type: "error",
           });
@@ -99,7 +99,7 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
      * @param {*} id {id: Number} id of the row
      * @returns Promise<axios>
      * Created At: 25/05/2023
-     * Created By: QTNgo
+     * Created By: NQTruong
      */
     async getDetailAPI(id) {
       return await request.get({ url: `${url}/${id}` });
@@ -108,7 +108,7 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
      * Post data to backend
      * @param {*} data fromBody all the data of the row
      * Created At: 25/05/2023
-     * Created By: QTNgo
+     * Created By: NQTruong
      */
     async addAPI(data) {
       return await request.post({ url: url, data: data });
@@ -117,7 +117,7 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
      * PUT data to backend
      * @param {*} data Frombody all the data of the row
      * Created At: 25/05/2023
-     * Created By: QTNgo
+     * Created By: NQTruong
      */
     async editAPI(data) {
       await request.put({ url: `${url}/${data.emulationTitleID}`, data: data });
@@ -126,7 +126,7 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
      * Call API to remove the row
      * @param {*} id id of row
      * Created At: 25/05/2023
-     * Created By: QTNgo
+     * Created By: NQTruong
      */
      deleteAPI(id) {
        request
@@ -141,7 +141,7 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
         .catch((err) => {
           dispatchNotification({
             content: err?.response?.data?.userMsg
-              ? err.response.data.message
+              ? err?.response?.data?.userMsg
               : err.message,
             type: "error",
           });
@@ -151,7 +151,7 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
      * Delete multiple items from the table
      * @param {*} data Array of id
      * Created At: 25/05/2023
-     * Created By: QTNgo
+     * Created By: NQTruong
      */
      async deleteMultipleAPI(data) {
        await request
@@ -162,7 +162,7 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
      * Change status of emulation title
      * @param {*} data
      * Created At: 25/05/2023
-     * Created By: QTNgo
+     * Created By: NQTruong
      */
      updateStatusAPI(data) {
        request
@@ -187,7 +187,7 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
      * edit multiple status from the table
      * @param {*} data Array of id
      * Created At: 25/05/2023
-     * Created By: QTNgo
+     * Created By: NQTruong
      */
      async updateMultipleStatusAPI(data) {
        return await request.put({ url: `${url}/MulitpleStatus`, data: data })
@@ -198,7 +198,7 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
      * @param {*} index
      * @param {*} value
      * Created At: 25/05/2023
-     * Created By: QTNgo
+     * Created By: NQTruong
      */
     changeSortStore(index, value) {
       if (this.header[index].sort !== undefined) {
@@ -214,7 +214,7 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
      * Add state only (only in FE)
      * @param {*} rowObj
      * Created At: 25/05/2023
-     * Created By: QTNgo
+     * Created By: NQTruong
      */
     add(rowObj) {
       const row = { EmulationTitleID: this.id++, ...rowObj };
@@ -224,7 +224,7 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
      * Edit state only (only in FE)
      * @param {*} rowObj
      * Created At: 25/05/2023
-     * Created By: QTNgo
+     * Created By: NQTruong
      */
     edit(rowObj) {
       const findIndex = this.tableData.findIndex(
@@ -236,7 +236,7 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
      * Remove state only (only in FE)
      * @param {*} rowObj
      * Created At: 25/05/2023
-     * Created By: QTNgo
+     * Created By: NQTruong
      */
     removeRows(rowArray) {
       this.tableData = this.tableData.filter(

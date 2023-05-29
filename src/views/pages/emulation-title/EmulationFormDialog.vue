@@ -1,4 +1,4 @@
-<template >
+<template>
   <div class="dialog__body" @keydown.ctrl.shift.s="submitAndResetForm()">
     <form class="form" id="form-add-title" ref="misaForm">
       <div class="form-item">
@@ -158,35 +158,24 @@
           }}</misa-button>
         </div>
 
-        <div class="tooltip">
-          <misa-button
-            v-if="type == this.$enum.FormActions.Add"
-            type="primary"
-            @click="submitForm()"
-          >
+        <div class="tooltip" v-if="type == this.$enum.FormActions.Add">
+          <misa-button type="primary" @click="submitForm()">
             <span>{{ t("reuse.save") }}</span>
           </misa-button>
-          <span class="arrow-top tooltiptext tooltiptext-top">
-            CRTL + S
-          </span>
+          <span class="arrow-top tooltiptext tooltiptext-top"> CRTL + S </span>
         </div>
 
-        <div class="tooltip">
-          <misa-button
-            v-if="type == this.$enum.FormActions.Add"
-            type="primary-border"
-            @click="submitAndResetForm()"
-          >
+        <div class="tooltip" v-if="type == this.$enum.FormActions.Add">
+          <misa-button type="primary-border" @click="submitAndResetForm()">
             <span>{{ t("reuse.saveAndAdd") }}</span>
           </misa-button>
 
-          <span
-            class="arrow-top tooltiptext tooltiptext-top"
+          <span class="arrow-top tooltiptext tooltiptext-top"
             >CRTL + SHIFT + S</span
           >
         </div>
         <misa-button type="secondary" @click="closeDialog()">
-            <span>{{ t("reuse.cancel") }}</span>
+          <span>{{ t("reuse.cancel") }}</span>
         </misa-button>
       </div>
     </form>
@@ -209,7 +198,6 @@
 
 <script>
 import { dispatchNotification } from "@/components/Notification";
-import { required } from "@/js/validate/validate";
 import { useEmulationTitleStore } from "@/store/emulationTitle";
 import { useEmulationCommendationStore } from "@/store/emulationCommendation";
 import { mapActions } from "pinia";
@@ -240,11 +228,13 @@ export default {
       validate: {
         emulationTitleName: {
           required: true,
-          message: this.t("emulationTitle.requiredName"),
+          validator: this.validateName,
+          message: "",
           valid: true,
         },
         emulationTitleCode: {
           required: true,
+          validator: this.validateCode,
           message: this.t("emulationTitle.requiredCode"),
           valid: true,
         },
@@ -269,7 +259,7 @@ export default {
     /**
      * Nếu type là detail thì trả ra true để disable form
      * Created At: 24/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     disabled() {
       return this.type == this.$enum.FormActions.Detail ? true : false;
@@ -277,7 +267,7 @@ export default {
     /**
      * Tự động sinh code khi thay đổi tên
      * Created At: 24/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     inputCode() {
       let code = this.getFirstLetters(this.form?.emulationTitleName);
@@ -288,16 +278,16 @@ export default {
     /**
      * Focus first input
      * Created At: 10/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     this.$refs.firstInput.focus();
 
-    window.addEventListener('keydown', this.handleKeyDown)
+    window.addEventListener("keydown", this.handleKeyDown);
 
     /**
      * Lấy cấp phong trào
      * Created At: 24/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     this.getEmulationCommendation()
       .then((res) => {
@@ -306,7 +296,7 @@ export default {
       .catch((err) => {
         dispatchNotification({
           content: err?.response?.data?.userMsg
-            ? err.response.data.message
+            ? err?.response?.data?.userMsg
             : err.message,
           type: "error",
         });
@@ -314,13 +304,13 @@ export default {
   },
   beforeUnmount() {
     // Remove event listener when component is unmounted
-    window.removeEventListener('keydown', this.handleKeyDown)
+    window.removeEventListener("keydown", this.handleKeyDown);
   },
   watch: {
     /**
      * Thay đổi mã theo tên
      * Created At: 24/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     inputCode(newValue, oldValue) {
       if (
@@ -335,7 +325,7 @@ export default {
     /**
      * Xử lí khi thay đổi type
      * Created At: 24/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     type: {
       handler(value) {
@@ -357,19 +347,51 @@ export default {
     },
   },
   methods: {
+    validateCode() {
+      if (!this.form.emulationTitleCode) {
+        this.validate.emulationTitleCode.message = this.t(
+          "emulationTitle.requiredCode"
+        );
+        return false;
+      }
+      if (this.form.emulationTitleCode.length > 20) {
+        this.validate.emulationTitleCode.message = this.t("reuse.maxLength20");
+        return false;
+      }
+      return true;
+    },
+    validateName() {
+      if (!this.form.emulationTitleName) {
+        this.validate.emulationTitleName.message = this.t(
+          "emulationTitle.requiredName"
+        );
+        return false;
+      }
+      if (this.form.emulationTitleName.length > 255) {
+        this.validate.emulationTitleName.message = this.t("reuse.maxLength255");
+        return false;
+      }
+      return true;
+    },
+    /**
+     * Press Ctrl + S to submit form
+     * @param {*} event keyboard event
+     * Created At: 24/05/2023
+     * @author NQTruong
+     */
     handleKeyDown(event) {
       // Check if Ctrl + S is pressed
-      if (event.ctrlKey && event.key === 's') {
-        event.preventDefault() // Prevent the default browser behavior
+      if (event.ctrlKey && event.key === "s") {
+        event.preventDefault(); // Prevent the default browser behavior
         // Your custom logic when Ctrl + S is pressed
-        this.submitForm()
+        this.submitForm();
       }
     },
     /**
      * Lấy chữ cái đầu của các từ trong một chuỗi
      * @param {*} str chuỗi
      * Created At: 24/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     getFirstLetters(str) {
       if (!str) {
@@ -382,7 +404,7 @@ export default {
     /**
      * Hiện ô trạng thái
      * Created At: 24/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     showStatus() {
       if (
@@ -398,7 +420,7 @@ export default {
      * Xử lí dữ liệu từ API
      * @param {*} formValue dữ liệu từ APi
      * Created At: 24/05/2023
-     * @author QTNgo*/
+     * @author NQTruong*/
     customGetValue(formValue) {
       this.form.emulationTitleName = formValue?.emulationTitleName;
       this.form.emulationTitleCode = formValue?.emulationTitleCode;
@@ -446,7 +468,7 @@ export default {
     /**
      * Gọi API lấy chi tiết
      * Created At: 24/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     getFormValue() {
       this.getDetailAPI(this.row.emulationTitleID)
@@ -456,7 +478,7 @@ export default {
         .catch((err) => {
           dispatchNotification({
             content: err?.response?.data?.userMsg
-              ? err.response.data.message
+              ? err?.response?.data?.userMsg
               : err.message,
             type: "error",
           });
@@ -465,7 +487,7 @@ export default {
     /**
      * Reset value of the form
      * Created At: 15/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     resetFormValue() {
       this.form = {
@@ -484,7 +506,7 @@ export default {
     /**
      * Register to use function in EmulationTitleStore
      * Created At: 15/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     ...mapActions(useEmulationTitleStore, [
       "getAPI",
@@ -496,7 +518,7 @@ export default {
     /**
      * valudate function for Form
      * Created At: 15/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     validateApplyObject() {
       return this.form.applyObject0 || this.form.applyObject2;
@@ -512,21 +534,15 @@ export default {
      * Validate form if this.validate has value
      * Validte contains validate function
      * Created At: 10/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     validateForm() {
       let isValid = true;
       Object.keys(this.validate).forEach((item) => {
-        let valid = false;
-        if (this?.validate[item]?.required) {
-          valid = required(this.form[item]);
-        } else {
-          this.validate[item].validator
-            ? (valid = this.validate[item].validator())
-            : (valid = this.validate[item].valid);
-        }
-        this.validate[item].valid = valid;
-        isValid = isValid && valid;
+        this.validate[item].valid = this.validate[item].validator
+          ? this.validate[item].validator()
+          : this.validate[item].valid;
+        isValid = isValid && this.validate[item].valid;
       });
       return isValid;
     },
@@ -536,6 +552,8 @@ export default {
         if (res) {
           this.resetFormValue();
         }
+      } else {
+        this.$refs.firstInput.focus();
       }
     },
     /**
@@ -543,7 +561,7 @@ export default {
      * if type == add then call add function
      * if type == edit then call edit function
      * Created At: 10/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     submitForm() {
       if (this.validateForm()) {
@@ -553,7 +571,7 @@ export default {
     /**
      * Handle Form value
      * Created At: 10/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     customPostValue() {
       let customValue = {};
@@ -595,7 +613,7 @@ export default {
     /**
      * Thêm hoặc sửa tùy thuộc theo Type
      * Created At: 10/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     async submitAPI(closeDialog = true) {
       let postValue = this.customPostValue();
@@ -606,9 +624,7 @@ export default {
             content: this.successContent,
             type: "success",
           });
-          if (closeDialog) {
-            this.closeDialog();
-          }
+
           return true;
         })
         .catch((err) => {
@@ -616,14 +632,20 @@ export default {
           if (err?.response?.status == 302) {
             this.validateDialog = true;
           } else {
+            console.log("message", err?.response?.data?.userMsg);
             dispatchNotification({
               content: err?.response?.data?.userMsg
-                ? err.response.data.message
+                ? err?.response?.data?.userMsg
                 : err.message,
               type: "error",
             });
           }
           return false;
+        })
+        .finally(() => {
+          if (closeDialog) {
+            this.closeDialog();
+          }
         });
     },
   },

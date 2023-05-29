@@ -157,7 +157,7 @@ export default {
         .catch((err) => {
           dispatchNotification({
             content: err?.response?.data?.userMsg
-              ? err.response.data.message
+              ? err?.response?.data?.userMsg
               : err.message,
             type: "error",
           });
@@ -166,7 +166,7 @@ export default {
     /**
      * open confirm dialog before delete row
          //Created At: 10/05/2023
-    //@author QTNgo
+    //@author NQTruong
      */
     openConfirmDialog() {
       this.confirmDialog = true;
@@ -174,7 +174,7 @@ export default {
     /**
      * close confirm dialog 
          //Created At: 10/05/2023
-    //@author QTNgo
+    //@author NQTruong
      */
     closeConfirmDialog() {
       this.confirmDialog = false;
@@ -183,34 +183,34 @@ export default {
      * Send keyword to GetAPI to filter
      * @param {*} keyword 
          //Created At: 10/05/2023
-    //@author QTNgo
+    //@author NQTruong
      */
     changeKeyword(keyword) {
       this.emitter.emit("search-table-emulation", keyword);
     },
     //Lọc dữ liệu theo keyword
     //Created At: 10/05/2023
-    //@author QTNgo
+    //@author NQTruong
     search() {
       this.emitter.emit("search-table-emulation", this.keyword);
     },
     //Lọc dữ liệu theo Thẻ lọc
     //Created At: 10/05/2023
-    //@author QTNgo
+    //@author NQTruong
     changeFilter(value) {
       this.filterValue = { ...value };
       this.emitter.emit("filter-table-emulation", this.filterValue);
     },
     //Bỏ chọn trong table
     //Created At: 10/05/2023
-    //@author QTNgo
+    //@author NQTruong
     unSelectedRows() {
       this.emitter.emit("unselect-row-emulation");
     },
     /**
      * Remove rows if selected
      * Created At: 10/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     removeRow() {
       this.closeConfirmDialog();
@@ -227,7 +227,7 @@ export default {
         .catch((err) => {
           dispatchNotification({
             content: err?.response?.data?.userMsg
-              ? err.response.data.message
+              ? err?.response?.data?.userMsg
               : err.message,
             type: "error",
           });
@@ -235,13 +235,13 @@ export default {
     },
     //mở form thêm sửa
     //Created At: 10/05/2023
-    //@author QTNgo
+    //@author NQTruong
     openDialogAddTitle() {
       this.emitter.emit("toggle-emulation-dialog", true);
     },
     //đóng form thêm sửa
     //Created At: 10/05/2023
-    //@author QTNgo
+    //@author NQTruong
     closeDialogAdd() {
       this.emitter.emit("toggle-emulation-dialog", false);
     },

@@ -196,7 +196,7 @@ export default {
     /**
      * Reassgin the value of the filter value
      * Created At: 10/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     filterValue: {
       handler() {
@@ -216,7 +216,7 @@ export default {
      * Check if the filter is change or not
      * Default: null
      * Created At: 10/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     filterChange() {
       const { ApplyObject, CommendationLevel, MovementType, Inactive } =
@@ -229,7 +229,7 @@ export default {
     /**
      * Toggle visibility of drop down filter
      * Created At: 10/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     toogleDropDownFilter() {
       this.dropDownFilter = !this.dropDownFilter;
@@ -237,7 +237,7 @@ export default {
     /**
      * Remove all filter, remove params in getAPI func
      * Created At: 10/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     //Remove reuse.all filters (set to null)
     removeFilter() {
@@ -251,7 +251,7 @@ export default {
     /**
      * Cancel changes in the drop down options
      * Created At: 10/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     cancelFilter() {
       // Assign filter values to variables
@@ -267,7 +267,7 @@ export default {
     /**
      * Save filter change and send it to the table
      * Created At: 10/05/2023
-     * @author QTNgo
+     * @author NQTruong
      * @author
      */
     applyFilter() {
@@ -285,7 +285,7 @@ export default {
     /**
      * Close drop donwn
      * Created At: 10/05/2023
-     * @author QTNgo
+     * @author NQTruong
      * @author
      */
     closeDropdown() {

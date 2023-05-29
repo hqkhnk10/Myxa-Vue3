@@ -72,7 +72,7 @@ export default {
   computed: {
     /**
      * Change class to disabled if there is no previous page
-     * CreatedBy : QTNgo (16/06/2023)
+     * CreatedBy : NQTruong (16/06/2023)
      */
     previousPage() {
       if (this.startIndex > 0) {
@@ -82,7 +82,7 @@ export default {
     },
     /**
      * Change class to disabled if there is no next page
-     * CreatedBy : QTNgo (16/06/2023)
+     * CreatedBy : NQTruong (16/06/2023)
      */
     nextPage() {
       if (this.endIndex <= this.pagination.total) {
@@ -95,14 +95,14 @@ export default {
   watch: {
     /**
      * Emit event when pageSize changes
-     * CreatedBy : QTNgo (16/06/2023)
+     * CreatedBy : NQTruong (16/06/2023)
      */
     "pagination.pageSize"(val) {
       this.$emit("change-value", { pageSize: val });
     },
     /**
      * Emit event when pageIndex changes
-     * CreatedBy : QTNgo (16/06/2023)
+     * CreatedBy : NQTruong (16/06/2023)
      */
     "pagination.pageIndex"(val) {
       this.$emit("change-value", { pageIndex: val });
@@ -111,7 +111,7 @@ export default {
   methods: {
     /**
      * click previous page
-     * CreatedBy : QTNgo (16/06/2023)
+     * CreatedBy : NQTruong (16/06/2023)
      */
     prev() {
       if (this.previousPage == "") {
@@ -121,7 +121,7 @@ export default {
     },
     /**
      * click next page
-     * CreatedBy : QTNgo (16/06/2023)
+     * CreatedBy : NQTruong (16/06/2023)
      */
     next() {
       if (this.nextPage == "") {

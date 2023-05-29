@@ -48,7 +48,10 @@ export const vi = {
     settingSystem: "Thiết lập hệ thống",
     notRight: "không đúng",
     pleaseChoose: "vui lòng chọn",
-    inTheList: "trong danh sách"
+    inTheList: "trong danh sách",
+    maxLength255: "Không được vượt quá 255 kí tự",
+    maxLength20: "Không được vượt quá 20 kí tự"
+
   },
   emulationTitle: {
     emulationTitle: "Danh hiệu thi đua",

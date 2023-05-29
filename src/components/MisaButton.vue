@@ -30,7 +30,7 @@ export default {
   methods: {
     /**
      * Return class of the button
-     * CreatedBy: QTNgo (15/05/2023)
+     * CreatedBy: NQTruong (15/05/2023)
      */
     renderButton() {
       return `button__${this.type}`;

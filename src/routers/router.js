@@ -359,7 +359,7 @@ export const router = createRouter({
 
 /**
  * Show loading when change route
- * CreatedBy: QTNgo(15/05/2023)
+ * CreatedBy: NQTruong(15/05/2023)
  */
 router.beforeEach((to, from, next) => {
   const loading = document.querySelector(".loading-screen");
@@ -372,7 +372,7 @@ router.beforeEach((to, from, next) => {
 });
 /**
  * Hide loading when finish change route
- * CreatedBy: QTNgo(15/05/2023)
+ * CreatedBy: NQTruong(15/05/2023)
  */
 router.afterEach(() => {
   const loading = document.querySelector(".loading-screen");

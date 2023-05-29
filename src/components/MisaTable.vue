@@ -133,7 +133,7 @@ export default {
      * If newValue is equal to 0, headerBox is set to false. Otherwise, headerBox is set to 'half'.
      * @param {*} newValue
      * Created At: 10/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     checkBoxes(newValue) {
       this.$emit("select");
@@ -175,7 +175,7 @@ export default {
     /**
      * return selected rows
      * Created At: 10/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     getSelectedRows() {
       return this.selectedRows;
@@ -183,7 +183,7 @@ export default {
     /**
      * Filter table data base on keyword or filter or pagination
      * Created At: 10/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     tableData() {
       let table = this.modelValue.data;
@@ -213,7 +213,7 @@ export default {
     /**
      * calculate the startIndex
      * Created At: 10/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     startIndex() {
       return (this.pagination.pageIndex - 1) * this.pagination.pageSize;
@@ -221,7 +221,7 @@ export default {
     /**
      * calculate the endIndex
      * Created At: 10/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     endIndex() {
       return this.pagination.pageIndex * this.pagination.pageSize + 1;
@@ -233,7 +233,7 @@ export default {
      * @param {*} header header value
      * @param {*} index index of header
      * Created At: 15/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     changeSort(header, index) {
       const value =
@@ -244,7 +244,7 @@ export default {
      * Show the button float when hover the table
      * Set the LEFT: VALUE
      * Created At: 15/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     hover() {
       this.left = `${
@@ -257,7 +257,7 @@ export default {
      * Change pagination value
      * @param {*} value {pageSize: Number, pageIndex: Number}
      * Created At: 15/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     changePagination(value) {
       this.$emit("change-pagination", value);
@@ -265,7 +265,7 @@ export default {
     /**
      * 2-ways binding
      * Created At: 15/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     updateValue() {
       this.$emit("update:modelValue", !this.modelValue);
@@ -276,7 +276,7 @@ export default {
      * increased if checked
      * @param {*} value
      * Created At: 10/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     checkBoxRow(value, index) {
       if (value) {
@@ -293,7 +293,7 @@ export default {
     /**
      * used to check or uncheck all checkboxes in the modelValue.data array.
      * Created At: 10/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     checkAll() {
       if (this.checkBoxes == 0) {
@@ -312,7 +312,7 @@ export default {
      * emits event double click
      * @param {*} row
      * Created At: 10/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     dbClickRow(row) {
       this.$emit("dbclick-row", row);
@@ -321,7 +321,7 @@ export default {
      * set rows to  unchecked
      * @param {*} rows
      * Created At: 10/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     unSelectedRows() {
       this.modelValue.data.forEach((row) => {

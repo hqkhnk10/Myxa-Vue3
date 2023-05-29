@@ -79,7 +79,7 @@ export default {
   methods: {
     /**
      * close  the dropdown
-     * CreatedBy: QTNgo (15/05/2023)
+     * CreatedBy: NQTruong (15/05/2023)
      */
     closeDropDown() {
       this.$emit("update:modelValue", false);

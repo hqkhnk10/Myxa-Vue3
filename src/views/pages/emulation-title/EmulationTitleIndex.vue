@@ -32,7 +32,7 @@ export default {
     /**
      * Đổi tên title theo type
      * Created At: 24/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     type: {
       handler(value) {
@@ -56,7 +56,7 @@ export default {
      * Event bus toggle dialog
      * @param isShow: to show the dialog
      * Created At: 10/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     this.emitter.on("toggle-emulation-dialog", (isShow) => {
       this.type = this.$enum.FormActions.Add;
@@ -67,7 +67,7 @@ export default {
     /**
      * Pass handled value to form
      * Created At: 10/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     selectRow(_type, row) {
       this.rowSelected = row;
@@ -77,7 +77,7 @@ export default {
      * Get all the rows that currently selected
      * @param {*} rows
      * Created At: 10/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     totalSelectedRows(rows) {
       this.selectedRows = rows;

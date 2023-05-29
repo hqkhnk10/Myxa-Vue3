@@ -8,7 +8,7 @@ import { globals } from "@/main";
  * @param {*} locale language
  * @returns Translated word
  * Created date: 10/05/2023
- * Created by: QTNgo
+ * Created by: NQTruong
  */
 export function translate(word, locale = 'vi') {
   switch (locale) {
@@ -27,7 +27,7 @@ export function translate(word, locale = 'vi') {
  * @param {*} defaultValue default value returned if no value
  * @returns word
  * Created date: 10/05/2023
- * Created by: QTNgo
+ * Created by: NQTruong
  */
 function get(obj, path, defaultValue) {
   if(!obj || !path){

@@ -42,7 +42,7 @@ export default {
   methods: {
     /**
      * update value of checkbox
-     * CreatedBy: QTNgo (15/05/2023)
+     * CreatedBy: NQTruong (15/05/2023)
      */
     toogleCheckbox() {
       this.$emit("update:modelValue", !this.modelValue);
@@ -50,7 +50,7 @@ export default {
     },
     /**
      * Change image of checkbox base on value
-     * CreatedBy: QTNgo (15/05/2023)
+     * CreatedBy: NQTruong (15/05/2023)
      */
     imageCheckbox() {
       switch (this.modelValue) {

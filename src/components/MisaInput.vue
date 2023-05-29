@@ -10,6 +10,15 @@
       @focus="focusEvent"
       :placeholder="placeholder"
     />
+    <button
+      v-if="modelValue && reset"
+      type="button"
+      aria-label="Close"
+      class="button__icon-default input-button-x"
+      @click="resetInput()"
+    >
+      <img src="../assets/icon/x-icon.svg" alt="Exit" style="width: 15px" />
+    </button>
     <slot name="icon"></slot>
     <span class="input__icon" v-if="loading">
       <img
@@ -29,15 +38,6 @@
         height="25"
       />
     </span>
-    <button
-      v-if="modelValue && reset"
-      type="button"
-      aria-label="Close"
-      class="button__icon-default input-button-x"
-      @click="resetInput()"
-    >
-      <img src="../assets/icon/x-icon.svg" alt="Exit" style="width: 15px" />
-    </button>
     <p class="error"></p>
   </div>
 </template>
@@ -91,7 +91,7 @@ export default {
     /**
      *  set value of input when prop change
      * @param {*} value
-     * CreatedBy: QTNgo (15/05/2023)
+     * CreatedBy: NQTruong (15/05/2023)
      */
     modelValue(value) {
       this.inputValue = value;
@@ -99,7 +99,7 @@ export default {
     /**
      *  setting up a two-way data binding
      * @param {*} value
-     * CreatedBy: QTNgo (15/05/2023)
+     * CreatedBy: NQTruong (15/05/2023)
      */
     inputValue(newValue) {
       this.$emit("update:modelValue", newValue);
@@ -110,7 +110,7 @@ export default {
   methods: {
         /**
      *  Debounce the value
-     * CreatedBy: QTNgo (15/05/2023)
+     * CreatedBy: NQTruong (15/05/2023)
      */
     handleInput(){
       clearTimeout(this.timeout)
@@ -122,7 +122,7 @@ export default {
     /**
      * Reset the value of the model
      * Created At: 19/05/2023
-     * @author: QTNgo
+     * @author: NQTruong
      */
     resetInput() {
       this.$emit("update:modelValue", "");
@@ -131,7 +131,7 @@ export default {
     /**
      * Focus the input field
      * Created At: 19/05/2023
-     * @author: QTNgo
+     * @author: NQTruong
      */
     focus() {
       this.$refs.input.focus();
@@ -139,7 +139,7 @@ export default {
     /**
      * emit blur event
      * Created At: 19/05/2023
-     * @author: QTNgo
+     * @author: NQTruong
      */
     blurEvent() {
       this.$emit("blur");
@@ -147,7 +147,7 @@ export default {
     /**
      * emit focus event
      * Created At: 19/05/2023
-     * @author: QTNgo
+     * @author: NQTruong
      */
     focusEvent() {
       this.$emit("focus");

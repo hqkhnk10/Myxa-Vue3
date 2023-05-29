@@ -8,7 +8,7 @@ defineProps({
 /**
  * Call function to close notification
  * @param {*} id id of the notification
- * CreatedBy: QTNgo (15/05/2023)
+ * CreatedBy: NQTruong (15/05/2023)
  */
 const closeNotification = (id) => {
   store.actions.removeNotification(id);
@@ -16,7 +16,7 @@ const closeNotification = (id) => {
 /**
  * Return color base on type of notification
  * @param {*} type "success" or "warning" or "danger" or "infomation"
- * CreatedBy: QTNgo (15/05/2023)
+ * CreatedBy: NQTruong (15/05/2023)
  */
 const formatColor = (type) => {
   switch (type) {

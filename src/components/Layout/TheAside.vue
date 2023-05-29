@@ -92,7 +92,7 @@ export default {
   },
   /**
    * push to emulationTitle when open the site
-   * CreatedBy : QTNgo (16/05/2023)
+   * CreatedBy : NQTruong (16/05/2023)
    */
   created() {
     if (this.currentRoute == "/") {
@@ -101,7 +101,7 @@ export default {
   },
   /**
    * Find route in router array
-   * CreatedBy : QTNgo (16/05/2023)
+   * CreatedBy : NQTruong (16/05/2023)
    */
   mounted() {
     this.routes.forEach((route) => {
@@ -120,7 +120,7 @@ export default {
     /**
      * updates the selected menu item and navigates to the correct route
      * @param {*} item
-     * CreatedBy : QTNgo (16/05/2023)
+     * CreatedBy : NQTruong (16/05/2023)
      */
     selectMenuItem(item) {
       routes.forEach((route) => {
@@ -136,7 +136,7 @@ export default {
     /**
      * select and close submenu when click child route
      * @param {*} item
-     * CreatedBy : QTNgo (16/05/2023)
+     * CreatedBy : NQTruong (16/05/2023)
      */
     selectSubMenuItem(item) {
       this.childrenRoutes.forEach((route) => {
@@ -148,14 +148,14 @@ export default {
     },
     /**
      * Toggle visibility of menu
-     * CreatedBy : QTNgo (16/05/2023)
+     * CreatedBy : NQTruong (16/05/2023)
      */
     toogleMenu() {
       this.shrinkMenu = !this.shrinkMenu;
     },
     /**
      * Close sub menu when click outside of menu
-     * CreatedBy : QTNgo (16/05/2023)
+     * CreatedBy : NQTruong (16/05/2023)
      */
     onClickOutside() {
       this.openSubMenu = !this.openSubMenu;

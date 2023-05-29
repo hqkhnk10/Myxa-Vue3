@@ -98,7 +98,7 @@ export default {
   computed: {
     /**
      * Search value in option array and return label to display
-     * CreatedBy: QTNgo (15/05/2023)
+     * CreatedBy: NQTruong (15/05/2023)
      */
     labelShow() {
       const objValue = this.getLabelFromValue();
@@ -110,7 +110,7 @@ export default {
     },
     /**
      * Lấy danh sách sau khi đã filter theo dữ liệu input
-     * CreatedBy: QTNgo (15/05/2023)
+     * CreatedBy: NQTruong (15/05/2023)
      */
     filterOptions() {
       if (!this.inputValue) {
@@ -127,7 +127,7 @@ export default {
     },
     /**
      * Set position of the combobox option
-     * CreatedBy: QTNgo (15/05/2023)
+     * CreatedBy: NQTruong (15/05/2023)
      */
     positionStyle() {
       if (this.position == "top") {
@@ -147,7 +147,7 @@ export default {
     /**
      * Thêm class focus vào options
      * @param {*} idx index cần focus
-     * CreatedBy: QTNgo (15/05/2023)
+     * CreatedBy: NQTruong (15/05/2023)
      */
     addClassFocusToItem(idx) {
       this.filterOptions.forEach((option, index) => {
@@ -160,7 +160,7 @@ export default {
     },
         /**
      * Mở options box nếu dữ liệu trong có dữ liệu trong options
-     * CreatedBy: QTNgo (15/05/2023)
+     * CreatedBy: NQTruong (15/05/2023)
      */
     openOptions() {
       if (this.filterOptions.length > 0) {
@@ -170,7 +170,7 @@ export default {
     },
             /**
      * Đóng options box
-     * CreatedBy: QTNgo (15/05/2023)
+     * CreatedBy: NQTruong (15/05/2023)
      */
     closeOptions() {
       this.optionsBox = false;
@@ -178,7 +178,7 @@ export default {
                 /**
      * Khi dữ liệu input thay đổi, mở options box
      * Nếu có trong list option thì gửi valid = true / không có thì valid = false
-     * CreatedBy: QTNgo (15/05/2023)
+     * CreatedBy: NQTruong (15/05/2023)
      */
     inputChange(value) {
       this.inputValue = value;
@@ -192,28 +192,28 @@ export default {
     },
     /**
      * Láy tiêu đề từ dữ liệu trong list options
-     * CreatedBy: QTNgo (15/05/2023)
+     * CreatedBy: NQTruong (15/05/2023)
      */
     getLabelFromValue() {
       return this.options?.find((option) => option[this.value] === this.modelValue);
     },
     /**
      * Lấy index đang focus
-     * CreatedBy: QTNgo (15/05/2023)
+     * CreatedBy: NQTruong (15/05/2023)
      */
     getFocusIndex() {
       return this.filterOptions.findIndex((e) => e.focus);
     },
     /**
      * Lấy index của đang được chọn trong dánh sachs
-     * CreatedBy: QTNgo (15/05/2023)
+     * CreatedBy: NQTruong (15/05/2023)
      */
     getSelectedIndex() {
       return this.filterOptions.findIndex((row) => row.selected);
     },
     /**
      * Select item when press enter
-     * CreatedBy: QTNgo (15/05/2023)
+     * CreatedBy: NQTruong (15/05/2023)
      */
     pressEnter() {
       this.selectOption(this.filterOptions[this.getIndex()]);
@@ -223,7 +223,7 @@ export default {
      * Lấy index cần focus
      * Nếu đang focus thì trả ra index focus
      * Nếu không có thì lấy dữ liệu đang được select
-     * CreatedBy: QTNgo (15/05/2023)
+     * CreatedBy: NQTruong (15/05/2023)
      */
     getIndex() {
       let focusIndex = this.getFocusIndex();
@@ -241,7 +241,7 @@ export default {
     /**
      * Change the focus of combobox item
      * @param {*} arrow True: Up / False: Down
-     * CreatedBy: QTNgo (15/05/2023)
+     * CreatedBy: NQTruong (15/05/2023)
      */
     pressArrowButton(arrow) {
       let focusIndex = this.getIndex();
@@ -261,14 +261,14 @@ export default {
     },
     /**
      * close the combobox
-     * CreatedBy: QTNgo (15/05/2023)
+     * CreatedBy: NQTruong (15/05/2023)
      */
     closeCombobox() {
       this.optionsBox = false;
     },
     /**
      * Toggle the visibility of the options
-     * CreatedBy: QTNgo (15/05/2023)
+     * CreatedBy: NQTruong (15/05/2023)
      */
     toggleOptions() {
       if (!this.disabled) {
@@ -281,7 +281,7 @@ export default {
     },
     /**
      * Update value when click item
-     * CreatedBy: QTNgo (15/05/2023)
+     * CreatedBy: NQTruong (15/05/2023)
      */
     selectOption(item) {
       this.$emit("update:modelValue", undefined);

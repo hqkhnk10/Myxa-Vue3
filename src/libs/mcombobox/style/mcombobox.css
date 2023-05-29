@@ -117,24 +117,15 @@ a{
 	content: url('../../mcombobox/icon/loading-icon.svg');
 	animation: spin 2s linear infinite;
 } */
-.input__icon{
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	position: absolute;
-	right: 6px;
-	top: 0;
-	height: 100%;
-	width: 25px;
-	background-color: transparent;
-	padding: 0 7px;
-}
 @keyframes spin {
 	0% { transform: rotate(0deg); }
 	100% { transform: rotate(360deg); }
 }
 .show{
   display: block;
+}
+.mcombobox> .input-container{
+  border: none !important;
 }
 .mcombobox:hover > button{
   background-color: var(--input-border-color-gray) !important;

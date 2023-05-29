@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 /**
  * Store to change the language globally
- * CreatedBy: QTNgo(15/05/2023)
+ * CreatedBy: NQTruong(15/05/2023)
  */
 export const useLangStore = defineStore("lang", {
   state: () => {

@@ -138,7 +138,7 @@ export default {
     /**
      * get table data from EmulationTitleStore
      *    * Created At: 15/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     ...mapState(useEmulationTitleStore, {
       table: (store) => {
@@ -158,7 +158,7 @@ export default {
   /**
    * Tiny emmiter(Eventbus) function
    * Created At: 10/05/2023
-   * @author QTNgo
+   * @author NQTruong
    */
   mounted() {
     this.getAPI({
@@ -178,7 +178,7 @@ export default {
     /**
      * Toogle the visibility of dorp down to change status
      * Created At: 15/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     toogleDropdownEdit() {
       this.showDropdownEdit = !this.showDropdownEdit;
@@ -189,7 +189,7 @@ export default {
      * @param {*} index index : Bumber
      * @param {*} value sort value {true/false}
      * Created At: 15/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     changeSort(_header, index, value) {
       this.changeSortStore(index, value);
@@ -198,7 +198,7 @@ export default {
      * Open confirm dialog before remove row
      * @param {*} row row data
      * Created At: 15/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     openConfirmDialog(row) {
       this.confirmDialog = true;
@@ -207,7 +207,7 @@ export default {
     /**
      * Close confirm dialog
      * Created At: 15/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     closeConfirmDialog() {
       this.confirmDialog = false;
@@ -243,7 +243,7 @@ export default {
     /**
      * Register to use function in EmulationTitleStore
      *    * Created At: 15/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     ...mapActions(useEmulationTitleStore, [
       "add",
@@ -260,7 +260,7 @@ export default {
      * when change pagination call get api and pass new params
      * @param {*} value object {pageSize : Number, pageIndex: Number}}
      * Created At: 16/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     changePagination(value) {
       this.getAPI(value);
@@ -269,7 +269,7 @@ export default {
      * send keyword to get api params
      * @param {*} keyword object {keyword: string}
      * Created At: 16/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     searchTable(keyword) {
       this.getAPI({ keyword: keyword });
@@ -279,7 +279,7 @@ export default {
      * if value is null then remove attribue from object filter
      * @param {*} filterValue
      * Created At: 10/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     filterTable(filterValue) {
       this.getAPI(filterValue);
@@ -288,7 +288,7 @@ export default {
      * Call api to Remove row
      * @param {*} row row value
      * Created At: 17/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     deleteRow() {
       this.deleteAPI(this.selectedRow.emulationTitleID);
@@ -297,7 +297,7 @@ export default {
     /**
      * call unSelectedRows method in Table component
      * Created At: 10/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     unSelect() {
       this.$refs.misaTable.unSelectedRows(this.$refs.misaTable.getSelectedRows);
@@ -305,7 +305,7 @@ export default {
     /**
      * call getSelectedRows function in Table component to get select rows
      * Created At: 10/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     selectRow() {
       this.$emit("select", this.$refs.misaTable.getSelectedRows);
@@ -314,7 +314,7 @@ export default {
      * pass value to Form
      * @param {*} row
      * Created At: 10/05/2023
-     * @author QTNgo
+     * @author NQTruong
      */
     formEdit(row) {
       this.emitter.emit("toggle-emulation-dialog", true);
