@@ -80,7 +80,7 @@
       </misa-table>
     </div>
   </div>
-  <misa-confirm-dialog v-if="confirmDialog" v-model="confirmDialog" :title="t('emulationTitle.removeEmulationTitles')">
+  <misa-confirm-dialog v-if="confirmDialog" v-model="confirmDialog" :title="t('emulationTitle.removeEmulationTitles')" @keydown.enter="deleteRow">
     <template #content>
       <div>
         {{ t('emulationTitle.removeEmulationTitles') }}

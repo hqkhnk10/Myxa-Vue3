@@ -1,5 +1,6 @@
 <template>
   <div class="dialog__body" @keydown.ctrl.shift.s="submitAndResetForm()">
+    <misa-loading :modelValue="loading"></misa-loading>
     <form class="form" id="form-add-title" ref="misaForm">
       <div class="form-item">
         <label class="form-item__label"
@@ -152,24 +153,22 @@
         </div>
       </div>
       <div class="form__footer">
-        <div v-if="showStatus()">
-          <misa-button type="primary" @click="submitForm()">{{
-            t("reuse.saveChange")
-          }}</misa-button>
+        <div class="tooltip" v-if="showStatus()">
+          <misa-button type="primary" @click="submitForm()">
+            <span>{{ t("reuse.saveChange") }}</span>
+          </misa-button>
+          <span class="arrow-top tooltiptext tooltiptext-top"> CRTL + S </span>
         </div>
-
         <div class="tooltip" v-if="type == this.$enum.FormActions.Add">
           <misa-button type="primary" @click="submitForm()">
             <span>{{ t("reuse.save") }}</span>
           </misa-button>
           <span class="arrow-top tooltiptext tooltiptext-top"> CRTL + S </span>
         </div>
-
         <div class="tooltip" v-if="type == this.$enum.FormActions.Add">
           <misa-button type="primary-border" @click="submitAndResetForm()">
             <span>{{ t("reuse.saveAndAdd") }}</span>
           </misa-button>
-
           <span class="arrow-top tooltiptext tooltiptext-top"
             >CRTL + SHIFT + S</span
           >
@@ -219,6 +218,7 @@ export default {
 
   data() {
     return {
+      loading: true,
       successContent: "",
       validateDialog: false,
       dialogAdd: false,
@@ -471,6 +471,7 @@ export default {
      * @author NQTruong
      */
     getFormValue() {
+      this.loading = true;
       this.getDetailAPI(this.row.emulationTitleID)
         .then((res) => {
           this.customGetValue(res?.data);
@@ -482,6 +483,9 @@ export default {
               : err.message,
             type: "error",
           });
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
     /**

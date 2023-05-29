@@ -50,8 +50,8 @@ export const vi = {
     pleaseChoose: "vui lòng chọn",
     inTheList: "trong danh sách",
     maxLength255: "Không được vượt quá 255 kí tự",
-    maxLength20: "Không được vượt quá 20 kí tự"
-
+    maxLength20: "Không được vượt quá 20 kí tự",
+    deleteSuccess: "Xóa thành công",
   },
   emulationTitle: {
     emulationTitle: "Danh hiệu thi đua",

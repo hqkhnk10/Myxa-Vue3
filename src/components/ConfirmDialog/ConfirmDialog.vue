@@ -81,6 +81,7 @@ export default {
 .confirm-dialog-container {
   background-color: white;
   min-width: 480px;
+  max-width: 480px;
   height: fit-content;
 }
 .confirm-dialog {

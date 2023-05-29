@@ -32,6 +32,7 @@
     width: 15px;
 }
 .dialog__body {
+    position: relative;
     color: #606266;
     font-size: 14px;
     word-break: break-all;

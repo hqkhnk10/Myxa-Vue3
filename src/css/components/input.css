@@ -159,11 +159,14 @@ input[type="radio"] {
 	border: 1px solid var(--input-border-color-gray);
 }
 .loading-component{
-	width: 100%;
-	height: 100%;
-	display: flex;
-	justify-content: center;
-	align-self: center;
+	z-index: 2;
+    background: #ffffffa3;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
 }
 .input-button-x{
 	display: none;

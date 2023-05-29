@@ -74,7 +74,7 @@
       </div>
     </div>
   </div>
-  <misa-confirm-dialog v-if="confirmDialog" v-model="confirmDialog" title="Xóa Danh hiệu thi đua">
+  <misa-confirm-dialog v-if="confirmDialog" v-model="confirmDialog" title="Xóa Danh hiệu thi đua" @keydown.enter="removeRow">
     <template #content>
       <div>
         {{ t('reuse.remove') }}
