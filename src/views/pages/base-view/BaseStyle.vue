@@ -85,18 +85,26 @@
         <misa-button @click="showLoading">Loading</misa-button>
         <misa-loading v-model="loading"></misa-loading>
     </div>
-    <div>Import/Export</div>
-    <misa-button type="primary" @click="addProfile">Thêm hồ sơ</misa-button>
+    <div>Import</div>
+    <misa-button type="primary" @click="addProfile">Import</misa-button>
     <misa-upload v-if="upload"></misa-upload>
+    <div>Export</div>
+    <misa-button type="primary" @click="exportData">Export</misa-button>
 </template>
 <script>
 import { useLangStore } from '@/store/lang';
-
+import { exportToExcel } from '@/js/helper/exportExcel'
 export default {
     name: 'BaseStyle',
     setup() {
+        const excelData = [
+        { name: 'John Doe', age: 25, email: 'john@example.com' },
+        { name: 'Jane Smith', age: 30, email: 'jane@example.com' },
+        { name: 'Bob Johnson', age: 35, email: 'bob@example.com' }
+        ];
         const langStore = useLangStore()
-        return { langStore }
+        const exportExcel = exportToExcel
+        return { langStore, exportExcel, excelData }
     },
     data() {
         return {
@@ -165,6 +173,9 @@ export default {
         }
     },
     methods: {
+        exportData(){
+            this.exportExcel(this.excelData, 'users.xlsx', 'User Data');
+        },
         addProfile(){
             this.upload = true
         },

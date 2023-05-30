@@ -1,22 +1,23 @@
 <template>
   <div class="upload-dialog">
+    Nhập khẩu
     <div
       class="drop-area"
       :class="{ 'drop-hover': isDropHover }"
       @dragover.prevent="handleDragOver"
       @dragenter.prevent="isDropHover = true"
       @dragleave.prevent="isDropHover = false"
+      @dragove.prevent="isDropHover = true"
       @drop.prevent="handleDrop"
+      @click="openFileInput"
     >
-      <span>Drag and drop files here</span>
+      <span v-if="uploadedFiles.length == 0">Drag and drop files here</span>
       <ul v-if="uploadedFiles.length">
         <li v-for="(file, index) in uploadedFiles" :key="index">
           <div class="file-info">
             <span class="file-name">{{ file.name }}</span>
             <span class="file-size">{{ formatFileSize(file.size) }}</span>
-            <button class="change-file-btn" @click="changeFile(index)">
-              Change File
-            </button>
+            <button @click="openFileInput">Change File</button>
           </div>
         </li>
       </ul>
@@ -30,17 +31,18 @@
       @change="handleFileInputChange"
     />
     <div class="sheet-selection" v-if="worksheets.length">
-      <h3>Select sheets to import:</h3>
-      <label v-for="worksheet in worksheets" :key="worksheet.name">
-        <input
-          type="checkbox"
-          :value="worksheet.name"
-          v-model="selectedSheets"
-        />
-        {{ worksheet.name }}
-      </label>
+      <div>
+        <h3>Select sheets to import:</h3>
+      <misa-combobox v-model="sheetName" :options="worksheets"></misa-combobox>
+      </div>
+      <div>
+        <h3>Header:</h3>
+        <misa-input v-model="header" type="number"></misa-input>
+      </div>
     </div>
-    <button @click="openFileInput">Choose File</button>
+    <div class="upload__button">
+      <misa-button @click="uploadFile">Continue</misa-button>
+    </div>
   </div>
 </template>
 
@@ -51,10 +53,12 @@ export default {
   name: "UploadExcel",
   data() {
     return {
+      header: 1,
       uploadedFiles: [],
       isDropHover: false,
-      selectedSheets: [],
       worksheets: [],
+      data: [],
+      sheetName: ''
     };
   },
   methods: {
@@ -65,40 +69,74 @@ export default {
       event.preventDefault();
       this.isDropHover = false;
       const files = event.dataTransfer.files;
+      if (this.uploadedFiles.length > 0) {
+        return;
+      }
       this.handleFiles(files);
     },
     handleFileInputChange(event) {
+      this.isDropHover = false
       const files = event.target.files;
       this.handleFiles(files);
     },
-    handleFiles(files) {
-      for (let i = 0; i < files.length; i++) {
-        const file = files[i];
-        if (
-          file.type ===
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        ) {
-          this.uploadedFiles.push(file);
-          this.loadWorksheets(file);
-        }
+    async handleFiles(files) {
+      console.log('files: ' ,files);
+      if (this.uploadedFiles.length > 0 && files) {
+        this.uploadedFiles.pop();
+      }
+      const file = files[0];
+      if (
+        file.type ==="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" && file.size < (1024 * 1024)
+      ) {
+        this.uploadedFiles.push(file);
+        this.loadWorksheets(file);
       }
     },
     openFileInput() {
+      this.isDropHover = true
       this.$refs.fileInput.click();
     },
     loadWorksheets(file) {
-      const reader = new FileReader();
+      const reader = new FileReader()
 
       reader.onload = (e) => {
-        const data = new Uint8Array(e.target.result);
-        const workbook = XLSX.read(data, { type: "array" });
-        this.worksheets = workbook.SheetNames.map((sheetName) => ({
-          name: sheetName,
-          selected: false,
-        }));
-      };
+        const data = new Uint8Array(e.target.result)
+        const workbook = XLSX.read(data, { type: 'array' })
 
-      reader.readAsArrayBuffer(file);
+        this.worksheets = workbook.SheetNames.map((sheetName,index) => ({
+          label: sheetName,
+          value: index
+        }))
+      }
+
+      reader.readAsArrayBuffer(file)
+    },
+    uploadFile() {
+      const selectedSheetNames = this.selectedSheets.map((sheet) => sheet.value)
+      const workbook = XLSX.read(this.fileContent, { type: 'binary' })
+
+      const importedData = []
+
+      selectedSheetNames.forEach((sheetName) => {
+        const worksheet = workbook.Sheets[sheetName]
+        const data = XLSX.utils.sheet_to_json(worksheet, { header: 1, defval: '' })
+
+        // Remove empty rows
+        const filteredData = data.filter((row) => row.join('').trim() !== '')
+
+        // Convert the data into an array of objects
+        const sheetData = filteredData.map((row) =>
+          row.reduce((obj, cell, index) => {
+            const columnHeader = data[0][index] // Assume the first row contains column headers
+            obj[columnHeader] = cell
+            return obj
+          }, {})
+        )
+
+        importedData.push(...sheetData)
+      })
+
+      this.importedData = importedData
     },
     formatFileSize(fileSize) {
       const fileSizeInMB = fileSize / (1024 * 1024);
@@ -113,12 +151,15 @@ export default {
 
 <style>
 .upload-dialog {
+  display: flex;
+  flex-direction: column;
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #fff;
-  padding: 20px;
+  width: 600px;
+  height: 400px;
   border: 2px solid #ccc;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
   z-index: 9999;
@@ -126,9 +167,9 @@ export default {
 
 .drop-area {
   border: 2px dashed #ccc;
-  padding: 20px;
   text-align: center;
   cursor: pointer;
+  display: flex;
 }
 
 .drop-area.drop-hover {
