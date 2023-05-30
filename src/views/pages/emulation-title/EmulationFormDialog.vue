@@ -18,6 +18,7 @@
             :isValid="validate.emulationTitleName.valid"
             :placeholder="t('emulationTitle.enterEmulationTitle')"
             @change="validateForm"
+            @blur="validateForm"
           ></misa-input>
           <div class="error active" v-if="!validate.emulationTitleName.valid">
             {{ validate.emulationTitleName.message }}
@@ -43,6 +44,7 @@
               type="text"
               class="w-full"
               @change="validateForm"
+              @blur="validateForm"
             ></misa-input>
             <div class="error active" v-if="!validate.emulationTitleCode.valid">
               {{ validate.emulationTitleCode.message }}

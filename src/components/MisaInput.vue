@@ -106,7 +106,7 @@ export default {
       this.$emit("change", this.modelValue);
     },
   },
-  emits: ["update:modelValue", "change", "focus", "click-icon", "debounce"],
+  emits: ["update:modelValue", "change", "focus", "click-icon", "debounce", "blur"],
   methods: {
         /**
      *  Debounce the value

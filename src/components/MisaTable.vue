@@ -250,7 +250,7 @@ export default {
       this.left = `${
         this.$refs.tableScreen.offsetWidth +
         this.$refs.tableScreen.scrollLeft -
-        120
+        115
       }px`;
     },
     /**
