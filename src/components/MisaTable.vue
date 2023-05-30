@@ -25,7 +25,8 @@
           </th>
         </tr>
       </thead>
-      <tbody>
+    <misa-loading v-if="loading" :modelValue="loading" style="height: 80%;"></misa-loading>
+      <tbody v-else>
         <tr
           v-for="(row, index) in tableData"
           :key="index"
@@ -63,7 +64,6 @@
         </div>
       </tbody>
     </table>
-    <misa-loading :modelValue="loading"></misa-loading>
   </div>
   <div class="pagination">
     <misa-pagination
@@ -284,8 +284,9 @@ export default {
         delete this.selectedRows[this.selectedRows.length - 1].select;
         this.checkBoxes++;
       } else {
+        delete this.modelValue.data[index].select
         this.selectedRows = this.selectedRows.filter(
-          (row) => row == this.modelValue.data[index]
+          row => JSON.stringify(row) != JSON.stringify(this.modelValue.data[index])
         );
         this.checkBoxes--;
       }

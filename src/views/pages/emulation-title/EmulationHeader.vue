@@ -5,7 +5,7 @@
       <div class="flex gap-12px">
         <misa-input
           v-model="keyword"
-          width="250px"
+          width="265px"
           :reset="true"
           :placeholder="t('emulationTitle.enterEmulationTitleNameOrCode')"
           @keydown.enter="search"
@@ -16,8 +16,8 @@
               <img
                 src="@/assets/icon/search-icon.svg"
                 alt="search"
-                width="25"
-                height="25"
+                width="20"
+                height="20"
               />
             </span>
           </template>

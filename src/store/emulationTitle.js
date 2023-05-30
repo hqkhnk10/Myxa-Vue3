@@ -91,7 +91,7 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
           });
         })
         .finally(() => {
-          this.loading = false;
+            this.loading = false;
         });
     },
     /**

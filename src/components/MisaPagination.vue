@@ -16,7 +16,7 @@
       </div>
       <div class="flex items-center">
         <span style="font-weight: 700; padding-right: 4px"
-          >{{ startIndex + 1 }} - {{ endIndex - 1 }}</span
+          >{{ formatNumber(startIndex + 1) }} - {{ formatNumber(endIndex - 1) }}</span
         >
         bản ghi
       </div>

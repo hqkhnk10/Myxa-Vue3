@@ -60,14 +60,14 @@
               :disabled="disabled"
               @change="validateForm"
               class="flex-1"
-              >{{ t("emulationTitle.personal") }}</misa-checkbox
+              ><div class="checkbox__title">{{ t("emulationTitle.personal") }}</div></misa-checkbox
             >
             <misa-checkbox
               v-model="form.applyObject0"
               :disabled="disabled"
               @change="validateForm"
               class="flex-1"
-              >{{ t("emulationTitle.group") }}</misa-checkbox
+              ><div class="checkbox__title">{{ t("emulationTitle.group") }}</div></misa-checkbox
             >
           </div>
           <div class="error active" v-if="!validate.applyObject.valid">
@@ -101,14 +101,14 @@
               :disabled="disabled"
               @change="validateForm"
               class="flex-1"
-              >{{ t("emulationTitle.regular") }}</misa-checkbox
+              ><div class="checkbox__title">{{ t("emulationTitle.regular") }}</div></misa-checkbox
             >
             <misa-checkbox
               v-model="form.movementType1"
               :disabled="disabled"
               @change="validateForm"
               class="flex-1"
-              >{{ t("emulationTitle.period") }}</misa-checkbox
+              ><div class="checkbox__title">{{ t("emulationTitle.period") }}</div></misa-checkbox
             >
           </div>
           <div class="error active" v-if="!validate.movementType.valid">
@@ -218,7 +218,7 @@ export default {
 
   data() {
     return {
-      loading: true,
+      loading: false,
       successContent: "",
       validateDialog: false,
       dialogAdd: false,

@@ -9,6 +9,7 @@
       }"
       v-if="modelValue"
       @mouseleave="mouseleaveEvent"
+      v-click-outside="closeDropDown"
     >
       <span class="custom-arrow" v-if="arrow" :class="position"></span>
       <div class="dropdown__header" v-if="header">
@@ -28,7 +29,7 @@
           </div>
         </button>
       </div>
-      <div class="dropdown__body"  v-click-outside="closeDropDown">
+      <div class="dropdown__body" >
         <slot name="content"></slot>
       </div>
       <div class="dropdown__footer">

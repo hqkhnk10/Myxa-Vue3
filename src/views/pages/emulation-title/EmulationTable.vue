@@ -266,13 +266,14 @@ export default {
       this.getAPI(value);
     },
     /**
-     * send keyword to get api params
+     * send keyword to get api params, reset page Index to 1
      * @param {*} keyword object {keyword: string}
      * Created At: 16/05/2023
      * @author NQTruong
      */
     searchTable(keyword) {
-      this.getAPI({ keyword: keyword });
+      this.pagination.pageIndex = 1
+      this.getAPI({ keyword: keyword, pageIndex: 1 });
     },
     /**
      * send filterValue to Table component to filter

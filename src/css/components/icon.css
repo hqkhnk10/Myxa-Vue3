@@ -2,6 +2,7 @@
 	margin: 0 5px 0 5px;
 	border-radius: 50%;
 	padding: 5px;
+	cursor: pointer;
 }
 .icon-header:hover{
 	background-color: #e8f5f7;

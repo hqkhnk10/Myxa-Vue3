@@ -16,10 +16,10 @@ const MisaEnum={
             Organization: 1
         },
         CommendationLevel:{
-            CapXa: 3,
-            CapHuyen: 2,
-            CapTinh: 1,
-            CapNhaNuoc: 0
+            CapXa: 4,
+            CapHuyen: 3,
+            CapTinh: 2,
+            CapNhaNuoc: 1
         },
         MovementType:{
             Sometimes: 0,

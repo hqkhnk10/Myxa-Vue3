@@ -12,7 +12,7 @@ const actions = {
   dispatchNotification({
     content,
     type,
-    autoClose = false,
+    autoClose = true,
     duration = 2000,
   }) {
     const id = state.id++;
