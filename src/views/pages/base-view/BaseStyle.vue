@@ -87,7 +87,7 @@
     </div>
     <div>Import</div>
     <misa-button type="primary" @click="addProfile">Import</misa-button>
-    <misa-upload v-if="upload"></misa-upload>
+    <misa-upload v-model="upload"></misa-upload>
     <div>Export</div>
     <misa-button type="primary" @click="exportData">Export</misa-button>
 </template>
@@ -108,6 +108,7 @@ export default {
     },
     data() {
         return {
+            headers: ['CName', 'CAge', 'CEmail'],
             upload: false,
             loading: false,
             langOptions: [
@@ -174,7 +175,7 @@ export default {
     },
     methods: {
         exportData(){
-            this.exportExcel(this.excelData, 'users.xlsx', 'User Data');
+            this.exportExcel(this.excelData, this.headers, 'users.xlsx');
         },
         addProfile(){
             this.upload = true

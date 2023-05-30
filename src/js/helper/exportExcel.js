@@ -1,19 +1,33 @@
-export function exportToExcel(data, fileName, sheetName) {
+
+export function exportToExcel(data, headers, fileName) {
     const XLSX = require('xlsx');
-  
     const workbook = XLSX.utils.book_new();
     const worksheet = XLSX.utils.json_to_sheet(data);
-    XLSX.utils.book_append_sheet(workbook, worksheet, sheetName || 'Sheet 1');
+    
+    // Modify the column headers
+    const headerRange = XLSX.utils.decode_range(worksheet['!ref']);
+    headers.forEach((header, index) => {
+      const cellAddress = XLSX.utils.encode_cell({ r: headerRange.s.r, c: headerRange.s.c + index });
+      worksheet[cellAddress].v = header;
+      worksheet[cellAddress].w = header;
+    });
   
-    const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
   
-    const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+    const excelBuffer = XLSX.write(workbook, {
+      bookType: "xlsx",
+      type: "array"
+    });
+  
+    const blobData = new Blob([excelBuffer], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
   
     if (navigator.msSaveBlob) {
-      navigator.msSaveBlob(blob, fileName);
+      // For IE 10 and above
+      navigator.msSaveBlob(blobData, fileName);
     } else {
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
+      // For other browsers
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blobData);
       link.download = fileName;
       link.click();
     }

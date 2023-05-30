@@ -47,6 +47,8 @@
     gap: 8px;
 }
 .dialog__padding{
+    min-width: 600px;
+    max-width: 60%;
     margin: auto;
     background-color: white;
     padding: 24px;
@@ -57,7 +59,7 @@
 .dialog-show{
     display: flex;
     background: rgb(0, 0, 0, 0.6);
-    z-index: 999;
+    z-index: 9;
     position: fixed;
     top: 0;
     right: 0;

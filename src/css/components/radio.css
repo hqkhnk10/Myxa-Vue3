@@ -21,7 +21,7 @@
 }
 
 /* Create a custom radio button */
-.radio__checkmark {
+.radio__checkmark, .radio__checkmark-disabled {
   position: absolute;
   top: 0;
   left: 0;
@@ -37,6 +37,12 @@
 }
 
 /* When the radio button is checked, add a blue background */
+.radio__container input:checked ~ .radio__checkmark-disabled {
+  background-color: white;
+  border: 1px solid #e4e4e4;
+}
+
+/* When the radio button is checked, add a blue background */
 .radio__container input:checked ~ .radio__checkmark {
   background-color: white;
   border: 1px solid var(--color-green);
@@ -48,9 +54,13 @@
   position: absolute;
   display: none;
 }
-
+.radio__checkmark-disabled:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
 /* Show the indicator (dot/circle) when checked */
-.radio__container input:checked ~ .radio__checkmark:after {
+.radio__container input:checked ~ .radio__checkmark:after,.radio__checkmark-disabled:after {
   display: block;
 }
 
@@ -62,4 +72,13 @@
   height: 12px;
   border-radius: 50%;
   background: var(--color-green);
+}
+/* Style the indicator (dot/circle) */
+.radio__container .radio__checkmark-disabled:after {
+  top: 3px;
+  left: 3px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #e4e4e4;
 }
