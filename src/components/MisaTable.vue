@@ -9,7 +9,7 @@
           <th
             v-for="(header, index) in modelValue.header"
             :key="index"
-            :style="{ minWidth: header?.width }"
+            :style="{ minWidth: header?.minWidth,width: header?.width}"
             class="cursor-pointer"
             @click="changeSort(header, index)"
           >

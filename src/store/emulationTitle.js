@@ -3,10 +3,10 @@ import request from "@/axios";
 import { dispatchNotification } from "@/components/Notification";
 import { globals } from "@/main";
 const defaultSort = {
-  // inactiveSort: true,
-  // applyObjectSort: false,
-  // commendationLevelSort: false,
-  // emulationTitleNameSort: true,
+  inactiveSort: true,
+  applyObjectSort: false,
+  commendationLevelSort: false,
+  emulationTitleNameSort: true,
 };
 const url = "EmulationTitle";
 export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
@@ -15,45 +15,46 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
     loading: false,
     currentRow: {},
     id: 999,
-    total: 20,
+    total: 0,
     parameters: {},
     header: [
       {
         label: "Tên danh hiệu thi đua",
         prop: "emulationTitleName",
-        width: "310px",
+        minWidth: "310px",
+        width: "675px",
         sort: null,
       },
       {
         label: "Mã danh hiệu",
         prop: "emulationTitleCode",
-        width: "160px",
+        minWidth: "160px",
       },
       {
         label: "Đối tượng khen thưởng",
         prop: "applyObject",
-        width: "180px",
+        minWidth: "180px",
         slot: true,
         sort: null,
       },
       {
         label: "Cấp khen thưởng",
         prop: "commendationLevel",
-        width: "200px",
+        minWidth: "200px",
         slot: true,
         sort: null,
       },
       {
         label: "Loại phong trào",
         prop: "movementType",
-        width: "200px",
+        minWidth: "200px",
         slot: true,
         sort: null,
       },
       {
         label: "Trạng thái",
         prop: "inactive",
-        width: "180px",
+        minWidth: "180px",
         slot: true,
         sort: null,
       },

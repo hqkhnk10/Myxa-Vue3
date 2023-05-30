@@ -85,6 +85,9 @@
         <misa-button @click="showLoading">Loading</misa-button>
         <misa-loading v-model="loading"></misa-loading>
     </div>
+    <div>Import/Export</div>
+    <misa-button type="primary" @click="addProfile">Thêm hồ sơ</misa-button>
+    <misa-upload v-if="upload"></misa-upload>
 </template>
 <script>
 import { useLangStore } from '@/store/lang';
@@ -97,6 +100,7 @@ export default {
     },
     data() {
         return {
+            upload: false,
             loading: false,
             langOptions: [
                 {
@@ -161,6 +165,9 @@ export default {
         }
     },
     methods: {
+        addProfile(){
+            this.upload = true
+        },
         showLoading(){
             this.loading = true
         },

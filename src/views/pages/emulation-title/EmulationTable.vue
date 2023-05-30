@@ -115,7 +115,7 @@ export default {
       pagination: {
         pageSize: 10,
         pageIndex: 1,
-        total: 20,
+        total: 0,
       },
       filterValue: {},
       keyword: "",
@@ -129,6 +129,8 @@ export default {
     /**
      * Recalculate the total number of pages in the table
      * @param {*} newValue
+     * Created At: 15/05/2023
+     * @author NQTruong
      */
     total(newValue) {
       this.pagination.total = newValue;
@@ -137,7 +139,7 @@ export default {
   computed: {
     /**
      * get table data from EmulationTitleStore
-     *    * Created At: 15/05/2023
+     * Created At: 15/05/2023
      * @author NQTruong
      */
     ...mapState(useEmulationTitleStore, {
