@@ -71,7 +71,7 @@ export default {
      */
     selectRow(_type, row) {
       this.rowSelected = row;
-      row?.inactive ? this.type = this.$enum.FormActions.Edit : this.type = this.$enum.FormActions.Detail
+      this.type = this.$enum.FormActions.Edit
     },
     /**
      * Get all the rows that currently selected

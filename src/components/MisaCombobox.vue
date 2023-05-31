@@ -122,7 +122,7 @@ export default {
         return this.options;
       }
       return this.options.filter((option) =>
-        option[this[this.label]].includes(this.inputValue)
+        option[this.label].toString().includes(this.inputValue)
       );
     },
     /**

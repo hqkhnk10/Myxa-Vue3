@@ -4,6 +4,7 @@
     :title="t('emulationTitle.filterTitle')"
     ref="misaDropdown"
     v-model="dropDownFilter"
+    position="right"
   >
     <template #click>
       <misa-button type="secondary" @click="toogleDropDownFilter">

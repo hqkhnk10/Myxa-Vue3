@@ -159,7 +159,16 @@ export default {
           } else {
             tableRow.select = false;
           }
-        });
+        })
+
+        if(this.selectedRows.length == this.tableData.length){
+          this.headerBox = true
+          this.checkBoxes = this.selectedRows.length
+        }
+        else{
+          this.headerBox = false
+          this.checkBoxes = 0
+        }
       },
       immediate: true,
     },
@@ -250,7 +259,7 @@ export default {
       this.left = `${
         this.$refs.tableScreen.offsetWidth +
         this.$refs.tableScreen.scrollLeft -
-        115
+        120
       }px`;
     },
     /**
@@ -298,13 +307,15 @@ export default {
      */
     checkAll() {
       if (this.checkBoxes == 0) {
-        this.modelValue.data.forEach((row) => {
+        this.modelValue.data.forEach((row,index) => {
           row.select = true;
+          this.checkBoxRow(true,index)
           this.checkBoxes = this.modelValue.data.length;
         });
       } else {
-        this.modelValue.data.forEach((row) => {
+        this.modelValue.data.forEach((row,index) => {
           row.select = false;
+          this.checkBoxRow(false,index)
           this.checkBoxes = 0;
         });
       }

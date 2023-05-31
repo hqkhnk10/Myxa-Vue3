@@ -16,7 +16,9 @@
   padding: 12px 16px;
   z-index: 999;
 }
-
+.custom-arrow.right{
+  right: 60px !important;
+}
 .activeflex {
 display: flex;
 }

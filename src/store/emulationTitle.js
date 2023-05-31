@@ -3,10 +3,10 @@ import request from "@/axios";
 import { dispatchNotification } from "@/components/Notification";
 import { globals } from "@/main";
 const defaultSort = {
-  inactiveSort: true,
-  applyObjectSort: false,
-  commendationLevelSort: false,
-  emulationTitleNameSort: true,
+  // inactiveSort: true,
+  // applyObjectSort: false,
+  // commendationLevelSort: false,
+  // emulationTitleNameSort: true,
 };
 const url = "EmulationTitle";
 export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
