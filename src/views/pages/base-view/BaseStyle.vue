@@ -91,7 +91,7 @@
         <misa-table v-model="importData">
         </misa-table>
     </div>
-    <misa-upload v-model="upload" @import-file="importFile"></misa-upload>
+    <misa-upload v-if="upload" v-model="upload" @import-file="importFile"></misa-upload>
     <div>Export</div>
     <misa-button type="primary" @click="exportTableData(table)">Export</misa-button>
     <div>

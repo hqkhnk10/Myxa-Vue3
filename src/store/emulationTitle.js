@@ -29,11 +29,15 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
         label: "Mã danh hiệu",
         prop: "emulationTitleCode",
         minWidth: "160px",
+        width: "160px",
+
       },
       {
         label: "Đối tượng khen thưởng",
         prop: "applyObject",
         minWidth: "180px",
+        width: "180px",
+
         slot: true,
         sort: null,
       },
@@ -41,6 +45,8 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
         label: "Cấp khen thưởng",
         prop: "commendationLevel",
         minWidth: "200px",
+        width: "200px",
+
         slot: true,
         sort: null,
       },
@@ -48,6 +54,8 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
         label: "Loại phong trào",
         prop: "movementType",
         minWidth: "200px",
+        width: "200px",
+
         slot: true,
         sort: null,
       },
@@ -55,6 +63,7 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
         label: "Trạng thái",
         prop: "inactive",
         minWidth: "180px",
+        width: "180px",
         slot: true,
         sort: null,
       },

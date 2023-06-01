@@ -29,7 +29,7 @@
           />
         </div>
       </div>
-      <div>
+      <div  class="header-button-end">
         <div
           v-if="selectedRows && selectedRows.length > 0"
           class="flex items-center gap-4px"
@@ -71,6 +71,33 @@
             <span>{{ t("emulationTitle.addEmulation") }}</span></misa-button
           >
         </div>
+        <div>
+          <misa-dropdown
+              :header="false"
+              position="right"
+              v-model="showDropdownEdit"
+              :arrow="false"
+            >
+              <template #click>
+                  <misa-button type="secondary" @click="toogleDropdownEdit">
+                    <div class="icon__threedots"></div>
+                  </misa-button>
+              </template>
+              <template #content>
+                <a
+                class="cursor-pointer"
+                  @click="onBtnClickImport"
+                  >{{ t("reuse.import") }}</a
+                >
+                <a
+                class="cursor-pointer"
+                  @click="onBtnClickExport"
+                  >{{ t("reuse.export") }}</a
+                >
+
+              </template>
+            </misa-dropdown>
+        </div>
       </div>
     </div>
   </div>
@@ -91,14 +118,22 @@
       <misa-button type="danger" @click="removeRow">{{ t('emulationTitle.removeEmulationTitle') }}</misa-button>
     </template>
   </misa-confirm-dialog>
+  <misa-upload v-model="uploadDialog" @import-file="importFile"></misa-upload>
 </template>
 
 <script>
 import EmulationDropdownFilter from "./EmulationDropdownFilter.vue";
 import { useEmulationTitleStore } from "@/store/emulationTitle";
-import { mapActions } from "pinia";
+import { mapActions, mapState } from "pinia";
 import { dispatchNotification } from "@/components/Notification";
 import {formatNumber} from "@/js/format/format"
+import { exportTableData } from '@/js/helper/exportExcel'
+import {
+  formatApplyObject,
+  formatCommendationLevel,
+  formatMovementType,
+  formatStatus,
+} from "@/js/format/emulation-title";
 export default {
   name: "EmulationHeader",
   components: {
@@ -111,6 +146,8 @@ export default {
   },
   data() {
     return {
+      showDropdownEdit: false,
+      uploadDialog: false,
       filterValue: {
         ApplyObject: null,
         CommendationLevel: null,
@@ -128,7 +165,39 @@ export default {
         "Những rows đang được chọn, được truyền từ EmulationTItleIndex.vue",
     },
   },
+  computed: {
+    ...mapState(useEmulationTitleStore, {
+      table: (store) => {
+        return {
+          header: store.header,
+          data: store.data,
+        };
+      },
+    }),
+  },
   methods: {
+    toogleDropdownEdit(){
+      this.showDropdownEdit = !this.showDropdownEdit
+    },
+    importFile(data){
+      console.log('data', data);
+    },
+    onBtnClickImport(){
+      this.uploadDialog = true
+      this.toogleDropdownEdit();
+    },
+    onBtnClickExport() {
+      let exportData = JSON.parse(JSON.stringify(this.table))
+      exportData.data.forEach((row)=>{
+        row.applyObject = formatApplyObject(row.applyObject)
+        row.commendationLevel = formatCommendationLevel(row.commendationLevel)
+        row.movementType = formatMovementType(row.movementType)
+        row.inactive = formatStatus(row.inactive).label
+      })
+      exportTableData(exportData, 'TestTable')
+      console.log('table', this.table);
+      this.toogleDropdownEdit();
+    },
     /**
      * Get function from pinia
      */
@@ -248,3 +317,10 @@ export default {
   },
 };
 </script>
+<style scoped>
+.header-button-end{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+</style>

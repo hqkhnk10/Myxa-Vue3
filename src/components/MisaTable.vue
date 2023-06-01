@@ -137,7 +137,7 @@ export default {
      */
     checkBoxes(newValue) {
       this.$emit("select");
-      if (newValue == this.modelValue.data.length) {
+      if (newValue == this.tableData.length) {
         this.headerBox = true;
         return;
       }
@@ -149,18 +149,6 @@ export default {
     },
     modelValue: {
       handler() {
-        this.tableData.forEach((tableRow) => {
-          const found = this.selectedRows.find(
-            (selectedRow) =>
-              JSON.stringify(selectedRow) === JSON.stringify(tableRow)
-          );
-          if (found) {
-            tableRow.select = true;
-          } else {
-            tableRow.select = false;
-          }
-        })
-
         if(this.selectedRows.length == this.tableData.length && this.selectedRows.length != 0){
           this.headerBox = true
           this.checkBoxes = this.selectedRows.length
@@ -195,7 +183,7 @@ export default {
      * @author NQTruong
      */
     tableData() {
-      let table = this.modelValue.data;
+      let table = this.modelValue.data.map(a => {return {...a}})
       if (!this.filterApi) {
         if (this.pagination) {
           table = this.modelValue.data?.slice(this.startIndex, this.endIndex);
@@ -217,6 +205,17 @@ export default {
           );
         }
       }
+      table.forEach((tableRow) => {
+          const found = this.selectedRows.find(
+            (selectedRow) =>
+              JSON.stringify(selectedRow) === JSON.stringify(tableRow)
+          );
+          if (found) {
+            tableRow.select = true;
+          } else {
+            tableRow.select = false;
+          }
+        })
       return table;
     },
     /**
@@ -281,14 +280,6 @@ export default {
       this.$emit("change-pagination", value);
     },
     /**
-     * 2-ways binding
-     * Created At: 15/05/2023
-     * @author NQTruong
-     */
-    updateValue() {
-      this.$emit("update:modelValue", !this.modelValue);
-    },
-    /**
      * set value when click checkbox
      * decreased if unchecked
      * increased if checked
@@ -299,10 +290,10 @@ export default {
     checkBoxRow(value, index) {
       if (value) {
         this.selectedRows.push({ ...this.modelValue.data[index] });
-        delete this.selectedRows[this.selectedRows.length - 1].select;
+        this.tableData[index].select = true
         this.checkBoxes++;
       } else {
-        delete this.modelValue.data[index].select
+        this.tableData[index].select = false
         this.selectedRows = this.selectedRows.filter(
           row => JSON.stringify(row) != JSON.stringify(this.modelValue.data[index])
         );
@@ -316,13 +307,13 @@ export default {
      */
     checkAll() {
       if (this.checkBoxes == 0) {
-        this.modelValue.data.forEach((row,index) => {
+        this.tableData.forEach((row,index) => {
           row.select = true;
           this.checkBoxRow(true,index)
-          this.checkBoxes = this.modelValue.data.length;
+          this.checkBoxes = this.tableData.length;
         });
       } else {
-        this.modelValue.data.forEach((row,index) => {
+        this.tableData.forEach((row,index) => {
           row.select = false;
           this.checkBoxRow(false,index)
           this.checkBoxes = 0;
@@ -345,7 +336,7 @@ export default {
      * @author NQTruong
      */
     unSelectedRows() {
-      this.modelValue.data.forEach((row) => {
+      this.tableData.forEach((row) => {
         row.select = false;
       });
       this.checkBoxes = 0;

@@ -1,8 +1,27 @@
 <template>
-  <div class="dialog-show" v-if="modelValue">
+  <div
+    class="dialog-show"
+    v-if="modelValue"
+  >
     <div class="dialog__padding">
       <div class="dialog__header">
-        <div>Nhập khẩu</div>
+        <span class="dialog__title">{{ t("reuse.import") }}</span>
+        <div class="dialog__header-button">
+          <button
+            type="button"
+            aria-label="Close"
+            class="dialog__headerbtn"
+            @click="closeDialog"
+          >
+            <div class="tooltip">
+              <div class="icon__x"></div>
+              <span
+                class="arrow-top tooltip-margin-top tooltiptext tooltiptext-top"
+                >{{ t("reuse.close") }}</span
+              >
+            </div>
+          </button>
+        </div>
       </div>
       <div class="upload-progess">
         <div class="radio__container">
@@ -160,13 +179,28 @@ export default {
       default: false,
     },
   },
+  mounted(){
+    window.addEventListener("keydown", this.handleKeyDown);
+  },
+  beforeUnmount() {
+    // Remove event listener when component is unmounted
+    window.removeEventListener("keydown", this.handleKeyDown);
+  },
   emits: ["update:modelValue", "import-file"],
   methods: {
+    handleKeyDown(event){
+      if (event.key === "Escape") {
+        event.preventDefault(); // Prevent the default browser behavior
+        // Your custom logic when Ctrl + S is pressed
+        this.closeDialog();
+      }
+    },
     /**
      * Pass data to parent component
      * Created By: NQTruong (01/06/2023)
      */
     importFile() {
+      console.log("data", this.data);
       this.$emit("import-file", this.data);
       this.closeDialog();
     },
@@ -175,6 +209,7 @@ export default {
      * Created By: NQTruong (01/06/2023)
      */
     closeDialog() {
+      console.log('close');
       this.$emit("update:modelValue", false);
     },
     /**
@@ -224,8 +259,6 @@ export default {
      * Created By: NQTruong (01/06/2023)
      */
     async handleFiles(files) {
-      // eslint-disable-next-line no-debugger
-      debugger;
       this.loading = true;
       if (this.uploadedFiles.length > 0 && files) {
         this.uploadedFiles.pop();
@@ -288,7 +321,6 @@ export default {
      */
     transformToTableData(jsonData) {
       try {
-        console.log("jsonData", jsonData);
         const header = jsonData[this.header - 1].map((data) => ({
           label: data,
           prop: data,
@@ -330,7 +362,7 @@ export default {
               return;
             }
             const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-
+            console.log("json data: ", jsonData);
             resolve(jsonData);
           } catch (error) {
             reject(error);
