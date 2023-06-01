@@ -87,13 +87,24 @@
     </div>
     <div>Import</div>
     <misa-button type="primary" @click="addProfile">Import</misa-button>
-    <misa-upload v-model="upload"></misa-upload>
+    <div>
+        <misa-table v-model="importData">
+        </misa-table>
+    </div>
+    <misa-upload v-model="upload" @import-file="importFile"></misa-upload>
     <div>Export</div>
-    <misa-button type="primary" @click="exportData">Export</misa-button>
+    <misa-button type="primary" @click="exportTableData(table)">Export</misa-button>
+    <div>
+    <misa-table v-model="table" checkbox>
+            <template #status="row">
+                <span style="color: greenyellow">{{ row.status }}</span>
+            </template>
+        </misa-table>
+    </div>
 </template>
 <script>
 import { useLangStore } from '@/store/lang';
-import { exportToExcel } from '@/js/helper/exportExcel'
+import { exportToExcel, exportTableData } from '@/js/helper/exportExcel'
 export default {
     name: 'BaseStyle',
     setup() {
@@ -104,10 +115,11 @@ export default {
         ];
         const langStore = useLangStore()
         const exportExcel = exportToExcel
-        return { langStore, exportExcel, excelData }
+        return { langStore, exportExcel, excelData, exportTableData }
     },
     data() {
         return {
+            importData: {header:{},data:[]},
             headers: ['CName', 'CAge', 'CEmail'],
             upload: false,
             loading: false,
@@ -174,6 +186,9 @@ export default {
         }
     },
     methods: {
+        importFile(data){
+            this.importData = data
+        },
         exportData(){
             this.exportExcel(this.excelData, this.headers, 'users.xlsx');
         },

@@ -4,6 +4,7 @@ table {
   overflow-x: auto;
   -webkit-border-horizontal-spacing: 0px;
     -webkit-border-vertical-spacing: 0px;
+    min-height: 50px;
 }
 .table-container{
   overflow: auto;

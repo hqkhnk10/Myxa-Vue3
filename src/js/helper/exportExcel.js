@@ -1,5 +1,13 @@
-
-export function exportToExcel(data, headers, fileName) {
+/* eslint-disable no-unused-vars */
+/**
+ * Export data to excel file
+ * @param {*} data Object array
+ * @param {*} headers Header array
+ * @param {*} fileName name of the file
+ * @param {*} sheetName name of the sheet
+ * Created By: NQTruong (01/06/2023)
+ */
+export function exportToExcel(data, headers, fileName='Test1', sheetName = 'Sheet1') {
     const XLSX = require('xlsx');
     const workbook = XLSX.utils.book_new();
     const worksheet = XLSX.utils.json_to_sheet(data);
@@ -12,7 +20,7 @@ export function exportToExcel(data, headers, fileName) {
       worksheet[cellAddress].w = header;
     });
   
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
+    XLSX.utils.book_append_sheet(workbook, worksheet, sheetName);
   
     const excelBuffer = XLSX.write(workbook, {
       bookType: "xlsx",
@@ -32,4 +40,17 @@ export function exportToExcel(data, headers, fileName) {
       link.click();
     }
   }
-  
+  /**
+   * Export to excel file through table data
+   * @param {*} tableData data of table to export
+   * @param {*} fileName name of excel file to export
+   * @param {*} sheetName name of excel file to export
+   */
+export const exportTableData = (tableData,fileName = 'Test', sheetName='Sheet1') =>{
+  const {header,data} = tableData;
+  const headers = header.map(header => header.label)
+  const datas = data.map(({select, ...rest}) => {
+    return rest;
+  });
+  exportToExcel(datas, headers, fileName,sheetName)
+}

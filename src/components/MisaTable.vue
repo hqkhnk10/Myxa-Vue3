@@ -161,7 +161,7 @@ export default {
           }
         })
 
-        if(this.selectedRows.length == this.tableData.length){
+        if(this.selectedRows.length == this.tableData.length && this.selectedRows.length != 0){
           this.headerBox = true
           this.checkBoxes = this.selectedRows.length
         }
@@ -245,8 +245,17 @@ export default {
      * @author NQTruong
      */
     changeSort(header, index) {
-      const value =
-        header.sort === true ? false : header?.sort == false ? null : true;
+      let value = true;
+      switch(header.sort) {
+        case true:
+          value = false;
+          break;
+        case false:
+          value = null;
+          break;
+        default:
+          break;
+      }
       this.$emit("change-sort", header, index, value);
     },
     /**
