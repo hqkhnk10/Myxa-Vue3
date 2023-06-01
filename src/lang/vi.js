@@ -52,6 +52,8 @@ export const vi = {
     maxLength255: "Không được vượt quá 255 kí tự",
     maxLength20: "Không được vượt quá 20 kí tự",
     deleteSuccess: "Xóa thành công",
+    import: "Nhập khẩu",
+    export: "Xuất khẩu"
   },
   emulationTitle: {
     emulationTitle: "Danh hiệu thi đua",

@@ -95,8 +95,10 @@ export default {
    * CreatedBy : NQTruong (16/05/2023)
    */
   created() {
+    console.log('1');
     if (this.currentRoute == "/") {
       router.push("/emulationTitle");
+      this.currentRoute = '/emulationTitle'
     }
   },
   /**
@@ -104,6 +106,7 @@ export default {
    * CreatedBy : NQTruong (16/05/2023)
    */
   mounted() {
+    console.log('2', this.currentRoute);
     this.routes.forEach((route) => {
       const child = route?.children?.find(
         (child) => child.path == this.currentRoute

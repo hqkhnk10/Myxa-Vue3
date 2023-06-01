@@ -55,9 +55,11 @@
                 <span class="tooltiptable">{{ row[header?.prop] }}</span>
               </div>
           </td>
+          <td class="operator-cell">
           <div class="button__table operator">
             <slot name="operator" v-bind="row" />
           </div>
+          </td>
         </tr>
         <div v-if="tableData.length <= 0 && !loading" class="table-nodata">
           Không có dữ liệu

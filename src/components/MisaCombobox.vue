@@ -1,7 +1,7 @@
 <template>
   <div
     class="mcombobox"
-    @click="toggleOptions"
+    @click="clickComboboxButton"
     @keydown.down="pressArrowButton(false)"
     @keydown.up="pressArrowButton(true)"
     @keydown.enter="pressEnter"
@@ -14,7 +14,7 @@
       :modelValue="labelShow"
       class="combobox-input"
       :disabled="disabled"
-      @input="(e) => inputChange(e.target[this.value])"
+      @input="(e) => inputChange(e.target.value)"
     ></misa-input>
     <span class="mcombobox-input__icon" v-if="loading">
       <img
@@ -28,7 +28,6 @@
       type="button"
       class="mcombobox__button"
       :disabled="disabled"
-      @click="clickComboboxButton"
     ></misa-button>
     <div
       class="mcombobox__data"
@@ -105,7 +104,7 @@ export default {
       if (!objValue) {
         return "";
       }
-      objValue.selected = true
+      this.setSelected(objValue);
       return objValue[this.label];
     },
     /**
@@ -113,12 +112,8 @@ export default {
      * CreatedBy: NQTruong (15/05/2023)
      */
     filterOptions() {
+      console.log('input', this.inputValue);
       if (!this.inputValue) {
-        return this.options;
-      }
-      if (
-        this.options.find((option) => option[this[this.label]] == this.inputValue)
-      ) {
         return this.options;
       }
       return this.options.filter((option) =>
@@ -141,8 +136,18 @@ export default {
   },
   emits: ["update:modelValue", "change", "update:valid"],
   methods: {
-    clickComboboxButton(){
-      this.$refs.input.focus();
+    setSelected(objValue) {
+      this.options?.forEach((option) => {
+        if (option == objValue) {
+          option.selected = true;
+        } else {
+          option.selected = false;
+        }
+      });
+    },
+    clickComboboxButton() {
+      this.inputValue = null
+      this.toggleOptions();
     },
     /**
      * Thêm class focus vào options
@@ -158,24 +163,24 @@ export default {
         }
       });
     },
-        /**
+    /**
      * Mở options box nếu dữ liệu trong có dữ liệu trong options
      * CreatedBy: NQTruong (15/05/2023)
      */
     openOptions() {
       if (this.filterOptions.length > 0) {
         this.optionsBox = true;
-        this.addClassFocusToItem(this.getIndex());
+        this.addClassFocusToItem(this.getSelectedIndex() == -1 ? 0 : this.getSelectedIndex() );
       }
     },
-            /**
+    /**
      * Đóng options box
      * CreatedBy: NQTruong (15/05/2023)
      */
     closeOptions() {
       this.optionsBox = false;
     },
-                /**
+    /**
      * Khi dữ liệu input thay đổi, mở options box
      * Nếu có trong list option thì gửi valid = true / không có thì valid = false
      * CreatedBy: NQTruong (15/05/2023)
@@ -183,7 +188,9 @@ export default {
     inputChange(value) {
       this.inputValue = value;
       this.openOptions();
-      const objValue = this.options?.find((option) => option[this.label] == value);
+      const objValue = this.options?.find(
+        (option) => option[this.label] == value
+      );
       if (!objValue) {
         this.$emit("update:valid", false);
       } else {
@@ -195,7 +202,10 @@ export default {
      * CreatedBy: NQTruong (15/05/2023)
      */
     getLabelFromValue() {
-      return this.options?.find((option) => option[this.value] === this.modelValue);
+      console.log('model', this.modelValue);
+      return this.options?.find(
+        (option) => option[this.value] === this.modelValue
+      );
     },
     /**
      * Lấy index đang focus
@@ -217,6 +227,7 @@ export default {
      */
     pressEnter() {
       this.selectOption(this.filterOptions[this.getIndex()]);
+      this.inputValue = null
       this.toggleOptions();
     },
     /**
@@ -295,9 +306,10 @@ export default {
       this.addClassFocusToItem(
         this.filterOptions.findIndex((e) => e[this.value] == item[this.value])
       );
-      this.$nextTick(()=>{
+      this.$nextTick(() => {
         this.$emit("update:modelValue", item[this.value]);
-      })
+      });
+      this.inputValue = item[this.label]
       this.$emit("change", item[this.value]);
       this.$emit("update:valid", true);
     },

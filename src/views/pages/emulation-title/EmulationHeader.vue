@@ -180,7 +180,7 @@ export default {
       this.showDropdownEdit = !this.showDropdownEdit
     },
     importFile(data){
-      console.log('data', data);
+      console.log('data2', data);
     },
     onBtnClickImport(){
       this.uploadDialog = true
