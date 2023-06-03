@@ -1,8 +1,5 @@
 <template>
-  <div
-    class="dialog-show"
-    v-if="modelValue"
-  >
+  <div class="dialog-show" v-if="modelValue">
     <div class="dialog__padding">
       <div class="dialog__header">
         <span class="dialog__title">{{ t("reuse.import") }}</span>
@@ -82,8 +79,8 @@
               class="border-bottom"
             >
               <div class="file-info">
-                <div class="file-name">{{ file.name }}</div>
-                <div class="file-size">{{ formatFileSize(file.size) }}</div>
+                <div class="file-name">{{ file.fileName }}</div>
+                <div class="file-size">{{ formatFileSize(file.fileSize) }}</div>
                 <div class="flex">
                   <div class="file-valid"></div>
                   Hợp lệ
@@ -121,19 +118,19 @@
       <div v-else class="upload-report">
         <div class="upload-report-records">
           <div class="upload-records--title">Số bản ghi</div>
-          <div class="upload-records-number">0</div>
+          <div class="upload-records-number">{{ validateData.count }}</div>
         </div>
         <div class="upload-report-valid">
           <div class="upload-valid--title">Hợp lệ</div>
-          <div class="upload-valid-number">0</div>
+          <div class="upload-valid-number">{{ validateData.validData.length }}</div>
         </div>
         <div class="upload-report-invalid">
           <div class="upload-invalid--title">Không hợp lệ</div>
-          <div class="upload-invalid-number">0</div>
+          <div class="upload-invalid-number">{{ validateData.inValidData.length }}</div>
         </div>
       </div>
       <div class="upload__button">
-        <misa-button type="primary-border" @click="generateExcelAndUpload"
+        <misa-button type="primary-border" @click="downloadSampleFile"
           >Tải tệp mẫu</misa-button
         >
         <div class="flex gap-12px">
@@ -158,7 +155,8 @@
 
 <script>
 import * as XLSX from "xlsx";
-
+import { postSingleFile } from "@/api/file";
+import { convertToFormData } from "@/js/format/format";
 export default {
   name: "UploadExcel",
   data() {
@@ -171,6 +169,7 @@ export default {
       data: [],
       selectedSheet: "",
       loading: false,
+      validateData: {}
     };
   },
   props: {
@@ -178,8 +177,20 @@ export default {
       type: Boolean,
       default: false,
     },
+    apiSampleFile: {
+      type: Function,
+      default: () => {}
+    },
+    validateFile: {
+      type: Function,
+      default: () => {}
+    },
+    importFunction:{
+      type: Function,
+      default: () => {}
+    }
   },
-  mounted(){
+  mounted() {
     window.addEventListener("keydown", this.handleKeyDown);
   },
   beforeUnmount() {
@@ -188,7 +199,35 @@ export default {
   },
   emits: ["update:modelValue", "import-file"],
   methods: {
-    handleKeyDown(event){
+    downloadSampleFile() {
+      this.apiSampleFile()
+        .then((response) => {
+          const fileName = "example.xlsx"; // Replace with the desired filename
+
+          const file = new Blob([response], {
+            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          });
+
+          // Create a temporary URL for the file
+          const fileURL = URL.createObjectURL(file);
+
+          // Create a download link
+          const downloadLink = document.createElement("a");
+          downloadLink.href = fileURL;
+          downloadLink.setAttribute("download", fileName);
+
+          // Trigger the download by simulating a click on the link
+          downloadLink.click();
+
+          // Clean up the temporary URL and link
+          URL.revokeObjectURL(fileURL);
+          downloadLink.remove();
+        })
+        .catch((error) => {
+          console.error("Error downloading file:", error);
+        });
+    },
+    handleKeyDown(event) {
       if (event.key === "Escape") {
         event.preventDefault(); // Prevent the default browser behavior
         // Your custom logic when Ctrl + S is pressed
@@ -200,6 +239,7 @@ export default {
      * Created By: NQTruong (01/06/2023)
      */
     importFile() {
+      this.importFunction()
       console.log("data", this.data);
       this.$emit("import-file", this.data);
       this.closeDialog();
@@ -209,7 +249,7 @@ export default {
      * Created By: NQTruong (01/06/2023)
      */
     closeDialog() {
-      console.log('close');
+      console.log("close");
       this.$emit("update:modelValue", false);
     },
     /**
@@ -264,12 +304,14 @@ export default {
         this.uploadedFiles.pop();
       }
       const file = files[0];
+
       if (
         file.type ===
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" &&
-        file.size < 1024 * 1024
+        file.size < 5 * 1024 * 1024
       ) {
-        this.uploadedFiles.push(file);
+        const res = await postSingleFile(convertToFormData({ file: file }));
+        this.uploadedFiles.push({ file, ...res });
         this.loadWorksheets(file);
       }
     },
@@ -310,9 +352,17 @@ export default {
      * When choose to upload file
      * Created By: NQTruong (01/06/2023)
      */
-    async uploadFile() {
-      this.data = this.transformToTableData(await this.readExcelFile());
-      this.uploading = false;
+    uploadFile() {
+      this.validateFile(
+        convertToFormData({
+          File: this.uploadedFiles[0].file,
+          SheetIndex: this.selectedSheet,
+          Header: this.header,
+        })
+      ).then((res)=>{
+        this.validateData = res
+        this.uploading = false
+      }).catch(()=>{});
     },
     /**
      * Transform data to misa-table data format
