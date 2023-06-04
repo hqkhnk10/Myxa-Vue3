@@ -115,7 +115,8 @@
           </div>
         </div>
       </div>
-      <div v-else class="upload-report">
+      <div v-else>
+        <div class="upload-report">
         <div class="upload-report-records">
           <div class="upload-records--title">Số bản ghi</div>
           <div class="upload-records-number">{{ validateData.count }}</div>
@@ -129,6 +130,12 @@
           <div class="upload-invalid-number">{{ validateData.inValidData.length }}</div>
         </div>
       </div>
+        <misa-button type="secondary" @click="downloadInvalidFile">
+          Tải về bản ghi không lệ
+        </misa-button>
+      </div>
+
+
       <div class="upload__button">
         <misa-button type="primary-border" @click="downloadSampleFile"
           >Tải tệp mẫu</misa-button
@@ -155,7 +162,7 @@
 
 <script>
 import * as XLSX from "xlsx";
-import { postSingleFile } from "@/api/file";
+import { postSingleFile, downloadFile } from "@/api/file";
 import { convertToFormData } from "@/js/format/format";
 export default {
   name: "UploadExcel",
@@ -185,7 +192,7 @@ export default {
       type: Function,
       default: () => {}
     },
-    importFunction:{
+    importApi:{
       type: Function,
       default: () => {}
     }
@@ -199,12 +206,28 @@ export default {
   },
   emits: ["update:modelValue", "import-file"],
   methods: {
+    downloadInvalidFile(){
+      downloadFile({fileName:this.validateData.fileName})
+      .then((response) => {
+          const fileName = "errordata.xlsx"; // Replace with the desired filename
+          this.downloadFileFromServer(fileName, response)
+        })
+        .catch((error) => {
+          console.error("Error downloading file:", error);
+        })
+    },
     downloadSampleFile() {
       this.apiSampleFile()
         .then((response) => {
           const fileName = "example.xlsx"; // Replace with the desired filename
-
-          const file = new Blob([response], {
+          this.downloadFileFromServer(fileName, response)
+        })
+        .catch((error) => {
+          console.error("Error downloading file:", error);
+        });
+    },
+    downloadFileFromServer(fileName, response){
+      const file = new Blob([response], {
             type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
           });
 
@@ -222,10 +245,6 @@ export default {
           // Clean up the temporary URL and link
           URL.revokeObjectURL(fileURL);
           downloadLink.remove();
-        })
-        .catch((error) => {
-          console.error("Error downloading file:", error);
-        });
     },
     handleKeyDown(event) {
       if (event.key === "Escape") {
@@ -239,10 +258,7 @@ export default {
      * Created By: NQTruong (01/06/2023)
      */
     importFile() {
-      this.importFunction()
-      console.log("data", this.data);
-      this.$emit("import-file", this.data);
-      this.closeDialog();
+      this.importApi(this.validateData.validData)
     },
     /**
      * Close dialog import
@@ -647,5 +663,11 @@ export default {
 }
 .drop-description {
   color: gray;
+}
+.download-invalid-file{
+  border: 1px solid var(--input-border-color-gray);
+  cursor: pointer;
+  border-radius: 4px;
+  height: 36px;
 }
 </style>
