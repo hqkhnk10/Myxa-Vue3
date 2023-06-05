@@ -118,7 +118,7 @@
       <misa-button type="danger" @click="removeRow">{{ t('emulationTitle.removeEmulationTitle') }}</misa-button>
     </template>
   </misa-confirm-dialog>
-  <misa-upload v-model="uploadDialog" @import-file="importFile"></misa-upload>
+  <misa-upload v-if="uploadDialog" v-model="uploadDialog" @import-data="importFile" :keys="$enum.Keys.EmulationTitle"></misa-upload>
 </template>
 
 <script>
@@ -195,7 +195,6 @@ export default {
         row.inactive = formatStatus(row.inactive).label
       })
       exportTableData(exportData, 'TestTable')
-      console.log('table', this.table);
       this.toogleDropdownEdit();
     },
     /**

@@ -4,7 +4,7 @@
       ref="input"
       :type="type"
       v-model="inputValue"
-      :class="{ invalid: !isValid,'disabled-input' : disabled }"
+      :class="{ invalid: !isValid,'disabled-input' : disabled, 'text-right' : type == 'number' }"
       @blur="blurEvent"
       @input="handleInput"
       :disabled="disabled"

@@ -82,3 +82,11 @@
   border-radius: 50%;
   background: #e4e4e4;
 }
+.radio__container.radio-upload{
+  padding-left: 28px;
+  cursor: default !important;
+  margin-bottom: 0px;
+}
+.radio__container.radio-upload > input{
+  cursor: default !important;
+}

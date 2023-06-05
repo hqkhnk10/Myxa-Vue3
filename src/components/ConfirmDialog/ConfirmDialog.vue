@@ -55,15 +55,31 @@ export default {
   },
   emits: ["update:modelValue"],
   methods: {
+    /**
+     * Đóng dialog
+     * CreatedBy: NQTruong (15/05/2023)
+     */
     closeConfirmDialog() {
       this.$emit("update:modelValue", false);
     },
+    /**
+     * Mở dialog
+     * CreatedBy: NQTruong (15/05/2023)
+     */
     openConfirmDialog() {
       this.$emit("update:modelValue", true);
     },
+    /**
+     * press confirm button
+     * CreatedBy: NQTruong (15/05/2023)
+     */
     handleConfirm() {
       this.$emit("confirm");
     },
+        /**
+     * press cancel button
+     * CreatedBy: NQTruong (15/05/2023)
+     */
     handleCancel() {
       this.$emit("cancel");
     },

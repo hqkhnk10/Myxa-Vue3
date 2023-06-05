@@ -8,6 +8,9 @@ const MisaEnum={
         Edit: 'edit',
         Detail: 'detail'
     },
+    Keys:{
+        EmulationTitle: "emulationtitle",
+    },
     EmulationTitle:{
         ApplyObject:{
             Family: 4,

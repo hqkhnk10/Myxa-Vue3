@@ -92,3 +92,9 @@ border-right: 1px solid white;
 .right{
     right: 0;
 }
+.text-right{
+    text-align: right;
+}
+.pl-28px{
+    padding-left: 28px;
+}

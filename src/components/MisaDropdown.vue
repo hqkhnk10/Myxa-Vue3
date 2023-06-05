@@ -86,7 +86,6 @@ export default {
       this.$emit("update:modelValue", false);
     },
     mouseleaveEvent(){
-      console.log('leave');
       if(!this.mouseleave){
         return
       }

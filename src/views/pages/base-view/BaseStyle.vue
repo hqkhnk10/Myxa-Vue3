@@ -91,7 +91,7 @@
         <misa-table v-model="importData">
         </misa-table>
     </div>
-    <misa-upload v-if="upload" v-model="upload" @import-file="importFile" :apiSampleFile="getSampleFileEmulationTitle" :validateFile="validateEmulationTitleFile" :importApi="insertMultipleEmulationTitle"></misa-upload>
+    <misa-upload v-if="upload" v-model="upload" fileName="Danh hiệu thi đua" :keys="$enum.Keys.EmulationTitle" @import-data="importFile"></misa-upload>
     <div>Export</div>
     <misa-button type="primary" @click="exportTableData(table)">Export</misa-button>
     <div>
@@ -105,7 +105,8 @@
 <script>
 import { useLangStore } from '@/store/lang';
 import { exportToExcel, exportTableData } from '@/js/helper/exportExcel'
-import {getSampleFileEmulationTitle, validateEmulationTitleFile, insertMultipleEmulationTitle} from '@/api/emulationTitle'
+import { insertMultipleEmulationTitle} from '@/api/emulationTitle'
+import { getSampleFile, validateFile} from '@/api/file'
 export default {
     name: 'BaseStyle',
     setup() {
@@ -116,7 +117,7 @@ export default {
         ];
         const langStore = useLangStore()
         const exportExcel = exportToExcel
-        return { langStore, exportExcel, excelData, exportTableData,getSampleFileEmulationTitle, validateEmulationTitleFile, insertMultipleEmulationTitle }
+        return { langStore, exportExcel, excelData, exportTableData,getSampleFile, validateFile, insertMultipleEmulationTitle }
     },
     data() {
         return {
@@ -188,6 +189,7 @@ export default {
     },
     methods: {
         importFile(data){
+            console.log('data', data);
             this.importData = data
         },
         exportData(){

@@ -21,29 +21,29 @@
         </div>
       </div>
       <div class="upload-progess">
-        <div class="radio__container">
-          <span>Chọn tệp nhậu khẩu</span>
+        <div class="radio__container radio-upload">
+          <span>{{t('file.chooseImportFile')}}</span>
           <input type="radio" :value="0" :checked="true" />
           <span
             :class="
-              uploading ? 'radio__checkmark' : 'radio__checkmark-disabled'
+              uploadingPhase ? 'radio__checkmark' : 'radio__checkmark-disabled'
             "
           ></span>
         </div>
         <div class="dashed-line">
           <div class="border-dashed"></div>
         </div>
-        <div class="radio__container">
-          <span>Nhập khẩu</span>
+        <div class="radio__container radio-upload">
+          <span>{{t('reuse.import')}}</span>
           <input type="radio" :value="0" :checked="true" />
           <span
             :class="
-              !uploading ? 'radio__checkmark' : 'radio__checkmark-disabled'
+              !uploadingPhase ? 'radio__checkmark' : 'radio__checkmark-disabled'
             "
           ></span>
         </div>
       </div>
-      <div v-if="uploading" class="uploading-container">
+      <div v-if="uploadingPhase" class="uploadingPhase-container">
         <div
           class="drop-area"
           :class="{
@@ -67,8 +67,9 @@
                 width="60"
               />
             </div>
-            <div>Kéo thả tệp vào đây hoặc nhấn để chọn tệp</div>
+            <div>{{t('file.guideDrop')}} Kéo thả tệp vào đây hoặc nhấn để chọn tệp</div>
             <div class="drop-description">
+              {{ t('file.description') }}
               Hỗ trợ định dạng *.xls, *.xlsx và kích thước tối đa 5MB
             </div>
           </div>
@@ -83,10 +84,10 @@
                 <div class="file-size">{{ formatFileSize(file.fileSize) }}</div>
                 <div class="flex">
                   <div class="file-valid"></div>
-                  Hợp lệ
+                  {{ t('reuse.valid') }}
                 </div>
                 <misa-button type="link" @click.stop="changeFile"
-                  >Change File</misa-button
+                  >{{ t('file.changeFile') }}</misa-button
                 >
               </div>
             </div>
@@ -103,56 +104,59 @@
         />
         <div class="sheet-selection" v-if="worksheets.length">
           <div>
-            <h3>Select sheets to import:</h3>
+            <h3>{{ t('file.importedSheet') }}</h3>
             <misa-combobox
-              v-model="selectedSheet"
+              v-model="fileOption.selectedSheet"
               :options="worksheets"
             ></misa-combobox>
           </div>
           <div>
-            <h3>Header:</h3>
-            <misa-input v-model="header" type="number"></misa-input>
+            <h3>{{ t('file.header') }}</h3>
+            <misa-input v-model="fileOption.header" type="number"></misa-input>
           </div>
         </div>
       </div>
       <div v-else>
         <div class="upload-report">
-        <div class="upload-report-records">
-          <div class="upload-records--title">Số bản ghi</div>
-          <div class="upload-records-number">{{ validateData.count }}</div>
+          <div class="upload-report-records">
+            <div class="upload-records--title">{{ t("reuse.records") }}</div>
+            <div class="upload-records-number">{{ validateData.count }}</div>
+          </div>
+          <div class="upload-report-valid">
+            <div class="upload-valid--title">{{ t("reuse.valid") }}</div>
+            <div class="upload-valid-number">
+              {{ validateData.validData.length }}
+            </div>
+          </div>
+          <div class="upload-report-invalid">
+            <div class="upload-invalid--title">{{ t("reuse.invalid") }}</div>
+            <div class="upload-invalid-number">
+              {{ validateData.inValidData.length }}
+            </div>
+          </div>
         </div>
-        <div class="upload-report-valid">
-          <div class="upload-valid--title">Hợp lệ</div>
-          <div class="upload-valid-number">{{ validateData.validData.length }}</div>
-        </div>
-        <div class="upload-report-invalid">
-          <div class="upload-invalid--title">Không hợp lệ</div>
-          <div class="upload-invalid-number">{{ validateData.inValidData.length }}</div>
-        </div>
-      </div>
         <misa-button type="secondary" @click="downloadInvalidFile">
-          Tải về bản ghi không lệ
+          {{ t("file.downloadInvalidRow") }}
         </misa-button>
       </div>
 
-
       <div class="upload__button">
         <misa-button type="primary-border" @click="downloadSampleFile"
-          >Tải tệp mẫu</misa-button
+          >{{ t("file.downloadSampleFile") }}</misa-button
         >
         <div class="flex gap-12px">
-          <misa-button type="secondary" @click="closeDialog">Hủy</misa-button>
-          <misa-button type="secondary" v-if="!uploading" @click="back"
-            >Quay lại</misa-button
+          <misa-button type="secondary" @click="closeDialog">{{ t("reuse.cancel") }}</misa-button>
+          <misa-button type="secondary" v-if="!uploadingPhase" @click="back"
+            >{{ t("reuse.back") }}</misa-button
           >
           <misa-button
-            v-if="uploading"
+            v-if="uploadingPhase"
             @click="uploadFile"
             :disabled="uploadedFiles.length == 0"
-            >Tiếp tục</misa-button
+            >{{t("reuse.continue")}}</misa-button
           >
-          <misa-button v-if="!uploading" @click="importFile"
-            >Nhập khẩu</misa-button
+          <misa-button v-if="!uploadingPhase" @click="importFile" :disabled="validateData?.validData.length == 0"
+            >{{ t("reuse.import") }}</misa-button
           >
         </div>
       </div>
@@ -162,21 +166,29 @@
 
 <script>
 import * as XLSX from "xlsx";
-import { postSingleFile, downloadFile } from "@/api/file";
+import {
+  postSingleFile,
+  downloadFile,
+  getSampleFile,
+  validateFile,
+} from "@/api/file";
 import { convertToFormData } from "@/js/format/format";
+import { dispatchNotification } from "./Notification";
 export default {
   name: "UploadExcel",
   data() {
     return {
-      uploading: true,
-      header: 1,
+      uploadingPhase: true,
       uploadedFiles: [],
       isDropHover: false,
       worksheets: [],
       data: [],
-      selectedSheet: "",
       loading: false,
-      validateData: {}
+      validateData: {},
+      fileOption:{
+        selectedSheet: 0,
+        header: 1
+      }
     };
   },
   props: {
@@ -184,18 +196,15 @@ export default {
       type: Boolean,
       default: false,
     },
-    apiSampleFile: {
-      type: Function,
-      default: () => {}
+    fileName: {
+      type: String,
+      default: "file",
     },
-    validateFile: {
-      type: Function,
-      default: () => {}
+    keys: {
+      type: String,
+      required: true,
+      default: "",
     },
-    importApi:{
-      type: Function,
-      default: () => {}
-    }
   },
   mounted() {
     window.addEventListener("keydown", this.handleKeyDown);
@@ -204,48 +213,75 @@ export default {
     // Remove event listener when component is unmounted
     window.removeEventListener("keydown", this.handleKeyDown);
   },
-  emits: ["update:modelValue", "import-file"],
+  emits: ["update:modelValue", "import-data"],
   methods: {
-    downloadInvalidFile(){
-      downloadFile({fileName:this.validateData.fileName})
-      .then((response) => {
-          const fileName = "errordata.xlsx"; // Replace with the desired filename
-          this.downloadFileFromServer(fileName, response)
-        })
-        .catch((error) => {
-          console.error("Error downloading file:", error);
-        })
-    },
-    downloadSampleFile() {
-      this.apiSampleFile()
+    /**
+     * Download invalid excel file
+     * Created By: NQTruong (01/06/2023)
+     */
+    downloadInvalidFile() {
+      downloadFile({ fileName: this.validateData.fileName })
         .then((response) => {
-          const fileName = "example.xlsx"; // Replace with the desired filename
-          this.downloadFileFromServer(fileName, response)
+          this.saveFileToClient(`${this.fileName}_invalid`, response);
         })
         .catch((error) => {
-          console.error("Error downloading file:", error);
+          dispatchNotification({
+            content: error?.response?.data?.userMsg
+              ? error?.response?.data?.userMsg
+              : error.message,
+            type: "error",
+          });
         });
     },
-    downloadFileFromServer(fileName, response){
-      const file = new Blob([response], {
-            type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    /**
+     * Tải tệp mẫu
+     * Created By: NQTruong (01/06/2023)
+     */
+    downloadSampleFile() {
+      getSampleFile({ key: this.keys })
+        .then((response) => {
+          this.saveFileToClient(this.fileName, response);
+        })
+        .catch((error) => {
+          dispatchNotification({
+            content: error?.response?.data?.userMsg
+              ? error?.response?.data?.userMsg
+              : error.message,
+            type: "error",
           });
-
-          // Create a temporary URL for the file
-          const fileURL = URL.createObjectURL(file);
-
-          // Create a download link
-          const downloadLink = document.createElement("a");
-          downloadLink.href = fileURL;
-          downloadLink.setAttribute("download", fileName);
-
-          // Trigger the download by simulating a click on the link
-          downloadLink.click();
-
-          // Clean up the temporary URL and link
-          URL.revokeObjectURL(fileURL);
-          downloadLink.remove();
+        });
     },
+    /**
+     * Lưu file về máy
+     * @param {*} fileName tên file
+     * @param {*} response dữ liệu file server trả về
+     * Created By: NQTruong (01/06/2023)
+     */
+    saveFileToClient(fileName, response) {
+      const file = new Blob([response], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      });
+
+      // Create a temporary URL for the file
+      const fileURL = URL.createObjectURL(file);
+
+      // Create a download link
+      const downloadLink = document.createElement("a");
+      downloadLink.href = fileURL;
+      downloadLink.setAttribute("download", fileName);
+
+      // Trigger the download by simulating a click on the link
+      downloadLink.click();
+
+      // Clean up the temporary URL and link
+      URL.revokeObjectURL(fileURL);
+      downloadLink.remove();
+    },
+    /**
+     * Ấn nút esc để tatwst dialog
+     * @param {*} event keyboard event
+     * Created By: NQTruong (01/06/2023)
+     */
     handleKeyDown(event) {
       if (event.key === "Escape") {
         event.preventDefault(); // Prevent the default browser behavior
@@ -258,7 +294,7 @@ export default {
      * Created By: NQTruong (01/06/2023)
      */
     importFile() {
-      this.importApi(this.validateData.validData)
+      this.$emit('import-data', this.validateData);
     },
     /**
      * Close dialog import
@@ -269,11 +305,11 @@ export default {
       this.$emit("update:modelValue", false);
     },
     /**
-     * Back to uploading file phase
+     * Back to uploadingPhase file phase
      * Created By: NQTruong (01/06/2023)
      */
     back() {
-      this.uploading = true;
+      this.uploadingPhase = true;
     },
     /**
      * drop effect when drag over
@@ -292,29 +328,25 @@ export default {
       event.preventDefault();
       this.isDropHover = false;
       const files = event.dataTransfer.files;
-      if (this.uploadedFiles.length > 0) {
-        return;
-      }
       this.handleFiles(files);
     },
     /**
-     * When choose file to upload file
+     * trigger when upload file
      * @param {*} event
      * Created By: NQTruong (01/06/2023)
      */
     handleFileInputChange(event) {
       this.isDropHover = false;
       const files = event.target.files;
-      if (files.length > 0) {
-        this.handleFiles(files);
-      }
+      this.handleFiles(files);
     },
     /**
      * Handle validate file
      * @param {*} files
      * Created By: NQTruong (01/06/2023)
      */
-    async handleFiles(files) {
+    handleFiles(files) {
+      console.log("files", files);
       this.loading = true;
       if (this.uploadedFiles.length > 0 && files) {
         this.uploadedFiles.pop();
@@ -326,10 +358,40 @@ export default {
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" &&
         file.size < 5 * 1024 * 1024
       ) {
-        const res = await postSingleFile(convertToFormData({ file: file }));
-        this.uploadedFiles.push({ file, ...res });
-        this.loadWorksheets(file);
+        postSingleFile(convertToFormData({ file: file }))
+          .then((res) => {
+            this.uploadedFiles.push({ file, ...res });
+            this.loadWorksheets(file);
+          })
+          .catch((error) => {
+            dispatchNotification({
+              content: error?.response?.data?.userMsg
+                ? error?.response?.data?.userMsg
+                : error.message,
+              type: "error",
+            });
+          })
+          .finally(() => {
+            this.loading = false;
+          });
+      } else {
+        if (
+          file.type !==
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        ) {
+          dispatchNotification({
+            content: "File không đúng định dạng ",
+            type: "error",
+          });
+        }
+        if (file.size > 5 * 1024 * 1024) {
+          dispatchNotification({
+            content: "File lớn hơn 5MB",
+            type: "error",
+          });
+        }
       }
+      this.loading = false;
     },
     /**
      * Open default browser upload file
@@ -348,7 +410,6 @@ export default {
      */
     loadWorksheets(file) {
       const reader = new FileReader();
-
       reader.onload = (e) => {
         const data = new Uint8Array(e.target.result);
         const workbook = XLSX.read(data, { type: "array" });
@@ -356,8 +417,8 @@ export default {
         this.worksheets = workbook.SheetNames.map((sheetName, index) => ({
           label: sheetName,
           value: index,
-        }));
-        this.selectedSheet = 0;
+        })).filter((sheet) => sheet.label != "Enum");
+        this.fileOption.selectedSheet = 0;
       };
       reader.onloadend = () => {
         this.loading = false;
@@ -369,79 +430,36 @@ export default {
      * Created By: NQTruong (01/06/2023)
      */
     uploadFile() {
-      this.validateFile(
+      this.loading = true;
+      validateFile(
         convertToFormData({
           File: this.uploadedFiles[0].file,
-          SheetIndex: this.selectedSheet,
-          Header: this.header,
+          SheetIndex: this.fileOption.selectedSheet,
+          Header: this.fileOption.header,
+          Key: this.keys,
         })
-      ).then((res)=>{
-        this.validateData = res
-        this.uploading = false
-      }).catch(()=>{});
-    },
-    /**
-     * Transform data to misa-table data format
-     * @param {*} jsonData data from excel
-     * Created By: NQTruong (01/06/2023)
-     */
-    transformToTableData(jsonData) {
-      try {
-        const header = jsonData[this.header - 1].map((data) => ({
-          label: data,
-          prop: data,
-        }));
-        const headerRow = jsonData[this.header - 1];
-        const transformedData = jsonData.slice(this.header).map((row) => {
-          return headerRow.reduce((obj, header, index) => {
-            obj[header] = row[index];
-            return obj;
-          }, {});
+      )
+        .then((res) => {
+          this.uploadingPhase = false;
+          this.validateData = res;
+        })
+        .catch((error) => {
+          dispatchNotification({
+            content: error?.response?.data?.userMsg
+              ? error?.response?.data?.userMsg
+              : error.message,
+            type: "error",
+          });
+        })
+        .finally(() => {
+          this.loading = false;
         });
-        const tableData = { header: header, data: transformedData };
-        console.log("tableData", tableData);
-        return tableData;
-      } catch (error) {
-        console.log(error);
-      }
     },
     /**
-     * Read excel file
+     * Đổi từ kb sang mb
+     * @param {*} fileSize kích thước file
      * Created By: NQTruong (01/06/2023)
      */
-    readExcelFile() {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-
-        reader.onload = (e) => {
-          try {
-            const data = new Uint8Array(e.target.result);
-            const workbook = XLSX.read(data, { type: "array" });
-            const sheetName = this.worksheets.find(
-              (sheet) => sheet.value == this.selectedSheet
-            ).label;
-            const worksheet = workbook.Sheets[sheetName];
-            if (!worksheet) {
-              reject(
-                new Error(`Sheet "${sheetName}" not found in the Excel file.`)
-              );
-              return;
-            }
-            const jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-            console.log("json data: ", jsonData);
-            resolve(jsonData);
-          } catch (error) {
-            reject(error);
-          }
-        };
-
-        reader.onerror = (error) => {
-          reject(error);
-        };
-
-        reader.readAsArrayBuffer(this.uploadedFiles[0]);
-      });
-    },
     formatFileSize(fileSize) {
       const fileSizeInMB = fileSize / (1024 * 1024);
       return fileSizeInMB.toFixed(2) + " MB";
@@ -452,32 +470,6 @@ export default {
      */
     changeFile() {
       this.$refs.fileInput.click();
-    },
-    /**
-     * sample file to upload
-     * Created By: NQTruong (01/06/2023)
-     */
-    generateExcelAndUpload() {
-      const data = [
-        ["Name", "Age", "Email"],
-        ["John Doe", 25, "john@example.com"],
-        ["Jane Smith", 30, "jane@example.com"],
-        ["Bob Johnson", 35, "bob@example.com"],
-      ];
-
-      const worksheet = XLSX.utils.aoa_to_sheet(data);
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, "Sheet1");
-      const filename = "sample_excel.xlsx"; // Specify the desired filename here
-      const excelBuffer = XLSX.write(workbook, {
-        bookType: "xlsx",
-        type: "array",
-      });
-      const file = new File([new Uint8Array(excelBuffer)], filename, {
-        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-      });
-      const fileList = [file];
-      this.handleFiles(fileList);
     },
   },
 };
@@ -656,7 +648,7 @@ export default {
   text-align: center;
   font-weight: 700;
 }
-.uploading-container {
+.uploadingPhase-container {
   min-height: 300px;
   display: flex;
   flex-direction: column;
@@ -664,7 +656,7 @@ export default {
 .drop-description {
   color: gray;
 }
-.download-invalid-file{
+.download-invalid-file {
   border: 1px solid var(--input-border-color-gray);
   cursor: pointer;
   border-radius: 4px;

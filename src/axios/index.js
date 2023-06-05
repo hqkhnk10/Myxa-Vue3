@@ -1,9 +1,10 @@
 import { service } from "./service";
 
 const request = (option) => {
-  const { url, method, params, data, headersType, responseType } = option;
+  const { baseURL, url, method, params, data, headersType, responseType } = option;
   // eslint-disable-next-line no-debugger
   return service({
+    baseURL: baseURL,
     // `url` is the server URL that will be used for the request
     url: url,
     // `method` is the request method to be used when making the request

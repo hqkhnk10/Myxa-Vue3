@@ -112,7 +112,6 @@ export default {
      * CreatedBy: NQTruong (15/05/2023)
      */
     filterOptions() {
-      console.log('input', this.inputValue);
       if (!this.inputValue) {
         return this.options;
       }
@@ -136,6 +135,11 @@ export default {
   },
   emits: ["update:modelValue", "change", "update:valid"],
   methods: {
+    /**
+     * Set selected = true for the class render
+     * @param {*} objValue
+     * CreatedBy: NQTruong (15/05/2023)
+     */
     setSelected(objValue) {
       this.options?.forEach((option) => {
         if (option == objValue) {
@@ -145,6 +149,11 @@ export default {
         }
       });
     },
+        /**
+     * When click button of the combobox, open the combobox options
+     * @param {*} objValue
+     * CreatedBy: NQTruong (15/05/2023)
+     */
     clickComboboxButton() {
       this.inputValue = null
       this.toggleOptions();
@@ -202,7 +211,6 @@ export default {
      * CreatedBy: NQTruong (15/05/2023)
      */
     getLabelFromValue() {
-      console.log('model', this.modelValue);
       return this.options?.find(
         (option) => option[this.value] === this.modelValue
       );
@@ -295,7 +303,6 @@ export default {
      * CreatedBy: NQTruong (15/05/2023)
      */
     selectOption(item) {
-      this.$emit("update:modelValue", undefined);
       this.options.forEach((option) => {
         if (option[this.value] == item[this.value]) {
           option.selected = true;

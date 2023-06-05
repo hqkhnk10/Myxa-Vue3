@@ -630,7 +630,6 @@ export default {
             content: this.successContent,
             type: "success",
           });
-
           return true;
         })
         .catch((err) => {
@@ -638,7 +637,6 @@ export default {
           if (err?.response?.status == 302) {
             this.validateDialog = true;
           } else {
-            console.log("message", err?.response?.data?.userMsg);
             dispatchNotification({
               content: err?.response?.data?.userMsg
                 ? err?.response?.data?.userMsg
