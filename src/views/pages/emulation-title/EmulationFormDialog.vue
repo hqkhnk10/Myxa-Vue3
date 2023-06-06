@@ -349,6 +349,10 @@ export default {
     },
   },
   methods: {
+    /**
+     * hàm xác thực code
+     * Created By: NQTruong (20/05/2023)
+     */
     validateCode() {
       if (!this.form.emulationTitleCode) {
         this.validate.emulationTitleCode.message = this.t(
@@ -362,6 +366,10 @@ export default {
       }
       return true;
     },
+        /**
+     * hàm xác thực tên
+     * Created By: NQTruong (20/05/2023)
+     */
     validateName() {
       if (!this.form.emulationTitleName) {
         this.validate.emulationTitleName.message = this.t(
@@ -522,17 +530,26 @@ export default {
     ]),
     ...mapActions(useEmulationCommendationStore, ["getEmulationCommendation"]),
     /**
-     * valudate function for Form
+     * xác thực đối tượng khen thưởng
      * Created At: 15/05/2023
      * @author NQTruong
      */
     validateApplyObject() {
       return this.form.applyObject0 || this.form.applyObject2;
     },
+        /**
+     * xác thực loại phong trào
+     * Created At: 15/05/2023
+     * @author NQTruong
+     */
     validateMovementType() {
       return this.form.movementType0 || this.form.movementType1;
     },
-    //close dialog
+        /**
+     * đóng dialog
+     * Created At: 15/05/2023
+     * @author NQTruong
+     */
     closeDialog() {
       this.emitter.emit("toggle-emulation-dialog", false);
     },
@@ -552,6 +569,10 @@ export default {
       });
       return isValid;
     },
+    /**
+     * Lưu và thêm mới
+     * Created By: NQTruong (20/05/2023)
+     */
     async submitAndResetForm() {
       if (this.validateForm()) {
         const res = await this.submitAPI(false);
@@ -633,7 +654,6 @@ export default {
           return true;
         })
         .catch((err) => {
-          console.log("err", err);
           if (err?.response?.status == 302) {
             this.validateDialog = true;
           } else {

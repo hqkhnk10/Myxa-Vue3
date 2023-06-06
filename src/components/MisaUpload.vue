@@ -300,7 +300,6 @@ export default {
      * Created By: NQTruong (01/06/2023)
      */
     closeDialog() {
-      console.log("close");
       this.$emit("update:modelValue", false);
     },
     /**
@@ -345,7 +344,6 @@ export default {
      * Created By: NQTruong (01/06/2023)
      */
     handleFiles(files) {
-      console.log("files", files);
       this.loading = true;
       if (this.uploadedFiles.length > 0 && files) {
         this.uploadedFiles.pop();

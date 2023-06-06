@@ -189,7 +189,6 @@ export default {
     },
     methods: {
         importFile(data){
-            console.log('data', data);
             this.importData = data
         },
         exportData(){

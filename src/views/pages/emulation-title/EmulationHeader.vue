@@ -29,13 +29,14 @@
           />
         </div>
       </div>
-      <div  class="header-button-end">
+      <div class="header-button-end">
         <div
           v-if="selectedRows && selectedRows.length > 0"
           class="flex items-center gap-4px"
         >
           <div>
-            {{ t('reuse.selected') }}<span class="main__title-tableCount">{{
+            {{ t("reuse.selected")
+            }}<span class="main__title-tableCount">{{
               formatNumber(selectedRows.length)
             }}</span>
           </div>
@@ -73,52 +74,60 @@
         </div>
         <div>
           <misa-dropdown
-              :header="false"
-              position="right"
-              v-model="showDropdownEdit"
-              :arrow="false"
-            >
-              <template #click>
-                  <misa-button type="secondary" @click="toogleDropdownEdit">
-                    <div class="icon__threedots"></div>
-                  </misa-button>
-              </template>
-              <template #content>
-                <a
-                class="cursor-pointer"
-                  @click="onBtnClickImport"
-                  >{{ t("reuse.import") }}</a
-                >
-                <a
-                class="cursor-pointer"
-                  @click="onBtnClickExport"
-                  >{{ t("reuse.export") }}</a
-                >
-
-              </template>
-            </misa-dropdown>
+            :header="false"
+            position="right"
+            v-model="showImportDropdown"
+            :arrow="false"
+          >
+            <template #click>
+              <misa-button type="secondary" @click="toogleDropdownEdit">
+                <div class="icon__threedots"></div>
+              </misa-button>
+            </template>
+            <template #content>
+              <a class="cursor-pointer" @click="onBtnClickImport">{{
+                t("reuse.import")
+              }}</a>
+              <a class="cursor-pointer" @click="onBtnClickExport">{{
+                t("reuse.export")
+              }}</a>
+            </template>
+          </misa-dropdown>
         </div>
       </div>
     </div>
   </div>
-  <misa-confirm-dialog v-if="confirmDialog" v-model="confirmDialog" title="Xóa Danh hiệu thi đua" @keydown.enter="removeRow">
+  <misa-confirm-dialog
+    v-if="confirmDialog"
+    v-model="confirmDialog"
+    title="Xóa Danh hiệu thi đua"
+    @keydown.enter="removeRow"
+  >
     <template #content>
       <div>
-        {{ t('reuse.remove') }}
+        {{ t("reuse.remove") }}
         <span style="font-weight: bold"
-          >{{ selectedRows.length }} {{ t('emulationTitle.title') }}
+          >{{ selectedRows.length }} {{ t("emulationTitle.title") }}
         </span>
-        {{ t('emulationTitle.selected') }}?
+        {{ t("emulationTitle.selected") }}?
       </div>
     </template>
     <template #button>
-      <misa-button type="secondary" @click="closeConfirmDialog"
-        >{{ t('reuse.no') }}</misa-button
-      >
-      <misa-button type="danger" @click="removeRow">{{ t('emulationTitle.removeEmulationTitle') }}</misa-button>
+      <misa-button type="secondary" @click="closeConfirmDialog">{{
+        t("reuse.no")
+      }}</misa-button>
+      <misa-button type="danger" @click="removeRow">{{
+        t("emulationTitle.removeEmulationTitle")
+      }}</misa-button>
     </template>
   </misa-confirm-dialog>
-  <misa-upload v-if="uploadDialog" v-model="uploadDialog" @import-data="importFile" :keys="$enum.Keys.EmulationTitle" :fileName="t('emulationTitle.emulationTitle')"></misa-upload>
+  <misa-upload
+    v-if="uploadDialog"
+    v-model="uploadDialog"
+    @import-data="importFile"
+    :keys="$enum.Keys.EmulationTitle"
+    :fileName="t('emulationTitle.emulationTitle')"
+  ></misa-upload>
 </template>
 
 <script>
@@ -126,27 +135,23 @@ import EmulationDropdownFilter from "./EmulationDropdownFilter.vue";
 import { useEmulationTitleStore } from "@/store/emulationTitle";
 import { mapActions, mapState } from "pinia";
 import { dispatchNotification } from "@/components/Notification";
-import {formatNumber} from "@/js/format/format"
-import { exportTableData } from '@/js/helper/exportExcel'
-import {
-  formatApplyObject,
-  formatCommendationLevel,
-  formatMovementType,
-  formatStatus,
-} from "@/js/format/emulation-title";
+import { formatNumber } from "@/js/format/format";
+import { exportFile } from "@/api/file";
+import { saveFileToClient } from "@/js/helper/exportExcel";
+import { insertMultipleEmulationTitle } from "@/api/emulationTitle";
 export default {
   name: "EmulationHeader",
   components: {
     EmulationDropdownFilter,
   },
-  setup(){
+  setup() {
     return {
-      formatNumber
-    }
+      formatNumber,
+    };
   },
   data() {
     return {
-      showDropdownEdit: false,
+      showImportDropdown: false,
       uploadDialog: false,
       filterValue: {
         ApplyObject: null,
@@ -166,6 +171,10 @@ export default {
     },
   },
   computed: {
+    /**
+     * Lưu dữ liệu trong store vào table
+     * Created By: NQTruong (20/05/2023)
+     */
     ...mapState(useEmulationTitleStore, {
       table: (store) => {
         return {
@@ -174,40 +183,77 @@ export default {
         };
       },
     }),
+    /**
+     * Lấy dữ liệu parameters trong store
+     * Created By: NQTruong (20/05/2023)
+     */
+    ...mapState(useEmulationTitleStore, ["parameters"]),
   },
   methods: {
-    toogleDropdownEdit(){
-      this.showDropdownEdit = !this.showDropdownEdit
+    /**
+     * Đóng/bật dropdown xuất nhập khẩu
+     * Created By: NQTruong (20/05/2023)
+     */
+    toogleDropdownEdit() {
+      this.showImportDropdown = !this.showImportDropdown;
     },
-    importFile(data){
-      console.log('data2', data);
+    /**
+     * Thêm dữ liệu đã nhập khẩu xuống server
+     * @param {*} data
+     * Created By: NQTruong (20/05/2023)
+     */
+    importFile(data) {
+      insertMultipleEmulationTitle(data?.validData)
+        .then(() => {
+          dispatchNotification({
+            content: this.successContent,
+            type: "success",
+          });
+          this.getAPI();
+        })
+        .catch((err) => {
+          dispatchNotification({
+            content: err?.response?.data?.userMsg
+              ? err?.response?.data?.userMsg
+              : err.message,
+            type: "error",
+          });
+        });
     },
-    onBtnClickImport(){
-      this.uploadDialog = true
+    /**
+     * Ấn nút nhập khẩu
+     * Created By: NQTruong (20/05/2023)
+     */
+    onBtnClickImport() {
+      this.uploadDialog = true;
       this.toogleDropdownEdit();
     },
+    /**
+     * Ấn nút xuất khẩu
+     * Created By: NQTruong (20/05/2023)
+     */
     onBtnClickExport() {
-      let exportData = JSON.parse(JSON.stringify(this.table))
-      exportData.data.forEach((row)=>{
-        row.applyObject = formatApplyObject(row.applyObject)
-        row.commendationLevel = formatCommendationLevel(row.commendationLevel)
-        row.movementType = formatMovementType(row.movementType)
-        row.inactive = formatStatus(row.inactive).label
-      })
-      exportTableData(exportData, 'TestTable')
+      exportFile({
+        key: this.$enum.Keys.EmulationTitle,
+        parameters: this.parameters,
+      }).then((res) => {
+        saveFileToClient("Danh hiệu thi đua", res);
+      });
       this.toogleDropdownEdit();
     },
     /**
      * Get function from pinia
+     * Created By: NQTruong (20/05/2023)
      */
     ...mapActions(useEmulationTitleStore, [
       "updateMultipleStatusAPI",
       "getAPI",
-      "deleteMultipleAPI"
+      "deleteMultipleAPI",
     ]),
 
     /**
      * Call update status api
+     * Created By: NQTruong (20/05/2023)
      */
     updateStatus(status) {
       this.updateMultipleStatusAPI({
@@ -233,25 +279,25 @@ export default {
     },
     /**
      * open confirm dialog before delete row
-         //Created At: 10/05/2023
-    //@author NQTruong
+     * Created At: 10/05/2023
+     * @author NQTruong
      */
     openConfirmDialog() {
       this.confirmDialog = true;
     },
     /**
-     * close confirm dialog 
-         //Created At: 10/05/2023
-    //@author NQTruong
+     * close confirm dialog
+     *Created At: 10/05/2023
+     *@author NQTruong
      */
     closeConfirmDialog() {
       this.confirmDialog = false;
     },
     /**
      * Send keyword to GetAPI to filter
-     * @param {*} keyword 
-         //Created At: 10/05/2023
-    //@author NQTruong
+     * @param {*} keyword
+     * Created At: 10/05/2023
+     * @author NQTruong
      */
     changeKeyword(keyword) {
       this.emitter.emit("search-table-emulation", keyword);
@@ -317,7 +363,7 @@ export default {
 };
 </script>
 <style scoped>
-.header-button-end{
+.header-button-end {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;

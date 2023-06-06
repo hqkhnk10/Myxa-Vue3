@@ -16,3 +16,7 @@ export const validateFile = async (data) => {
     const res = await request.post({ baseURL: baseURL, url: 'File/ValidateFile', data: data, headersType: 'multipart/form-data'})
     return res
 }
+export const exportFile = async (data) => {
+    const res = await request.post({ baseURL: baseURL, url: 'File/ExportFile', data: data, responseType: 'arraybuffer'})
+    return res
+}
