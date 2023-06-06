@@ -62,14 +62,18 @@
               :disabled="disabled"
               @change="validateForm"
               class="flex-1"
-              ><div class="checkbox__title">{{ t("emulationTitle.personal") }}</div></misa-checkbox
+              ><div class="checkbox__title">
+                {{ t("emulationTitle.personal") }}
+              </div></misa-checkbox
             >
             <misa-checkbox
               v-model="form.applyObject0"
               :disabled="disabled"
               @change="validateForm"
               class="flex-1"
-              ><div class="checkbox__title">{{ t("emulationTitle.group") }}</div></misa-checkbox
+              ><div class="checkbox__title">
+                {{ t("emulationTitle.group") }}
+              </div></misa-checkbox
             >
           </div>
           <div class="error active" v-if="!validate.applyObject.valid">
@@ -103,14 +107,18 @@
               :disabled="disabled"
               @change="validateForm"
               class="flex-1"
-              ><div class="checkbox__title">{{ t("emulationTitle.regular") }}</div></misa-checkbox
+              ><div class="checkbox__title">
+                {{ t("emulationTitle.regular") }}
+              </div></misa-checkbox
             >
             <misa-checkbox
               v-model="form.movementType1"
               :disabled="disabled"
               @change="validateForm"
               class="flex-1"
-              ><div class="checkbox__title">{{ t("emulationTitle.period") }}</div></misa-checkbox
+              ><div class="checkbox__title">
+                {{ t("emulationTitle.period") }}
+              </div></misa-checkbox
             >
           </div>
           <div class="error active" v-if="!validate.movementType.valid">
@@ -252,6 +260,8 @@ export default {
         },
         commendationLevel: {
           valid: true,
+          required: true,
+
         },
       },
       levelOptions: [],
@@ -366,7 +376,7 @@ export default {
       }
       return true;
     },
-        /**
+    /**
      * hàm xác thực tên
      * Created By: NQTruong (20/05/2023)
      */
@@ -537,7 +547,7 @@ export default {
     validateApplyObject() {
       return this.form.applyObject0 || this.form.applyObject2;
     },
-        /**
+    /**
      * xác thực loại phong trào
      * Created At: 15/05/2023
      * @author NQTruong
@@ -545,7 +555,7 @@ export default {
     validateMovementType() {
       return this.form.movementType0 || this.form.movementType1;
     },
-        /**
+    /**
      * đóng dialog
      * Created At: 15/05/2023
      * @author NQTruong
@@ -643,6 +653,7 @@ export default {
      * @author NQTruong
      */
     async submitAPI(closeDialog = true) {
+      this.loading = true;
       let postValue = this.customPostValue();
       return this.apiFunc(postValue)
         .then(() => {
@@ -667,6 +678,7 @@ export default {
           return false;
         })
         .finally(() => {
+          this.loading = true;
           if (closeDialog) {
             this.closeDialog();
           }

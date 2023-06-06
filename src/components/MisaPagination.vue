@@ -12,6 +12,7 @@
           v-model="pagination.pageSize"
           :options="paginationOptions"
           position="top"
+          :readonly="true"
         ></misa-combobox>
       </div>
       <div class="flex items-center">

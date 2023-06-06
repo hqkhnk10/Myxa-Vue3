@@ -106,5 +106,10 @@ export const vi = {
     records:"Số bản ghi",
     downloadInvalidRow: "Tải xuống bản ghi không hợp lệ",
     downloadSampleFile: "Tải tệp mẫu"
+  },
+  validate:{
+    number: "Vui lòng điền số",
+    required: "Không được để trống",
+    greaterThan0: "Lớn hơn 0"
   }
 };

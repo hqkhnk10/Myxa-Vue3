@@ -236,9 +236,22 @@ export default {
       exportFile({
         key: this.$enum.Keys.EmulationTitle,
         parameters: this.parameters,
-      }).then((res) => {
-        saveFileToClient("Danh hiệu thi đua", res);
-      });
+      })
+        .then((res) => {
+          saveFileToClient("Danh hiệu thi đua", res);
+          dispatchNotification({
+            content: this.t("reuse.success"),
+            type: "success",
+          });
+        })
+        .catch((err) => {
+          dispatchNotification({
+            content: err?.response?.data?.userMsg
+              ? err?.response?.data?.userMsg
+              : err.message,
+            type: "error",
+          });
+        });
       this.toogleDropdownEdit();
     },
     /**

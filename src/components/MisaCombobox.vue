@@ -9,6 +9,7 @@
     v-click-outside="closeOptions"
   >
     <misa-input
+      :readonly="readonly"
       ref="input"
       type="text"
       :modelValue="labelShow"
@@ -93,6 +94,10 @@ export default {
       type: String,
       default: "Dữ liệu",
     },
+    readonly:{
+      type: Boolean,
+      default: false
+    }
   },
   computed: {
     /**

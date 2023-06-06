@@ -2,7 +2,9 @@
   <div class="dialog-show" v-if="modelValue">
     <div class="dialog__padding">
       <div class="dialog__header">
-        <span class="dialog__title">{{ t("reuse.import") }}</span>
+        <span class="dialog__title">
+  {{ loading }}
+          {{ t("reuse.import") }}</span>
         <div class="dialog__header-button">
           <button
             type="button"
@@ -103,15 +105,19 @@
         />
         <div class="sheet-selection" v-if="worksheets.length">
           <div>
-            <h3>{{ t('file.importedSheet') }}</h3>
+            <h3>{{ t('file.importedSheet') }}<span class="required">*</span></h3>
             <misa-combobox
               v-model="fileOption.selectedSheet"
               :options="worksheets"
+              v-model:valid="validate.selectedSheet.valid"
             ></misa-combobox>
           </div>
           <div>
-            <h3>{{ t('file.header') }}</h3>
-            <misa-input v-model="fileOption.header" type="number"></misa-input>
+            <h3>{{ t('file.header') }}<span class="required">*</span></h3>
+            <misa-input v-model="fileOption.header" inputmode="numeric" pattern="[0-9,\.]*" type="number" :min="0" :isValid="validate.header.valid" @change="validateFileOption"></misa-input>
+            <div class="error active" v-if="!validate.header.valid">
+            {{ validate.header.message }}
+          </div>
           </div>
         </div>
       </div>
@@ -187,6 +193,17 @@ export default {
       fileOption:{
         selectedSheet: 0,
         header: 1
+      },
+      validate:{
+        selectedSheet: {
+          required: true,
+          valid: true,
+        },
+        header:{
+          required: true,
+          valid: true,
+          message: this.t('validate.number')
+        },
       }
     };
   },
@@ -214,6 +231,30 @@ export default {
   },
   emits: ["update:modelValue", "import-data"],
   methods: {
+    validateHeader(){
+      if(!this.fileOption.header || this.fileOption.header == null || this.fileOption.header == ''){
+        this.validate.header.valid = false;
+        this.validate.header.message = this.t('validate.required');
+        return
+      }
+      if(isNaN(this.fileOption.header)){
+        this.validate.header.valid = false;
+        this.validate.header.message = this.t('validate.number');
+        return
+      }
+      if(this.fileOption.header < 0){
+        this.validate.header.valid = false;
+        this.validate.header.message = this.t('validate.greaterThan0');
+        return
+      }
+      else{
+        this.validate.header.valid = true;
+      }
+    },
+    validateFileOption(){
+      this.validateHeader()
+      return this.validate.selectedSheet.valid && this.validate.header.valid
+    },
     /**
      * Download invalid excel file
      * Created By: NQTruong (01/06/2023)
@@ -237,6 +278,7 @@ export default {
      * Created By: NQTruong (01/06/2023)
      */
     downloadSampleFile() {
+      this.loading = true;
       getSampleFile({ key: this.keys })
         .then((response) => {
           this.saveFileToClient(this.fileName, response);
@@ -248,6 +290,9 @@ export default {
               : error.message,
             type: "error",
           });
+        })
+        .finally(()=>{
+          this.loading = false;
         });
     },
     /**
@@ -343,22 +388,21 @@ export default {
      * @param {*} files
      * Created By: NQTruong (01/06/2023)
      */
-    handleFiles(files) {
+     handleFiles(files) {
       this.loading = true;
       if (this.uploadedFiles.length > 0 && files) {
         this.uploadedFiles.pop();
       }
       const file = files[0];
-
       if (
         file.type ===
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" &&
         file.size < 5 * 1024 * 1024
       ) {
         postSingleFile(convertToFormData({ file: file }))
-          .then((res) => {
+          .then(async (res) => {
             this.uploadedFiles.push({ file, ...res });
-            this.loadWorksheets(file);
+            await this.loadWorksheets(file);
           })
           .catch((error) => {
             dispatchNotification({
@@ -387,8 +431,8 @@ export default {
             type: "error",
           });
         }
-      }
       this.loading = false;
+      }
     },
     /**
      * Open default browser upload file
@@ -405,7 +449,8 @@ export default {
      * @param {*} file
      * Created By: NQTruong (01/06/2023)
      */
-    loadWorksheets(file) {
+    async loadWorksheets(file) {
+      return new Promise((resolve) => {
       const reader = new FileReader();
       reader.onload = (e) => {
         const data = new Uint8Array(e.target.result);
@@ -417,16 +462,24 @@ export default {
         })).filter((sheet) => sheet.label != "Enum");
         this.fileOption.selectedSheet = 0;
       };
+      reader.onprogress = () =>{
+        this.loading = true;
+      }
       reader.onloadend = () => {
         this.loading = false;
+        resolve()
       };
       reader.readAsArrayBuffer(file);
+      })
     },
     /**
      * When choose to upload file
      * Created By: NQTruong (01/06/2023)
      */
     uploadFile() {
+      if(!this.validateFileOption()){
+        return
+      }
       this.loading = true;
       validateFile(
         convertToFormData({
@@ -495,6 +548,7 @@ export default {
   flex: 1;
   flex-direction: column;
   position: relative;
+  min-height: 220px;
 }
 .border-solid {
   border: 1px solid #ccc;
@@ -551,7 +605,6 @@ export default {
   display: flex;
   justify-content: space-between;
   gap: 12px;
-  align-items: center;
 }
 .sheet-selection > div {
   flex: 1;

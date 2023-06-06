@@ -2,7 +2,8 @@
   <div class="input-container" :style="{ width: width }">
     <input
       ref="input"
-      :type="type"
+      :inputmode="inputmode"
+      :readonly="readonly"
       v-model="inputValue"
       :class="{ invalid: !isValid,'disabled-input' : disabled, 'text-right' : type == 'number' }"
       @blur="blurEvent"
@@ -87,9 +88,23 @@ export default {
       default: false,
       description: "Show X button to reset value to ''",
     },
+    inputmode:{
+      type: String,
+      default: 'text'
+    },
     type:{
       type: String,
       default: 'text'
+    },
+    min:{
+      type: Number,
+    },
+    max:{
+      type: Number,
+    },
+    readonly:{
+      type: Boolean,
+      default: false
     }
   },
   watch: {
