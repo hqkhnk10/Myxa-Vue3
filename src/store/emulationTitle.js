@@ -30,7 +30,6 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
         prop: "emulationTitleCode",
         minWidth: "160px",
         width: "160px",
-
       },
       {
         label: "Đối tượng khen thưởng",
@@ -81,12 +80,12 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
      * Created At: 25/05/2023
      * Created By: NQTruong
      */
-     getAPI(params) {
+    getAPI(params) {
       this.loading = true;
       let defaultsort = { ...defaultSort };
       Object.assign(defaultsort, params);
       Object.assign(this.parameters, defaultsort); //keep the original parameters
-       request
+      request
         .get({ url: url, params: this.parameters })
         .then((res) => {
           this.tableData = res.data;
@@ -101,7 +100,7 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
           });
         })
         .finally(() => {
-            this.loading = false;
+          this.loading = false;
         });
     },
     /**
@@ -138,8 +137,8 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
      * Created At: 25/05/2023
      * Created By: NQTruong
      */
-     deleteAPI(id) {
-       request
+    deleteAPI(id) {
+      request
         .delete({ url: `${url}/${id}` })
         .then(() => {
           dispatchNotification({
@@ -163,10 +162,8 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
      * Created At: 25/05/2023
      * Created By: NQTruong
      */
-     async deleteMultipleAPI(data) {
-       await request
-        .delete({ url: `${url}/Multiple`, data: data })
-;
+    async deleteMultipleAPI(data) {
+      await request.delete({ url: `${url}/Multiple`, data: data });
     },
     /**
      * Change status of emulation title
@@ -174,8 +171,8 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
      * Created At: 25/05/2023
      * Created By: NQTruong
      */
-     updateStatusAPI(data) {
-       request
+    updateStatusAPI(data) {
+      request
         .put({ url: `${url}/Status`, data: data })
         .then(() => {
           dispatchNotification({
@@ -199,9 +196,8 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
      * Created At: 25/05/2023
      * Created By: NQTruong
      */
-     async updateMultipleStatusAPI(data) {
-       return await request.put({ url: `${url}/MulitpleStatus`, data: data })
-
+    async updateMultipleStatusAPI(data) {
+      return await request.put({ url: `${url}/MulitpleStatus`, data: data });
     },
     /**
      * If sort value change => call API

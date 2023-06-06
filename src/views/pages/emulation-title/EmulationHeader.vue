@@ -118,7 +118,7 @@
       <misa-button type="danger" @click="removeRow">{{ t('emulationTitle.removeEmulationTitle') }}</misa-button>
     </template>
   </misa-confirm-dialog>
-  <misa-upload v-if="uploadDialog" v-model="uploadDialog" @import-data="importFile" :keys="$enum.Keys.EmulationTitle"></misa-upload>
+  <misa-upload v-if="uploadDialog" v-model="uploadDialog" @import-data="importFile" :keys="$enum.Keys.EmulationTitle" :fileName="t('emulationTitle.emulationTitle')"></misa-upload>
 </template>
 
 <script>

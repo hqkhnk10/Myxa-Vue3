@@ -67,10 +67,9 @@
                 width="60"
               />
             </div>
-            <div>{{t('file.guideDrop')}} Kéo thả tệp vào đây hoặc nhấn để chọn tệp</div>
+            <div>{{t('file.guideDrop')}}</div>
             <div class="drop-description">
               {{ t('file.description') }}
-              Hỗ trợ định dạng *.xls, *.xlsx và kích thước tối đa 5MB
             </div>
           </div>
           <div v-if="uploadedFiles.length">
@@ -119,7 +118,7 @@
       <div v-else>
         <div class="upload-report">
           <div class="upload-report-records">
-            <div class="upload-records--title">{{ t("reuse.records") }}</div>
+            <div class="upload-records--title">{{ t("file.records") }}</div>
             <div class="upload-records-number">{{ validateData.count }}</div>
           </div>
           <div class="upload-report-valid">

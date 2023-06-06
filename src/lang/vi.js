@@ -53,7 +53,11 @@ export const vi = {
     maxLength20: "Không được vượt quá 20 kí tự",
     deleteSuccess: "Xóa thành công",
     import: "Nhập khẩu",
-    export: "Xuất khẩu"
+    export: "Xuất khẩu",
+    continue: "Tiếp tục",
+    valid: "Hợp lệ",
+    invalid: "Không hợp lệ",
+    back: "Quay lại"
   },
   emulationTitle: {
     emulationTitle: "Danh hiệu thi đua",
@@ -92,4 +96,15 @@ export const vi = {
     removeEmulationTitle: "Xóa danh hiệu",
     removeEmulationTitles: "Xóa danh hiệu thi đua",
   },
+  file:{
+    chooseImportFile: "Chọn tệp nhẩu khẩu",
+    guideDrop: "Kéo thả tệp vào đây hoặc nhấn để chọn tệp",
+    description: "Hỗ trợ định dạng *.xls, *.xlsx và kích thước tối đa 5MB",
+    changeFile: "Đổi tệp khác",
+    importedSheet: "Tải tệp mẫu",
+    header: "Dòng tiêu đề",
+    records:"Số bản ghi",
+    downloadInvalidRow: "Tải xuống bản ghi không hợp lệ",
+    downloadSampleFile: "Tải tệp mẫu"
+  }
 };
