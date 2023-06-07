@@ -9,7 +9,7 @@
           <th
             v-for="(header, index) in modelValue.header"
             :key="index"
-            :style="{ minWidth: header?.minWidth,width: header?.width}"
+            :style="{ minWidth: header?.minWidth, width: header?.width }"
             class="cursor-pointer"
             @click="changeSort(header, index)"
           >
@@ -23,9 +23,14 @@
               ></div>
             </div>
           </th>
+          <th class="hidden-column"></th>
         </tr>
       </thead>
-    <misa-loading v-if="loading" :modelValue="loading" style="height: 80%;"></misa-loading>
+      <misa-loading
+        v-if="loading"
+        :modelValue="loading"
+        style="height: 80%"
+      ></misa-loading>
       <tbody v-else>
         <tr
           v-for="(row, index) in tableData"
@@ -44,22 +49,16 @@
             :key="index"
             @dblclick="dbClickRow(row)"
           >
-          <div class="tooltip w-full" v-if="header?.slot">
-                <div class="hide-text">
-                  <span class="tooltiphover"><slot :name="header?.prop" v-bind="row"  /></span>
-                </div>
-                <span class="tooltiptable"><slot :name="header?.prop" v-bind="row"  /></span>
-              </div>
-              <div class="tooltip w-full" v-else>
-                <div class="hide-text"><span class="tooltiphover">{{ row[header?.prop] }}</span></div>
-                <span class="tooltiptable">{{ row[header?.prop] }}</span>
-              </div>
+            <div v-if="header?.slot" class="hide-text">
+              <slot :name="header?.prop" v-bind="row"></slot>
+            </div>
+            <div class="hide-text" v-else :title="row[header?.prop]">
+              {{ row[header?.prop] }}
+            </div>
           </td>
-          <td class="operator-cell">
           <div class="button__table operator">
             <slot name="operator" v-bind="row" />
           </div>
-          </td>
         </tr>
         <div v-if="tableData.length <= 0 && !loading" class="table-nodata">
           Không có dữ liệu
@@ -149,19 +148,6 @@ export default {
         this.headerBox = "half";
       }
     },
-    modelValue: {
-      handler() {
-        if(this.selectedRows.length == this.tableData.length && this.selectedRows.length != 0){
-          this.headerBox = true
-          this.checkBoxes = this.selectedRows.length
-        }
-        else{
-          this.headerBox = false
-          this.checkBoxes = 0
-        }
-      },
-      immediate: true,
-    },
   },
   emits: [
     "update:modelValue",
@@ -177,6 +163,9 @@ export default {
      * @author NQTruong
      */
     getSelectedRows() {
+      if(!this.selectedRows){
+        return []
+      }
       return this.selectedRows;
     },
     /**
@@ -185,7 +174,9 @@ export default {
      * @author NQTruong
      */
     tableData() {
-      let table = this.modelValue.data.map(a => {return {...a}})
+      let table = this.modelValue.data.map((a) => {
+        return { ...a };
+      });
       if (!this.filterApi) {
         if (this.pagination) {
           table = this.modelValue.data?.slice(this.startIndex, this.endIndex);
@@ -207,17 +198,26 @@ export default {
           );
         }
       }
-      table.forEach((tableRow) => {
+      if (this.checkbox) {
+        let checkboxLength = 0;
+        table.forEach((tableRow) => {
           const found = this.selectedRows.find(
             (selectedRow) =>
               JSON.stringify(selectedRow) === JSON.stringify(tableRow)
           );
           if (found) {
+            checkboxLength++;
             tableRow.select = true;
-          } else {
-            tableRow.select = false;
           }
-        })
+          this.checkBoxes = checkboxLength;
+          if (checkboxLength == table.length && checkboxLength !== 0) {
+            this.headerBox = true;
+          } else {
+            this.headerBox = false;
+          }
+        });
+      }
+
       return table;
     },
     /**
@@ -239,6 +239,20 @@ export default {
   },
   methods: {
     /**
+     * Thay đổi dữ liệu của check header box
+     * @param {*} checkbox
+     * Created At: 10/05/2023
+     * @author NQTruong
+     */
+    changeHeaderBox(checkbox) {
+      this.checkBoxes = checkbox;
+      if (checkbox == this.tableData.length && checkbox !== 0) {
+        this.headerBox = true;
+      } else {
+        this.headerBox = false;
+      }
+    },
+    /**
      * Change sort value
      * @param {*} header header value
      * @param {*} index index of header
@@ -247,7 +261,7 @@ export default {
      */
     changeSort(header, index) {
       let value = true;
-      switch(header.sort) {
+      switch (header.sort) {
         case true:
           value = false;
           break;
@@ -292,12 +306,11 @@ export default {
     checkBoxRow(value, index) {
       if (value) {
         this.selectedRows.push({ ...this.modelValue.data[index] });
-        this.tableData[index].select = true
         this.checkBoxes++;
       } else {
-        this.tableData[index].select = false
         this.selectedRows = this.selectedRows.filter(
-          row => JSON.stringify(row) != JSON.stringify(this.modelValue.data[index])
+          (row) =>
+            JSON.stringify(row) != JSON.stringify(this.modelValue.data[index])
         );
         this.checkBoxes--;
       }
@@ -309,15 +322,15 @@ export default {
      */
     checkAll() {
       if (this.checkBoxes == 0) {
-        this.tableData.forEach((row,index) => {
+        this.tableData.forEach((row, index) => {
           row.select = true;
-          this.checkBoxRow(true,index)
+          this.checkBoxRow(true, index);
           this.checkBoxes = this.tableData.length;
         });
       } else {
-        this.tableData.forEach((row,index) => {
+        this.tableData.forEach((row, index) => {
           row.select = false;
-          this.checkBoxRow(false,index)
+          this.checkBoxRow(false, index);
           this.checkBoxes = 0;
         });
       }
@@ -338,9 +351,6 @@ export default {
      * @author NQTruong
      */
     unSelectedRows() {
-      this.tableData.forEach((row) => {
-        row.select = false;
-      });
       this.checkBoxes = 0;
       this.selectedRows = [];
     },

@@ -75,6 +75,8 @@
 </template>
 <script>
 import { router, routes } from "@/routers/router";
+import { useRoute } from "vue-router";
+import { computed } from "vue";
 export default {
   name: "TheAside",
   data() {
@@ -82,7 +84,13 @@ export default {
       routes: routes,
       openSubMenu: false,
       shrinkMenu: false,
-      currentRoute: router.currentRoute.value.path,
+    };
+  },
+  setup() {
+    const route = useRoute();
+    const currentRoute = computed(() => route.path);
+    return {
+      currentRoute,
     };
   },
   computed: {
@@ -97,25 +105,28 @@ export default {
   created() {
     if (this.currentRoute == "/") {
       router.push("/emulationTitle");
-      this.currentRoute = '/emulationTitle'
+      this.currentRoute = "/emulationTitle";
     }
   },
-  /**
-   * Find route in router array
-   * CreatedBy : NQTruong (16/05/2023)
-   */
-  mounted() {
-    this.routes.forEach((route) => {
-      const child = route?.children?.find(
-        (child) => child.path == this.currentRoute
-      );
-      if (child) {
-        route.selected = true;
-        child.selected = true;
-      } else {
-        route.selected = route.path == this.currentRoute;
-      }
-    });
+  watch: {
+    currentRoute: {
+      handler(newRoute) {
+        this.routes.forEach((route) => {
+          route?.children?.forEach((child) => {
+            if (child.path == newRoute) {
+              route.selected = true;
+              child.selected = true;
+            } else {
+              child.selected = false;
+            }
+          });
+          if(!route?.children){
+            route.selected = route.path == newRoute;
+          }
+        });
+      },
+      immediate: true,
+    },
   },
   methods: {
     /**

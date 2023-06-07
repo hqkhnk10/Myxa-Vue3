@@ -157,3 +157,9 @@ tr:hover .button__table .button-icon-table {
   padding: 0;
   border: none;
 }
+.hidden-column{
+  max-width: 0;
+  width: 0;
+  border: 0;
+  padding: 0;
+}

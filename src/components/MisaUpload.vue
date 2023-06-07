@@ -1,9 +1,8 @@
 <template>
   <div class="dialog-show" v-if="modelValue">
-    <div class="dialog__padding">
-      <div class="dialog__header">
+    <div class="dialog__padding upload">
+      <div class="dialog__header upload">
         <span class="dialog__title">
-  {{ loading }}
           {{ t("reuse.import") }}</span>
         <div class="dialog__header-button">
           <button
@@ -22,7 +21,7 @@
           </button>
         </div>
       </div>
-      <div class="upload-progess">
+      <div class="upload-progess upload-padding">
         <div class="radio__container radio-upload">
           <span>{{t('file.chooseImportFile')}}</span>
           <input type="radio" :value="0" :checked="true" />
@@ -45,7 +44,7 @@
           ></span>
         </div>
       </div>
-      <div v-if="uploadingPhase" class="uploadingPhase-container">
+      <div v-if="uploadingPhase" class="uploadingPhase-container upload-padding">
         <div
           class="drop-area"
           :class="{
@@ -121,7 +120,7 @@
           </div>
         </div>
       </div>
-      <div v-else>
+      <div v-else class="upload-padding">
         <div class="upload-report">
           <div class="upload-report-records">
             <div class="upload-records--title">{{ t("file.records") }}</div>
@@ -140,9 +139,14 @@
             </div>
           </div>
         </div>
+        <div class="upload-buttons">
+        <misa-button type="secondary" @click="downloadAllFile">
+          {{ t("file.downloadAllFile") }}
+        </misa-button>
         <misa-button type="secondary" @click="downloadInvalidFile">
           {{ t("file.downloadInvalidRow") }}
         </misa-button>
+      </div>
       </div>
 
       <div class="upload__button">
@@ -192,7 +196,7 @@ export default {
       validateData: {},
       fileOption:{
         selectedSheet: 0,
-        header: 1
+        header: 2
       },
       validate:{
         selectedSheet: {
@@ -231,36 +235,55 @@ export default {
   },
   emits: ["update:modelValue", "import-data"],
   methods: {
+    /**
+     * Kiểm tra dữ liệu header
+     */
     validateHeader(){
       if(!this.fileOption.header || this.fileOption.header == null || this.fileOption.header == ''){
         this.validate.header.valid = false;
         this.validate.header.message = this.t('validate.required');
-        return
+        return;
       }
       if(isNaN(this.fileOption.header)){
         this.validate.header.valid = false;
         this.validate.header.message = this.t('validate.number');
-        return
+        return;
       }
       if(this.fileOption.header < 0){
         this.validate.header.valid = false;
         this.validate.header.message = this.t('validate.greaterThan0');
-        return
       }
       else{
         this.validate.header.valid = true;
       }
     },
+    /**
+     * Xác thực dữ liệu truyền lên
+     */
     validateFileOption(){
       this.validateHeader()
       return this.validate.selectedSheet.valid && this.validate.header.valid
+    },
+    downloadAllFile() {
+      downloadFile({ fileName: this.validateData.fileName })
+        .then((response) => {
+          this.saveFileToClient(`${this.fileName}_invalid`, response);
+        })
+        .catch((error) => {
+          dispatchNotification({
+            content: error?.response?.data?.userMsg
+              ? error?.response?.data?.userMsg
+              : error.message,
+            type: "error",
+          });
+        });
     },
     /**
      * Download invalid excel file
      * Created By: NQTruong (01/06/2023)
      */
     downloadInvalidFile() {
-      downloadFile({ fileName: this.validateData.fileName })
+      downloadFile({ fileName: this.validateData.invalidFilePath })
         .then((response) => {
           this.saveFileToClient(`${this.fileName}_invalid`, response);
         })
@@ -381,7 +404,9 @@ export default {
     handleFileInputChange(event) {
       this.isDropHover = false;
       const files = event.target.files;
-      this.handleFiles(files);
+      if(files.length > 0) {
+        this.handleFiles(files);
+      }
     },
     /**
      * Handle validate file
@@ -390,7 +415,7 @@ export default {
      */
      handleFiles(files) {
       this.loading = true;
-      if (this.uploadedFiles.length > 0 && files) {
+      if (this.uploadedFiles.length > 1 && files) {
         this.uploadedFiles.pop();
       }
       const file = files[0];
@@ -622,6 +647,8 @@ export default {
   height: 0;
 }
 .upload__button {
+  border-top: 1px solid var(--input-border-color-gray);
+  padding: 12px 24px 24px 24px;
   display: flex;
   justify-content: space-between;
 }
@@ -711,5 +738,18 @@ export default {
   cursor: pointer;
   border-radius: 4px;
   height: 36px;
+}
+.upload-buttons{
+  display: flex;
+  justify-content: space-between;
+}
+.dialog__padding.upload{
+  padding: 0
+}
+.dialog__header.upload{
+  padding: 24px;
+}
+.upload-padding{
+  padding: 0 24px
 }
 </style>

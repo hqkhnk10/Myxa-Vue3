@@ -104,6 +104,9 @@ button:focus{
 .button__secondary:hover{
     background-color:var(--button-bg-color-white-hover);
 }
+.button__secondary-noborder:hover{
+    background-color:var(--button-bg-color-white-hover);
+}
 .button.button__secondary:active{
     background-color:var(--button-bg-color-white-active);
 }

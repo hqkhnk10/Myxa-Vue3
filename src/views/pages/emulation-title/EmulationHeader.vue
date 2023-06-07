@@ -209,6 +209,7 @@ export default {
             content: this.successContent,
             type: "success",
           });
+          this.uploadDialog = false;
           this.getAPI();
         })
         .catch((err) => {

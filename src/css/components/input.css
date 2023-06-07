@@ -44,7 +44,11 @@ input::placeholder{
 	
 }
 .input-container:hover{
-	background-color: white;
+	background-color: var(--input-border-color-gray);
+  	cursor: pointer;
+}
+.input-container:hover > input{
+	background-color: var(--input-border-color-gray);
   	cursor: pointer;
 }
 .input-container:has(input:focus){

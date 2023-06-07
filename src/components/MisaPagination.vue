@@ -22,12 +22,12 @@
         bản ghi
       </div>
       <div class="flex items-center">
-        <misa-button type="secondary-noborder" :class="previousPage" @click="prev">
+        <misa-button type="secondary-noborder pagination-button" :class="previousPage" @click="prev">
           <div class="icon__leftarrow" :class="previousPage"></div>
         </misa-button>
       </div>
       <div class="flex items-center">
-        <misa-button type="secondary-noborder" :class="nextPage" @click="next">
+        <misa-button type="secondary-noborder pagination-button" :class="nextPage" @click="next">
           <div class="icon__rightarrow" :class="nextPage"></div>
         </misa-button>
       </div>
@@ -133,3 +133,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+.pagination-button{
+  width: 36px;
+}
+</style>

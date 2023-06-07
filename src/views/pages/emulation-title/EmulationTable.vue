@@ -34,7 +34,7 @@
         </template>
         <template #operator="row">
           <div class="button-icon-table" @click="formEdit(row)">
-            <div class="tooltip tooltip__icon-pencil">
+            <div class="tooltip tooltip__icon-pencil table-icon">
               <div class="icon__pencil"></div>
               <span class="tooltiptext tooltiptext-top">{{
                 t("reuse.edit")
@@ -48,10 +48,11 @@
               v-model="showDropdownEdit"
               :arrow="false"
               :mouseleave="true"
+              class="table-icon"
             >
               <template #click>
-                <div class="tooltip flex items-center h-full">
-                  <div class="table-dropdown-icon" @click="toogleDropdownEdit">
+                <div class="tooltip flex items-center h-full table-icon" @click="toogleDropdownEdit">
+                  <div class="table-dropdown-icon" >
                     <div class="icon__threedots"></div>
                   </div>
                   <span class="tooltiptext tooltiptext-top dropdown"
@@ -132,8 +133,11 @@ export default {
      * Created At: 15/05/2023
      * @author NQTruong
      */
-    total(newValue) {
-      this.pagination.total = newValue;
+    total:{
+      handler(newValue){
+        this.pagination.total = newValue;
+      },
+      immediate: true
     },
   },
   computed: {
@@ -274,6 +278,9 @@ export default {
      * @author NQTruong
      */
     searchTable(keyword) {
+      if(!keyword){
+        keyword = null
+      }
       this.pagination.pageIndex = 1
       this.getAPI({ keyword: keyword, pageIndex: 1 });
     },
@@ -303,6 +310,9 @@ export default {
      * @author NQTruong
      */
     unSelect() {
+      if(!this.$refs.misaTable){
+        return;
+      }
       this.$refs.misaTable.unSelectedRows(this.$refs.misaTable.getSelectedRows);
     },
     /**
@@ -332,3 +342,8 @@ export default {
   },
 };
 </script>
+<style scoped>
+.table-icon{
+  border-radius: 50%;
+}
+</style>

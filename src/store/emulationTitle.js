@@ -88,7 +88,16 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
       request
         .get({ url: url, params: this.parameters })
         .then((res) => {
-          this.tableData = res.data;
+          this.tableData = res.data.map(row => ({
+            applyObject: row.applyObject,
+            commendationLevel: row.commendationLevel,
+            emulationTitleCode: row.emulationTitleCode,
+            emulationTitleID: row.emulationTitleID,
+            emulationTitleName: row.emulationTitleName,
+            emulationTitleNote:row.emulationTitleNote,
+            inactive:row.inactive,
+            movementType:row.movementType,
+          }));
           this.total = res?.pagination?.count;
         })
         .catch((err) => {
@@ -209,11 +218,7 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
     changeSortStore(index, value) {
       if (this.header[index].sort !== undefined) {
         this.header[index].sort = value;
-        if (value == null) {
-          this.getAPI();
-        } else {
-          this.getAPI({ [`${this.header[index].prop}Sort`]: value });
-        }
+        this.getAPI({ [`${this.header[index].prop}Sort`]: value });
       }
     },
     /**

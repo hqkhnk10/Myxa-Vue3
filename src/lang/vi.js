@@ -14,6 +14,19 @@ export const vi = {
     rewardCategory: "Hình thức khen thưởng",
     jobPosition: "Chức vụ/chức danh",
     conditionReward: "Tiêu chí khen thưởng",
+    emulationMovement: "Quản lý phong trào",
+    registerCompetition: "Đăng ký thi đua",
+    summaryRegister: "Tổng hợp đăng ký",
+    soldiersAtTheUnit: "Bình xét tại đơn vị",
+    subordinateAppraisal: "Thẩm định cấp dưới",
+    militaryReview: "Tổng hợp binh xét",
+    votationCommendation: "Trình khen",
+    commendationDecision: "Quyết định khen thưởng",
+    commendationResistance: "Khen thưởng kháng chiến",
+    offsetCommendation: "Lập bù quyết định",
+    employee: "Nhân viên",
+    groupEmployee: "Tập thể",
+    
   },
   lang:{
     en: "Tiếng Anh",
@@ -57,7 +70,8 @@ export const vi = {
     continue: "Tiếp tục",
     valid: "Hợp lệ",
     invalid: "Không hợp lệ",
-    back: "Quay lại"
+    back: "Quay lại",
+    success: "Thành công"
   },
   emulationTitle: {
     emulationTitle: "Danh hiệu thi đua",
@@ -105,7 +119,8 @@ export const vi = {
     header: "Dòng tiêu đề",
     records:"Số bản ghi",
     downloadInvalidRow: "Tải xuống bản ghi không hợp lệ",
-    downloadSampleFile: "Tải tệp mẫu"
+    downloadSampleFile: "Tải tệp mẫu",
+    downloadAllFile: "Tải xuống tất cả bản ghi"
   },
   validate:{
     number: "Vui lòng điền số",
