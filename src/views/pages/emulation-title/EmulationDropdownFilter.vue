@@ -130,7 +130,7 @@ export default {
           value: this.$enum.EmulationTitle.ApplyObject.Person,
         },
         {
-          label: this.t("emulationTitle.personalAndFamily"),
+          label: this.t("emulationTitle.personalAndOrganization"),
           value: this.$enum.EmulationTitle.ApplyObject.PersonAndOrg,
         },
       ],

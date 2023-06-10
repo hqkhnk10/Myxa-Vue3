@@ -93,6 +93,7 @@
               v-model="form.commendationLevel"
               :options="levelOptions"
               v-model:valid="validate.commendationLevel.valid"
+              :message="t('emulationTitle.commendationLevel')"
             ></misa-combobox>
           </div>
         </div>
@@ -662,10 +663,15 @@ export default {
             content: this.successContent,
             type: "success",
           });
+          if (closeDialog) {
+            this.closeDialog();
+          }
           return true;
         })
         .catch((err) => {
+          console.log('err', err);
           if (err?.response?.status == 302) {
+            console.log('validate');
             this.validateDialog = true;
           } else {
             dispatchNotification({
@@ -678,10 +684,7 @@ export default {
           return false;
         })
         .finally(() => {
-          this.loading = true;
-          if (closeDialog) {
-            this.closeDialog();
-          }
+          this.loading = false;
         });
     },
   },

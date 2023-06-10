@@ -60,7 +60,7 @@ export const vi = {
     bookRules: "Văn bản quy định",
     settingSystem: "Thiết lập hệ thống",
     notRight: "không đúng",
-    pleaseChoose: "vui lòng chọn",
+    pleaseChoose: "Vui lòng chọn",
     inTheList: "trong danh sách",
     maxLength255: "Không được vượt quá 255 kí tự",
     maxLength20: "Không được vượt quá 20 kí tự",
@@ -71,7 +71,9 @@ export const vi = {
     valid: "Hợp lệ",
     invalid: "Không hợp lệ",
     back: "Quay lại",
-    success: "Thành công"
+    success: "Thành công",
+    exportSuccess: "Xuất khẩu thành công",
+    importSuccess: "Nhập khẩu thành công"
   },
   emulationTitle: {
     emulationTitle: "Danh hiệu thi đua",

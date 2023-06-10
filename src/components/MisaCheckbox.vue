@@ -1,14 +1,17 @@
 <template>
   <div class="checkbox-container">
-    <div class="checkbox flex items-center">
+    <div class="checkbox flex items-center" @mouseenter="isHover = true" @mouseleave="isHover = false">
       <input
         type="checkbox"
         class="checkbox__input"
         @click="toogleCheckbox()"
         :disabled="disabled"
+        @focus="isFocus = true"
+        @blur="isFocus = false"
+        @mouseleave="isFocus = false"
       />
       <span class="checkmark" :class="imageCheckbox()"></span>
-      <span :class="{ 'checkmark-disabled': disabled }"></span>
+      <span class="checkmark-attr" :class="{ 'checkmark-disabled': disabled, 'checkmark-hover': isHover, 'checkmark-focus': isFocus}"></span>
     </div>
     <slot></slot>
   </div>
@@ -20,6 +23,8 @@ export default {
   data() {
     return {
       inputValue: "",
+      isHover: false,
+      isFocus: false,
     };
   },
   props: {

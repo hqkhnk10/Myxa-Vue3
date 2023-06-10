@@ -206,7 +206,7 @@ export default {
       insertMultipleEmulationTitle(data?.validData)
         .then(() => {
           dispatchNotification({
-            content: this.successContent,
+            content: this.t("reuse.importSuccess"),
             type: "success",
           });
           this.uploadDialog = false;
@@ -241,7 +241,7 @@ export default {
         .then((res) => {
           saveFileToClient("Danh hiệu thi đua", res);
           dispatchNotification({
-            content: this.t("reuse.success"),
+            content: this.t("reuse.exportSuccess"),
             type: "success",
           });
         })

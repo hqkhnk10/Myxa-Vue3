@@ -39,8 +39,8 @@ input[type="checkbox"] {
 /* input:not(:disabled):not(:checked):not(:hover):focus~.checkmark {
     border: green;
 } */
-input[type="checkbox"]:focus ~ .checkmark{
-    border: 1px solid var(--color-green);
+.checkmark-focus{
+    border: 3px solid var(--color-green);
 }
 .checkmark-disabled{
 	background-color: #ebebeb!important;
@@ -54,4 +54,15 @@ input[type="checkbox"]:focus ~ .checkmark{
 }
 .checkbox__title{
     margin-left: 4px;
+}
+.checkmark-attr{
+    left: 2px;
+    opacity: 0.4;
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+}
+.checkmark-hover{
+    background-color: var(--color-gray);
 }
