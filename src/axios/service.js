@@ -1,3 +1,4 @@
+import { dispatchNotification } from "@/components/Notification";
 import axios from "axios";
 
 axios.defaults.baseURL = 'https://localhost:7097/api/v1';
@@ -41,7 +42,12 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (response) => response.data,
   (error) => {
-    console.log("err" + error); // for debug
+      dispatchNotification({
+        content: error?.response?.data?.userMsg
+          ? error?.response?.data?.userMsg
+          : error.message,
+        type: "error",
+      });
     return Promise.reject(error);
   }
 );

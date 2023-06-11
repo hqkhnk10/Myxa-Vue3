@@ -2,8 +2,7 @@
   <div class="dialog-show" v-if="modelValue">
     <div class="dialog__padding upload">
       <div class="dialog__header upload">
-        <span class="dialog__title">
-          {{ t("reuse.import") }}</span>
+        <span class="dialog__title"> {{ t("reuse.import") }}</span>
         <div class="dialog__header-button">
           <button
             type="button"
@@ -23,7 +22,7 @@
       </div>
       <div class="upload-progess upload-padding">
         <div class="radio__container radio-upload">
-          <span>{{t('file.chooseImportFile')}}</span>
+          <span>{{ t("file.chooseImportFile") }}</span>
           <input type="radio" :value="0" :checked="true" />
           <span
             :class="
@@ -35,7 +34,7 @@
           <div class="border-dashed"></div>
         </div>
         <div class="radio__container radio-upload">
-          <span>{{t('reuse.import')}}</span>
+          <span>{{ t("reuse.import") }}</span>
           <input type="radio" :value="0" :checked="true" />
           <span
             :class="
@@ -44,7 +43,10 @@
           ></span>
         </div>
       </div>
-      <div v-if="uploadingPhase" class="uploadingPhase-container upload-padding">
+      <div
+        v-if="uploadingPhase"
+        class="uploadingPhase-container upload-padding"
+      >
         <div
           class="drop-area"
           :class="{
@@ -68,9 +70,9 @@
                 width="60"
               />
             </div>
-            <div>{{t('file.guideDrop')}}</div>
+            <div>{{ t("file.guideDrop") }}</div>
             <div class="drop-description">
-              {{ t('file.description') }}
+              {{ t("file.description") }}
             </div>
           </div>
           <div v-if="uploadedFiles.length">
@@ -84,11 +86,11 @@
                 <div class="file-size">{{ formatFileSize(file.fileSize) }}</div>
                 <div class="flex">
                   <div class="file-valid"></div>
-                  {{ t('reuse.valid') }}
+                  {{ t("reuse.valid") }}
                 </div>
-                <misa-button type="link" @click.stop="changeFile"
-                  >{{ t('file.changeFile') }}</misa-button
-                >
+                <misa-button type="link" @click.stop="changeFile">{{
+                  t("file.changeFile")
+                }}</misa-button>
               </div>
             </div>
           </div>
@@ -104,7 +106,9 @@
         />
         <div class="sheet-selection" v-if="worksheets.length">
           <div>
-            <h3>{{ t('file.importedSheet') }}<span class="required">*</span></h3>
+            <h3>
+              {{ t("file.importedSheet") }}<span class="required">*</span>
+            </h3>
             <misa-combobox
               v-model="fileOption.selectedSheet"
               :options="worksheets"
@@ -112,11 +116,19 @@
             ></misa-combobox>
           </div>
           <div>
-            <h3>{{ t('file.header') }}<span class="required">*</span></h3>
-            <misa-input v-model="fileOption.header" inputmode="numeric" pattern="[0-9,\.]*" type="number" :min="0" :isValid="validate.header.valid" @change="validateFileOption"></misa-input>
+            <h3>{{ t("file.header") }}<span class="required">*</span></h3>
+            <misa-input
+              v-model="fileOption.header"
+              inputmode="numeric"
+              pattern="[0-9,\.]*"
+              type="number"
+              :min="0"
+              :isValid="validate.header.valid"
+              @change="validateFileOption"
+            ></misa-input>
             <div class="error active" v-if="!validate.header.valid">
-            {{ validate.header.message }}
-          </div>
+              {{ validate.header.message }}
+            </div>
           </div>
         </div>
       </div>
@@ -140,31 +152,36 @@
           </div>
         </div>
         <div class="upload-buttons">
-        <misa-button type="secondary" @click="downloadAllFile">
-          {{ t("file.downloadAllFile") }}
-        </misa-button>
-        <misa-button type="secondary" @click="downloadInvalidFile">
-          {{ t("file.downloadInvalidRow") }}
-        </misa-button>
-      </div>
+          <misa-button type="secondary" @click="downloadAllFile">
+            {{ t("file.downloadAllFile") }}
+          </misa-button>
+          <misa-button type="secondary" @click="downloadInvalidFile">
+            {{ t("file.downloadInvalidRow") }}
+          </misa-button>
+        </div>
       </div>
 
       <div class="upload__button">
-        <misa-button type="primary-border" @click="downloadSampleFile"
-          >{{ t("file.downloadSampleFile") }}</misa-button
-        >
+        <misa-button type="primary-border" @click="downloadSampleFile">{{
+          t("file.downloadSampleFile")
+        }}</misa-button>
         <div class="flex gap-12px">
-          <misa-button type="secondary" @click="closeDialog">{{ t("reuse.cancel") }}</misa-button>
-          <misa-button type="secondary" v-if="!uploadingPhase" @click="back"
-            >{{ t("reuse.back") }}</misa-button
-          >
+          <misa-button type="secondary" @click="closeDialog">{{
+            t("reuse.cancel")
+          }}</misa-button>
+          <misa-button type="secondary" v-if="!uploadingPhase" @click="back">{{
+            t("reuse.back")
+          }}</misa-button>
           <misa-button
             v-if="uploadingPhase"
             @click="uploadFile"
             :disabled="uploadedFiles.length == 0"
-            >{{t("reuse.continue")}}</misa-button
+            >{{ t("reuse.continue") }}</misa-button
           >
-          <misa-button v-if="!uploadingPhase" @click="importFile" :disabled="validateData?.validData.length == 0"
+          <misa-button
+            v-if="!uploadingPhase"
+            @click="importFile"
+            :disabled="validateData?.validData.length == 0"
             >{{ t("reuse.import") }}</misa-button
           >
         </div>
@@ -194,21 +211,21 @@ export default {
       data: [],
       loading: false,
       validateData: {},
-      fileOption:{
+      fileOption: {
         selectedSheet: 0,
-        header: 2
+        header: 2,
       },
-      validate:{
+      validate: {
         selectedSheet: {
           required: true,
           valid: true,
         },
-        header:{
+        header: {
           required: true,
           valid: true,
-          message: this.t('validate.number')
+          message: this.t("validate.number"),
         },
-      }
+      },
     };
   },
   props: {
@@ -238,44 +255,43 @@ export default {
     /**
      * Kiểm tra dữ liệu header
      */
-    validateHeader(){
-      if(!this.fileOption.header || this.fileOption.header == null || this.fileOption.header == ''){
+    validateHeader() {
+      if (
+        !this.fileOption.header ||
+        this.fileOption.header == null ||
+        this.fileOption.header == ""
+      ) {
         this.validate.header.valid = false;
-        this.validate.header.message = this.t('validate.required');
+        this.validate.header.message = this.t("validate.required");
         return;
       }
-      if(isNaN(this.fileOption.header)){
+      if (isNaN(this.fileOption.header)) {
         this.validate.header.valid = false;
-        this.validate.header.message = this.t('validate.number');
+        this.validate.header.message = this.t("validate.number");
         return;
       }
-      if(this.fileOption.header < 0){
+      if (this.fileOption.header < 0) {
         this.validate.header.valid = false;
-        this.validate.header.message = this.t('validate.greaterThan0');
-      }
-      else{
+        this.validate.header.message = this.t("validate.greaterThan0");
+      } else {
         this.validate.header.valid = true;
       }
     },
     /**
      * Xác thực dữ liệu truyền lên
      */
-    validateFileOption(){
-      this.validateHeader()
-      return this.validate.selectedSheet.valid && this.validate.header.valid
+    validateFileOption() {
+      this.validateHeader();
+      return this.validate.selectedSheet.valid && this.validate.header.valid;
     },
     downloadAllFile() {
+      this.loading = true;
       downloadFile({ fileName: this.validateData.fileName })
         .then((response) => {
-          this.saveFileToClient(`${this.fileName}_invalid`, response);
+          this.saveFileToClient(`${this.fileName} toàn bộ`, response);
         })
-        .catch((error) => {
-          dispatchNotification({
-            content: error?.response?.data?.userMsg
-              ? error?.response?.data?.userMsg
-              : error.message,
-            type: "error",
-          });
+        .finally(() => {
+          this.loading = false;
         });
     },
     /**
@@ -283,17 +299,13 @@ export default {
      * Created By: NQTruong (01/06/2023)
      */
     downloadInvalidFile() {
+      this.loading = true;
       downloadFile({ fileName: this.validateData.invalidFilePath })
         .then((response) => {
-          this.saveFileToClient(`${this.fileName}_invalid`, response);
+          this.saveFileToClient(`${this.fileName} không hợp lệ`, response);
         })
-        .catch((error) => {
-          dispatchNotification({
-            content: error?.response?.data?.userMsg
-              ? error?.response?.data?.userMsg
-              : error.message,
-            type: "error",
-          });
+        .finally(() => {
+          this.loading = false;
         });
     },
     /**
@@ -306,15 +318,7 @@ export default {
         .then((response) => {
           this.saveFileToClient(this.fileName, response);
         })
-        .catch((error) => {
-          dispatchNotification({
-            content: error?.response?.data?.userMsg
-              ? error?.response?.data?.userMsg
-              : error.message,
-            type: "error",
-          });
-        })
-        .finally(()=>{
+        .finally(() => {
           this.loading = false;
         });
     },
@@ -361,7 +365,7 @@ export default {
      * Created By: NQTruong (01/06/2023)
      */
     importFile() {
-      this.$emit('import-data', this.validateData);
+      this.$emit("import-data", this.validateData);
     },
     /**
      * Close dialog import
@@ -404,7 +408,7 @@ export default {
     handleFileInputChange(event) {
       this.isDropHover = false;
       const files = event.target.files;
-      if(files.length > 0) {
+      if (files.length > 0) {
         this.handleFiles(files);
       }
     },
@@ -413,9 +417,11 @@ export default {
      * @param {*} files
      * Created By: NQTruong (01/06/2023)
      */
-     handleFiles(files) {
+    handleFiles(files) {
+      console.log('files', files.length, this.uploadedFiles.length);
       this.loading = true;
-      if (this.uploadedFiles.length > 1 && files) {
+      if (this.uploadedFiles.length > 0 && files.length > 0) {
+        console.log('run here');
         this.uploadedFiles.pop();
       }
       const file = files[0];
@@ -428,14 +434,6 @@ export default {
           .then(async (res) => {
             this.uploadedFiles.push({ file, ...res });
             await this.loadWorksheets(file);
-          })
-          .catch((error) => {
-            dispatchNotification({
-              content: error?.response?.data?.userMsg
-                ? error?.response?.data?.userMsg
-                : error.message,
-              type: "error",
-            });
           })
           .finally(() => {
             this.loading = false;
@@ -456,7 +454,7 @@ export default {
             type: "error",
           });
         }
-      this.loading = false;
+        this.loading = false;
       }
     },
     /**
@@ -476,34 +474,34 @@ export default {
      */
     async loadWorksheets(file) {
       return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const data = new Uint8Array(e.target.result);
-        const workbook = XLSX.read(data, { type: "array" });
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const data = new Uint8Array(e.target.result);
+          const workbook = XLSX.read(data, { type: "array" });
 
-        this.worksheets = workbook.SheetNames.map((sheetName, index) => ({
-          label: sheetName,
-          value: index,
-        })).filter((sheet) => sheet.label != "Enum");
-        this.fileOption.selectedSheet = 0;
-      };
-      reader.onprogress = () =>{
-        this.loading = true;
-      }
-      reader.onloadend = () => {
-        this.loading = false;
-        resolve()
-      };
-      reader.readAsArrayBuffer(file);
-      })
+          this.worksheets = workbook.SheetNames.map((sheetName, index) => ({
+            label: sheetName,
+            value: index,
+          })).filter((sheet) => sheet.label != "Enum");
+          this.fileOption.selectedSheet = 0;
+        };
+        reader.onprogress = () => {
+          this.loading = true;
+        };
+        reader.onloadend = () => {
+          this.loading = false;
+          resolve();
+        };
+        reader.readAsArrayBuffer(file);
+      });
     },
     /**
      * When choose to upload file
      * Created By: NQTruong (01/06/2023)
      */
     uploadFile() {
-      if(!this.validateFileOption()){
-        return
+      if (!this.validateFileOption()) {
+        return;
       }
       this.loading = true;
       validateFile(
@@ -517,14 +515,6 @@ export default {
         .then((res) => {
           this.uploadingPhase = false;
           this.validateData = res;
-        })
-        .catch((error) => {
-          dispatchNotification({
-            content: error?.response?.data?.userMsg
-              ? error?.response?.data?.userMsg
-              : error.message,
-            type: "error",
-          });
         })
         .finally(() => {
           this.loading = false;
@@ -739,17 +729,17 @@ export default {
   border-radius: 4px;
   height: 36px;
 }
-.upload-buttons{
+.upload-buttons {
   display: flex;
   justify-content: space-between;
 }
-.dialog__padding.upload{
-  padding: 0
+.dialog__padding.upload {
+  padding: 0;
 }
-.dialog__header.upload{
+.dialog__header.upload {
   padding: 24px;
 }
-.upload-padding{
-  padding: 0 24px
+.upload-padding {
+  padding: 0 24px;
 }
 </style>

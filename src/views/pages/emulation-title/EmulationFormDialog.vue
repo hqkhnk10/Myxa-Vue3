@@ -306,14 +306,6 @@ export default {
       .then((res) => {
         this.levelOptions = res.data;
       })
-      .catch((err) => {
-        dispatchNotification({
-          content: err?.response?.data?.userMsg
-            ? err?.response?.data?.userMsg
-            : err.message,
-          type: "error",
-        });
-      });
   },
   beforeUnmount() {
     // Remove event listener when component is unmounted
@@ -497,14 +489,6 @@ export default {
         .then((res) => {
           this.customGetValue(res?.data);
         })
-        .catch((err) => {
-          dispatchNotification({
-            content: err?.response?.data?.userMsg
-              ? err?.response?.data?.userMsg
-              : err.message,
-            type: "error",
-          });
-        })
         .finally(() => {
           this.loading = false;
         });
@@ -670,16 +654,8 @@ export default {
         })
         .catch((err) => {
           console.log('err', err);
-          if (err?.response?.status == 302) {
-            console.log('validate');
+          if (err?.response?.status == 409) {
             this.validateDialog = true;
-          } else {
-            dispatchNotification({
-              content: err?.response?.data?.userMsg
-                ? err?.response?.data?.userMsg
-                : err.message,
-              type: "error",
-            });
           }
           return false;
         })

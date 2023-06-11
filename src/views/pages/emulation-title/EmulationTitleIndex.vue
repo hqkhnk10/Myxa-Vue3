@@ -1,15 +1,25 @@
 <template>
-  <emulation-header :selectedRows="selectedRows"></emulation-header>
+  <emulation-header
+    :selectedRows="selectedRows"
+    @loading="loadingEvent"
+  ></emulation-header>
   <emulation-table
     @select="totalSelectedRows"
     @select-row="selectRow"
   ></emulation-table>
-  <misa-dialog v-model="dialogAdd" :title="t(title)" width="600px" top="20vh" :guide="true">
+  <misa-dialog
+    v-model="dialogAdd"
+    :title="t(title)"
+    width="600px"
+    top="20vh"
+    :guide="true"
+  >
     <emulation-form-dialog
       :type="type"
       :row="rowSelected"
     ></emulation-form-dialog>
   </misa-dialog>
+  <misa-loading v-model="loading"></misa-loading>
 </template>
 <script>
 import EmulationHeader from "./EmulationHeader.vue";
@@ -26,6 +36,7 @@ export default {
       selectedRows: [],
       rowSelected: {},
       label: "",
+      loading: false,
     };
   },
   watch: {
@@ -65,13 +76,21 @@ export default {
   },
   methods: {
     /**
+     * Hiện loading
+     * Created At: 10/05/2023
+     * @author NQTruong
+     */
+    loadingEvent(value) {
+      this.loading = value;
+    },
+    /**
      * Pass handled value to form
      * Created At: 10/05/2023
      * @author NQTruong
      */
     selectRow(_type, row) {
       this.rowSelected = row;
-      this.type = this.$enum.FormActions.Edit
+      this.type = this.$enum.FormActions.Edit;
     },
     /**
      * Get all the rows that currently selected

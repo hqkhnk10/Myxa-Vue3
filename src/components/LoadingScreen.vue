@@ -4,20 +4,6 @@
     </div>
 </template>
   
-<script>
-import { ref } from 'vue'
-
-export default {
-    name: 'LoadingScreen',
-    setup() {
-        const loading = ref(false)
-        return {
-            loading
-        }
-    }
-}
-</script>
-  
 <style scoped>
 .loading-screen {
     position: fixed;

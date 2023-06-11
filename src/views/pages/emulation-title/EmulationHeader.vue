@@ -189,6 +189,7 @@ export default {
      */
     ...mapState(useEmulationTitleStore, ["parameters"]),
   },
+  emits: ["loading"],
   methods: {
     /**
      * Đóng/bật dropdown xuất nhập khẩu
@@ -203,6 +204,7 @@ export default {
      * Created By: NQTruong (20/05/2023)
      */
     importFile(data) {
+      this.$emit("loading", true);
       insertMultipleEmulationTitle(data?.validData)
         .then(() => {
           dispatchNotification({
@@ -212,13 +214,8 @@ export default {
           this.uploadDialog = false;
           this.getAPI();
         })
-        .catch((err) => {
-          dispatchNotification({
-            content: err?.response?.data?.userMsg
-              ? err?.response?.data?.userMsg
-              : err.message,
-            type: "error",
-          });
+        .finally(() => {
+          this.$emit("loading", false);
         });
     },
     /**
@@ -234,6 +231,8 @@ export default {
      * Created By: NQTruong (20/05/2023)
      */
     onBtnClickExport() {
+      this.$emit("loading", true);
+      this.toogleDropdownEdit();
       exportFile({
         key: this.$enum.Keys.EmulationTitle,
         parameters: this.parameters,
@@ -245,15 +244,9 @@ export default {
             type: "success",
           });
         })
-        .catch((err) => {
-          dispatchNotification({
-            content: err?.response?.data?.userMsg
-              ? err?.response?.data?.userMsg
-              : err.message,
-            type: "error",
-          });
+        .finally(() => {
+          this.$emit("loading", false);
         });
-      this.toogleDropdownEdit();
     },
     /**
      * Get function from pinia
@@ -270,6 +263,8 @@ export default {
      * Created By: NQTruong (20/05/2023)
      */
     updateStatus(status) {
+      this.$emit("loading", true);
+
       this.updateMultipleStatusAPI({
         id: this.selectedRows.map((row) => row.emulationTitleID),
         inactive: status,
@@ -282,13 +277,8 @@ export default {
           this.getAPI();
           this.unSelectedRows();
         })
-        .catch((err) => {
-          dispatchNotification({
-            content: err?.response?.data?.userMsg
-              ? err?.response?.data?.userMsg
-              : err.message,
-            type: "error",
-          });
+        .finally(() => {
+          this.$emit("loading", false);
         });
     },
     /**
@@ -343,6 +333,7 @@ export default {
     removeRow() {
       this.closeConfirmDialog();
       const listId = this.selectedRows.map((row) => row.emulationTitleID);
+      this.$emit("loading", true);
       this.deleteMultipleAPI({ id: listId })
         .then(() => {
           dispatchNotification({
@@ -352,13 +343,8 @@ export default {
           this.getAPI();
           this.unSelectedRows();
         })
-        .catch((err) => {
-          dispatchNotification({
-            content: err?.response?.data?.userMsg
-              ? err?.response?.data?.userMsg
-              : err.message,
-            type: "error",
-          });
+        .finally(() => {
+          this.$emit("loading", false);
         });
     },
     //mở form thêm sửa

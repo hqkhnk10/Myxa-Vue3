@@ -100,14 +100,7 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
           }));
           this.total = res?.pagination?.count;
         })
-        .catch((err) => {
-          dispatchNotification({
-            content: err?.response?.data?.userMsg
-              ? err?.response?.data?.userMsg
-              : err.message,
-            type: "error",
-          });
-        })
+
         .finally(() => {
           this.loading = false;
         });
@@ -156,14 +149,6 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
           });
           this.getAPI();
         })
-        .catch((err) => {
-          dispatchNotification({
-            content: err?.response?.data?.userMsg
-              ? err?.response?.data?.userMsg
-              : err.message,
-            type: "error",
-          });
-        });
     },
     /**
      * Delete multiple items from the table
@@ -190,14 +175,6 @@ export const useEmulationTitleStore = defineStore("useEmulationTitleStore", {
           });
           this.getAPI();
         })
-        .catch((err) => {
-          dispatchNotification({
-            content: err?.response?.data?.userMsg
-              ? err.response.data.message
-              : err.message,
-            type: "error",
-          });
-        });
     },
     /**
      * edit multiple status from the table
