@@ -32,7 +32,7 @@
                 </div>
                 <span class="arrow-bottom tooltiptext tooltiptext-bottom">{{ t('reuse.settingSystem') }}</span>
             </div>
-            <img src="https://id.misa.vn/image/getavatar?userId=74c75e29-bc30-4210-87e2-d61a38f91a21&width=64&height=64"
+            <img src="@/assets/img/getavatar.png"
                 class="avatar" alt="avatar">
         </div>
     </header>

@@ -33,7 +33,12 @@ service.interceptors.request.use(
     return config;
   },
   (error) => {
-    console.log(error); // for debug
+    dispatchNotification({
+      content: error?.response?.data?.userMsg
+        ? error?.response?.data?.userMsg
+        : error.message,
+      type: "error",
+    });
     Promise.reject(error);
   }
 );

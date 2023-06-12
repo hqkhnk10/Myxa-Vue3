@@ -21,7 +21,7 @@
             </div>
             <div v-if="item.children" class="menu-item-icon-right">
               <img
-                src="https://cegovapp.misacdn.net/cegov/img/ic_arrow_black_right.c6cd6189.svg"
+                src="@/assets/img/ic_arrow_black_right.c6cd6189.svg"
                 alt="arrow-right"
               />
             </div>
