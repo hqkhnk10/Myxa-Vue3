@@ -77,6 +77,7 @@ export default {
     },
     options: {
       type: Object,
+      required: true
     },
     position: {
       type: String,
@@ -117,6 +118,9 @@ export default {
      * CreatedBy: NQTruong (15/05/2023)
      */
     filterOptions() {
+      if(!this.options){
+        return []
+      }
       if (!this.inputValue) {
         return this.options;
       }
@@ -182,7 +186,7 @@ export default {
      * CreatedBy: NQTruong (15/05/2023)
      */
     openOptions() {
-      if (this.filterOptions.length > 0) {
+      if (this.filterOptions?.length > 0) {
         this.optionsBox = true;
         this.addClassFocusToItem(this.getSelectedIndex() == -1 ? 0 : this.getSelectedIndex() );
       }

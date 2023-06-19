@@ -11,41 +11,45 @@
 	padding: 0 7px;
 }
 .combobox-input{
-  border-radius: 4px 0 0 4px;
+  border-radius: 10px 0 0 10px;
 }
 .mcombobox {
-  max-height: 34px;
+  max-height: 38px;
   position: relative;
   display: flex;
   width: 100%;
-  border-radius: 4px;
+  border-radius: 10px;
   align-items: center;
   border: 1px solid var(--input-border-color-gray);
   box-sizing: content-box;
 }
 .mcombobox input{
   border: 0;
-  border-radius: 4px 0 0 4px;
+  border-radius: 10px 0 0 10px;
+  cursor: pointer;
 }
 .mcombobox__input {
-  height: 36px;
+  height: 40px;
   padding: 0 12px;
   outline: 0;
-  border-radius: 4px 0 0 4px;
+  border-radius: 10px 0 0 10px;
   border: 0;
 }
 .mcombobox__button {
-  max-height: 34px;
+  border-left: 0 !important;
+  max-height: 38px;
   background-color: white !important;
   width: 36px;
   border: 0;
   border-left: 1px solid var(--input-border-color-gray);
-  border-radius: 0 4px 4px 0;
+  border-radius: 0 10px 10px 0;
   cursor: pointer;
   background: url('../../mcombobox/icon/arrow-down.svg');
   background-size: 25px;
   background-position: center;
   background-repeat: no-repeat;
+  max-width: 40px !important;
+  min-width: 40px !important;
 }
 .mcombobox__data {
   z-index: 2;
@@ -68,7 +72,7 @@ a.mcombobox-item{
   display: flex;
 }
 .mcombobox-item {
-  height: 36px;
+  height: 40px;
   cursor: pointer;
   padding: 0 12px;
   display: flex;
@@ -104,7 +108,7 @@ a.mcombobox-item{
   border: 0;
 }
 .mcombobox:has(input:focus) {
-  border: 1px solid #50B83C;
+  border: 1px solid var(--color-green);
 }
 a{
   text-decoration: none;
@@ -125,18 +129,5 @@ a{
 }
 .mcombobox> .input-container{
   border: none !important;
-  max-height: 34px;
-}
-.mcombobox:hover > button{
-  background-color: var(--input-border-color-gray) !important;
-  border-left: 1px solid rgb(190, 190, 190);
-  border-radius: 0;
-}
-.mcombobox:hover > .input-container > input{
-  background-color: var(--input-border-color-gray) !important;
-  border-radius: 0;
-}
-.mcombobox:hover > button{
-  background-color: var(--input-border-color-gray) !important;
-  border-left: 1px solid rgb(194, 194, 194);
+  max-height: 38px;
 }

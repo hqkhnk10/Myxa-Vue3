@@ -13,6 +13,18 @@ const mainRoutes = [
     component: TheLayout,
     children: [],
   },
+  {
+    path: "/emis",
+    name: "EmisStyle",
+    component: () => import("@/views/pages/base-view/EmisStyle.vue"),
+    children: [],
+  },
+  {
+    path: "/homework",
+    name: "Homework",
+    component: () => import("@/views/pages/emis-study/MainPage.vue"),
+    children: [],
+  },
 ];
 
 export const routes = [

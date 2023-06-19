@@ -1,5 +1,8 @@
 <template>
   <div class="input-container" :style="{ width: width }">
+    <div class="search-icon" v-if="search">
+      <img src="../assets/emis/icon/search.svg" alt="search" width="16" height="16"/>
+    </div>
     <input
       ref="input"
       :inputmode="inputmode"
@@ -13,13 +16,12 @@
       :placeholder="placeholder"
     />
     <button
-      v-if="modelValue && reset"
       type="button"
       aria-label="Close"
       class="button__icon-default input-button-x"
       @click="resetInput()"
     >
-      <img src="../assets/icon/x-icon.svg" alt="Exit" style="width: 15px" />
+      <img src="../assets/emis/icon/closed.png" alt="Exit" style="width: 15px" />
     </button>
     <slot name="icon"></slot>
     <span class="input__icon" v-if="loading">
@@ -105,6 +107,10 @@ export default {
     readonly:{
       type: Boolean,
       default: false
+    },
+    search:{
+      type: Boolean,
+      default: false
     }
   },
   watch: {
@@ -145,6 +151,7 @@ export default {
      * @author: NQTruong
      */
     resetInput() {
+      this.inputValue = ''
       this.$emit("update:modelValue", "");
       this.$emit("debounce", "")
     },
@@ -175,3 +182,11 @@ export default {
   },
 };
 </script>
+<style scoped>
+.search-icon{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-left: 10px;
+}
+</style>

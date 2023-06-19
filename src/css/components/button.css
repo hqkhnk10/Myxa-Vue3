@@ -22,16 +22,19 @@ button:focus{
     font-weight: 500;
     padding: 9px 16px;
     font-size: 14px;
-    border-radius: 4px;
+    border-radius: 10px;
     /* min-width: 80px; */
     width: fit-content;
-    height: 36px;
+    height: 40px;
+    min-width: 100px;
 }
 .button__primary{
     background-color: var(--button-bg-color-green);
 }
 .button.button__primary:not(:disabled):active{
-    background-color: var(--button-bg-color-green-active);
+    transform: translateY(4px);
+    box-shadow: inset 1px 1px 4px #34495e;
+    transition: all .1s ease;
 }
 .button__primary-border{
     border-color: var(--button-bg-color-green);
@@ -75,11 +78,9 @@ button:focus{
 .button__blue{
     background-color: var(--color-blue);
 }
-.button__default{
-    color: black;
-}
-.button__primary:hover{
-    background-color: var(--button-bg-color-green-hover);
+
+.button__primary:not(:disabled):hover{
+    opacity: .8;
 }
 .button__secondary{
     color: var(--text-black);
@@ -92,8 +93,8 @@ button:focus{
     border: none;
     padding: 0 8px;
 }
-.button__primary:focus{
-    background-color: var(--button-bg-color-green-hover);
+.button__primary:not(:disabled):focus{
+    opacity: .8;
 }
 .button__secondary:focus{
     background-color: var(--input-border-color-gray);
@@ -156,4 +157,19 @@ button:focus{
 }
 .icon-margin-right{
     margin-right: 6px;
+}
+.button__default{
+    background-color: #f1f2f7;
+    border-color: #b6b9ce;
+    color: #606266;
+}
+.button__default:not(:disabled):hover, .button__default:not(:disabled):focus{
+    background-color: #f1f2f7;
+    color: #4e5b6a;
+    opacity: .8;
+}
+.button__default:not(:disabled):active{
+    transform: translateY(4px);
+    box-shadow: inset 1px 1px 4px #c9c8c7;
+    transition: all .1s ease;
 }

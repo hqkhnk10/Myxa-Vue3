@@ -1,4 +1,5 @@
 :root {
+    --primary-color: var(--color-purple);
     --button-bg-color-green: var(--color-green);
     --button-bg-color-green-focus:#ebfde7;
     --button-bg-color-green-hover:#57C841;
@@ -17,12 +18,13 @@
     --default-font-size: 14px;
     --default-font-weight: 100;
     --default-height:36px;
-    --color-green:#50B83C;
+    --color-purple: #8a6bf6;
+    --color-green:var(--color-purple);
     --color-blue:#007AFF;
     --color-orange:#FF9800;
     --color-red:#E60000;
     --color-gray:#9E9E9E;
-    --input-border-color-gray:#e6e6e6;
+    --input-border-color-gray:#b6b9ce;
     --input-error-color-red:#E61D1D;
     --input-border-size: 1px;
     --input-padding-size: 12px;
