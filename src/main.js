@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import vClickOutside from "click-outside-vue3"
 import mitt from "mitt";
-
+import CKEditor from '@ckeditor/ckeditor5-vue';
 import App from './App.vue'
 import MisaButtonVue from './components/MisaButton.vue'
 import MisaInputVue from './components/MisaInput.vue'
@@ -29,6 +29,7 @@ const vue = createApp(App)
 vue.use(router)
 vue.use(pinia)
 vue.use(vClickOutside)
+vue.use(CKEditor)
 
 vue.component("misa-button",MisaButtonVue)
 vue.component("misa-input",MisaInputVue)
@@ -52,4 +53,6 @@ vue.config.globalProperties.t = function(word){
     return translate(word, locale.getLocale)
 }
 export const globals = vue.config.globalProperties;
+
+
 vue.mount('#app')

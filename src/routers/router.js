@@ -23,7 +23,30 @@ const mainRoutes = [
     path: "/homework",
     name: "Homework",
     component: () => import("@/views/pages/emis-study/MainPage.vue"),
-    children: [],
+    children: [
+      {
+        path: "/study",
+        name: "Study",
+        component: () => import("@/views/pages/emis-study/StudyList.vue"),
+      },
+    ],
+  },
+  {
+    path: "/prepare",
+    name: "Prepare",
+    component: () => import("@/views/pages/emis-study/create-homework/PreparePage.vue"),
+    children: [
+      {
+        path: "/create-prepare",
+        name: "CreatePrepare",
+        component: () => import("@/views/pages/emis-study/create-homework/CreateHomework.vue"),
+      },
+      {
+        path: "/detail-prepare",
+        name: "DetailPrepare",
+        component: () => import("@/views/pages/emis-study/create-homework/DetailHomework.vue"),
+      },
+    ],
   },
 ];
 

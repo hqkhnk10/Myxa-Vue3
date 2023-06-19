@@ -1,6 +1,12 @@
 .w-full{
     width: 100%;
 }
+b{
+    font-weight: bold !important;
+}
+.relative{
+    position: relative;
+}
 .cursor-not-allowed{
     cursor: not-allowed;
 }

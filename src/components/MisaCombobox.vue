@@ -1,55 +1,57 @@
 <template>
-  <div
-    class="mcombobox"
-    @click="clickComboboxButton"
-    @keydown.down="pressArrowButton(false)"
-    @keydown.up="pressArrowButton(true)"
-    @keydown.enter="pressEnter"
-    :class="{ invalid: !valid }"
-    v-click-outside="closeOptions"
-  >
-    <misa-input
-      :readonly="readonly"
-      ref="input"
-      type="text"
-      :modelValue="labelShow"
-      class="combobox-input"
-      :disabled="disabled"
-      @input="(e) => inputChange(e.target.value)"
-    ></misa-input>
-    <span class="mcombobox-input__icon" v-if="loading">
-      <img
-        src="/libs/mcombobox/icon/loading-icon.svg"
-        class="loading"
-        alt="loading"
-      />
-    </span>
-    <misa-button
-      tabindex="-1"
-      type="button"
-      class="mcombobox__button"
-      :disabled="disabled"
-    ></misa-button>
+  <div>
     <div
-      class="mcombobox__data"
-      :class="positionStyle"
-      v-show="optionsBox && filterOptions.length > 0"
+      class="mcombobox"
+      @click="clickComboboxButton"
+      @keydown.down="pressArrowButton(false)"
+      @keydown.up="pressArrowButton(true)"
+      @keydown.enter="pressEnter"
+      :class="{ invalid: !valid }"
+      v-click-outside="closeOptions"
     >
-      <a
-        v-for="(item, index) in filterOptions"
-        ref="comboboxItems"
-        class="mcombobox-item"
+      <misa-input
+        :readonly="readonly"
+        ref="input"
+        type="text"
+        :modelValue="labelShow"
+        class="combobox-input"
+        :disabled="disabled"
+        @input="(e) => inputChange(e.target.value)"
+      ></misa-input>
+      <span class="mcombobox-input__icon" v-if="loading">
+        <img
+          src="/libs/mcombobox/icon/loading-icon.svg"
+          class="loading"
+          alt="loading"
+        />
+      </span>
+      <misa-button
         tabindex="-1"
-        :class="{ selected: item.selected, focusOn: item.focus }"
-        :key="index"
-        @click="selectOption(item)"
-        >{{ item[label] }}</a
+        type="button"
+        class="mcombobox__button"
+        :disabled="disabled"
+      ></misa-button>
+      <div
+        class="mcombobox__data"
+        :class="positionStyle"
+        v-show="optionsBox && filterOptions.length > 0"
       >
+        <a
+          v-for="(item, index) in filterOptions"
+          ref="comboboxItems"
+          class="mcombobox-item"
+          tabindex="-1"
+          :class="{ selected: item.selected, focusOn: item.focus }"
+          :key="index"
+          @click="selectOption(item)"
+          >{{ item[label] }}</a
+        >
+      </div>
     </div>
-  </div>
-  <div class="error active" v-if="!valid">
-    {{ message }} {{ t("reuse.notRight") }}. {{ t("reuse.pleaseChoose") }}
-    {{ message }} {{ t("reuse.inTheList") }}.
+    <div class="error active" v-if="!valid">
+      {{ message }} {{ t("reuse.notRight") }}. {{ t("reuse.pleaseChoose") }}
+      {{ message }} {{ t("reuse.inTheList") }}.
+    </div>
   </div>
 </template>
 
@@ -77,7 +79,7 @@ export default {
     },
     options: {
       type: Object,
-      required: true
+      required: true,
     },
     position: {
       type: String,
@@ -95,10 +97,10 @@ export default {
       type: String,
       default: "Dữ liệu",
     },
-    readonly:{
+    readonly: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
     /**
@@ -118,8 +120,8 @@ export default {
      * CreatedBy: NQTruong (15/05/2023)
      */
     filterOptions() {
-      if(!this.options){
-        return []
+      if (!this.options) {
+        return [];
       }
       if (!this.inputValue) {
         return this.options;
@@ -158,13 +160,13 @@ export default {
         }
       });
     },
-        /**
+    /**
      * When click button of the combobox, open the combobox options
      * @param {*} objValue
      * CreatedBy: NQTruong (15/05/2023)
      */
     clickComboboxButton() {
-      this.inputValue = null
+      this.inputValue = null;
       this.toggleOptions();
     },
     /**
@@ -188,7 +190,9 @@ export default {
     openOptions() {
       if (this.filterOptions?.length > 0) {
         this.optionsBox = true;
-        this.addClassFocusToItem(this.getSelectedIndex() == -1 ? 0 : this.getSelectedIndex() );
+        this.addClassFocusToItem(
+          this.getSelectedIndex() == -1 ? 0 : this.getSelectedIndex()
+        );
       }
     },
     /**
@@ -244,7 +248,7 @@ export default {
      */
     pressEnter() {
       this.selectOption(this.filterOptions[this.getIndex()]);
-      this.inputValue = null
+      this.inputValue = null;
       this.toggleOptions();
     },
     /**
@@ -325,7 +329,7 @@ export default {
       this.$nextTick(() => {
         this.$emit("update:modelValue", item[this.value]);
       });
-      this.inputValue = item[this.label]
+      this.inputValue = item[this.label];
       this.$emit("change", item[this.value]);
       this.$emit("update:valid", true);
     },
