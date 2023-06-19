@@ -292,7 +292,8 @@ export default {
      * @author NQTruong
      */
     filterTable(filterValue) {
-      this.getAPI(filterValue);
+      this.pagination.pageIndex = 1
+      this.getAPI({...filterValue, pageIndex : 1});
     },
     /**
      * Call api to Remove row

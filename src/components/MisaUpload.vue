@@ -418,10 +418,8 @@ export default {
      * Created By: NQTruong (01/06/2023)
      */
     handleFiles(files) {
-      console.log('files', files.length, this.uploadedFiles.length);
       this.loading = true;
       if (this.uploadedFiles.length > 0 && files.length > 0) {
-        console.log('run here');
         this.uploadedFiles.pop();
       }
       const file = files[0];

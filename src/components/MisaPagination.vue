@@ -17,7 +17,7 @@
       </div>
       <div class="flex items-center">
         <span style="font-weight: 700; padding-right: 4px"
-          >{{ formatNumber(startIndex + 1) }} - {{ formatNumber(endIndex - 1) }}</span
+          >{{ formatNumber(startPage) }} - {{ formatNumber(endPage) }}</span
         >
         bản ghi
       </div>
@@ -71,6 +71,28 @@ export default {
     },
   },
   computed: {
+        /**
+     * Lấy ra số trang của bản ghi đầu đang hiển thị
+     * CreatedBy : NQTruong (16/06/2023)
+     */
+    startPage(){
+      if(this.pagination.total == 0){
+        return 0
+      }
+      return this.startIndex + 1
+    },
+    /**
+     * Lấy ra số trang của bản ghi cuối đang hiển thị
+     * CreatedBy : NQTruong (16/06/2023)
+     */
+    endPage(){
+      if(this.pagination.total < this.endIndex){
+        return this.pagination.total
+      }
+      else{
+        return this.endIndex - 1
+      }
+    },
     /**
      * Change class to disabled if there is no previous page
      * CreatedBy : NQTruong (16/06/2023)

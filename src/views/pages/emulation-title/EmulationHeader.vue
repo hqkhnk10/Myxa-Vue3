@@ -88,9 +88,11 @@
               <a class="cursor-pointer" @click="onBtnClickImport">{{
                 t("reuse.import")
               }}</a>
-              <a class="cursor-pointer" @click="onBtnClickExport">{{
+              <div :class="{'cursor-not-allowed': table.data.length == 0}">
+              <a class="cursor-pointer" :class="{'disabled-link': table.data.length == 0}" @click="onBtnClickExport" >{{
                 t("reuse.export")
               }}</a>
+              </div>
             </template>
           </misa-dropdown>
         </div>
