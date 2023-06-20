@@ -1,10 +1,11 @@
 <template>
-  <ckeditor
-    :editor="editor"
-    v-model="editorData"
-    :config="editorConfig"
-    placeholder="123"
-  ></ckeditor>
+  <div id="ckeditor">
+    <ckeditor
+      :editor="editor"
+      v-model="editorData"
+      :config="editorConfig"
+    ></ckeditor>
+  </div>
 </template>
 
 <script>
@@ -24,20 +25,27 @@ export default {
 };
 </script>
 <style>
-.ck.ck-editor{
+#ckeditor{
+  height: 100%;
+}
+#ckeditor .ck.ck-editor{
     height: 100% ;
 }
-.ck.ck-toolbar{
+#ckeditor .ck.ck-toolbar{
     background-color: #fff2ab;
     border: 0;
+    border-radius: 10px 10px 0 0 !important;
 }
-.ck.ck-content{
+#ckeditor .ck.ck-content{
     background: #fff2ab !important;
     border: none !important;
     box-shadow: none !important;
-    height: 80% !important;
+    height: 100% !important;
 }
-.ck.ck-editor__main {
-    height: 80% !important;
+#ckeditor .ck.ck-editor__main {
+    height: calc(100% - 38px) !important;
+}
+#ckeditor .ck.ck-toolbar>.ck-toolbar__items {
+    justify-content: flex-end;
 }
 </style>
