@@ -11,6 +11,7 @@
     >
       <misa-input
         :readonly="readonly"
+        :placeholder="placeholder"
         ref="input"
         type="text"
         :modelValue="labelShow"
@@ -28,7 +29,14 @@
       <misa-button
         tabindex="-1"
         type="button"
-        class="mcombobox__button"
+        class="mcombobox__button arrow"
+        :disabled="disabled"
+      ></misa-button>
+      <misa-button
+        v-if="false"
+        tabindex="-1"
+        type="button"
+        class="mcombobox__button close"
         :disabled="disabled"
       ></misa-button>
       <div
@@ -98,6 +106,14 @@ export default {
       default: "Dữ liệu",
     },
     readonly: {
+      type: Boolean,
+      default: false,
+    },
+    placeholder: {
+      type: String,
+      default: "",
+    },
+    reset: {
       type: Boolean,
       default: false,
     },
@@ -190,9 +206,10 @@ export default {
     openOptions() {
       if (this.filterOptions?.length > 0) {
         this.optionsBox = true;
-        this.addClassFocusToItem(
-          this.getSelectedIndex() == -1 ? 0 : this.getSelectedIndex()
-        );
+        const getSelectedIdx = this.getSelectedIndex();
+        if (getSelectedIdx !== -1) {
+          this.addClassFocusToItem(getSelectedIdx);
+        }
       }
     },
     /**
@@ -263,10 +280,6 @@ export default {
       if (focusIndex == -1) {
         let selectedIndex = this.getSelectedIndex();
         focusIndex = selectedIndex;
-        //dont have selected
-        if (selectedIndex == -1) {
-          focusIndex = 0;
-        }
       }
       return focusIndex;
     },

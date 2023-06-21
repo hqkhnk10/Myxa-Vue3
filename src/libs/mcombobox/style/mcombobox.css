@@ -44,14 +44,18 @@
   border-left: 1px solid var(--input-border-color-gray);
   border-radius: 0 10px 10px 0;
   cursor: pointer;
+
+  max-width: 40px !important;
+  min-width: 40px !important;
+}
+.mcombobox__button.arrow{
   background: url('../../mcombobox/icon/arrow-down.svg');
   background-size: 25px;
   background-position: center;
   background-repeat: no-repeat;
-  max-width: 40px !important;
-  min-width: 40px !important;
 }
 .mcombobox__data {
+  border-radius: 10px;
   z-index: 2;
   max-height: 308px;
   position: absolute;
@@ -130,4 +134,19 @@ a{
 .mcombobox> .input-container{
   border: none !important;
   max-height: 38px;
+}
+.trans-bg .mcombobox:has(input:focus) {
+  border: none;
+}
+.trans-bg .mcombobox{
+  border: none;
+}
+.trans-bg .input-container{
+  background-color: transparent !important;
+}
+.trans-bg input{
+  background-color: transparent !important;
+}
+.trans-bg .mcombobox__button{
+  background-color: transparent !important;
 }

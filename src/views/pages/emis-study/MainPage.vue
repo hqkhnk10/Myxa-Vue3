@@ -130,27 +130,27 @@
               :class="{ 'tab-selected': tabSelected == 1 }"
               @click="clickTabButton(1)"
             >
-              1
+              {{ t('emis.personal') }}
             </div>
             <div
               class="main-tab"
               :class="{ 'tab-selected': tabSelected == 2 }"
               @click="clickTabButton(2)"
             >
-              2
+              {{ t('emis.school') }}
             </div>
             <div
               class="main-tab"
               :class="{ 'tab-selected': tabSelected == 3 }"
               @click="clickTabButton(3)"
             >
-              3
+              {{ t('emis.community') }}
             </div>
           </div>
           <div class="header-button">
-            <misa-button type="default"></misa-button>
-            <misa-button></misa-button>
-            <misa-button></misa-button>
+            <misa-button type="default">{{ t('emis.share') }}</misa-button>
+            <misa-button>{{ t('emis.createGame') }}</misa-button>
+            <misa-button @click ="clickPrepareButton()">{{ t('emis.prepareHW') }}</misa-button>
           </div>
         </div>
         <div class="background-banner w-full" data-v-45abc2fd="">
@@ -162,6 +162,7 @@
                 src="https://sisapapp.misacdn.net/lms/img/Backgroud_Positive.e10ee7f3.png"
                 width="998"
                 style="opacity: 0.7"
+                alt="bg"
               />
               <div
                 class="banner-title"
@@ -180,6 +181,7 @@
                 </div>
                 <img
                   src="https://sisapapp.misacdn.net/lms/img/Layer_Category_3.e59f16ba.png"
+                  alt="layer"
                 />
               </div>
               <div
@@ -192,6 +194,7 @@
                       <img
                         class="icRepeatGrid_1"
                         src="https://sisapapp.misacdn.net/lms/img/Subtraction_Arrow.89f2c584.png"
+                        alt="grid"
                       />
                     </div>
                     <div
@@ -269,11 +272,16 @@
 
 <script setup>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
 const tabSelected = ref(1);
 const clickTabButton = (tab) => {
   tabSelected.value = tab;
 };
+const {push} = useRouter();
+const clickPrepareButton = () =>{
+  push('/prepare')
+}
 </script>
 
 <style>

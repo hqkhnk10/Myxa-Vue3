@@ -29,6 +29,7 @@ button:focus{
     min-width: 100px;
 }
 .button__primary{
+    border: none;
     background-color: var(--button-bg-color-green);
 }
 .button.button__primary:not(:disabled):active{

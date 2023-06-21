@@ -4,6 +4,7 @@
       :editor="editor"
       v-model="editorData"
       :config="editorConfig"
+      @change="changeData"
     ></ckeditor>
   </div>
 </template>
@@ -15,12 +16,24 @@ export default {
   data() {
     return {
       editor: ClassicEditor,
-      editorData: '',
+      editorData: this.modelValue,
       editorConfig: {
         placeholder: 'Type the content here!',
-
+        startupFocus : true
       },
     };
+  },
+  props:{
+    modelValue:{
+      type: String,
+      default: ''
+    }
+  },
+  emits: ['update:modelValue'],
+  methods:{
+    changeData(value){
+      this.$emit['update:modelValue', value]
+    }
   },
 };
 </script>

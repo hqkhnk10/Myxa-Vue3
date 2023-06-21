@@ -47,6 +47,7 @@
     gap: 8px;
 }
 .dialog__padding{
+    border-radius: 10px;
     min-width: 600px;
     max-width: 60%;
     margin: auto;

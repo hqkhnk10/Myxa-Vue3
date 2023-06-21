@@ -1,13 +1,14 @@
 <script setup>
-
-// const clickQuestionImg = (value) =>{
-//     dialog
-// }
+import { defineEmits } from "vue";
+const emit = defineEmits(["openDialog"]);
+const clickQuestionImg = (value) => {
+  emit("openDialog", value);
+};
 </script>
 <template>
-  <div class="content relative compose" >
-    <div class="compose-exercise"  >
-      <div class="extract homework-upload" >
+  <div class="content relative compose">
+    <div class="compose-exercise">
+      <div class="extract homework-upload">
         <div class="h5 extract__title mb-6">
           Tách câu hỏi tự động sử dụng công nghệ AI
         </div>
@@ -16,21 +17,15 @@
             <button
               class="el-button ms-button el-button--default mt-3 mr-3 button--accent"
               type="button"
-              
             >
-              <!----><!----><span
-                class="flex items-center justify-center"
-                
+              <!----><!----><span class="flex items-center justify-center"
                 >Tải lên file bài tập</span
               ></button
             ><button
               class="el-button ms-button el-button--default mt-3 button--green"
               type="button"
-              
             >
-              <!----><!----><span
-                class="flex items-center justify-center"
-                
+              <!----><!----><span class="flex items-center justify-center"
                 >Tải file Excel mẫu</span
               >
             </button>
@@ -38,9 +33,8 @@
           <div
             class="file-container extract__content text-center"
             is-auto-upload="false"
-            
           >
-            <label class="drop-zone" 
+            <label class="drop-zone"
               ><div
                 class="file-extract w-full h-full flex flex-col justify-center items-center overflow-hidden cursor-pointer"
               >
@@ -56,23 +50,17 @@
                 </div>
                 <div class="h-10 mt-3"></div></div
             ></label>
-            <div class="preview-menu-container" >
-              <div
-                class="ms-upload-field position-relative"
-                
-                
-              >
+            <div class="preview-menu-container">
+              <div class="ms-upload-field position-relative">
                 <label
                   class="label-input"
                   for="0acb3c49-cc47-4f3d-9031-97465d55bead"
-                  
                   ><span></span></label
                 ><input
                   type="file"
                   class="position-relative"
                   accept=".png,.jpg,.jpeg,.bmp,.doc,.docx,.xls,.xlsx,.pdf,.mp3,.mp4,.m4a,.ppt,.pptx,.odp"
                   id="0acb3c49-cc47-4f3d-9031-97465d55bead"
-                  
                   style="display: none"
                 />
               </div>
@@ -80,9 +68,9 @@
           </div>
         </div>
       </div>
-      <div class="compose" >
-        <div class="h5 mb-6" >hoặc tự tạo câu hỏi mới</div>
-        <div class="toolbar horizontal" >
+      <div class="compose">
+        <div class="h5 mb-6">hoặc tự tạo câu hỏi mới</div>
+        <div class="toolbar horizontal">
           <div class="step-composing-four">
             <div class="question-library">
               <img
@@ -112,7 +100,7 @@
               </div>
               <div class="question__desc">Chọn đáp án</div>
             </div>
-            <div class="question" @click="clickQuestionImg(1)">
+            <div class="question" @click="clickQuestionImg(2)">
               <div
                 placement="left"
                 hide-after="100"
@@ -270,52 +258,53 @@
   height: 64px;
 }
 .toolbar {
-    display: flex;
+  display: flex;
 }
 .toolbar.horizontal .decore-horizontal {
-    margin-right: 56px;
-    display: block;
-    margin-left: 1.25rem;
+  margin-right: 56px;
+  display: block;
+  margin-left: 1.25rem;
 }
 .toolbar.horizontal .step-composing-three {
-    display: flex;
-    justify-content: center;
-    padding-left: 0.5rem;
-    gap: 54px;
+  display: flex;
+  justify-content: center;
+  padding-left: 0.5rem;
+  gap: 54px;
 }
 .toolbar.horizontal .question {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    width: 64px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 64px;
 }
 .mb-6 {
-    margin-bottom: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
-.h5, .title {
-    font-weight: 700;
-    font-size: 18px;
+.h5,
+.title {
+  font-weight: 700;
+  font-size: 18px;
 }
 .toolbar.horizontal .question__desc {
-    width: -webkit-max-content;
-    width: max-content;
-    margin-top: 12px;
+  width: -webkit-max-content;
+  width: max-content;
+  margin-top: 12px;
 }
 .toolbar.horizontal .question-library {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    margin-right: 8px;
-    width: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-right: 8px;
+  width: 120px;
 }
 .toolbar .question__icon:hover {
-    transform: scale(1.1);
-    transition: .3s;
+  transform: scale(1.1);
+  transition: 0.3s;
 }
 .toolbar .question__icon {
-    cursor: pointer;
-    outline: none;
+  cursor: pointer;
+  outline: none;
 }
 </style>

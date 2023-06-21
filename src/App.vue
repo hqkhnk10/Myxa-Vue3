@@ -14,6 +14,9 @@ export default {
     },
   mounted(){
     const router = useRouter()
+    if(router.currentRoute.value.path == '/'){
+      // router.push('/study')
+    }
     // Set the initial page title
     document.title = 'CeGov'
     // Update the page title when the route changes

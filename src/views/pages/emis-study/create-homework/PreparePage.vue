@@ -1,11 +1,33 @@
 <script setup>
-import { onMounted, ref } from "vue";
+import { onMounted, ref, onBeforeMount } from "vue";
 import HomeworkDialog from "./HomeworkDialog.vue";
+import InformationDialog from "./InformationDialog.vue";
+import CreateHomework from "./CreateHomework.vue";
+import { getGrades } from "@/api/grade";
+import { getSubjects } from "@/api/subject";
 const dialogValue = ref({
-  form: {},
+  modelValue: null,
   type: "add",
-  visible: true,
+  visible: false,
 });
+const grades = ref([]);
+const subjects = ref([]);
+const addInfoDialog = ref(false)
+onBeforeMount(() => {
+  getGrades().then((res) => {
+    grades.value = res.data.map((e) => ({
+      value: e.gradeId,
+      label: e.gradeName,
+    }));
+  }),
+    getSubjects().then((res) => {
+      subjects.value = res.data.map((e) => ({
+        value: e.subjectId,
+        label: e.subjectName,
+      }));
+    });
+});
+
 onMounted(() => {
   /**
    * Event bus toggle dialog
@@ -13,12 +35,22 @@ onMounted(() => {
    * Created At: 19/06/2023
    * @author NQTruong
    */
-//   this.emitter.on("open-dialog", (param) => {
-//     dialogValue.value.visible = true;
-//     dialogValue.value.type = param.type;
-//     dialogValue.value.form = param.form;
-//   });
+  //   this.emitter.on("open-dialog", (param) => {
+  //     dialogValue.value.visible = true;
+  //     dialogValue.value.type = param.type;
+  //     dialogValue.value.form = param.form;
+  //   });
 });
+const openDialog = (value) =>{
+  dialogValue.value.visible = true;
+  dialogValue.value.type = value
+}
+const closeDialog = () =>{
+  dialogValue.value.visible = false;
+}
+const openAddInfoDialog = () =>{
+  addInfoDialog.value = true
+}
 </script>
 <template>
   <div>
@@ -33,22 +65,29 @@ onMounted(() => {
         </div>
         <div class="prepare-button">
           <div class="prepare-button-left">
-            <misa-combobox></misa-combobox>
-            <misa-combobox></misa-combobox>
-            <misa-button></misa-button>
-            <misa-button></misa-button>
+            <misa-combobox
+              :options="subjects"
+              :placeholder="t('emis.allSubject')"
+            ></misa-combobox>
+            <misa-combobox
+              :options="grades"
+              :placeholder="t('emis.allGrade')"
+            ></misa-combobox>
+            <misa-button type="default" @click="openAddInfoDialog">{{ t('emis.addInformation') }}</misa-button>
+            <misa-button type="default">{{ t('emis.changePrepare') }}</misa-button>
           </div>
           <div class="prepare-button-right">
-            <misa-button></misa-button>
-            <misa-button></misa-button>
-            <misa-button></misa-button>
+            <misa-button type="default"></misa-button>
+            <misa-button>{{ t('emis.try') }}</misa-button>
+            <misa-button>{{ t('emis.finish') }}</misa-button>
           </div>
         </div>
       </div>
     </div>
-    <router-view></router-view>
-    <HomeworkDialog v-if="dialogValue.visible"></HomeworkDialog>
-  </div>
+    <create-homework @open-dialog="openDialog"></create-homework>
+    <HomeworkDialog v-if="dialogValue.visible" :type="dialogValue.type" :value="dialogValue.modelValue" @close-dialog="closeDialog"></HomeworkDialog>
+    <information-dialog v-if="addInfoDialog" v-model="addInfoDialog"></information-dialog>
+    </div>
 </template>
 <style scoped>
 .prepare-header,

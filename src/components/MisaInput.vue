@@ -16,7 +16,7 @@
       :placeholder="placeholder"
     />
     <button
-    v-if="modelValuel && reset"
+    v-if="modelValue && reset"
       type="button"
       aria-label="Close"
       class="button__icon-default input-button-x"

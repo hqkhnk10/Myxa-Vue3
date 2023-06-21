@@ -1,71 +1,173 @@
 <script setup>
+import { getExercises } from "@/api/exercise";
+import { getGrades } from "@/api/grade";
+import { getSubjects } from "@/api/subject";
 import EmisCard from "@/components/EMIS/EmisCard.vue";
-import { ref } from "vue";
+import { watch } from "vue";
+import { onBeforeMount, ref } from "vue";
 
-const cards = ref([
+const grades = ref([]);
+const subjects = ref([]);
+const cards = ref([]);
+const paginationValue = ref({});
+const paginationParams = ref({
+  pageSize: 1,
+});
+const exerciseParams = ref({
+  keyword: null,
+  gradeId: null,
+  subjectId: null,
+  exerciseStatus: null,
+});
+const loading = ref(false);
+const exerciseStatus = ref([
   {
-    img: "",
-    title: "Bài luyện tập hằng đẳng thức",
-    questions: 0,
-    status: 0,
-    subject: 1,
-    username: 'Trường'
-  },{
-    img: "",
-    title: "Bài luyện tập hằng đẳng thức",
-    questions: 0,
-    status: 0,
-    subject: 1,
-    username: 'Trường'
-  },{
-    img: "",
-    title: "Bài luyện tập hằng đẳng thức",
-    questions: 0,
-    status: 0,
-    subject: 1,
-    username: 'Trường'
-  },{
-    img: "",
-    title: "Bài luyện tập hằng đẳng thức",
-    questions: 0,
-    status: 0,
-    subject: 1,
-    username: 'Trường'
+    value: 1,
+    label: "Đã soạn",
+  },
+  {
+    value: 2,
+    label: "Đang soạn",
+  },
+  {
+    value: 3,
+    label: "Đã chia sẻ",
+  },
+  {
+    value: 4,
+    label: "Chưa chia sẻ",
+  },
+  {
+    value: 5,
+    label: "Lấy từ thư viện",
   },
 ]);
+let timeout;
+const getExerciseValue = () => {
+  loading.value = true;
+  getExercises({ ...paginationParams.value, ...exerciseParams.value})
+    .then((res) => {
+      cards.value = res.data;
+      paginationValue.value = res.pagination;
+    })
+    .finally(() => {
+      loading.value = false;
+    });
+};
+const resetPaginationParams = () => {
+  paginationParams.value.pageSize = 1;
+  getExerciseValue();
+};
+
+watch(
+  () => exerciseParams,
+  () => resetPaginationParams(),
+  { deep: true, immediate: true }
+);
+
+onBeforeMount(() => {
+  getGrades().then((res) => {
+    grades.value = res.data.map((e) => ({
+      value: e.gradeId,
+      label: e.gradeName,
+    }));
+  }),
+    getSubjects().then((res) => {
+      subjects.value = res.data.map((e) => ({
+        value: e.subjectId,
+        label: e.subjectName,
+      }));
+    });
+});
+
+const clickMoreButton = () => {
+  paginationParams.value.pageSize += 1;
+  getExerciseValue();
+};
+const changeKeyword = (e) =>{
+  clearTimeout(timeout)
+      timeout = setTimeout(() => {
+        // Trigger the event or perform desired action after 1000ms
+        exerciseParams.value.keyword = e.target.value
+      }, 1000)
+}
 </script>
 <template>
-    <div>
-        <misa-input search reset></misa-input>
-    </div>
-    <div class="study-combobox">
-        <misa-combobox class="small-box"></misa-combobox>
-        <misa-combobox class="small-box"></misa-combobox>
-        <misa-combobox class="small-box"></misa-combobox>
-    </div>
-  <div class="grid-card">
+  <div>
+    <misa-input :modelValue="exerciseParams.keyword" @input="changeKeyword" search reset :placeholder="t('emis.findExercise')"></misa-input>
+  </div>
+  <div class="study-combobox">
+    <misa-combobox
+      v-model="exerciseParams.exerciseStatus"
+      :options="exerciseStatus"
+      class="small-box"
+      :placeholder="t('emis.allExercise')"
+    ></misa-combobox>
+    <misa-combobox
+      v-model="exerciseParams.gradeId"
+      :options="grades"
+      class="small-box"
+      :placeholder="t('emis.allSubject')"
+    ></misa-combobox>
+    <misa-combobox
+      v-model="exerciseParams.subjectId"
+      :options="subjects"
+      class="small-box"
+      :placeholder="t('emis.allGrade')"
+    ></misa-combobox>
+  </div>
+  <div class="grid-card" v-if="paginationValue.count > 0">
+    <misa-loading v-model="loading"></misa-loading>
     <EmisCard
       v-for="(card, index) in cards"
       :key="index"
       :value="card"
     ></EmisCard>
   </div>
+  <div v-else class="not-found-exercise">
+    <img
+      src="../../../assets/emis/icon/notFoundExercise.svg"
+      alt="not found"
+      width="128"
+    />
+    <div>{{ t("emis.cantFindExercise") }}</div>
+  </div>
+  <div class="more-button">
+    <misa-button
+      @click="clickMoreButton"
+      v-if="paginationValue.count > paginationValue.pageSize"
+      >Xem thêm</misa-button
+    >
+  </div>
 </template>
 
 <style scoped>
 .grid-card {
-    margin-top: 20px;
-    grid-template-columns: 1fr 1fr 1fr;
-    display: grid;
-    grid-gap: 24px;
-    padding-bottom: 10px;
+  margin-top: 20px;
+  grid-template-columns: 1fr 1fr 1fr;
+  display: grid;
+  grid-gap: 24px;
+  padding-bottom: 10px;
+  position: relative;
 }
-.study-combobox{
-    display: flex;
-    margin-top:12px;
-    gap: 16px;
+.study-combobox {
+  display: flex;
+  margin-top: 12px;
+  gap: 16px;
 }
-.small-box{
-    width: 172px;
+.small-box {
+  width: 172px;
+}
+.more-button {
+  display: flex;
+  justify-content: center;
+}
+.not-found-exercise {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 12px;
 }
 </style>

@@ -11,30 +11,35 @@
       <div class="dialog__header">
         <span class="dialog__title">{{ title }}</span>
         <div class="dialog__header-button">
-        <button
-          v-if="guide"
-          type="button"
-          aria-label="Close"
-          class="dialog__headerbtn"
-        >
-        <div class="tooltip">
-          <div class="icon__help"></div>
-          <span class="arrow-top tooltip-margin-top tooltiptext tooltiptext-top">{{ t('reuse.guide') }}</span>
+          <button
+            v-if="guide"
+            type="button"
+            aria-label="Close"
+            class="dialog__headerbtn"
+          >
+            <div class="tooltip">
+              <div class="icon__help"></div>
+              <span
+                class="arrow-top tooltip-margin-top tooltiptext tooltiptext-top"
+                >{{ t("reuse.guide") }}</span
+              >
+            </div>
+          </button>
+          <button
+            type="button"
+            aria-label="Close"
+            class="dialog__headerbtn"
+            @click="toggleDialog"
+          >
+            <div class="tooltip">
+              <div class="icon__x"></div>
+              <span
+                class="arrow-top tooltip-margin-top tooltiptext tooltiptext-top"
+                >{{ t("reuse.close") }}</span
+              >
+            </div>
+          </button>
         </div>
-        </button>
-        <button
-          type="button"
-          aria-label="Close"
-          class="dialog__headerbtn"
-          @click="toggleDialog"
-        >
-
-        <div class="tooltip">
-          <div class="icon__x"></div>
-          <span class="arrow-top tooltip-margin-top tooltiptext tooltiptext-top">{{ t('reuse.close') }}</span>
-        </div>
-        </button>
-      </div>
       </div>
       <slot></slot>
     </div>
@@ -64,10 +69,10 @@ export default {
       type: String,
       default: "10vh",
     },
-    guide:{
+    guide: {
       type: Boolean,
       default: false,
-    }
+    },
   },
   computed: {
     /**
@@ -92,6 +97,9 @@ export default {
      * CreatedBy: NQTruong (15/05/2023)
      */
     toggleDialog() {
+      if (this.modelValue) {
+        this.$emit("close");
+      }
       this.$emit("update:modelValue", !this.modelValue);
     },
   },

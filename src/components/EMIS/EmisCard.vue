@@ -5,12 +5,12 @@ const props = defineProps(['value']);
 <template>
   <div class="card-container">
     <div class="card-image">
-        <div class="card-subject">{{ props.value.subject }}</div>
+        <div class="card-subject">{{ props.value.gradeName }} - {{ props.value.subjectName }}</div>
         <img class="card-image" alt="subject" src="../../assets/emis/subjects-avatar/default.png"/>
     </div>
     <div class="card-description">
       <div class="card-header">
-        <div class="card-title">{{ props.value.title }}</div>
+        <div class="card-title">{{ props.value.exerciseName }}</div>
         <div class="card-button">
             <img src="../../assets/emis/icon/three_dots.svg" alt="more" />
         </div>
@@ -19,16 +19,16 @@ const props = defineProps(['value']);
             <div class="card-icon">
                 <img src="../../assets/emis/icon/stack.svg" alt="stack" />
             </div>
-            <div class="card-number">{{ props.value.questions }}</div>
+            <div class="card-number">{{ props.value.question }}</div>
             <div class="card-status">
-              <div class="card-status-content">{{ props.value.status }}</div>
+              <div class="card-status-content">{{ props.value.exerciseStatus }}</div>
             </div>
         </div>
         <div class="card-owner">
             <div class="card-user-icon">
                 <img src="../../assets/emis/icon/user.svg" alt="user" />
             </div>
-            <div class="card-username">{{ props.value.username }}</div>
+            <div class="card-username">{{ props.value.createdBy }}</div>
         </div>
     </div>
   </div>

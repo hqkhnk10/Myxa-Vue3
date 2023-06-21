@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 
-const TheLayout = () => import("@/components/Layout/TheLayout.vue");
+// const TheLayout = () => import("@/components/Layout/TheLayout.vue");
 const NotFound = () => import("@/views/pages/base-view/NotFound.vue");
 const BaseStyle = () => import("@/views/pages/base-view/BaseStyle.vue");
 const EmulationTitle = () =>
@@ -10,7 +10,6 @@ const mainRoutes = [
   {
     path: "/",
     name: "home",
-    component: TheLayout,
     children: [],
   },
   {
@@ -36,16 +35,6 @@ const mainRoutes = [
     name: "Prepare",
     component: () => import("@/views/pages/emis-study/create-homework/PreparePage.vue"),
     children: [
-      {
-        path: "/create-prepare",
-        name: "CreatePrepare",
-        component: () => import("@/views/pages/emis-study/create-homework/CreateHomework.vue"),
-      },
-      {
-        path: "/detail-prepare",
-        name: "DetailPrepare",
-        component: () => import("@/views/pages/emis-study/create-homework/DetailHomework.vue"),
-      },
     ],
   },
 ];
@@ -403,7 +392,7 @@ router.beforeEach((to, from, next) => {
   }
   setTimeout(() => {
     next();
-  }, 400);
+  }, 100);
 });
 /**
  * Hide loading when finish change route

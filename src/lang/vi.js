@@ -128,5 +128,26 @@ export const vi = {
     number: "Vui lòng điền số",
     required: "Không được để trống",
     greaterThan0: "Lớn hơn 0"
+  },
+  emis:{
+    personal: "Cá nhân",
+    school: "Trường học",
+    community: "Cộng đồng",
+    share: "Chia sẻ",
+    createGame: "Tạo trò chơi",
+    prepareHW: "Soạn bài",
+    findExercise: "Nhập tên học liệu để tìm kiếm",
+    allExercise: "Tất cả học liệu",
+    allSubject: "Tất cả các môn",
+    allGrade: "Tất cả các khối",
+    cantFindExercise: "Không tìm thấy học liệu",
+    addInformation: "Bổ sung thông tin",
+    changePrepare: "Đổi kiểu soạn",
+    try: "Làm thử",
+    finish: "Hoàn thành",
+    cancel: "Hủy",
+    saveAndClose: "Lưu và đóng",
+    saveAndAdd: "Lưu và thêm câu",
+    addAnswers: "Thêm đáp án"
   }
 };
