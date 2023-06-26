@@ -4,7 +4,8 @@
       :editor="editor"
       v-model="editorData"
       :config="editorConfig"
-      @change="changeData"
+      @input="changeData"
+      @ready="onReady"
     ></ckeditor>
   </div>
 </template>
@@ -18,47 +19,57 @@ export default {
       editor: ClassicEditor,
       editorData: this.modelValue,
       editorConfig: {
-        placeholder: 'Type the content here!',
-        startupFocus : true
+        placeholder: this.placeholder,
+        startupFocus: true,
       },
     };
   },
-  props:{
-    modelValue:{
+  props: {
+    modelValue: {
       type: String,
-      default: ''
-    }
+      default: "",
+    },
+    placeholder: {
+      type: String,
+      default: "",
+    },
   },
-  emits: ['update:modelValue'],
-  methods:{
-    changeData(value){
-      this.$emit['update:modelValue', value]
-    }
+  emits: ["update:modelValue"],
+  methods: {
+    changeData(value) {
+      this.$emit("update:modelValue", value);
+    },
+    onReady() {
+      document.querySelector("#ckeditor .ck .ck-content").focus();
+    },
   },
 };
 </script>
 <style>
-#ckeditor{
+#ckeditor {
   height: 100%;
 }
-#ckeditor .ck.ck-editor{
-    height: 100% ;
+#ckeditor .ck.ck-editor {
+  height: 100%;
 }
-#ckeditor .ck.ck-toolbar{
-    background-color: #fff2ab;
-    border: 0;
-    border-radius: 10px 10px 0 0 !important;
+#ckeditor .ck.ck-toolbar {
+  background-color: #fff2ab;
+  border: 0;
+  border-radius: 10px 10px 0 0 !important;
 }
-#ckeditor .ck.ck-content{
-    background: #fff2ab !important;
-    border: none !important;
-    box-shadow: none !important;
-    height: 100% !important;
+#ckeditor .ck.ck-content {
+  background: #fff2ab !important;
+  border: none !important;
+  box-shadow: none !important;
+  height: 100% !important;
+  padding-left: 24px;
+  font-size: 16px;
+  min-height: 450px;
 }
 #ckeditor .ck.ck-editor__main {
-    height: calc(100% - 38px) !important;
+  height: calc(100% - 38px) !important;
 }
-#ckeditor .ck.ck-toolbar>.ck-toolbar__items {
-    justify-content: flex-end;
+#ckeditor .ck.ck-toolbar > .ck-toolbar__items {
+  justify-content: flex-end;
 }
 </style>

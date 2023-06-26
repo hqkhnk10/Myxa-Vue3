@@ -230,7 +230,7 @@ export default {
       const objValue = this.options?.find(
         (option) => option[this.label] == value
       );
-      if (!objValue) {
+      if (!objValue && value) {
         this.$emit("update:valid", false);
       } else {
         this.$emit("update:valid", true);

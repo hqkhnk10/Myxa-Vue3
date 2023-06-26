@@ -3,7 +3,7 @@
     <div class="exercise-body">
       <div class="exercise-container">
         <div class="exercise-type">
-          <span>Câu 1</span>
+          <span>Câu 1 -</span>
           <misa-combobox
             class="trans-bg"
             :options="questionTypeOptions"
@@ -11,7 +11,10 @@
           ></misa-combobox>
         </div>
         <div style="height: 100%">
-          <CKEditor></CKEditor>
+          <CKEditor
+            v-model="question.questionContent"
+            placeholder="Nhập câu hỏi tại đây"
+          ></CKEditor>
         </div>
         <div class="answer-container">
           <div class="exercise-answer">
@@ -27,7 +30,6 @@
                 <div class="answer-icon">
                   <div
                     class="delete-icon toolbar-icon"
-                    tabindex="0"
                     @click="deleteAnswer(index)"
                   >
                     <img
@@ -36,7 +38,7 @@
                       alt="icon"
                     />
                   </div>
-                  <div class="upload-icon toolbar-icon" tabindex="0">
+                  <div class="upload-icon toolbar-icon">
                     <img
                       src="https://sisapapp.misacdn.net/lms/img/ck_file.301a99b1.svg"
                       width="18"
@@ -46,7 +48,6 @@
                   <div
                     class="checkbox-icon toolbar-icon bg-default"
                     id="checkbox-0"
-                    tabindex="0"
                     :class="{ 'tick-status': answer.answerStatus }"
                     @click="checkStatus(index)"
                   >
@@ -59,7 +60,7 @@
                 </div>
               </div>
               <div class="answer-body" @click="showEditor(index, true)">
-                <div class="answer-content" v-if="answer?.showEditor">
+                <div class="answer-content" v-show="answer?.showEditor">
                   <CKEditorAnswer
                     v-model="answer.answerContent"
                     @on-blur="showEditor(index, false)"
@@ -67,7 +68,7 @@
                 </div>
                 <div
                   class="answer-value"
-                  v-else
+                  v-if="!answer?.showEditor"
                   v-html="answer.answerContent"
                 ></div>
               </div>
@@ -87,7 +88,9 @@
             t("emis.cancel")
           }}</misa-button>
           <misa-button type="default">{{ t("emis.saveAndClose") }}</misa-button>
-          <misa-button>{{ t("emis.saveAndAdd") }}</misa-button>
+          <misa-button @click="saveAndAdd">{{
+            t("emis.saveAndAdd")
+          }}</misa-button>
         </div>
       </div>
     </div>
@@ -157,17 +160,20 @@ const emits = defineEmits(["close-dialog"]);
 //   ],
 // });
 // const exercise = ref({})
-const question = ref({});
+const question = ref({
+  questionType: props.type,
+});
 
 const questionTypeOptions = ref([
-  { value: 1, label: "1" },
-  { value: 1, label: "2" },
-  { value: 1, label: "3" },
-  { value: 1, label: "4" },
-  { value: 1, label: "5" },
+  { value: 1, label: "Chọn đáp án" },
+  { value: 2, label: "Đung sai" },
 ]);
 const answers = ref([]);
 onMounted(() => {
+  /**
+   * Tạo sẵn câu trả lời nếu không có dữ liệu
+   * Created By: NQTruong (20/06/2023)
+   */
   if (!props.value) {
     createDefatulAnswer();
   }
@@ -210,6 +216,11 @@ const createDefatulAnswer = () => {
       break;
   }
 };
+/**
+ * Lấy background của câu trả lời
+ * @param {*} index
+ * Created By: NQTruong (20/06/2023)
+ */
 const getAnswerBg = (index) => {
   switch (index % 4) {
     case 1: //1,5,9
@@ -227,18 +238,53 @@ const getAnswerBg = (index) => {
 const clickCloseButton = () => {
   emits("close-dialog");
 };
+/**
+ * Hiện ckeditor
+ * @param {*} index
+ * @param {*} visible
+ * Created By: NQTruong (20/06/2023)
+ */
 const showEditor = (index, visible) => {
+  console.log("index: ", index, visible);
   answers.value[index].showEditor = visible;
 };
-
+/**
+ * Thay đổi dữ liệu đúng/sai của đáp án
+ * @param {*} index
+ * Created By: NQTruong (20/06/2023)
+ */
 const checkStatus = (index) => {
   answers.value[index].answerStatus = !answers.value[index].answerStatus;
 };
+/**
+ * Xóa câu trả lời
+ * @param {*} index
+ * Created By: NQTruong (20/06/2023)
+ */
 const deleteAnswer = (index) => {
   answers.value.splice(index, 1);
 };
+/**
+ * Thêm câu trả lời
+ * Created By: NQTruong (20/06/2023)
+ */
 const addAnswer = () => {
   answers.value.push({});
+};
+/**
+ * Validate trước khi thêm/sửa câu hỏi
+ */
+const validate = () => {
+  return true;
+};
+/**
+ * Lưu và thêm mới
+ * Created By: NQTruong (20/06/2023)
+ */
+const saveAndAdd = () => {
+  if (validate) {
+    emits("add-question", question.value, answers.value);
+  }
 };
 </script>
 
@@ -274,7 +320,7 @@ const addAnswer = () => {
   width: 1076px;
   border-radius: 10px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.16);
-  height: calc(100vh - 204px);
+  height: calc(100vh - 104px);
   margin-bottom: 0;
   position: relative;
   margin: 50px auto;
@@ -414,5 +460,4 @@ const addAnswer = () => {
 .tick-status {
   background-color: #00c542;
 }
-
 </style>

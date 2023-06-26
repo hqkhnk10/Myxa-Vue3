@@ -148,6 +148,7 @@ export const vi = {
     cancel: "Hủy",
     saveAndClose: "Lưu và đóng",
     saveAndAdd: "Lưu và thêm câu",
-    addAnswers: "Thêm đáp án"
+    addAnswers: "Thêm đáp án",
+    edit: "Chỉnh sửa"
   }
 };

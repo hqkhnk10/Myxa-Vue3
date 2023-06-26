@@ -1,5 +1,16 @@
 <script setup>
-import { defineEmits } from "vue";
+import { defineEmits, defineProps } from "vue";
+import QuestionView from "./QuestionView.vue";
+const props = defineProps({
+  type: {
+    type: Number,
+    default: 1,
+  },
+  exercise: {
+    type: Object,
+    default: () => {},
+  },
+});
 const emit = defineEmits(["openDialog"]);
 const clickQuestionImg = (value) => {
   emit("openDialog", value);
@@ -7,7 +18,10 @@ const clickQuestionImg = (value) => {
 </script>
 <template>
   <div class="content relative compose">
-    <div class="compose-exercise">
+    <div
+      class="compose-exercise"
+      :class="type == 1 ? 'horizontal' : 'vertical'"
+    >
       <div class="extract homework-upload">
         <div class="h5 extract__title mb-6">
           Tách câu hỏi tự động sử dụng công nghệ AI
@@ -68,9 +82,14 @@ const clickQuestionImg = (value) => {
           </div>
         </div>
       </div>
+      <div class="question-view">
+        <div v-for="(question,index) in exercise.questions" :key="index">
+          <QuestionView :question="question" :index="index+1" />
+        </div>
+      </div>
       <div class="compose">
         <div class="h5 mb-6">hoặc tự tạo câu hỏi mới</div>
-        <div class="toolbar horizontal">
+        <div class="toolbar" :class="type == 1 ? 'horizontal' : 'vertical'">
           <div class="step-composing-four">
             <div class="question-library">
               <img
@@ -299,6 +318,9 @@ const clickQuestionImg = (value) => {
   margin-right: 8px;
   width: 120px;
 }
+.toolbar.vertical .question-library {
+  display: none;
+}
 .toolbar .question__icon:hover {
   transform: scale(1.1);
   transition: 0.3s;
@@ -306,5 +328,40 @@ const clickQuestionImg = (value) => {
 .toolbar .question__icon {
   cursor: pointer;
   outline: none;
+}
+.toolbar.vertical .question__desc {
+  display: none;
+}
+.toolbar.vertical .question {
+  height: 40px;
+  margin-bottom: 8px;
+}
+.toolbar.vertical .question img {
+  width: 40px;
+  height: 40px;
+}
+.toolbar.vertical .decore-vertical {
+  display: block;
+  width: 40px;
+  height: 2px;
+  background-color: #b6b9ce;
+  border-radius: 4px;
+  margin: 12px 0;
+}
+.toolbar.vertical .decore-horizontal,
+.compose > .h5.mb-6,
+.compose-exercise.vertical > .homework-upload {
+  display: none;
+}
+.toolbar.vertical {
+  display: flex;
+  flex-direction: column;
+}
+.compose-exercise.vertical {
+  display: flex;
+  gap: 24px;
+}
+.question-view{
+  width: 100%;
 }
 </style>

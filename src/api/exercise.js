@@ -9,3 +9,10 @@ export const getExercises = async (params) => {
   });
   return res;
 };
+export const getDetailExercise = async (params) => {
+  const res = await request.get({
+    baseURL: hostUrl,
+    url: `Exercise/${params}`,
+  });
+  return res;
+};

@@ -1,3 +1,5 @@
+import MisaEnum from "../base/enum";
+
 export const formatNumber = (number) => {
   return number.toLocaleString();
 };
@@ -14,5 +16,16 @@ export const convertToFormData = (data) => {
   }, new FormData());
 };
 export const formatIndexToAlphabet = (index) => {
-  return String.fromCharCode(index + 65)
+  return String.fromCharCode(index + 65);
+};
+
+export const formatBgBaseOnQuestionType = (type) => {
+  switch (type) {
+    case MisaEnum.QuestionType.Choosing:
+      return "blue";
+    case MisaEnum.QuestionType.TrueFalse:
+      return "pink";
+    default:
+      return "";
+  }
 };

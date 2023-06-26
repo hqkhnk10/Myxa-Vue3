@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 /**
- * Store to change the language globally
+ * Store to change the loading globally
  * CreatedBy: NQTruong(15/05/2023)
  */
 export const useLoadingStore = defineStore("loading", {

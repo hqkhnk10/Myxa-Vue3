@@ -31,7 +31,7 @@ const mainRoutes = [
     ],
   },
   {
-    path: "/prepare",
+    path: "/prepare/:id?",
     name: "Prepare",
     component: () => import("@/views/pages/emis-study/create-homework/PreparePage.vue"),
     children: [

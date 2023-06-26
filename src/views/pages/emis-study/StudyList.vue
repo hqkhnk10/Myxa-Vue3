@@ -3,15 +3,17 @@ import { getExercises } from "@/api/exercise";
 import { getGrades } from "@/api/grade";
 import { getSubjects } from "@/api/subject";
 import EmisCard from "@/components/EMIS/EmisCard.vue";
+import MisaEnum from "@/js/base/enum";
 import { watch } from "vue";
 import { onBeforeMount, ref } from "vue";
+import { useRouter } from "vue-router";
 
 const grades = ref([]);
 const subjects = ref([]);
 const cards = ref([]);
 const paginationValue = ref({});
 const paginationParams = ref({
-  pageSize: 1,
+  pageSize: 9,
 });
 const exerciseParams = ref({
   keyword: null,
@@ -43,9 +45,11 @@ const exerciseStatus = ref([
   },
 ]);
 let timeout;
+const { push } = useRouter();
+
 const getExerciseValue = () => {
   loading.value = true;
-  getExercises({ ...paginationParams.value, ...exerciseParams.value})
+  getExercises({ ...paginationParams.value, ...exerciseParams.value })
     .then((res) => {
       cards.value = res.data;
       paginationValue.value = res.pagination;
@@ -54,17 +58,28 @@ const getExerciseValue = () => {
       loading.value = false;
     });
 };
+/**
+ * Reset dữ liệu phân trang
+ * Created By: NQTruong (20/06/2023)
+ */
 const resetPaginationParams = () => {
-  paginationParams.value.pageSize = 1;
+  paginationParams.value.pageSize = 9;
   getExerciseValue();
 };
-
+/**
+ * Reset dữ liệu phân trang khi thay đổi params lọc
+ * Created By: NQTruong (20/06/2023)
+ */
 watch(
   () => exerciseParams,
   () => resetPaginationParams(),
   { deep: true, immediate: true }
 );
 
+/**
+ * Lấy dữ liệu khối và môn
+ * Created By: NQTruong (20/06/2023)
+ */
 onBeforeMount(() => {
   getGrades().then((res) => {
     grades.value = res.data.map((e) => ({
@@ -79,22 +94,44 @@ onBeforeMount(() => {
       }));
     });
 });
-
+/**
+ * Nút Xem thêm (Tăng pageSize)
+ * Created By: NQTruong (20/06/2023)
+ */
 const clickMoreButton = () => {
-  paginationParams.value.pageSize += 1;
+  paginationParams.value.pageSize += 9;
   getExerciseValue();
 };
-const changeKeyword = (e) =>{
-  clearTimeout(timeout)
-      timeout = setTimeout(() => {
-        // Trigger the event or perform desired action after 1000ms
-        exerciseParams.value.keyword = e.target.value
-      }, 1000)
-}
+/**
+ * Keyword thay đổi, Tìm kiếm input debounce
+ * @param {*} e 
+ * Created By: NQTruong (20/06/2023)
+ */
+const changeKeyword = (e) => {
+  clearTimeout(timeout);
+  timeout = setTimeout(() => {
+    // Trigger the event or perform desired action after 1000ms
+    exerciseParams.value.keyword = e.target.value;
+  }, 1000);
+};
+/**
+ * Chuyển sang trang xem chi tiết
+ * @param {*} id 
+ * Created By: NQTruong (20/06/2023)
+ */
+const detailExercise = (id) => {
+  push(MisaEnum.Router.PreparePage + id)
+};
 </script>
 <template>
   <div>
-    <misa-input :modelValue="exerciseParams.keyword" @input="changeKeyword" search reset :placeholder="t('emis.findExercise')"></misa-input>
+    <misa-input
+      :modelValue="exerciseParams.keyword"
+      @input="changeKeyword"
+      search
+      reset
+      :placeholder="t('emis.findExercise')"
+    ></misa-input>
   </div>
   <div class="study-combobox">
     <misa-combobox
@@ -119,6 +156,7 @@ const changeKeyword = (e) =>{
   <div class="grid-card" v-if="paginationValue.count > 0">
     <misa-loading v-model="loading"></misa-loading>
     <EmisCard
+      @click="detailExercise(card?.exerciseId)"
       v-for="(card, index) in cards"
       :key="index"
       :value="card"

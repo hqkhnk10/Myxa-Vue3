@@ -7,7 +7,7 @@
   >
     <div class="dialog-content">
       <div class="dialog-image">
-        <img src="../../../../assets/emis/subjects-avatar/default.png" />
+        <img :src="form.subjectImage" />
       </div>
       <div class="dialog-form">
         <form class="form" id="form-add-title" ref="misaForm">
@@ -62,9 +62,7 @@
             </div>
           </div>
           <div class="form-item">
-            <label class="form-item__label flex"
-              >{{ t("amis.topic") }}<span class="required">*</span></label
-            >
+            <label class="form-item__label flex">{{ t("amis.topic") }}</label>
             <div class="form-item__content">
               <misa-combobox
                 v-model="form.topicId"
@@ -78,7 +76,9 @@
       </div>
     </div>
     <div class="dialog-footer">
-      <misa-button type="default" @click="closeDialog">{{ t("amis.close") }}</misa-button>
+      <misa-button type="default" @click="closeDialog">{{
+        t("amis.close")
+      }}</misa-button>
       <misa-button @click="saveForm">{{ t("reuse.save") }}</misa-button>
     </div>
   </misa-dialog>
@@ -87,33 +87,32 @@
 import { getGrades } from "@/api/grade";
 import { getTopics } from "@/api/topic";
 import { getSubjects } from "@/api/subject";
-import { defineProps, defineEmits, ref, onBeforeMount, watch } from "vue";
-defineProps({
+import { defineProps, defineEmits, ref, watch, computed } from "vue";
+import { useSubjectStore } from "@/store/subject";
+import { useGradeStore } from "@/store/grade";
+const props = defineProps({
   modelValue: {
     type: Boolean,
     default: false,
   },
+  formValue: {
+    type: Object,
+    default: () => {},
+  },
 });
-const grades = ref([]);
-const subjects = ref([]);
-onBeforeMount(() => {
-  getGrades().then((res) => {
-    grades.value = res.data.map((e) => ({
-      value: e.gradeId,
-      label: e.gradeName,
-    }));
-  }),
-    getSubjects().then((res) => {
-      subjects.value = res.data.map((e) => ({
-        value: e.subjectId,
-        label: e.subjectName,
-      }));
-    });
+const gradeStore = useGradeStore();
+const subjectStore = useSubjectStore();
+const grades = computed(() => {
+  return gradeStore.grade;
+});
+const subjects = computed(() => {
+  return subjectStore.subject;
 });
 const form = ref({
-  exerciseName: "",
-  subjectId: 1,
-  gradeId: 1,
+  exerciseName: props.formValue.exerciseName,
+  subjectId: props.formValue.subjectId,
+  gradeId: props.formValue.gradeId,
+  subjectImage: props.formValue.subjectImage,
   topicId: null,
 });
 const validate = ref({
@@ -133,16 +132,19 @@ const validate = ref({
     message: "",
   },
   topicId: {
-    required: true,
     valid: true,
     message: "",
   },
 });
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue", "update-form"]);
 const closeDialog = () => {
   emit("update:modelValue", false);
 };
 const topics = ref([]);
+/**
+ * Thay đổi topic theo dữ liệu môn và khối
+ * Created By: NQTruong (20/06/2023)
+ */
 watch(
   () => form.value.subjectId,
   () => {
@@ -158,12 +160,23 @@ watch(
   },
   { immediate: true }
 );
-const validateForm = () => {};
+/**
+ * Xác thực form
+ * Created By: NQTruong (20/06/2023)
+ */
+const validateForm = () => {
+  return true;
+};
+/**
+ * Lưu form
+ * Created By: NQTruong (20/06/2023)
+ */
 const saveForm = () => {
-    const valid = validateForm();
-    if(valid){
-        closeDialog()
-    }
+  const valid = validateForm();
+  if (valid) {
+    closeDialog();
+    emit("update-form", form.value);
+  }
 };
 </script>
 <style scoped>
@@ -180,10 +193,10 @@ const saveForm = () => {
 .form-grade {
   flex-basis: 40%;
 }
-.dialog-footer{
-    display: flex;
-    width: 100%;
-    justify-content: flex-end;
-    gap: 12px;
+.dialog-footer {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  gap: 12px;
 }
 </style>

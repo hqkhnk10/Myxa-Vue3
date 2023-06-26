@@ -130,27 +130,29 @@
               :class="{ 'tab-selected': tabSelected == 1 }"
               @click="clickTabButton(1)"
             >
-              {{ t('emis.personal') }}
+              {{ t("emis.personal") }}
             </div>
             <div
               class="main-tab"
               :class="{ 'tab-selected': tabSelected == 2 }"
               @click="clickTabButton(2)"
             >
-              {{ t('emis.school') }}
+              {{ t("emis.school") }}
             </div>
             <div
               class="main-tab"
               :class="{ 'tab-selected': tabSelected == 3 }"
               @click="clickTabButton(3)"
             >
-              {{ t('emis.community') }}
+              {{ t("emis.community") }}
             </div>
           </div>
           <div class="header-button">
-            <misa-button type="default">{{ t('emis.share') }}</misa-button>
-            <misa-button>{{ t('emis.createGame') }}</misa-button>
-            <misa-button @click ="clickPrepareButton()">{{ t('emis.prepareHW') }}</misa-button>
+            <misa-button type="default">{{ t("emis.share") }}</misa-button>
+            <misa-button>{{ t("emis.createGame") }}</misa-button>
+            <misa-button @click="clickPrepareButton()">{{
+              t("emis.prepareHW")
+            }}</misa-button>
           </div>
         </div>
         <div class="background-banner w-full" data-v-45abc2fd="">
@@ -255,7 +257,8 @@
               >
                 <div>
                   <span style="font-size: 20px"
-                    >Chia sẻ thêm <b style="font-size: 20px">18</b> học liệu nữa thăng hạng lên
+                    >Chia sẻ thêm <b style="font-size: 20px">18</b> học liệu nữa
+                    thăng hạng lên
                     <b style="font-size: 20px">GIÁO VIÊN SÁNG TẠO</b></span
                   >
                 </div>
@@ -271,17 +274,26 @@
 </template>
 
 <script setup>
+import MisaEnum from "@/js/base/enum";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 const tabSelected = ref(1);
+const { push } = useRouter();
+/**
+ * Đổi tab
+ * Created By: NQTruong (20/06/2023)
+ */
 const clickTabButton = (tab) => {
   tabSelected.value = tab;
 };
-const {push} = useRouter();
-const clickPrepareButton = () =>{
-  push('/prepare')
-}
+/**
+ * Chuyển đến trang soạn bài
+ * Created By: NQTruong (20/06/2023)
+ */
+const clickPrepareButton = () => {
+  push(MisaEnum.Router.PreparePage);
+};
 </script>
 
 <style>

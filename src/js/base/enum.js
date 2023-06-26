@@ -1,4 +1,7 @@
 const MisaEnum = {
+  Router:{
+    PreparePage: "/prepare"
+  },
   Lang: {
     Vietnamese: "vi",
     English: "en",
@@ -39,5 +42,13 @@ const MisaEnum = {
     NotShared: 4,
     FromLibrary: 5,
   },
+  QuestionType:{
+    Choosing: 1,
+    TrueFalse: 2,
+    Fill: 3,
+    Connect: 4,
+    Group: 5,
+    Essay: 6,
+  }
 };
 export default MisaEnum;
