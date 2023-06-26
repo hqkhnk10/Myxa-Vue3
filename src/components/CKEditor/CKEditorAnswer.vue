@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import { decodeHtml } from "@/js/format/format";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 export default {
@@ -38,7 +39,7 @@ export default {
   emits:['on-blur','update:modelValue'],
   methods:{
     changeData(value){
-      this.$emit('update:modelValue', value)
+      this.$emit('update:modelValue', decodeHtml(value))
     },
     onReady(){
       document.querySelector("#answer .ck .ck-content").focus();

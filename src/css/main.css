@@ -27,6 +27,10 @@
 body{
     background: #f4f5f8;
     margin: 0;
+    overflow: hidden;
+}
+#app{
+    height: 100vh;
 }
 h1{
     font-size: 40px;

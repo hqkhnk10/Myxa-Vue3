@@ -3,39 +3,36 @@ import { onMounted, ref, onBeforeMount, computed } from "vue";
 import HomeworkDialog from "./HomeworkDialog.vue";
 import InformationDialog from "./InformationDialog.vue";
 import CreateHomework from "./CreateHomework.vue";
-import { ImageServer } from "@/../public/global";
 import { postQuestion } from "@/api/question";
-import { useRoute } from "vue-router";
-import { getDetailExercise } from "@/api/exercise";
+import { useRoute, useRouter } from "vue-router";
 import { useExerciseStore } from "@/store/exercise";
 import { useGradeStore } from "@/store/grade";
 import { useSubjectStore } from "@/store/subject";
+import MisaEnum from "@/js/base/enum";
 
+const route = useRoute();
+const { push } = useRouter();
+
+/**
+ * Lấy dữ liệu trong store
+ * Created By: NQTruong (20/06/2023)
+ */
 const exerciseStore = useExerciseStore();
 const gradeStore = useGradeStore();
 const subjectStore = useSubjectStore();
 
-const type = ref(1);
-const route = useRoute();
+const type = ref(MisaEnum.FormActions.Add);
 const id = computed(() => route.params.id);
-const dialogValue = ref({
-  modelValue: null,
-  type: "add",
-  visible: false,
-});
+
+const questionType = ref(0);
 const grades = computed(() => {
   return gradeStore.grade;
 });
 const subjects = computed(() => {
   return subjectStore.subject;
 });
-const exercise = ref({});
-const exerciseForm = ref({
-  subjectId: 1,
-  gradeId: 1,
-  exerciseName: "",
-  subjectImage: "http://127.0.0.1:8081/default.png",
-});
+const exerciseId = computed(() => exerciseStore.getExerciseId);
+const exerciseForm = computed(() => exerciseStore.detailExercise);
 const addInfoDialog = ref(false);
 /**
  * Lấy dữ liệu khối và lớp
@@ -51,57 +48,27 @@ onBeforeMount(() => {
  */
 onMounted(() => {
   if (id.value) {
-    getDetailExercise(id.value).then((res) => {
-      exercise.value = res.data[0];
-    });
-    type.value = 2;
+    exerciseStore.getExerciseById(id.value);
+    type.value = MisaEnum.FormActions.Edit;
   }
-  /**
-   * Event bus toggle dialog
-   * @param isShow: to show the dialog
-   * Created At: 19/06/2023
-   * @author NQTruong
-   */
-  //   this.emitter.on("open-dialog", (param) => {
-  //     dialogValue.value.visible = true;
-  //     dialogValue.value.type = param.type;
-  //     dialogValue.value.form = param.form;
-  //   });
 });
-const openDialog = (value) => {
-  dialogValue.value.visible = true;
-  dialogValue.value.type = value;
-};
-const closeDialog = () => {
-  dialogValue.value.visible = false;
-};
+/**
+ * Mở dialog bổ sung thông tin
+ * Created By: NQTruong (20/06/2023)
+ */
 const openAddInfoDialog = () => {
   addInfoDialog.value = true;
 };
 /**
  * Thay đổi ảnh theo subject
- * @param {*} value 
+ * @param {*} value
  * Created By: NQTruong (20/06/2023)
  */
-const changeSubject = (value) => {
-  exerciseForm.value.subjectImage = subjects.value?.find(
-    (e) => e.value == value
-  ).img
-    ? `${ImageServer}${subjects.value?.find((e) => e.value == value).img}`
-    : `${ImageServer}default.png`;
-};
-/**
- * Update dữ liệu bài tập
- * @param {*} form 
- * Created By: NQTruong (20/06/2023)
- */
-const updateForm = (form) => {
-  exerciseForm.value = { ...form };
-};
+const changeSubject = (value) => {};
 /**
  * Thêm bài tập
- * @param {*} question 
- * @param {*} answers 
+ * @param {*} question
+ * @param {*} answers
  * Created By: NQTruong (20/06/2023)
  */
 const addQuestion = (question, answers) => {
@@ -111,13 +78,18 @@ const addQuestion = (question, answers) => {
     answers: answers,
   });
 };
+/**
+ * Về trang chủ
+ * Created By: NQTruong (20/06/2023)
+ */
+const backHomepage = () => {
+  push(MisaEnum.Router.StudyPage);
+};
 </script>
 <template>
-  <div>
-    {{ subjects }}
-    {{ grades }}
+  <div class="prepare-container">
     <div class="prepare-header">
-      <div class="back-button">
+      <div class="back-button" @click="backHomepage">
         <img src="../../../../assets/emis/icon/back.svg" alt="back" />
       </div>
       <div class="prepare-container">
@@ -161,23 +133,11 @@ const addQuestion = (question, answers) => {
         </div>
       </div>
     </div>
-    <create-homework
-      @open-dialog="openDialog"
-      :type="type"
-      :exercise="exercise"
-    ></create-homework>
-    <HomeworkDialog
-      v-if="dialogValue.visible"
-      :type="dialogValue.type"
-      :value="dialogValue.modelValue"
-      @close-dialog="closeDialog"
-      @add-question="addQuestion"
-    ></HomeworkDialog>
+    <create-homework :type="type"></create-homework>
+    <HomeworkDialog ref="hwdialog"></HomeworkDialog>
     <information-dialog
       v-if="addInfoDialog"
-      v-model="addInfoDialog"
-      :formValue="exerciseForm"
-      @update-form="updateForm"
+      ref="infodialog"
     ></information-dialog>
   </div>
 </template>
@@ -226,5 +186,9 @@ const addQuestion = (question, answers) => {
 }
 input {
   padding: 0;
+}
+.prepare-container {
+  background: white;
+  height: 100%;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="exercise-dialog">
+  <div class="exercise-dialog" v-if="dialogVisible">
     <div class="exercise-body">
       <div class="exercise-container">
         <div class="exercise-type">
@@ -115,20 +115,37 @@
 <script setup>
 import CKEditor from "@/components/CKEditor/CKEditor.vue";
 import CKEditorAnswer from "@/components/CKEditor/CKEditorAnswer.vue";
+import MisaEnum from "@/js/base/enum";
 import { formatIndexToAlphabet } from "@/js/format/format";
-import { ref, defineProps, onMounted, defineEmits } from "vue";
+import { useExerciseStore } from "@/store/exercise";
+import { storeToRefs } from "pinia";
+import { ref, defineEmits, defineExpose, watch, onMounted } from "vue";
+import { emitter } from "@/main";
 
-const props = defineProps({
-  type: {
-    type: Number,
-    description: "1.Chọn đáp án, 2.Đúng/sai",
-  },
-  value: {
-    type: Object,
-    default: () => null,
-  },
-});
 const emits = defineEmits(["close-dialog"]);
+const dialogVisible = ref(false);
+defineExpose({
+  dialogVisible,
+});
+const type = ref("");
+const questionType = ref(0);
+const questionIndex = ref(-1);
+onMounted(() => {
+  /**
+   * Event bus dialog visible
+   * @param isShow: to open/close the dialog
+   * Created At: 20/06/2023
+   * @author NQTruong
+   */
+  emitter.on("homework-dialog-visible", function (args) {
+    const { isShow, formType, questionTypes, index } = { ...args };
+    console.log("emit", isShow, formType, questionTypes, index);
+    dialogVisible.value = isShow;
+    type.value = formType;
+    questionType.value = questionTypes;
+    questionIndex.value = index;
+  });
+});
 // const postData = ref({
 //   exercise: {
 //     exerciseName: "Phép trừ",
@@ -160,62 +177,35 @@ const emits = defineEmits(["close-dialog"]);
 //   ],
 // });
 // const exercise = ref({})
+const exerciseStore = useExerciseStore();
+const { getDetailQuestion } = storeToRefs(exerciseStore);
 const question = ref({
-  questionType: props.type,
+  questionType: questionType.value,
+  questionContent: "",
 });
-
-const questionTypeOptions = ref([
-  { value: 1, label: "Chọn đáp án" },
-  { value: 2, label: "Đung sai" },
-]);
+const questionTypeOptions = exerciseStore.questionTypeOptions;
 const answers = ref([]);
-onMounted(() => {
-  /**
-   * Tạo sẵn câu trả lời nếu không có dữ liệu
-   * Created By: NQTruong (20/06/2023)
-   */
-  if (!props.value) {
-    createDefatulAnswer();
+/**
+ * Thay đổi dữ liệu khi mở dialog
+ * Created By: NQTruong (20/06/2023)
+ */
+watch(
+  () => dialogVisible.value,
+  () => {
+    if (type.value == MisaEnum.FormActions.Add) {
+      exerciseStore.createDefatulAnswer(questionType.value);
+      question.value = {
+        questionType: questionType.value,
+        questionContent: "",
+      };
+      answers.value = exerciseStore.answers;
+    } else {
+      question.value = getDetailQuestion.value(questionIndex.value);
+      answers.value = question.value?.answers;
+    }
   }
-});
-const createDefatulAnswer = () => {
-  switch (props.type) {
-    case 1:
-      answers.value = [
-        {
-          answerContent: "",
-          status: false,
-        },
-        {
-          answerContent: "",
-          status: false,
-        },
-        {
-          answerContent: "",
-          status: false,
-        },
-        {
-          answerContent: "",
-          status: false,
-        },
-      ];
-      break;
-    case 2:
-      answers.value = [
-        {
-          answerContent: "Đúng",
-          status: false,
-        },
-        {
-          answerContent: "Sai",
-          status: false,
-        },
-      ];
-      break;
-    default:
-      break;
-  }
-};
+);
+
 /**
  * Lấy background của câu trả lời
  * @param {*} index
@@ -235,8 +225,12 @@ const getAnswerBg = (index) => {
       return "answer-bg-white";
   }
 };
+/**
+ * Tắt dialog
+ * Created By: NQTruong (20/06/2023)
+ */
 const clickCloseButton = () => {
-  emits("close-dialog");
+  dialogVisible.value = false;
 };
 /**
  * Hiện ckeditor
@@ -283,7 +277,7 @@ const validate = () => {
  */
 const saveAndAdd = () => {
   if (validate) {
-    emits("add-question", question.value, answers.value);
+    exerciseStore.addQuestion(question.value, answers.value);
   }
 };
 </script>

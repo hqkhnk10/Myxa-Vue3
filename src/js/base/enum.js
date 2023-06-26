@@ -1,6 +1,7 @@
 const MisaEnum = {
   Router:{
-    PreparePage: "/prepare"
+    PreparePage: "/prepare",
+    StudyPage: "/study"
   },
   Lang: {
     Vietnamese: "vi",

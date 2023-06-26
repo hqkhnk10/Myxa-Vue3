@@ -1,77 +1,35 @@
 <template>
-  <div>
+  <div class="page">
     <nav class="header-container" id="nav" style="">
       <div class="header-navigation-left header-navigation">
         <div class="navigation">
-          <a href="/lms/teacher/dashboard" class="menu-item"
-            ><img
-              src="https://sisapapp.misacdn.net/lms/img/ic_chart.870683b6.svg"
-              alt="chart"
-            />
+          <a class="menu-item"
+            ><img :src="chart" alt="chart" />
             <div class="item-text">Tổng quan</div></a
-          ><a href="/lms/teacher/classroom" class="menu-item"
-            ><img
-              src="https://sisapapp.misacdn.net/lms/img/ic_home.47a0479b.svg"
-              alt="home"
-            />
+          ><a class="menu-item"
+            ><img :src="home" alt="home" />
             <div class="item-text">Lớp học</div></a
-          ><a href="/lms/teacher/storage" class="router-link-active menu-item"
-            ><img
-              src="https://sisapapp.misacdn.net/lms/img/ic_multi.7d8b269c.svg"
-              alt="multi"
-            />
+          ><a class="router-link-active menu-item router-link-active"
+            ><img :src="multi" alt="multi" />
             <div class="item-text">Học liệu</div></a
-          ><a href="/lms/teacher/training" class="menu-item"
-            ><img
-              src="https://sisapapp.misacdn.net/lms/img/ic_multi.7d8b269c.svg"
-              alt="multi"
-            />
+          ><a class="menu-item"
+            ><img :src="multi" alt="multi" />
             <div class="item-text">Đào tạo MISA EMIS</div></a
           >
         </div>
-        <!---->
       </div>
       <div class="header-right">
-        <div class="ms-combo-box validatable">
-          <!---->
-          <div class="el-select mr-3" readonly="" style="width: 185px">
-            <div class="select-trigger" aria-describedby="el-popper-4882">
-              <!---->
-              <div class="el-input el-input--suffix" data-v-742cb8d3="">
-                <!----><input
-                  class="el-input__inner"
-                  type="text"
-                  readonly=""
-                  autocomplete="off"
-                  placeholder="Chọn"
-                  data-v-742cb8d3=""
-                /><!----><span class="el-input__suffix" data-v-742cb8d3=""
-                  ><span class="el-input__suffix-inner" data-v-742cb8d3=""
-                    ><i
-                      class="el-select__caret el-input__icon el-icon-arrow-up"
-                    ></i
-                    ><!----><!----><!----><!----><!----></span
-                  ><!----></span
-                ><!----><!---->
-              </div>
-            </div>
-          </div>
-          <!---->
+        <div class="ms-combo-box">
+          <misa-combobox></misa-combobox>
         </div>
         <div class="help-container">
-          <img
-            class="help"
-            src="https://sisapapp.misacdn.net/lms/img/ic_Material.0dcea9c1.svg"
-            alt="help"
-            width="24"
-            height="24"
-          />
+          <img class="help" :src="grid" alt="help" width="24" height="24" />
         </div>
         <div class="help-container" data-v-1a2138f9="">
           <div class="flex justify-center items-center">
             <img
               class="help outline-none"
-              src="https://sisapapp.misacdn.net/lms/img/ic_Setting_24.425ce083.svg"
+              :src="setting"
               alt="help"
               width="24"
               height="24"
@@ -82,27 +40,23 @@
         <div class="help-container" data-v-c6574156="">
           <img
             class="help outline-none"
-            src="https://sisapapp.misacdn.net/lms/img/ic_Help_20.fbed8b0e.svg"
+            :src="question"
             alt="help"
             width="24"
             height="24"
             tabindex="0"
           />
         </div>
-        <!---->
-        <div
-          class="notify-container"
-          ariadescribedby="el-popper-8769"
-          data-v-a72120ca=""
-        >
+
+        <div class="notify-container">
           <img
             class="icon outline-none"
-            src="https://sisapapp.misacdn.net/lms/img/ic_Noti_24.9f8729e8.svg"
+            :src="notification"
             alt="help"
             width="24"
             height="24"
             tabindex="0"
-          /><!---->
+          />
         </div>
         <div class="user-container header-user">
           <div class="header-avatar">
@@ -111,11 +65,7 @@
                 <span class="hello">Xin chào, </span
                 ><span class="full-name">Anh</span>
               </div>
-              <img
-                class="image"
-                src="../../../assets/emis/icon/avatar.png"
-                alt="ava"
-              />
+              <img class="image" :src="avatar" alt="ava" />
             </div>
           </div>
         </div>
@@ -123,151 +73,132 @@
     </nav>
     <main class="main-emis">
       <div class="main-container">
-        <div class="tab-container">
-          <div class="tab-flex">
-            <div
-              class="main-tab"
-              :class="{ 'tab-selected': tabSelected == 1 }"
-              @click="clickTabButton(1)"
-            >
-              {{ t("emis.personal") }}
-            </div>
-            <div
-              class="main-tab"
-              :class="{ 'tab-selected': tabSelected == 2 }"
-              @click="clickTabButton(2)"
-            >
-              {{ t("emis.school") }}
-            </div>
-            <div
-              class="main-tab"
-              :class="{ 'tab-selected': tabSelected == 3 }"
-              @click="clickTabButton(3)"
-            >
-              {{ t("emis.community") }}
-            </div>
-          </div>
-          <div class="header-button">
-            <misa-button type="default">{{ t("emis.share") }}</misa-button>
-            <misa-button>{{ t("emis.createGame") }}</misa-button>
-            <misa-button @click="clickPrepareButton()">{{
-              t("emis.prepareHW")
-            }}</misa-button>
-          </div>
-        </div>
-        <div class="background-banner w-full" data-v-45abc2fd="">
-          <div class="w-full h-full" data-v-45abc2fd="">
-            <!---->
-            <div class="w-full relative h-full">
-              <img
-                class="w-full h-full"
-                src="https://sisapapp.misacdn.net/lms/img/Backgroud_Positive.e10ee7f3.png"
-                width="998"
-                style="opacity: 0.7"
-                alt="bg"
-              />
+        <div class="main-content">
+          <div class="tab-container">
+            <div class="tab-flex">
               <div
-                class="banner-title"
-                style="
-                  z-index: 9;
-                  width: 174px;
-                  height: 300px;
-                  background-image: url('https://sisapapp.misacdn.net/lms/img/Subtraction_Big.96f1c8cf.png');
-                "
+                class="main-tab"
+                :class="{ 'tab-selected': tabSelected == 1 }"
+                @click="clickTabButton(1)"
               >
-                <div
-                  class="title-teacher mt-10 mb-4"
-                  style="color: rgb(89, 164, 239)"
-                >
-                  GIÁO VIÊN TÍCH CỰC
-                </div>
+                {{ t("emis.personal") }}
+              </div>
+              <div
+                class="main-tab"
+                :class="{ 'tab-selected': tabSelected == 2 }"
+                @click="clickTabButton(2)"
+              >
+                {{ t("emis.school") }}
+              </div>
+              <div
+                class="main-tab"
+                :class="{ 'tab-selected': tabSelected == 3 }"
+                @click="clickTabButton(3)"
+              >
+                {{ t("emis.community") }}
+              </div>
+            </div>
+            <div class="header-button">
+              <misa-button type="default">{{ t("emis.share") }}</misa-button>
+              <misa-button>{{ t("emis.createGame") }}</misa-button>
+              <misa-button @click="clickPrepareButton()">{{
+                t("emis.prepareHW")
+              }}</misa-button>
+            </div>
+          </div>
+          <div class="background-banner w-full">
+            <div class="w-full h-full">
+              <div class="w-full relative h-full">
                 <img
-                  src="https://sisapapp.misacdn.net/lms/img/Layer_Category_3.e59f16ba.png"
-                  alt="layer"
+                  class="w-full h-full"
+                  :src="background"
+                  width="998"
+                  style="opacity: 0.7"
+                  alt="bg"
                 />
-              </div>
-              <div
-                class="absolute total-exercise"
-                style="color: rgb(69, 139, 220)"
-              >
-                <div class="flex items-center">
-                  <div class="item mr-12">
-                    <div>
-                      <img
-                        class="icRepeatGrid_1"
-                        src="https://sisapapp.misacdn.net/lms/img/Subtraction_Arrow.89f2c584.png"
-                        alt="grid"
-                      />
+                <div class="banner-title">
+                  <div class="title-teacher mt-10 mb-4">GIÁO VIÊN TÍCH CỰC</div>
+                  <img :src="bglayer" alt="layer" />
+                </div>
+                <div class="absolute total-exercise">
+                  <div class="flex items-center">
+                    <div class="item mr-12">
+                      <div>
+                        <img class="icRepeatGrid_1" :src="bgarrow" alt="grid" />
+                      </div>
+                      <div
+                        class="absolute top-0"
+                        style="
+                          text-align: center;
+                          padding-left: 36px;
+                          padding-top: 36px;
+                        "
+                      >
+                        <div class="text-count">141</div>
+                        <label class="text-content">Học liệu đã soạn</label>
+                      </div>
                     </div>
-                    <div
-                      class="absolute top-0"
-                      style="
-                        text-align: center;
-                        padding-left: 36px;
-                        padding-top: 36px;
-                      "
-                    >
-                      <div class="text-count">141</div>
-                      <label class="text-content">Học liệu đã soạn</label>
+                    <div class="item mr-12">
+                      <div>
+                        <img
+                          class="icRepeatGrid_1"
+                          :src="bgarrow"
+                          alt="bgarrow"
+                        />
+                      </div>
+                      <div
+                        class="absolute top-0"
+                        style="
+                          text-align: center;
+                          padding-left: 30px;
+                          padding-top: 36px;
+                        "
+                      >
+                        <div class="text-count">13</div>
+                        <label class="text-content">Học liệu đã chia sẻ</label>
+                      </div>
                     </div>
-                  </div>
-                  <div class="item mr-12">
-                    <div>
-                      <img
-                        class="icRepeatGrid_1"
-                        src="https://sisapapp.misacdn.net/lms/img/Subtraction_Arrow.89f2c584.png"
-                      />
-                    </div>
-                    <div
-                      class="absolute top-0"
-                      style="
-                        text-align: center;
-                        padding-left: 30px;
-                        padding-top: 36px;
-                      "
-                    >
-                      <div class="text-count">13</div>
-                      <label class="text-content">Học liệu đã chia sẻ</label>
-                    </div>
-                  </div>
-                  <div class="item">
-                    <div>
-                      <img
-                        class="icRepeatGrid_1"
-                        src="https://sisapapp.misacdn.net/lms/img/Subtraction_Arrow.89f2c584.png"
-                      />
-                    </div>
-                    <div
-                      class="absolute top-0"
-                      style="
-                        text-align: center;
-                        padding-left: 12px;
-                        padding-top: 36px;
-                      "
-                    >
-                      <div class="text-count">568</div>
-                      <label class="text-content">Người sử dụng học liệu</label>
+                    <div class="item">
+                      <div>
+                        <img
+                          class="icRepeatGrid_1"
+                          :src="bgarrow"
+                          alt="bgarrow"
+                        />
+                      </div>
+                      <div
+                        class="absolute top-0"
+                        style="
+                          text-align: center;
+                          padding-left: 12px;
+                          padding-top: 36px;
+                        "
+                      >
+                        <div class="text-count">568</div>
+                        <label class="text-content"
+                          >Người sử dụng học liệu</label
+                        >
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div
-                class="absolute text-share-exercise text-center"
-                style="color: rgb(69, 139, 220)"
-              >
-                <div>
-                  <span style="font-size: 20px"
-                    >Chia sẻ thêm <b style="font-size: 20px">18</b> học liệu nữa
-                    thăng hạng lên
-                    <b style="font-size: 20px">GIÁO VIÊN SÁNG TẠO</b></span
-                  >
+                <div
+                  class="absolute text-share-exercise text-center"
+                  style="color: rgb(69, 139, 220)"
+                >
+                  <div>
+                    <span style="font-size: 20px"
+                      >Chia sẻ thêm <b style="font-size: 20px">18</b> học liệu
+                      nữa thăng hạng lên
+                      <b style="font-size: 20px">GIÁO VIÊN SÁNG TẠO</b></span
+                    >
+                  </div>
                 </div>
-                <!---->
               </div>
             </div>
           </div>
+          <router-view></router-view>
         </div>
-        <router-view></router-view>
       </div>
     </main>
   </div>
@@ -275,11 +206,26 @@
 
 <script setup>
 import MisaEnum from "@/js/base/enum";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
+import {
+  chart,
+  home,
+  multi,
+  question,
+  setting,
+  grid,
+  notification,
+  background,
+  bglayer,
+  bgarrow,
+  avatar,
+} from "@/js/img/getImg";
+import { useExerciseStore } from "@/store/exercise";
 
 const tabSelected = ref(1);
 const { push } = useRouter();
+const exerciseStore = useExerciseStore();
 /**
  * Đổi tab
  * Created By: NQTruong (20/06/2023)
@@ -294,6 +240,13 @@ const clickTabButton = (tab) => {
 const clickPrepareButton = () => {
   push(MisaEnum.Router.PreparePage);
 };
+/**
+ * Reset dữ liệu trong store
+ * Created By: NQTruong (20/06/2023)
+ */
+onMounted(() => {
+  exerciseStore.resetValue();
+});
 </script>
 
 <style>
@@ -312,6 +265,8 @@ const clickPrepareButton = () => {
   overflow-y: hidden;
   scrollbar-width: thin;
   width: 100%;
+  background: white;
+  overflow: hidden;
 }
 .header-navigation-left,
 .navigation {
@@ -352,6 +307,10 @@ const clickPrepareButton = () => {
   border-bottom: 2px solid #8a6bf6;
   font-weight: 700;
   color: #8a6bf6;
+}
+.menu-item.router-link-active img {
+  filter: invert(69%) sepia(72%) saturate(6261%) hue-rotate(227deg)
+    brightness(99%) contrast(94%);
 }
 .header-container .header-right {
   height: 100%;
@@ -417,10 +376,18 @@ const clickPrepareButton = () => {
 .main-emis {
   display: flex;
   justify-content: center;
+  height: calc(100vh - 64px);
 }
 .main-container {
-  width: 1024px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
   padding-top: 16px;
+}
+.main-content {
+  width: 1024px;
 }
 .main-tab {
   height: 40px;
@@ -435,6 +402,7 @@ const clickPrepareButton = () => {
 .tab-container {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 20px;
 }
 .tab-selected {
   overflow: hidden;
@@ -459,8 +427,13 @@ const clickPrepareButton = () => {
   display: flex;
   flex-direction: column;
   align-items: center;
+  z-index: 9;
+  width: 174px;
+  height: 300px;
+  background-image: url("https://sisapapp.misacdn.net/lms/img/Subtraction_Big.96f1c8cf.png");
 }
 .title-teacher {
+  color: rgb(89, 164, 239);
   font-size: 20px;
   text-align: center;
   width: 136px;
@@ -476,6 +449,7 @@ const clickPrepareButton = () => {
   top: 0;
 }
 .total-exercise {
+  color: rgb(69, 139, 220);
   left: 272px;
   top: 0;
 }
@@ -490,5 +464,14 @@ const clickPrepareButton = () => {
   top: 210px;
   width: 100%;
   text-align: center;
+}
+.page {
+  overflow: hidden;
+  height: 100vh;
+  background: white;
+}
+.ms-combo-box {
+  width: 185px;
+  margin-right: 12px;
 }
 </style>

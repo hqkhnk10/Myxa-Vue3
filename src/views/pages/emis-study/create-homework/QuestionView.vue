@@ -6,8 +6,8 @@
     ></div>
     <div class="question-container">
       <div class="question-content">
-        <div class="question-index">{{ index }}.</div>
-        <div>{{ question.questionContent }}</div>
+        <div class="question-index">{{ index + 1 }}.</div>
+        <div v-html="question.questionContent"></div>
       </div>
       <div class="answer-container">
         <div
@@ -18,9 +18,7 @@
           <div class="answer__index" :class="{ true: answer.answerStatus }">
             {{ formatIndexToAlphabet(index) }}
           </div>
-          <div>
-            {{ answer.answerContent }}
-          </div>
+          <div v-html="answer.answerContent"></div>
         </div>
       </div>
       <div class="question-button">
@@ -31,23 +29,17 @@
         </div>
         <div>
           <misa-button type="default" class="icon">
-            <img
-              src="https://sisapapp.misacdn.net/lms/img/ic_dublicate.1b09bc72.svg"
-            />
+            <img :src="duplicate" alt="duplicate" />
           </misa-button>
         </div>
         <div>
           <misa-button type="default" class="icon">
-            <img
-              src="https://sisapapp.misacdn.net/lms/img/icon_delete.9097d258.svg"
-              alt="icon"
-            />
+            <img :src="deleteIcon" alt="icon" />
           </misa-button>
         </div>
       </div>
     </div>
   </div>
-  <homework-dialog :dialogVisble="dialogVisble"></homework-dialog>
 </template>
 
 <script setup>
@@ -56,15 +48,21 @@ import {
   formatIndexToAlphabet,
   formatBgBaseOnQuestionType,
 } from "@/js/format/format";
+import { duplicate, deleteIcon } from "@/js/img/getImg";
+import { emitter } from "@/main";
+import MisaEnum from "@/js/base/enum";
 
-const dialogVisble = ref(() => {})
-
+/**
+ * Mở dialog sửa
+ * Created By: NQTruong (20/06/2023)
+ */
 const openDialog = () => {
-    
-}
-const isOpen = ref(false);
-const dialogVisbleFn = (value) => {
-  isOpen.value = false;
+  emitter.emit("homework-dialog-visible", {
+    isShow: true,
+    formType: MisaEnum.FormActions.Edit,
+    questionTypes: props.question?.questionType,
+    index: props.index,
+  });
 };
 const props = defineProps({
   question: {
@@ -76,7 +74,6 @@ const props = defineProps({
     default: 0,
   },
 });
-console.log("props", props.question);
 </script>
 
 <style scoped>

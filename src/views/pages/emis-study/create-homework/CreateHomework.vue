@@ -1,27 +1,56 @@
 <script setup>
-import { defineEmits, defineProps } from "vue";
+import { computed, defineEmits, defineProps } from "vue";
 import QuestionView from "./QuestionView.vue";
+import { useExerciseStore } from "@/store/exercise";
+import MisaEnum from "@/js/base/enum";
+import { emitter } from "@/main";
+
 const props = defineProps({
   type: {
-    type: Number,
-    default: 1,
-  },
-  exercise: {
-    type: Object,
-    default: () => {},
+    type: String,
+    default: "add",
   },
 });
-const emit = defineEmits(["openDialog"]);
+
+const exerciseStore = useExerciseStore();
+const questions = computed(() => exerciseStore.detailExercise.questions);
+const questionTypeOptions = computed(() => exerciseStore.questionTypeOptions);
+
+/**
+ * Mở dialog sửa câu hỏi
+ * @param {*} value
+ * Created By: NQTruong (20/06/2023)
+ */
 const clickQuestionImg = (value) => {
-  emit("openDialog", value);
+  emitter.emit("homework-dialog-visible", {
+    isShow: true,
+    formType: MisaEnum.FormActions.Add,
+    questionTypes: value,
+    index: -1,
+  });
+};
+/**
+ * Render class
+ * Created By: NQTruong (20/06/2023)
+ */
+const renderDirection = () => {
+  switch (props.type) {
+    case MisaEnum.FormActions.Add:
+      return "horizontal";
+    case MisaEnum.FormActions.Edit:
+      if (questions.value.length > 0) {
+        return "vertical";
+      } else {
+        return "horizontal";
+      }
+    default:
+      return "horizontal";
+  }
 };
 </script>
 <template>
   <div class="content relative compose">
-    <div
-      class="compose-exercise"
-      :class="type == 1 ? 'horizontal' : 'vertical'"
-    >
+    <div class="compose-exercise" :class="renderDirection()">
       <div class="extract homework-upload">
         <div class="h5 extract__title mb-6">
           Tách câu hỏi tự động sử dụng công nghệ AI
@@ -32,14 +61,14 @@ const clickQuestionImg = (value) => {
               class="el-button ms-button el-button--default mt-3 mr-3 button--accent"
               type="button"
             >
-              <!----><!----><span class="flex items-center justify-center"
+              <span class="flex items-center justify-center"
                 >Tải lên file bài tập</span
               ></button
             ><button
               class="el-button ms-button el-button--default mt-3 button--green"
               type="button"
             >
-              <!----><!----><span class="flex items-center justify-center"
+              <span class="flex items-center justify-center"
                 >Tải file Excel mẫu</span
               >
             </button>
@@ -54,6 +83,7 @@ const clickQuestionImg = (value) => {
               >
                 <div class="extract__content__icon">
                   <img
+                    alt="file"
                     src="https://sisapapp.misacdn.net/lms/img/ic_extract.d2689d03.svg"
                     height="64"
                   />
@@ -66,15 +96,11 @@ const clickQuestionImg = (value) => {
             ></label>
             <div class="preview-menu-container">
               <div class="ms-upload-field position-relative">
-                <label
-                  class="label-input"
-                  for="0acb3c49-cc47-4f3d-9031-97465d55bead"
-                  ><span></span></label
+                <label class="label-input"><span></span></label
                 ><input
                   type="file"
                   class="position-relative"
                   accept=".png,.jpg,.jpeg,.bmp,.doc,.docx,.xls,.xlsx,.pdf,.mp3,.mp4,.m4a,.ppt,.pptx,.odp"
-                  id="0acb3c49-cc47-4f3d-9031-97465d55bead"
                   style="display: none"
                 />
               </div>
@@ -83,16 +109,17 @@ const clickQuestionImg = (value) => {
         </div>
       </div>
       <div class="question-view">
-        <div v-for="(question,index) in exercise.questions" :key="index">
-          <QuestionView :question="question" :index="index+1" />
+        <div v-for="(question, index) in questions" :key="index">
+          <QuestionView :question="question" :index="index" />
         </div>
       </div>
       <div class="compose">
         <div class="h5 mb-6">hoặc tự tạo câu hỏi mới</div>
-        <div class="toolbar" :class="type == 1 ? 'horizontal' : 'vertical'">
+        <div class="toolbar" :class="renderDirection()">
           <div class="step-composing-four">
             <div class="question-library">
               <img
+                alt="icon"
                 src="https://sisapapp.misacdn.net/lms/img/library.fc851823.svg"
                 class="question__icon"
                 width="64"
@@ -101,104 +128,32 @@ const clickQuestionImg = (value) => {
             </div>
           </div>
           <div class="decore-horizontal decore ml-5">
-            <img src="https://sisapapp.misacdn.net/lms/img/line.32d94e2c.svg" />
+            <img
+              alt="line"
+              src="https://sisapapp.misacdn.net/lms/img/line.32d94e2c.svg"
+            />
           </div>
           <div class="step-composing-three w-full">
-            <div class="question" @click="clickQuestionImg(1)">
-              <div
-                placement="left"
-                hide-after="100"
-                show-after="100"
-                content="Thêm câu chọn đáp án"
-              >
+            <div
+              class="question"
+              v-for="(question, index) in questionTypeOptions"
+              :key="index"
+              @click="clickQuestionImg(question.value)"
+            >
+              <div>
                 <img
-                  src="https://sisapapp.misacdn.net/lms/img/select.c15dfe74.svg"
+                  :src="question?.img"
                   class="question__icon"
                   width="64"
+                  alt="question-icon"
                 />
               </div>
-              <div class="question__desc">Chọn đáp án</div>
-            </div>
-            <div class="question" @click="clickQuestionImg(2)">
-              <div
-                placement="left"
-                hide-after="100"
-                show-after="100"
-                content="Thêm câu đúng sai"
-              >
-                <img
-                  src="https://sisapapp.misacdn.net/lms/img/yesorno.7f4f0b5a.svg"
-                  class="question__icon"
-                  width="64"
-                />
-              </div>
-              <div class="question__desc">Đúng Sai</div>
-            </div>
-            <div class="question">
-              <div
-                placement="left"
-                hide-after="100"
-                show-after="100"
-                content="Thêm câu điền vào chỗ trống"
-              >
-                <img
-                  src="https://sisapapp.misacdn.net/lms/img/fill.af676902.svg"
-                  class="question__icon"
-                  width="64"
-                />
-              </div>
-              <div class="question__desc">Điền vào chỗ trống</div>
-            </div>
-            <div class="question">
-              <div
-                placement="left"
-                hide-after="100"
-                show-after="100"
-                content="Thêm câu ghép nối"
-              >
-                <img
-                  src="https://sisapapp.misacdn.net/lms/img/pairing.4e1fb31f.svg"
-                  class="question__icon"
-                  width="64"
-                />
-              </div>
-              <div class="question__desc">Ghép nối</div>
-            </div>
-            <div class="question">
-              <div
-                placement="left"
-                hide-after="100"
-                show-after="100"
-                content="Thêm câu hỏi nhóm"
-              >
-                <img
-                  src="https://sisapapp.misacdn.net/lms/img/group.ca2a19ef.svg"
-                  class="question__icon"
-                  width="64"
-                />
-              </div>
-              <div class="question__desc">Câu hỏi nhóm</div>
-            </div>
-            <div class="question last-child">
-              <div
-                placement="left"
-                hide-after="100"
-                show-after="100"
-                content="Thêm câu tự luận"
-              >
-                <img
-                  src="https://sisapapp.misacdn.net/lms/img/essay.e07e1e68.svg"
-                  class="question__icon"
-                  width="64"
-                />
-              </div>
-              <div class="question__desc">Tự luận</div>
+              <div class="question__desc">{{ question.label }}</div>
             </div>
           </div>
           <div class="decore-vertical decore"></div>
         </div>
       </div>
-      <!---->
     </div>
   </div>
 </template>
@@ -209,6 +164,9 @@ const clickQuestionImg = (value) => {
 }
 .content {
   height: calc(100% - 128px);
+}
+.compose-exercise.vertical {
+  display: none;
 }
 .compose-exercise {
   color: #4e5b6a;
@@ -361,7 +319,7 @@ const clickQuestionImg = (value) => {
   display: flex;
   gap: 24px;
 }
-.question-view{
+.question-view {
   width: 100%;
 }
 </style>

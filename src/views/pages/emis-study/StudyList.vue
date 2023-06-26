@@ -4,16 +4,40 @@ import { getGrades } from "@/api/grade";
 import { getSubjects } from "@/api/subject";
 import EmisCard from "@/components/EMIS/EmisCard.vue";
 import MisaEnum from "@/js/base/enum";
-import { watch } from "vue";
-import { onBeforeMount, ref } from "vue";
+import { useExerciseStore } from "@/store/exercise";
+import { useGradeStore } from "@/store/grade";
+import { useSubjectStore } from "@/store/subject";
+import { onBeforeMount, ref, watch, computed } from "vue";
 import { useRouter } from "vue-router";
 
-const grades = ref([]);
-const subjects = ref([]);
-const cards = ref([]);
-const paginationValue = ref({});
+/**
+ * Lấy dữ liệu từ store
+ * Created By: NQTruong (26/06/2023)
+ */
+const exerciseStore = useExerciseStore();
+const gradeStore = useGradeStore();
+const subjectStore = useSubjectStore();
+
+const grades = computed(() => {
+  return gradeStore.grade;
+});
+const subjects = computed(() => {
+  return subjectStore.subject;
+});
+const exercises = computed(() => {
+  return exerciseStore.exercises;
+});
+const paginationValue = computed(() => {
+  return exerciseStore.paginationValue;
+});
+const loading = computed(() => {
+  return exerciseStore.loading;
+});
+const exerciseStatus = exerciseStore.exerciseStatus;
+
+const pageSize = 9;
 const paginationParams = ref({
-  pageSize: 9,
+  pageSize: pageSize,
 });
 const exerciseParams = ref({
   keyword: null,
@@ -21,49 +45,22 @@ const exerciseParams = ref({
   subjectId: null,
   exerciseStatus: null,
 });
-const loading = ref(false);
-const exerciseStatus = ref([
-  {
-    value: 1,
-    label: "Đã soạn",
-  },
-  {
-    value: 2,
-    label: "Đang soạn",
-  },
-  {
-    value: 3,
-    label: "Đã chia sẻ",
-  },
-  {
-    value: 4,
-    label: "Chưa chia sẻ",
-  },
-  {
-    value: 5,
-    label: "Lấy từ thư viện",
-  },
-]);
 let timeout;
 const { push } = useRouter();
 
+/**
+ * Lấy dữ liệu bài tập
+ * Created By: NQTruong (20/06/2023)
+ */
 const getExerciseValue = () => {
-  loading.value = true;
-  getExercises({ ...paginationParams.value, ...exerciseParams.value })
-    .then((res) => {
-      cards.value = res.data;
-      paginationValue.value = res.pagination;
-    })
-    .finally(() => {
-      loading.value = false;
-    });
+  exerciseStore.getExercises(paginationParams.value, exerciseParams.value);
 };
 /**
  * Reset dữ liệu phân trang
  * Created By: NQTruong (20/06/2023)
  */
 const resetPaginationParams = () => {
-  paginationParams.value.pageSize = 9;
+  paginationParams.value.pageSize = pageSize;
   getExerciseValue();
 };
 /**
@@ -81,30 +78,20 @@ watch(
  * Created By: NQTruong (20/06/2023)
  */
 onBeforeMount(() => {
-  getGrades().then((res) => {
-    grades.value = res.data.map((e) => ({
-      value: e.gradeId,
-      label: e.gradeName,
-    }));
-  }),
-    getSubjects().then((res) => {
-      subjects.value = res.data.map((e) => ({
-        value: e.subjectId,
-        label: e.subjectName,
-      }));
-    });
+  gradeStore.getAllGrades();
+  subjectStore.getAllSubjects();
 });
 /**
  * Nút Xem thêm (Tăng pageSize)
  * Created By: NQTruong (20/06/2023)
  */
 const clickMoreButton = () => {
-  paginationParams.value.pageSize += 9;
+  paginationParams.value.pageSize += pageSize;
   getExerciseValue();
 };
 /**
  * Keyword thay đổi, Tìm kiếm input debounce
- * @param {*} e 
+ * @param {*} e
  * Created By: NQTruong (20/06/2023)
  */
 const changeKeyword = (e) => {
@@ -116,11 +103,11 @@ const changeKeyword = (e) => {
 };
 /**
  * Chuyển sang trang xem chi tiết
- * @param {*} id 
+ * @param {*} id
  * Created By: NQTruong (20/06/2023)
  */
 const detailExercise = (id) => {
-  push(MisaEnum.Router.PreparePage + id)
+  push(MisaEnum.Router.PreparePage + "/" + id);
 };
 </script>
 <template>
@@ -157,7 +144,7 @@ const detailExercise = (id) => {
     <misa-loading v-model="loading"></misa-loading>
     <EmisCard
       @click="detailExercise(card?.exerciseId)"
-      v-for="(card, index) in cards"
+      v-for="(card, index) in exercises"
       :key="index"
       :value="card"
     ></EmisCard>

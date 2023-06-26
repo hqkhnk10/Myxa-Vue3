@@ -7,7 +7,7 @@
   >
     <div class="dialog-content">
       <div class="dialog-image">
-        <img :src="form.subjectImage" />
+        <img :src="form.subjectImage" alt="img" />
       </div>
       <div class="dialog-form">
         <form class="form" id="form-add-title" ref="misaForm">
