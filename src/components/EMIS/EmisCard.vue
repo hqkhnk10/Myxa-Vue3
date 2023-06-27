@@ -1,5 +1,7 @@
 <script setup>
 import { defineProps } from "vue";
+import { getSubjectImg } from "@/js/img/getSubjectImg";
+
 const props = defineProps(["value"]);
 </script>
 <template>
@@ -11,7 +13,7 @@ const props = defineProps(["value"]);
       <img
         class="card-image"
         alt="subject"
-        :src="`../../assets/emis/subjects-avatar/${props.value.img}`"
+        :src="getSubjectImg(props.value.subjectImage)"
       />
     </div>
     <div class="card-description">
@@ -25,7 +27,7 @@ const props = defineProps(["value"]);
         <div class="card-icon">
           <img src="../../assets/emis/icon/stack.svg" alt="stack" />
         </div>
-        <div class="card-number">{{ props.value.question }}</div>
+        <div class="card-number">{{ props.value.question }} câu</div>
         <div class="card-status">
           <div class="card-status-content">
             {{ props.value.exerciseStatus }}

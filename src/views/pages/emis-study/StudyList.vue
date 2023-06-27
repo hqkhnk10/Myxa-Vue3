@@ -186,6 +186,7 @@ const detailExercise = (id) => {
 .more-button {
   display: flex;
   justify-content: center;
+  padding-bottom: 12px;
 }
 .not-found-exercise {
   margin-top: 20px;

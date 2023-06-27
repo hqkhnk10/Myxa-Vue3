@@ -1,4 +1,4 @@
-export const vi = {
+export const en = {
   router: {
     summary: "Summary",
     competition: "Competition",

@@ -4,6 +4,7 @@ import QuestionView from "./QuestionView.vue";
 import { useExerciseStore } from "@/store/exercise";
 import MisaEnum from "@/js/base/enum";
 import { emitter } from "@/main";
+import { question } from "@/js/img/getImg";
 
 const props = defineProps({
   type: {
@@ -38,7 +39,7 @@ const renderDirection = () => {
     case MisaEnum.FormActions.Add:
       return "horizontal";
     case MisaEnum.FormActions.Edit:
-      if (questions.value.length > 0) {
+      if (questions.value?.length > 0) {
         return "vertical";
       } else {
         return "horizontal";

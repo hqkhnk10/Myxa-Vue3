@@ -20,12 +20,18 @@ import {
   essay,
 } from "@/js/img/getQuestionImg";
 import MisaEnum from "@/js/base/enum";
+import { postQuestion } from "@/api/question";
+import { dispatchNotification } from "@/components/Notification";
+import { globals } from "@/main";
+import { useRouter } from "vue-router";
+import { router } from "@/routers/router";
+
 export const useExerciseStore = defineStore("exerciseStore", {
   state: () => ({
     exercises: [],
     formType: MisaEnum.FormActions.Add,
     paginationValue: {},
-    questionId: 0,
+    questionId: null,
     loading: false,
     exerciseStatus: [
       {
@@ -50,11 +56,11 @@ export const useExerciseStore = defineStore("exerciseStore", {
       },
     ],
     detailExercise: {
-      exerciseId: 0,
+      exerciseId: null,
       exerciseName: "",
       subjectId: 1,
       gradeId: 1,
-      subjectImage: defaultImg,
+      subjectImage: "toan.png",
       topicId: null,
       questions: [],
     },
@@ -95,7 +101,6 @@ export const useExerciseStore = defineStore("exerciseStore", {
      * Created By: NQTruong (20/06/2023)
      */
     getDetailQuestion(state) {
-      console.log("run here");
       return (index) => state.detailExercise.questions[index];
     },
   },
@@ -136,13 +141,40 @@ export const useExerciseStore = defineStore("exerciseStore", {
      * Created By: NQTruong (20/06/2023)
      */
     addQuestion(question, answers) {
-      console.log("question", question, "answers", answers);
+      const postData = {
+        exercise: { ...this.detailExercise },
+        ...question,
+        answers,
+      };
+      const success = postQuestion(postData)
+        .then((res) => {
+          dispatchNotification({
+            content: globals.t("reuse.addSuccess"),
+            type: "success",
+          });
+          this.getExerciseById(res.data)
+          if(!this.getExerciseId == res.data){
+            router.push(MisaEnum.Router.PreparePage + "/" + res.data);
+          }
+          return true;
+        })
+        .catch(() => {
+          return false;
+        });
+      return success;
     },
     /**
      * Sửa câu hỏi
      * Created By: NQTruong (20/06/2023)
      */
     updateQuestion() {},
+    /**
+     * Update state của bài tập
+     * Created By: NQTruong (20/06/2023)
+     */
+    updateExercise(exercise) {
+      Object.assign(this.detailExercise, exercise);
+    },
     /**
      * Tạo câu trả lời
      * @param {*} questionType

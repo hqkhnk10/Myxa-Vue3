@@ -2,7 +2,7 @@ svg{
     min-width: 15px;
 }
 .notification{
-    z-index: 99;
+    z-index: 99999;
     position: fixed;
     top: 10%;
     left: 40%;

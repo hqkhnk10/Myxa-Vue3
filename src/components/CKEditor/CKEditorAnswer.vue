@@ -26,40 +26,69 @@ export default {
           options: ["center"],
         },
         toolbar: ["bold", "italic"],
-        startupFocus : true
+        startupFocus: true,
       },
     };
   },
-  props:{
-    modelValue:{
+  props: {
+    modelValue: {
       type: String,
-      default: ''
-    }
+      default: "",
+    },
   },
-  emits:['on-blur','update:modelValue'],
-  methods:{
-    changeData(value){
-      this.$emit('update:modelValue', decodeHtml(value))
+  emits: ["on-blur", "update:modelValue"],
+  methods: {
+    changeData(value) {
+      this.$emit("update:modelValue", decodeHtml(value));
     },
-    onReady(){
-      document.querySelector("#answer .ck .ck-content").focus();
+    onReady() {
+      // document.querySelector("#answer .ck .ck-content").focus();
     },
-    onBlur(){
-      this.$emit('on-blur')
-    }
-  }
+    onBlur() {
+      this.$emit("on-blur");
+    },
+  },
 };
 </script>
 <style>
+#answer {
+  height: 100%;
+}
+#answer .ck.ck-editor {
+  height: 100%;
+}
 #answer .ck.ck-editor__top .ck-sticky-panel .ck-toolbar {
   border: 0;
 }
 #answer .ck .ck-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border: 0 !important;
   box-shadow: none !important;
   text-align: center;
+  height: 100% !important;
+  background: transparent;
 }
-#answer .ck.ck-toolbar > .ck-toolbar__items {
+#answer .ck .ck-content p {
+  width: 100%;
+}
+#answer:has(.ck-focused) .ck.ck-editor__main {
+  height: calc(100% - 40px) !important;
+  padding-bottom: 40px;
+}
+#answer:not(.ck-focused) .ck.ck-editor__main {
+  height: calc(100%);
+}
+#answer:has(.ck-focused) .ck-toolbar__items {
+  display: flex !important;
   justify-content: flex-end;
+}
+#answer:has(.ck-focused),
+.ck .ck-content {
+  background: white;
+}
+#answer:not(.ck-focused) .ck-toolbar__items {
+  display: none;
 }
 </style>

@@ -1,13 +1,14 @@
 <!-- eslint-disable vue/no-mutating-props -->
 <template>
   <misa-dialog
-    :modelValue="modelValue"
+    :modelValue="dialogVisible"
     @close="closeDialog"
     :title="t('emis.addInformation')"
+    width="800px"
   >
     <div class="dialog-content">
       <div class="dialog-image">
-        <img :src="form.subjectImage" alt="img" />
+        <img :src="getSubjectImgFromId(form.subjectId)" alt="img" />
       </div>
       <div class="dialog-form">
         <form class="form" id="form-add-title" ref="misaForm">
@@ -24,7 +25,7 @@
                 :reset="true"
                 v-model="form.exerciseName"
                 :isValid="validate.exerciseName.valid"
-                :placeholder="t('amis.enteramis')"
+                :placeholder="t('emis.enteremis')"
                 @change="validateForm"
                 @blur="validateForm"
               ></misa-input>
@@ -36,39 +37,39 @@
           <div class="form-item-flex">
             <div class="form-item form-subject">
               <label class="form-item__label flex"
-                >{{ t("amis.subject") }}<span class="required">*</span></label
+                >{{ t("emis.subject") }}<span class="required">*</span></label
               >
               <div class="form-item__content">
                 <misa-combobox
                   v-model="form.subjectId"
                   :options="subjects"
                   v-model:valid="validate.subjectId.valid"
-                  :message="t('amis.subject')"
+                  :message="t('emis.subject')"
                 ></misa-combobox>
               </div>
             </div>
             <div class="form-item form-grade">
               <label class="form-item__label flex"
-                >{{ t("amis.grade") }}<span class="required">*</span></label
+                >{{ t("emis.grade") }}<span class="required">*</span></label
               >
               <div class="form-item__content">
                 <misa-combobox
                   v-model="form.gradeId"
                   :options="grades"
                   v-model:valid="validate.gradeId.valid"
-                  :message="t('amis.grade')"
+                  :message="t('emis.grade')"
                 ></misa-combobox>
               </div>
             </div>
           </div>
           <div class="form-item">
-            <label class="form-item__label flex">{{ t("amis.topic") }}</label>
+            <label class="form-item__label flex">{{ t("emis.topic") }}</label>
             <div class="form-item__content">
               <misa-combobox
                 v-model="form.topicId"
                 :options="topics"
                 v-model:valid="validate.topicId.valid"
-                :message="t('amis.topic')"
+                :message="t('emis.topic')"
               ></misa-combobox>
             </div>
           </div>
@@ -77,29 +78,25 @@
     </div>
     <div class="dialog-footer">
       <misa-button type="default" @click="closeDialog">{{
-        t("amis.close")
+        t("reuse.close")
       }}</misa-button>
       <misa-button @click="saveForm">{{ t("reuse.save") }}</misa-button>
     </div>
   </misa-dialog>
 </template>
 <script setup>
-import { getGrades } from "@/api/grade";
 import { getTopics } from "@/api/topic";
-import { getSubjects } from "@/api/subject";
-import { defineProps, defineEmits, ref, watch, computed } from "vue";
+import { ref, watch, computed, defineExpose } from "vue";
 import { useSubjectStore } from "@/store/subject";
 import { useGradeStore } from "@/store/grade";
-const props = defineProps({
-  modelValue: {
-    type: Boolean,
-    default: false,
-  },
-  formValue: {
-    type: Object,
-    default: () => {},
-  },
+import { useExerciseStore } from "@/store/exercise";
+import { getSubjectImgFromId } from "@/js/img/getSubjectImg";
+
+const dialogVisible = ref(false);
+defineExpose({
+  dialogVisible,
 });
+const exerciseStore = useExerciseStore();
 const gradeStore = useGradeStore();
 const subjectStore = useSubjectStore();
 const grades = computed(() => {
@@ -109,12 +106,20 @@ const subjects = computed(() => {
   return subjectStore.subject;
 });
 const form = ref({
-  exerciseName: props.formValue.exerciseName,
-  subjectId: props.formValue.subjectId,
-  gradeId: props.formValue.gradeId,
-  subjectImage: props.formValue.subjectImage,
+  exerciseName: "",
+  subjectImage: "toan.png",
+  subjectId: 1,
+  gradeId: 1,
   topicId: null,
+  questions: []
 });
+watch(
+  () => dialogVisible.value,
+  (newValue) => {
+    if (!newValue) return;
+    form.value = { ...exerciseStore.detailExercise };
+  }
+);
 const validate = ref({
   exerciseName: {
     required: true,
@@ -136,9 +141,8 @@ const validate = ref({
     message: "",
   },
 });
-const emit = defineEmits(["update:modelValue", "update-form"]);
 const closeDialog = () => {
-  emit("update:modelValue", false);
+  dialogVisible.value = false;
 };
 const topics = ref([]);
 /**
@@ -174,8 +178,8 @@ const validateForm = () => {
 const saveForm = () => {
   const valid = validateForm();
   if (valid) {
+    exerciseStore.updateExercise(form.value);
     closeDialog();
-    emit("update-form", form.value);
   }
 };
 </script>

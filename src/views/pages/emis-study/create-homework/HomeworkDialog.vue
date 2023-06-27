@@ -1,112 +1,149 @@
 <template>
   <div class="exercise-dialog" v-if="dialogVisible">
-    <div class="exercise-body">
-      <div class="exercise-container">
-        <div class="exercise-type">
-          <span>Câu 1 -</span>
-          <misa-combobox
-            class="trans-bg"
-            :options="questionTypeOptions"
-            v-model="question.questionType"
-          ></misa-combobox>
-        </div>
-        <div style="height: 100%">
-          <CKEditor
-            v-model="question.questionContent"
-            placeholder="Nhập câu hỏi tại đây"
-          ></CKEditor>
-        </div>
-        <div class="answer-container">
-          <div class="exercise-answer">
-            <div v-if="type == 2" class="answer-card hidden"></div>
-            <div
-              v-for="(answer, index) in answers"
-              :key="index"
-              class="answer-card"
-              :class="getAnswerBg(index)"
-            >
-              <div class="answer-header">
-                <div>{{ formatIndexToAlphabet(index) }}</div>
-                <div class="answer-icon">
-                  <div
-                    class="delete-icon toolbar-icon"
-                    @click="deleteAnswer(index)"
-                  >
-                    <img
-                      src="https://sisapapp.misacdn.net/lms/img/icon_delete.9097d258.svg"
-                      width="18"
-                      alt="icon"
-                    />
+    <div v-if="!noteDialog">
+      <div class="exercise-body">
+        <div class="exercise-container">
+          <div class="exercise-type">
+            <span>Câu 1 -</span>
+            <misa-combobox
+              class="trans-bg"
+              :options="questionTypeOptions"
+              v-model="question.questionType"
+            ></misa-combobox>
+          </div>
+          <div style="height: 100%">
+            <CKEditor
+              v-model="question.questionContent"
+              placeholder="Nhập câu hỏi tại đây"
+            ></CKEditor>
+          </div>
+          <div class="answer-container">
+            <div class="exercise-answer">
+              <div v-if="type == 2" class="answer-card hidden"></div>
+              <div
+                v-for="(answer, index) in answers"
+                :key="index"
+                class="answer-card"
+                :class="getAnswerBg(index)"
+              >
+                <div class="answer-header">
+                  <div>{{ formatIndexToAlphabet(index) }}</div>
+                  <div class="answer-icon">
+                    <div
+                      class="delete-icon toolbar-icon"
+                      @click="deleteAnswer(index)"
+                    >
+                      <img
+                        src="https://sisapapp.misacdn.net/lms/img/icon_delete.9097d258.svg"
+                        width="18"
+                        alt="icon"
+                      />
+                    </div>
+                    <div class="upload-icon toolbar-icon">
+                      <img
+                        src="https://sisapapp.misacdn.net/lms/img/ck_file.301a99b1.svg"
+                        width="18"
+                        alt="icon"
+                      />
+                    </div>
+                    <div
+                      class="checkbox-icon toolbar-icon bg-default"
+                      id="checkbox-0"
+                      :class="{ 'tick-status': answer.answerStatus }"
+                      @click="checkStatus(index)"
+                    >
+                      <img
+                        src="https://sisapapp.misacdn.net/lms/img/ic_uncheck.ceabec80.svg"
+                        width="14"
+                        alt="icon"
+                      />
+                    </div>
                   </div>
-                  <div class="upload-icon toolbar-icon">
-                    <img
-                      src="https://sisapapp.misacdn.net/lms/img/ck_file.301a99b1.svg"
-                      width="18"
-                      alt="icon"
-                    />
-                  </div>
-                  <div
-                    class="checkbox-icon toolbar-icon bg-default"
-                    id="checkbox-0"
-                    :class="{ 'tick-status': answer.answerStatus }"
-                    @click="checkStatus(index)"
-                  >
-                    <img
-                      src="https://sisapapp.misacdn.net/lms/img/ic_uncheck.ceabec80.svg"
-                      width="14"
-                      alt="icon"
-                    />
+                </div>
+                <div class="answer-body">
+                  <div class="answer-content">
+                    <CKEditorAnswer
+                      v-model="answer.answerContent"
+                    ></CKEditorAnswer>
                   </div>
                 </div>
               </div>
-              <div class="answer-body" @click="showEditor(index, true)">
-                <div class="answer-content" v-show="answer?.showEditor">
-                  <CKEditorAnswer
-                    v-model="answer.answerContent"
-                    @on-blur="showEditor(index, false)"
-                  ></CKEditorAnswer>
-                </div>
-                <div
-                  class="answer-value"
-                  v-if="!answer?.showEditor"
-                  v-html="answer.answerContent"
-                ></div>
-              </div>
+              <div v-if="type == 2" class="answer-card hidden"></div>
             </div>
-            <div v-if="type == 2" class="answer-card hidden"></div>
+          </div>
+        </div>
+        <div class="exercise-button">
+          <div>
+            <misa-button type="default" v-if="type !== 2" @click="addAnswer">{{
+              t("emis.addAnswers")
+            }}</misa-button>
+          </div>
+          <div class="exercise-button-right">
+            <misa-button type="default" @click="clickCloseButton">{{
+              t("emis.cancel")
+            }}</misa-button>
+            <misa-button type="default" @click="saveQuestion(false)">{{
+              t("emis.saveAndClose")
+            }}</misa-button>
+            <misa-button @click="saveQuestion(true)">{{
+              t("emis.saveAndAdd")
+            }}</misa-button>
           </div>
         </div>
       </div>
-      <div class="exercise-button">
-        <div>
-          <misa-button type="default" v-if="type !== 2" @click="addAnswer">{{
-            t("emis.addAnswers")
-          }}</misa-button>
+      <div class="exercise-note right" @click="openNote">
+        <div class="w-full h-full">
+          <img
+            src="https://sisapapp.misacdn.net/lms/img/bg_button_yellow.f17d419c.svg"
+          />
         </div>
-        <div class="exercise-button-right">
-          <misa-button type="default" @click="clickCloseButton">{{
-            t("emis.cancel")
-          }}</misa-button>
-          <misa-button type="default">{{ t("emis.saveAndClose") }}</misa-button>
-          <misa-button @click="saveAndAdd">{{
-            t("emis.saveAndAdd")
-          }}</misa-button>
+        <div class="note-icon">
+          <img
+            src="https://sisapapp.misacdn.net/lms/img/icon_answer_compose.fee2cfd8.svg"
+            width="48"
+            height="42"
+          />
+          <div class="label text-neutral-500 text-center">Thêm lời giải</div>
         </div>
       </div>
     </div>
-    <div class="exercise-note">
-      <div class="w-full h-full">
-        <img
-          src="https://sisapapp.misacdn.net/lms/img/bg_button_yellow.f17d419c.svg"
-        />
+    <div v-if="noteDialog">
+      <div class="exercise-body">
+        <div class="exercise-container">
+          <div class="exercise-type">
+            <span>Câu 1 -</span>
+          </div>
+          <div style="height: 100%">
+            <CKEditor
+              v-model="questionNote"
+              placeholder="Nhập lời giải thích"
+            ></CKEditor>
+          </div>
+        </div>
+        <div class="exercise-button">
+          <div></div>
+          <div class="exercise-button-right">
+            <misa-button type="default" @click="closeNote">{{
+              t("emis.cancel")
+            }}</misa-button>
+            <misa-button @click="saveNote">{{ t("reuse.save") }}</misa-button>
+          </div>
+        </div>
       </div>
-      <div class="note-icon">
-        <img
-          src="https://sisapapp.misacdn.net/lms/img/icon_answer_compose.fee2cfd8.svg"
-          width="48"
-          height="42"
-        />
-        <div class="label text-neutral-500 text-center">Thêm lời giải</div>
+      <div class="exercise-note left" @click="closeNote">
+        <div class="w-full h-full">
+          <img
+            src="https://sisapapp.misacdn.net/lms/img/bg_button_yellow.f17d419c.svg"
+          />
+        </div>
+        <div class="note-icon">
+          <img
+            src="https://sisapapp.misacdn.net/lms/img/icon_answer_compose.fee2cfd8.svg"
+            width="48"
+            height="42"
+          />
+          <div class="label text-neutral-500 text-center">Thêm lời giải</div>
+        </div>
       </div>
     </div>
   </div>
@@ -146,42 +183,13 @@ onMounted(() => {
     questionIndex.value = index;
   });
 });
-// const postData = ref({
-//   exercise: {
-//     exerciseName: "Phép trừ",
-//     exerciseStatus: 1,
-//     subjectId: 1,
-//     gradeId: 2,
-//     topicId: null,
-//   },
-//   questionType: 1,
-//   questionContent: "10 - 1",
-//   questionNote: "9",
-//   answers: [
-//     {
-//       answerContent: "1",
-//       status: false,
-//     },
-//     {
-//       answerContent: "9",
-//       status: true,
-//     },
-//     {
-//       answerContent: "0",
-//       status: false,
-//     },
-//     {
-//       answerContent: "10",
-//       status: false,
-//     },
-//   ],
-// });
-// const exercise = ref({})
+
 const exerciseStore = useExerciseStore();
 const { getDetailQuestion } = storeToRefs(exerciseStore);
 const question = ref({
   questionType: questionType.value,
   questionContent: "",
+  questionNote: "",
 });
 const questionTypeOptions = exerciseStore.questionTypeOptions;
 const answers = ref([]);
@@ -191,7 +199,10 @@ const answers = ref([]);
  */
 watch(
   () => dialogVisible.value,
-  () => {
+  (visible) => {
+    if (!visible) {
+      return;
+    }
     if (type.value == MisaEnum.FormActions.Add) {
       exerciseStore.createDefatulAnswer(questionType.value);
       question.value = {
@@ -233,16 +244,6 @@ const clickCloseButton = () => {
   dialogVisible.value = false;
 };
 /**
- * Hiện ckeditor
- * @param {*} index
- * @param {*} visible
- * Created By: NQTruong (20/06/2023)
- */
-const showEditor = (index, visible) => {
-  console.log("index: ", index, visible);
-  answers.value[index].showEditor = visible;
-};
-/**
  * Thay đổi dữ liệu đúng/sai của đáp án
  * @param {*} index
  * Created By: NQTruong (20/06/2023)
@@ -275,14 +276,48 @@ const validate = () => {
  * Lưu và thêm mới
  * Created By: NQTruong (20/06/2023)
  */
-const saveAndAdd = () => {
+const saveQuestion = async (visible) => {
   if (validate) {
-    exerciseStore.addQuestion(question.value, answers.value);
+    const success = await exerciseStore.addQuestion(
+      question.value,
+      answers.value
+    );
+    if (success) {
+      dialogVisible.value = visible;
+    }
   }
+};
+/**
+ * Mở note
+ * Created By: NQTruong (20/06/2023)
+ */
+const noteDialog = ref(false);
+const openNote = () => {
+  noteDialog.value = true;
+};
+/**
+ * Đóng note
+ * Created By: NQTruong (20/06/2023)
+ */
+const closeNote = () => {
+  questionNote.value = "";
+  noteDialog.value = false;
+};
+const questionNote = ref("");
+/**
+ * Lưu lời giải thích
+ * Created By: NQTruong (20/06/2023)
+ */
+const saveNote = () => {
+  question.value.questionNote = questionNote.value;
+  closeNote();
 };
 </script>
 
 <style scoped>
+.exercise-note {
+  cursor: pointer;
+}
 .answer-bg-white {
   background-color: white;
 }
@@ -395,11 +430,10 @@ const saveAndAdd = () => {
 .answer-icon {
   display: flex;
 }
-.answer-content {
+.answer-content:has(.ck-focused) {
   border-radius: 10px;
   border: 3px solid;
   border-color: #f59ad4;
-  background-color: #fff;
   overflow-x: hidden;
   overflow-y: hidden;
   scrollbar-width: thin;
@@ -408,6 +442,9 @@ const saveAndAdd = () => {
 .answer-body,
 .answer-content {
   height: 100%;
+}
+.answer-content {
+  max-height: 170px;
 }
 .answer-body {
   height: 200px;
@@ -426,8 +463,13 @@ const saveAndAdd = () => {
   border-bottom-left-radius: 10px;
   border-top-left-radius: 10px;
   width: 6rem;
-  right: 0;
   position: fixed;
+}
+.exercise-note.right {
+  right: 0;
+}
+.exercise-note.left {
+  left: 0;
 }
 .note-icon {
   padding-left: 1.25rem;

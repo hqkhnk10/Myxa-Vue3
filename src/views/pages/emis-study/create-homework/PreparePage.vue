@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, onBeforeMount, computed } from "vue";
+import { onMounted, ref, onBeforeMount, computed, watch } from "vue";
 import HomeworkDialog from "./HomeworkDialog.vue";
 import InformationDialog from "./InformationDialog.vue";
 import CreateHomework from "./CreateHomework.vue";
@@ -9,6 +9,7 @@ import { useExerciseStore } from "@/store/exercise";
 import { useGradeStore } from "@/store/grade";
 import { useSubjectStore } from "@/store/subject";
 import MisaEnum from "@/js/base/enum";
+import { getSubjectImgFromId } from "@/js/img/getSubjectImg";
 
 const route = useRoute();
 const { push } = useRouter();
@@ -46,25 +47,23 @@ onBeforeMount(() => {
  * Xét dữ liệu xem đang ở màn nào (add,detail)/ Có dữ liệu: Màn detail, Không có: Add
  * Created By: NQTruong (20/06/2023)
  */
-onMounted(() => {
-  if (id.value) {
-    exerciseStore.getExerciseById(id.value);
+watch(
+  () => id.value,
+  (newId) => {
+    if (!newId) return;
+    exerciseStore.getExerciseById(newId);
     type.value = MisaEnum.FormActions.Edit;
-  }
-});
+  },
+  { immediate: true }
+);
 /**
  * Mở dialog bổ sung thông tin
  * Created By: NQTruong (20/06/2023)
  */
+const infodialog = ref(null);
 const openAddInfoDialog = () => {
-  addInfoDialog.value = true;
+  infodialog.value.dialogVisible = true;
 };
-/**
- * Thay đổi ảnh theo subject
- * @param {*} value
- * Created By: NQTruong (20/06/2023)
- */
-const changeSubject = (value) => {};
 /**
  * Thêm bài tập
  * @param {*} question
@@ -95,7 +94,7 @@ const backHomepage = () => {
       <div class="prepare-container">
         <div class="prepare-title">
           <img
-            :src="exerciseForm.subjectImage"
+            :src="getSubjectImgFromId(exerciseForm.subjectId)"
             class="round-img"
             alt="subject"
           />
@@ -111,7 +110,6 @@ const backHomepage = () => {
               v-model="exerciseForm.subjectId"
               :options="subjects"
               :placeholder="t('emis.allSubject')"
-              @change="changeSubject"
             ></misa-combobox>
             <misa-combobox
               v-model="exerciseForm.gradeId"
@@ -135,10 +133,7 @@ const backHomepage = () => {
     </div>
     <create-homework :type="type"></create-homework>
     <HomeworkDialog ref="hwdialog"></HomeworkDialog>
-    <information-dialog
-      v-if="addInfoDialog"
-      ref="infodialog"
-    ></information-dialog>
+    <information-dialog ref="infodialog"></information-dialog>
   </div>
 </template>
 <style scoped>
@@ -190,5 +185,9 @@ input {
 .prepare-container {
   background: white;
   height: 100%;
+}
+.back-button {
+  padding-top: 8px;
+  cursor: pointer;
 }
 </style>

@@ -26,9 +26,8 @@ export const vi = {
     offsetCommendation: "Lập bù quyết định",
     employee: "Nhân viên",
     groupEmployee: "Tập thể",
-    
   },
-  lang:{
+  lang: {
     en: "Tiếng Anh",
     vi: "Tiếng Việt",
     changeLanguage: "Đổi ngôn ngữ",
@@ -44,11 +43,11 @@ export const vi = {
     saveAndAdd: "Lưu & thêm mới",
     filter: "Bộ lọc",
     removeFilter: "Bỏ lọc",
-    removeSelection: 'Bỏ chọn',
+    removeSelection: "Bỏ chọn",
     using: "Đang sử dụng",
     shutdown: "Ngưng sử dụng",
-    saveChange: 'Lưu thay đổi',
-    remove: 'Xóa',
+    saveChange: "Lưu thay đổi",
+    remove: "Xóa",
     close: "Đóng",
     use: "Sử dụng",
     addSuccess: "Thêm thành công",
@@ -73,7 +72,7 @@ export const vi = {
     back: "Quay lại",
     success: "Thành công",
     exportSuccess: "Xuất khẩu thành công",
-    importSuccess: "Nhập khẩu thành công"
+    importSuccess: "Nhập khẩu thành công",
   },
   emulationTitle: {
     emulationTitle: "Danh hiệu thi đua",
@@ -112,24 +111,24 @@ export const vi = {
     removeEmulationTitle: "Xóa danh hiệu",
     removeEmulationTitles: "Xóa danh hiệu thi đua",
   },
-  file:{
+  file: {
     chooseImportFile: "Chọn tệp nhẩu khẩu",
     guideDrop: "Kéo thả tệp vào đây hoặc nhấn để chọn tệp",
     description: "Hỗ trợ định dạng *.xls, *.xlsx và kích thước tối đa 5MB",
     changeFile: "Đổi tệp khác",
     importedSheet: "Tải tệp mẫu",
     header: "Dòng tiêu đề",
-    records:"Số bản ghi",
+    records: "Số bản ghi",
     downloadInvalidRow: "Tải xuống bản ghi không hợp lệ",
     downloadSampleFile: "Tải tệp mẫu",
-    downloadAllFile: "Tải xuống tất cả bản ghi"
+    downloadAllFile: "Tải xuống tất cả bản ghi",
   },
-  validate:{
+  validate: {
     number: "Vui lòng điền số",
     required: "Không được để trống",
-    greaterThan0: "Lớn hơn 0"
+    greaterThan0: "Lớn hơn 0",
   },
-  emis:{
+  emis: {
     personal: "Cá nhân",
     school: "Trường học",
     community: "Cộng đồng",
@@ -149,6 +148,11 @@ export const vi = {
     saveAndClose: "Lưu và đóng",
     saveAndAdd: "Lưu và thêm câu",
     addAnswers: "Thêm đáp án",
-    edit: "Chỉnh sửa"
-  }
+    edit: "Chỉnh sửa",
+    exerciseName: "Tên bài tập",
+    subject: "Môn",
+    grade: "Khối",
+    topic: "Chủ đề",
+    enteremis: "Nhập tên bài tập"
+  },
 };
