@@ -40,7 +40,6 @@ const paginationParams = ref({
   pageSize: pageSize,
 });
 const exerciseParams = ref({
-  keyword: null,
   gradeId: null,
   subjectId: null,
   exerciseStatus: null,
@@ -68,7 +67,7 @@ const resetPaginationParams = () => {
  * Created By: NQTruong (20/06/2023)
  */
 watch(
-  () => exerciseParams,
+  () => exerciseParams.value,
   () => resetPaginationParams(),
   { deep: true, immediate: true }
 );
@@ -94,13 +93,19 @@ const clickMoreButton = () => {
  * @param {*} e
  * Created By: NQTruong (20/06/2023)
  */
-const changeKeyword = (e) => {
-  clearTimeout(timeout);
-  timeout = setTimeout(() => {
-    // Trigger the event or perform desired action after 1000ms
-    exerciseParams.value.keyword = e.target.value;
-  }, 1000);
-};
+const keyword = ref(null);
+watch(
+  () => keyword.value,
+  (e) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      // Trigger the event or perform desired action after 1000ms
+      keyword.value = e;
+      exerciseParams.value.keyword = keyword.value;
+      resetPaginationParams();
+    }, 1000);
+  }
+);
 /**
  * Chuyển sang trang xem chi tiết
  * @param {*} id
@@ -113,8 +118,7 @@ const detailExercise = (id) => {
 <template>
   <div>
     <misa-input
-      :modelValue="exerciseParams.keyword"
-      @input="changeKeyword"
+      v-model="keyword"
       search
       reset
       :placeholder="t('emis.findExercise')"
@@ -131,13 +135,14 @@ const detailExercise = (id) => {
       v-model="exerciseParams.gradeId"
       :options="grades"
       class="small-box"
-      :placeholder="t('emis.allSubject')"
+      :placeholder="t('emis.allGrade')"
     ></misa-combobox>
     <misa-combobox
       v-model="exerciseParams.subjectId"
       :options="subjects"
       class="small-box"
-      :placeholder="t('emis.allGrade')"
+      reset
+      :placeholder="t('emis.allSubject')"
     ></misa-combobox>
   </div>
   <div class="grid-card" v-if="paginationValue.count > 0">

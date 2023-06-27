@@ -20,7 +20,7 @@
       </div>
       <div class="header-right">
         <div class="ms-combo-box">
-          <misa-combobox></misa-combobox>
+          <misa-combobox :options="yearOptions" v-model="year"></misa-combobox>
         </div>
         <div class="help-container">
           <img class="help" :src="grid" alt="help" width="24" height="24" />
@@ -247,6 +247,8 @@ const clickPrepareButton = () => {
 onMounted(() => {
   exerciseStore.resetValue();
 });
+const year = ref(2)
+const yearOptions = ref([{ value: 1, label: "Năm học 2021-2022" },{ value: 2, label: "Năm học 2022-2023" }]);
 </script>
 
 <style>
@@ -261,12 +263,10 @@ onMounted(() => {
   position: sticky;
   top: 0;
   justify-content: space-between;
-  overflow-x: hidden;
-  overflow-y: hidden;
   scrollbar-width: thin;
   width: 100%;
   background: white;
-  overflow: hidden;
+  overflow: visible;
 }
 .header-navigation-left,
 .navigation {

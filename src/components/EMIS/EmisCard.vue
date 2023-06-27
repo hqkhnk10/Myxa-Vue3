@@ -1,13 +1,16 @@
 <script setup>
 import { defineProps } from "vue";
 import { getSubjectImg } from "@/js/img/getSubjectImg";
-
+import { formatBgBaseOnSubjectId } from "@/js/format/format";
 const props = defineProps(["value"]);
 </script>
 <template>
   <div class="card-container">
     <div class="card-image">
-      <div class="card-subject">
+      <div
+        class="card-subject"
+        :class="formatBgBaseOnSubjectId(props.value.subjectId)"
+      >
         {{ props.value.gradeName }} - {{ props.value.subjectName }}
       </div>
       <img
@@ -114,10 +117,21 @@ const props = defineProps(["value"]);
   color: white;
   position: absolute;
   padding: 6px 8px;
-  width: 154px;
+  width: fit-content;
   height: 36px;
-  background: greenyellow;
   border-bottom-right-radius: 10px;
+}
+.card-subject.purple {
+  background: #8a6bf6;
+}
+.card-subject.blue {
+  background: #00a9ec;
+}
+.card-subject.green {
+  background: #00c542;
+}
+.card-subject.default {
+  background: #00c542;
 }
 .card-owner {
   gap: 12px;

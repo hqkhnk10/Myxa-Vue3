@@ -130,10 +130,9 @@ export default {
      */
     inputValue(newValue) {
       this.$emit("update:modelValue", newValue);
-      this.$emit("change", this.modelValue);
     },
   },
-  emits: ["update:modelValue", "change", "focus", "click-icon", "debounce", "blur"],
+  emits: ["update:modelValue", "focus", "click-icon", "debounce", "blur", "click-reset"],
   methods: {
         /**
      *  Debounce the value
@@ -152,8 +151,9 @@ export default {
      * @author: NQTruong
      */
     resetInput() {
-      this.inputValue = ''
+      this.inputValue = null;
       this.$emit("update:modelValue", "");
+      this.$emit("click-reset", "");
       this.$emit("debounce", "")
     },
     /**

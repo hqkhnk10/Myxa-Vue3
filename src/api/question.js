@@ -10,10 +10,18 @@ export const getQuestions = async (params) => {
   return res;
 };
 export const postQuestion = async (data) => {
-    const res = await request.post({
-      baseURL: hostUrl,
-      url: "Question",
-      data: data,
-    });
-    return res;
-  };
+  const res = await request.post({
+    baseURL: hostUrl,
+    url: "Question",
+    data: data,
+  });
+  return res;
+};
+export const updateQuestion = async (data, id) => {
+  const res = await request.put({
+    baseURL: hostUrl,
+    url: `Question/${id}`,
+    data: data,
+  });
+  return res;
+};

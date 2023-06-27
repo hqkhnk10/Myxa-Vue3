@@ -64,3 +64,16 @@ export const decodeHtml = (text) => {
     return span.innerText;
   });
 };
+
+export const formatBgBaseOnSubjectId = (id) => {
+  switch (id) {
+    case 1:
+      return 'purple';
+    case 2:
+      return 'green';
+    case 3:
+      return 'blue';
+    default:
+      return "default";
+  }
+};

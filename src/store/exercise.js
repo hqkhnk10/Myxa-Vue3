@@ -20,7 +20,7 @@ import {
   essay,
 } from "@/js/img/getQuestionImg";
 import MisaEnum from "@/js/base/enum";
-import { postQuestion } from "@/api/question";
+import { postQuestion, updateQuestion } from "@/api/question";
 import { dispatchNotification } from "@/components/Notification";
 import { globals } from "@/main";
 import { useRouter } from "vue-router";
@@ -140,34 +140,46 @@ export const useExerciseStore = defineStore("exerciseStore", {
      * Thêm câu hỏi
      * Created By: NQTruong (20/06/2023)
      */
-    addQuestion(question, answers) {
+    addQuestion(type, question, answers) {
       const postData = {
         exercise: { ...this.detailExercise },
         ...question,
         answers,
       };
-      const success = postQuestion(postData)
-        .then((res) => {
-          dispatchNotification({
-            content: globals.t("reuse.addSuccess"),
-            type: "success",
-          });
-          this.getExerciseById(res.data)
-          if(!this.getExerciseId == res.data){
-            router.push(MisaEnum.Router.PreparePage + "/" + res.data);
-          }
-          return true;
-        })
-        .catch(() => {
+      switch (type) {
+        case MisaEnum.FormActions.Add:
+          return postQuestion(postData)
+            .then((res) => {
+              dispatchNotification({
+                content: globals.t("reuse.addSuccess"),
+                type: "success",
+              });
+              this.getExerciseById(res.data);
+              if (!this.getExerciseId == res.data) {
+                router.push(MisaEnum.Router.PreparePage + "/" + res.data);
+              }
+              return true;
+            })
+            .catch(() => {
+              return false;
+            });
+        case MisaEnum.FormActions.Edit:
+          return updateQuestion(postData, this.getExerciseId)
+            .then((res) => {
+              dispatchNotification({
+                content: globals.t("reuse.updateSuccess"),
+                type: "success",
+              });
+              this.getExerciseById(res.data);
+              return true;
+            })
+            .catch(() => {
+              return false;
+            });
+        default:
           return false;
-        });
-      return success;
+      }
     },
-    /**
-     * Sửa câu hỏi
-     * Created By: NQTruong (20/06/2023)
-     */
-    updateQuestion() {},
     /**
      * Update state của bài tập
      * Created By: NQTruong (20/06/2023)

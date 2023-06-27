@@ -3,9 +3,9 @@
     <div
       class="mcombobox"
       @click="clickComboboxButton"
-      @keydown.down="pressArrowButton(false)"
-      @keydown.up="pressArrowButton(true)"
-      @keydown.enter="pressEnter"
+      @keydown.prevent.down="pressArrowButton(false)"
+      @keydown.prevent.up="pressArrowButton(true)"
+      @keydown.prevent.enter="pressEnter"
       :class="{ invalid: !valid }"
       v-click-outside="closeOptions"
     >
@@ -18,6 +18,8 @@
         class="combobox-input"
         :disabled="disabled"
         @input="(e) => inputChange(e.target.value)"
+        :reset="reset"
+        @click-reset="clickReset"
       ></misa-input>
       <span class="mcombobox-input__icon" v-if="loading">
         <img
@@ -162,6 +164,15 @@ export default {
   },
   emits: ["update:modelValue", "change", "update:valid"],
   methods: {
+    /**
+     * reset value
+     * CreatedBy: NQTruong (15/05/2023)
+     */
+    clickReset() {
+      this.$emit("update:modelValue", null);
+      this.setSelected({});
+      this.addClassFocusToItem(-1);
+    },
     /**
      * Set selected = true for the class render
      * @param {*} objValue

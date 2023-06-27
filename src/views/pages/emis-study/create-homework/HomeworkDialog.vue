@@ -279,6 +279,7 @@ const validate = () => {
 const saveQuestion = async (visible) => {
   if (validate) {
     const success = await exerciseStore.addQuestion(
+      type.value,
       question.value,
       answers.value
     );

@@ -95,6 +95,7 @@ a.mcombobox-item{
   background-color: rgba(80, 184, 60, 0.1) !important;
 }
 .mcombobox-item.selected::after{
+  margin-left: 4px;
   content: '';
   background: url('../../mcombobox/icon/approve-icon.svg') no-repeat;
   background-size: 20px;

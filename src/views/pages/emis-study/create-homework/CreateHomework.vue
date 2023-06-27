@@ -321,6 +321,9 @@ const renderDirection = () => {
   gap: 24px;
 }
 .question-view {
+  padding-right: 32px;
+  height: 100%;
   width: 100%;
+  overflow-y: auto;
 }
 </style>

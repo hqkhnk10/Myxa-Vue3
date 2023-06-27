@@ -7,7 +7,7 @@
     <div class="question-container">
       <div class="question-content">
         <div class="question-index">{{ index + 1 }}.</div>
-        <div v-html="question.questionContent"></div>
+        <div v-html="question.questionContent" class="html-content"></div>
       </div>
       <div class="answer-container">
         <div
@@ -18,7 +18,7 @@
           <div class="answer__index" :class="{ true: answer.answerStatus }">
             {{ formatIndexToAlphabet(index) }}
           </div>
-          <div v-html="answer.answerContent"></div>
+          <div v-html="answer.answerContent" class="html-content"></div>
         </div>
       </div>
       <div class="question-button">
@@ -79,7 +79,7 @@ const props = defineProps({
 <style scoped>
 .question {
   background: white;
-  margin: 24px 0px;
+  margin: 0 0 24px 0px;
   border-radius: 10px;
 }
 .answer-container {
@@ -131,5 +131,9 @@ const props = defineProps({
 }
 .question-decore.pink {
   background-color: rgb(255, 88, 140);
+}
+:deep(.html-content > *){
+  margin: 0;
+  padding: 0;
 }
 </style>
