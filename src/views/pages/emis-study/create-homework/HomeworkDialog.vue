@@ -13,6 +13,7 @@
           </div>
           <div style="height: 100%">
             <CKEditor
+              ref="ckquestion"
               v-model="question.questionContent"
               placeholder="Nhập câu hỏi tại đây"
             ></CKEditor>
@@ -94,11 +95,13 @@
       <div class="exercise-note right" @click="openNote">
         <div class="w-full h-full">
           <img
+            alt="note"
             src="https://sisapapp.misacdn.net/lms/img/bg_button_yellow.f17d419c.svg"
           />
         </div>
         <div class="note-icon">
           <img
+            alt="note"
             src="https://sisapapp.misacdn.net/lms/img/icon_answer_compose.fee2cfd8.svg"
             width="48"
             height="42"
@@ -193,6 +196,7 @@ const question = ref({
 });
 const questionTypeOptions = exerciseStore.questionTypeOptions;
 const answers = ref([]);
+const ckquestion = ref(null);
 /**
  * Thay đổi dữ liệu khi mở dialog
  * Created By: NQTruong (20/06/2023)

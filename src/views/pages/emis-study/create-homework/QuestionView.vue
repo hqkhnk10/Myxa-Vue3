@@ -33,13 +33,31 @@
           </misa-button>
         </div>
         <div>
-          <misa-button type="default" class="icon">
+          <misa-button type="default" class="icon" @click="openConfirmDialog">
             <img :src="deleteIcon" alt="icon" />
           </misa-button>
         </div>
       </div>
     </div>
   </div>
+  <misa-confirm-dialog
+    v-if="confirmDialog"
+    v-model="confirmDialog"
+    title="EMIS Ôn tập"
+    @keydown.enter="removeRow"
+  >
+    <template #content>
+      <div>Bạn có chắc muốn xóa câu hỏi ôn tập</div>
+    </template>
+    <template #button>
+      <misa-button type="secondary" @click="closeConfirmDialog">{{
+        t("reuse.no")
+      }}</misa-button>
+      <misa-button type="danger" @click="removeRow">{{
+        t("emulationTitle.removeEmulationTitle")
+      }}</misa-button>
+    </template>
+  </misa-confirm-dialog>
 </template>
 
 <script setup>
@@ -51,6 +69,7 @@ import {
 import { duplicate, deleteIcon } from "@/js/img/getImg";
 import { emitter } from "@/main";
 import MisaEnum from "@/js/base/enum";
+import { useExerciseStore } from "@/store/exercise";
 
 /**
  * Mở dialog sửa
@@ -74,6 +93,28 @@ const props = defineProps({
     default: 0,
   },
 });
+const exerciseStore = useExerciseStore();
+const confirmDialog = ref(false);
+/**
+ * open confirm dialog before delete row
+ * Created At: 10/05/2023
+ * @author NQTruong
+ */
+const openConfirmDialog = () => {
+  confirmDialog.value = true;
+};
+/**
+ * close confirm dialog
+ *Created At: 10/05/2023
+ *@author NQTruong
+ */
+const closeConfirmDialog = () => {
+  confirmDialog.value = false;
+};
+const removeRow = () => {
+  exerciseStore.deleteQuestion(props.question.questionId);
+  closeConfirmDialog();
+};
 </script>
 
 <style scoped>
@@ -81,6 +122,8 @@ const props = defineProps({
   background: white;
   margin: 0 0 24px 0px;
   border-radius: 10px;
+  box-shadow: 0 3px 20px rgba(90, 125, 141, 0.16);
+  border-radius: 0 0 6px 6px;
 }
 .answer-container {
   display: grid;
@@ -132,7 +175,7 @@ const props = defineProps({
 .question-decore.pink {
   background-color: rgb(255, 88, 140);
 }
-:deep(.html-content > *){
+:deep(.html-content > *) {
   margin: 0;
   padding: 0;
 }

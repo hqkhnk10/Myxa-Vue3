@@ -32,9 +32,7 @@ const grades = computed(() => {
 const subjects = computed(() => {
   return subjectStore.subject;
 });
-const exerciseId = computed(() => exerciseStore.getExerciseId);
 const exerciseForm = computed(() => exerciseStore.detailExercise);
-const addInfoDialog = ref(false);
 /**
  * Lấy dữ liệu khối và lớp
  * Created By: NQTruong (20/06/2023)
@@ -50,6 +48,7 @@ onBeforeMount(() => {
 watch(
   () => id.value,
   (newId) => {
+    console.log('run here', newId);
     if (!newId) return;
     exerciseStore.getExerciseById(newId);
     type.value = MisaEnum.FormActions.Edit;

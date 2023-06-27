@@ -20,7 +20,7 @@ import {
   essay,
 } from "@/js/img/getQuestionImg";
 import MisaEnum from "@/js/base/enum";
-import { postQuestion, updateQuestion } from "@/api/question";
+import { deleteQuestion, postQuestion, updateQuestion } from "@/api/question";
 import { dispatchNotification } from "@/components/Notification";
 import { globals } from "@/main";
 import { useRouter } from "vue-router";
@@ -146,6 +146,7 @@ export const useExerciseStore = defineStore("exerciseStore", {
         ...question,
         answers,
       };
+      console.log("type", type);
       switch (type) {
         case MisaEnum.FormActions.Add:
           return postQuestion(postData)
@@ -155,7 +156,8 @@ export const useExerciseStore = defineStore("exerciseStore", {
                 type: "success",
               });
               this.getExerciseById(res.data);
-              if (!this.getExerciseId == res.data) {
+              if (this.getExerciseId !== res.data) {
+                console.log("push");
                 router.push(MisaEnum.Router.PreparePage + "/" + res.data);
               }
               return true;
@@ -164,13 +166,13 @@ export const useExerciseStore = defineStore("exerciseStore", {
               return false;
             });
         case MisaEnum.FormActions.Edit:
-          return updateQuestion(postData, this.getExerciseId)
+          return updateQuestion(postData, question.questionId)
             .then((res) => {
               dispatchNotification({
-                content: globals.t("reuse.updateSuccess"),
+                content: globals.t("reuse.editSuccess"),
                 type: "success",
               });
-              this.getExerciseById(res.data);
+              this.getExerciseById(this.getExerciseId);
               return true;
             })
             .catch(() => {
@@ -179,6 +181,19 @@ export const useExerciseStore = defineStore("exerciseStore", {
         default:
           return false;
       }
+    },
+    /**
+     * Xóa câu hỏi
+     * Created By: NQTruong (20/06/2023)
+     */
+    deleteQuestion(id) {
+      deleteQuestion(id).then(() => {
+        dispatchNotification({
+          content: globals.t("reuse.deleteSuccess"),
+          type: "success",
+        });
+        this.getExerciseById(this.getExerciseId);
+      });
     },
     /**
      * Update state của bài tập
@@ -236,11 +251,11 @@ export const useExerciseStore = defineStore("exerciseStore", {
      */
     resetValue() {
       this.detailExercise = {
-        exerciseId: 0,
+        exerciseId: null,
         exerciseName: "",
         subjectId: 1,
         gradeId: 1,
-        subjectImage: defaultImg,
+        subjectImage: "",
         topicId: null,
         questions: [],
       };

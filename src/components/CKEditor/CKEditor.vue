@@ -21,8 +21,8 @@ export default {
       editorData: this.modelValue,
       editorConfig: {
         placeholder: this.placeholder,
-        startupFocus: true,
       },
+      instance: null,
     };
   },
   props: {
@@ -35,13 +35,17 @@ export default {
       default: "",
     },
   },
+  expose: ["focusCK"],
   emits: ["update:modelValue"],
   methods: {
     changeData(value) {
-      this.$emit("update:modelValue", decodeHtml(value));
+      this.$emit("update:modelValue", value);
     },
-    onReady() {
-      document.querySelector("#ckeditor .ck .ck-content").focus();
+    onReady(editor) {
+      editor.focus();
+    },
+    focusCK() {
+      this.instance.focus();
     },
   },
 };

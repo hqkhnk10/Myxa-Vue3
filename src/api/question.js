@@ -25,3 +25,10 @@ export const updateQuestion = async (data, id) => {
   });
   return res;
 };
+export const deleteQuestion = async (id) => {
+  const res = await request.delete({
+    baseURL: hostUrl,
+    url: `Question/${id}`,
+  });
+  return res;
+};
