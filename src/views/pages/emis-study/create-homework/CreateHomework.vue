@@ -59,21 +59,12 @@ const renderDirection = () => {
         </div>
         <div class="upload-wrap relative flex justify-center">
           <div class="button-download-wrap absolute bottom-6">
-            <button
-              class="el-button ms-button el-button--default mt-3 mr-3 button--accent"
-              type="button"
-            >
-              <span class="flex items-center justify-center"
-                >Tải lên file bài tập</span
-              ></button
-            ><button
-              class="el-button ms-button el-button--default mt-3 button--green"
-              type="button"
-            >
-              <span class="flex items-center justify-center"
-                >Tải file Excel mẫu</span
-              >
-            </button>
+            <misa-button type="primary" class="ms-button purple">
+              Tải lên file bài tập
+            </misa-button>
+            <misa-button type="primary" class="ms-button green">
+              Tải file Excel mẫu
+            </misa-button>
           </div>
           <div
             class="file-container extract__content text-center"
@@ -203,6 +194,7 @@ const renderDirection = () => {
   position: relative;
 }
 .upload-wrap .button-download-wrap {
+  display: flex;
   z-index: 5;
   position: absolute;
   bottom: 1.5rem;
@@ -223,6 +215,7 @@ const renderDirection = () => {
   z-index: 5;
 }
 .file-extract {
+  padding-bottom: 40px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -331,5 +324,22 @@ const renderDirection = () => {
 }
 .horizontal .question-view {
   height: fit-content;
+}
+.ms-button {
+  min-width: 113px;
+  padding: 0 12px;
+  margin-right: 12px;
+  margin-left: 0 !important;
+  height: 40px;
+  font-size: 14px;
+  line-height: 20px;
+}
+.purple {
+  background-color: #ece7fe !important;
+  color: #8a6bf6 !important;
+}
+.green {
+  color: #00c542;
+  background-color: rgba(0, 197, 66, 0.2);
 }
 </style>

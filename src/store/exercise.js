@@ -76,6 +76,9 @@ export const useExerciseStore = defineStore("exerciseStore", {
     answers: [],
   }),
   getters: {
+    getTotalQuestion(state){
+      return state.detailExercise.questions.length
+    },
     /**
      * Lấy id của exercise
      * @param {*} state
@@ -141,10 +144,11 @@ export const useExerciseStore = defineStore("exerciseStore", {
      * Created By: NQTruong (20/06/2023)
      */
     addQuestion(type, question, answers) {
+      const validAnswer = answers?.filter((a) => a.answerContent);
       const postData = {
         exercise: { ...this.detailExercise },
         ...question,
-        answers,
+        answers: validAnswer,
       };
       console.log("type", type);
       switch (type) {

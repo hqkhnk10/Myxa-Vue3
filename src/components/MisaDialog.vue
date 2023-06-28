@@ -1,6 +1,5 @@
 <template>
   <div
-    v-if="modelValue"
     role="dialog"
     aria-modal="true"
     aria-label="Tips"
@@ -90,7 +89,10 @@ export default {
       return `padding-top: ${this.top}`;
     },
   },
-  emits: ["update:modelValue"],
+  emits: ["update:modelValue", "mounted"],
+  mounted() {
+    this.$emit("mounted");
+  },
   methods: {
     /**
      * Toggle the visibility of the dialog

@@ -1,8 +1,24 @@
 <script setup>
-import { defineProps } from "vue";
+import { defineProps, ref } from "vue";
 import { getSubjectImg } from "@/js/img/getSubjectImg";
-import { formatBgBaseOnSubjectId } from "@/js/format/format";
+import {
+  formatBgBaseOnSubjectId,
+  formatStatusExercise,
+} from "@/js/format/format";
+import { useRouter } from "vue-router";
+import MisaEnum from "@/js/base/enum";
 const props = defineProps(["value"]);
+
+const dropdownVisible = ref(false);
+const confirmDialog = ref(false);
+
+const { push } = useRouter();
+const detail = () => {
+  push(MisaEnum.Router.PreparePage + "/" + props.value.exerciseId);
+};
+const remove = () => {
+  confirmDialog.value = true
+};
 </script>
 <template>
   <div class="card-container">
@@ -22,7 +38,14 @@ const props = defineProps(["value"]);
     <div class="card-description">
       <div class="card-header">
         <div class="card-title">{{ props.value.exerciseName }}</div>
-        <div class="card-button">
+        <div
+          class="card-button"
+          @click.stop="dropdownVisible = !dropdownVisible"
+        >
+          <div class="card-dropdown" v-show="dropdownVisible">
+            <div class="dropdown-item" @click="detail">Xem</div>
+            <div class="dropdown-item" @click="remove">Xóa</div>
+          </div>
           <img src="../../assets/emis/icon/three_dots.svg" alt="more" />
         </div>
       </div>
@@ -33,7 +56,7 @@ const props = defineProps(["value"]);
         <div class="card-number">{{ props.value.question }} câu</div>
         <div class="card-status">
           <div class="card-status-content">
-            {{ props.value.exerciseStatus }}
+            {{ formatStatusExercise(props.value.exerciseStatus) }}
           </div>
         </div>
       </div>
@@ -54,11 +77,11 @@ const props = defineProps(["value"]);
   width: 308px;
   height: 100%;
   position: relative;
-  overflow: hidden;
   display: block;
   cursor: pointer;
 }
 .card-image {
+  border-radius: 10px 10px 0 0;
   width: 308px;
   height: 123px;
 }
@@ -91,10 +114,13 @@ const props = defineProps(["value"]);
   width: 60px;
   height: 21px;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .card-status-content {
-  padding: 4px;
-  font-size: 10px;
+  padding: 5px;
+  font-size: 12px;
   font-weight: 500;
   color: #8a6bf6;
 }
@@ -111,6 +137,7 @@ const props = defineProps(["value"]);
   gap: 12px;
 }
 .card-subject {
+  border-radius: 10px 0 10px 0;
   font-size: 16px;
   line-height: 24px;
   font-weight: 700;
@@ -119,7 +146,6 @@ const props = defineProps(["value"]);
   padding: 6px 8px;
   width: fit-content;
   height: 36px;
-  border-bottom-right-radius: 10px;
 }
 .card-subject.purple {
   background: #8a6bf6;
@@ -138,5 +164,36 @@ const props = defineProps(["value"]);
 }
 .card-username {
   color: rgba(78, 91, 106, var(--tw-text-opacity));
+}
+.card-button {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  width: 20px;
+  position: relative;
+}
+.card-dropdown {
+  top: 0;
+  right: calc(100% + 20px);
+  position: absolute;
+  background: #fff;
+  min-width: 56px;
+  width: 150px;
+  border-radius: 10px;
+  border: 1px solid #ebeef5;
+  padding: 12px;
+  z-index: 2000;
+  color: #606266;
+  line-height: 1.4;
+  text-align: justify;
+  font-size: 14px;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+}
+.dropdown-item {
+  padding: 8px;
+}
+.dropdown-item:hover {
+  color: #8a6bf6;
+  font-weight: 700;
 }
 </style>

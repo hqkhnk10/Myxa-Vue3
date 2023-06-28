@@ -48,7 +48,7 @@ onBeforeMount(() => {
 watch(
   () => id.value,
   (newId) => {
-    console.log('run here', newId);
+    console.log("run here", newId);
     if (!newId) return;
     exerciseStore.getExerciseById(newId);
     type.value = MisaEnum.FormActions.Edit;
@@ -83,6 +83,7 @@ const addQuestion = (question, answers) => {
 const backHomepage = () => {
   push(MisaEnum.Router.StudyPage);
 };
+const finishExercise = () => {};
 </script>
 <template>
   <div class="prepare-container">
@@ -125,7 +126,9 @@ const backHomepage = () => {
           <div class="prepare-button-right">
             <misa-button type="default"></misa-button>
             <misa-button>{{ t("emis.try") }}</misa-button>
-            <misa-button>{{ t("emis.finish") }}</misa-button>
+            <misa-button @click="finishExercise">{{
+              t("emis.finish")
+            }}</misa-button>
           </div>
         </div>
       </div>

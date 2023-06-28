@@ -340,7 +340,10 @@ export default {
      * CreatedBy: NQTruong (15/05/2023)
      */
     selectOption(item) {
-      this.options.forEach((option) => {
+      if (!item) {
+        return;
+      }
+      this.options?.forEach((option) => {
         if (option[this.value] == item[this.value]) {
           option.selected = true;
         } else {

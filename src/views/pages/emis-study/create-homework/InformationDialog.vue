@@ -1,6 +1,6 @@
-<!-- eslint-disable vue/no-mutating-props -->
 <template>
   <misa-dialog
+    v-show="dialogVisible"
     :modelValue="dialogVisible"
     @close="closeDialog"
     :title="t('emis.addInformation')"
@@ -26,7 +26,7 @@
                 v-model="form.exerciseName"
                 :isValid="validate.exerciseName.valid"
                 :placeholder="t('emis.enteremis')"
-                @change="validateForm"
+                @input="validateForm"
                 @blur="validateForm"
               ></misa-input>
               <div class="error active" v-if="!validate.exerciseName.valid">
@@ -86,11 +86,14 @@
 </template>
 <script setup>
 import { getTopics } from "@/api/topic";
-import { ref, watch, computed, defineExpose } from "vue";
+import { ref, watch, computed, defineExpose, onMounted } from "vue";
 import { useSubjectStore } from "@/store/subject";
 import { useGradeStore } from "@/store/grade";
 import { useExerciseStore } from "@/store/exercise";
 import { getSubjectImgFromId } from "@/js/img/getSubjectImg";
+import { maxLength, required } from "@/js/validate/validate";
+
+const firstInput = ref(null);
 
 const dialogVisible = ref(false);
 defineExpose({
@@ -111,30 +114,48 @@ const form = ref({
   subjectId: 1,
   gradeId: 1,
   topicId: null,
-  questions: []
+  questions: [],
 });
 watch(
   () => dialogVisible.value,
   (newValue) => {
     if (!newValue) return;
     form.value = { ...exerciseStore.detailExercise };
+    setTimeout(() => {
+      firstInput.value.focus();
+    }, 0);
   }
 );
+
 const validate = ref({
   exerciseName: {
     required: true,
     valid: true,
     message: "",
+    validator: [
+      { func: required, message: "Tên danh hiệu không được để trống" },
+      {
+        func: maxLength,
+        args: [255],
+        message: "Tên danh hiệu không được vượt quá 255 kí tự",
+      },
+    ],
   },
   subjectId: {
     required: true,
     valid: true,
     message: "",
+    validator: [
+      { func: required, message: "Tên danh hiệu không được để trống" },
+    ],
   },
   gradeId: {
     required: true,
     valid: true,
     message: "",
+    validator: [
+      { func: required, message: "Tên danh hiệu không được để trống" },
+    ],
   },
   topicId: {
     valid: true,
@@ -169,7 +190,22 @@ watch(
  * Created By: NQTruong (20/06/2023)
  */
 const validateForm = () => {
-  return true;
+  let isValid = true;
+  Object.keys(validate.value).forEach((item) => {
+    const prop = validate.value[item];
+    prop.valid =
+      prop?.validator?.length > 0
+        ? prop.validator.every((e) => {
+            const { args = [], func, message } = e;
+            const valid = func(form.value[item], ...args);
+            prop.message = valid ? "" : message;
+            return valid;
+          })
+        : prop.valid;
+
+    isValid = isValid && prop.valid;
+  });
+  return isValid;
 };
 /**
  * Lưu form

@@ -4,7 +4,7 @@
       <div class="exercise-body">
         <div class="exercise-container">
           <div class="exercise-type">
-            <span>Câu 1 -</span>
+            <span>Câu {{ nextQuestion }} -</span>
             <misa-combobox
               class="trans-bg"
               :options="questionTypeOptions"
@@ -136,11 +136,13 @@
       <div class="exercise-note left" @click="closeNote">
         <div class="w-full h-full">
           <img
+            alt="note"
             src="https://sisapapp.misacdn.net/lms/img/bg_button_yellow.f17d419c.svg"
           />
         </div>
         <div class="note-icon">
           <img
+            alt="note"
             src="https://sisapapp.misacdn.net/lms/img/icon_answer_compose.fee2cfd8.svg"
             width="48"
             height="42"
@@ -150,6 +152,15 @@
       </div>
     </div>
   </div>
+  <misa-confirm-dialog
+    v-if="notification.visible"
+    v-model="notification.visible"
+    title="EMIS Ôn tập"
+  >
+    <template #content>
+      {{ notification.content }}
+    </template>
+  </misa-confirm-dialog>
 </template>
 
 <script setup>
@@ -159,7 +170,14 @@ import MisaEnum from "@/js/base/enum";
 import { formatIndexToAlphabet } from "@/js/format/format";
 import { useExerciseStore } from "@/store/exercise";
 import { storeToRefs } from "pinia";
-import { ref, defineEmits, defineExpose, watch, onMounted } from "vue";
+import {
+  ref,
+  defineEmits,
+  defineExpose,
+  watch,
+  onMounted,
+  computed,
+} from "vue";
 import { emitter } from "@/main";
 
 const emits = defineEmits(["close-dialog"]);
@@ -186,9 +204,14 @@ onMounted(() => {
     questionIndex.value = index;
   });
 });
-
+const notification = ref({
+  visible: false,
+  content: "",
+});
 const exerciseStore = useExerciseStore();
 const { getDetailQuestion } = storeToRefs(exerciseStore);
+
+const nextQuestion = computed(() => exerciseStore.getTotalQuestion + 1);
 const question = ref({
   questionType: questionType.value,
   questionContent: "",
@@ -271,9 +294,33 @@ const addAnswer = () => {
   answers.value.push({});
 };
 /**
+ * Hiện thông báo validate
+ * @param {*} content
+ * Created By: NQTruong (20/06/2023)
+ */
+const showNotification = (content) => {
+  notification.value = {
+    visible: true,
+    content,
+  };
+};
+/**
  * Validate trước khi thêm/sửa câu hỏi
  */
 const validate = () => {
+  if (!question.value.questionContent) {
+    showNotification("Bạn vui lòng nhập nội dung câu hỏi");
+    return false;
+  }
+  const validAnswers = answers.value.filter((a) => a.answerContent);
+  if (validAnswers.length == 0) {
+    showNotification("Bạn vui lòng nhập nội dung đáp án");
+    return false;
+  }
+  if (!validAnswers.some((a) => a.answerStatus)) {
+    showNotification("Bạn vui lòng nhập nội dung đáp án và đáp án đúng");
+    return false;
+  }
   return true;
 };
 /**
@@ -281,7 +328,7 @@ const validate = () => {
  * Created By: NQTruong (20/06/2023)
  */
 const saveQuestion = async (visible) => {
-  if (validate) {
+  if (validate()) {
     const success = await exerciseStore.addQuestion(
       type.value,
       question.value,

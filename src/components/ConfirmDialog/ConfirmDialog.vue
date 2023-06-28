@@ -51,7 +51,7 @@ export default {
     },
   },
   mounted() {
-    this.$refs.confirmDialog.focus();
+    // this.$refs.confirmDialog.focus();
   },
   emits: ["update:modelValue"],
   methods: {

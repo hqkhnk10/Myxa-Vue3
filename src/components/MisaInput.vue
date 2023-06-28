@@ -153,6 +153,7 @@ export default {
     resetInput() {
       this.inputValue = null;
       this.$emit("update:modelValue", "");
+      this.$emit("blur");
       this.$emit("click-reset", "");
       this.$emit("debounce", "")
     },
@@ -162,6 +163,7 @@ export default {
      * @author: NQTruong
      */
     focus() {
+      console.log('focus',  this.$refs.input);
       this.$refs.input.focus();
     },
     /**

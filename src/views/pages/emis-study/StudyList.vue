@@ -1,7 +1,5 @@
 <script setup>
-import { getExercises } from "@/api/exercise";
-import { getGrades } from "@/api/grade";
-import { getSubjects } from "@/api/subject";
+
 import EmisCard from "@/components/EMIS/EmisCard.vue";
 import MisaEnum from "@/js/base/enum";
 import { useExerciseStore } from "@/store/exercise";

@@ -68,12 +68,28 @@ export const decodeHtml = (text) => {
 export const formatBgBaseOnSubjectId = (id) => {
   switch (id) {
     case 1:
-      return 'purple';
+      return "purple";
     case 2:
-      return 'green';
+      return "green";
     case 3:
-      return 'blue';
+      return "blue";
     default:
       return "default";
+  }
+};
+export const formatStatusExercise = (type) => {
+  switch (type) {
+    case 1:
+      return "Đã soạn";
+    case 0:
+      return "Đang soạn";
+    case 3:
+      return "Đã chia sẻ";
+    case 4:
+      return "Chưa chia sẻ";
+    case 5:
+      return "Lấy từ thư viện";
+    default:
+      return ""
   }
 };
