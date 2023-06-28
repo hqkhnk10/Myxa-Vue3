@@ -163,7 +163,6 @@ export default {
      * @author: NQTruong
      */
     focus() {
-      console.log('focus',  this.$refs.input);
       this.$refs.input.focus();
     },
     /**

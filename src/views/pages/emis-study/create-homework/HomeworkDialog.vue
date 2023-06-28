@@ -197,7 +197,6 @@ onMounted(() => {
    */
   emitter.on("homework-dialog-visible", function (args) {
     const { isShow, formType, questionTypes, index } = { ...args };
-    console.log("emit", isShow, formType, questionTypes, index);
     dialogVisible.value = isShow;
     type.value = formType;
     questionType.value = questionTypes;

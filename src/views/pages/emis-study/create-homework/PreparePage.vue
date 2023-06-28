@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, ref, onBeforeMount, computed, watch } from "vue";
+import { ref, onBeforeMount, computed, watch } from "vue";
 import HomeworkDialog from "./HomeworkDialog.vue";
 import InformationDialog from "./InformationDialog.vue";
 import CreateHomework from "./CreateHomework.vue";
@@ -10,6 +10,8 @@ import { useGradeStore } from "@/store/grade";
 import { useSubjectStore } from "@/store/subject";
 import MisaEnum from "@/js/base/enum";
 import { getSubjectImgFromId } from "@/js/img/getSubjectImg";
+import FinishDialog from "@/components/EMIS/FinishDialog.vue";
+import { emitter } from "@/main";
 
 const route = useRoute();
 const { push } = useRouter();
@@ -48,7 +50,6 @@ onBeforeMount(() => {
 watch(
   () => id.value,
   (newId) => {
-    console.log("run here", newId);
     if (!newId) return;
     exerciseStore.getExerciseById(newId);
     type.value = MisaEnum.FormActions.Edit;
@@ -83,7 +84,20 @@ const addQuestion = (question, answers) => {
 const backHomepage = () => {
   push(MisaEnum.Router.StudyPage);
 };
-const finishExercise = () => {};
+const finishDialog = ref(false);
+const validate = () => {
+  if (!exerciseStore.validateForm()) {
+    emitter.emit("info-dialog-visible", true);
+    return false;
+  }
+  return true;
+};
+const finishExercise = () => {
+  if (validate()) {
+    exerciseStore.addExercise();
+    finishDialog.value = true;
+  }
+};
 </script>
 <template>
   <div class="prepare-container">
@@ -137,6 +151,7 @@ const finishExercise = () => {};
     <HomeworkDialog ref="hwdialog"></HomeworkDialog>
     <information-dialog ref="infodialog"></information-dialog>
   </div>
+  <finish-dialog v-model="finishDialog"></finish-dialog>
 </template>
 <style scoped>
 .prepare-header,

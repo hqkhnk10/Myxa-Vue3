@@ -35,7 +35,6 @@ const clickQuestionImg = (value) => {
  * Created By: NQTruong (20/06/2023)
  */
 const renderDirection = () => {
-  console.log("change type", props.type, questions.value?.length);
   switch (props.type) {
     case MisaEnum.FormActions.Add:
       return "horizontal";

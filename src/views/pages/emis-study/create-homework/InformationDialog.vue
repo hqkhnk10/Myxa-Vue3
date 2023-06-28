@@ -92,6 +92,7 @@ import { useGradeStore } from "@/store/grade";
 import { useExerciseStore } from "@/store/exercise";
 import { getSubjectImgFromId } from "@/js/img/getSubjectImg";
 import { maxLength, required } from "@/js/validate/validate";
+import { emitter } from "@/main";
 
 const firstInput = ref(null);
 
@@ -116,6 +117,17 @@ const form = ref({
   topicId: null,
   questions: [],
 });
+onMounted(() => {
+  /**
+   * Event bus dialog visible
+   * @param isShow: to open/close the dialog
+   * Created At: 20/06/2023
+   * @author NQTruong
+   */
+  emitter.on("info-dialog-visible", (visible) => {
+    dialogVisible.value = visible;
+  });
+});
 watch(
   () => dialogVisible.value,
   (newValue) => {
@@ -127,41 +139,7 @@ watch(
   }
 );
 
-const validate = ref({
-  exerciseName: {
-    required: true,
-    valid: true,
-    message: "",
-    validator: [
-      { func: required, message: "Tên danh hiệu không được để trống" },
-      {
-        func: maxLength,
-        args: [255],
-        message: "Tên danh hiệu không được vượt quá 255 kí tự",
-      },
-    ],
-  },
-  subjectId: {
-    required: true,
-    valid: true,
-    message: "",
-    validator: [
-      { func: required, message: "Tên danh hiệu không được để trống" },
-    ],
-  },
-  gradeId: {
-    required: true,
-    valid: true,
-    message: "",
-    validator: [
-      { func: required, message: "Tên danh hiệu không được để trống" },
-    ],
-  },
-  topicId: {
-    valid: true,
-    message: "",
-  },
-});
+const validate = computed(() => exerciseStore.validate);
 const closeDialog = () => {
   dialogVisible.value = false;
 };
@@ -186,31 +164,12 @@ watch(
   { immediate: true }
 );
 /**
- * Xác thực form
- * Created By: NQTruong (20/06/2023)
- */
-const validateForm = () => {
-  let isValid = true;
-  Object.keys(validate.value).forEach((item) => {
-    const prop = validate.value[item];
-    prop.valid =
-      prop?.validator?.length > 0
-        ? prop.validator.every((e) => {
-            const { args = [], func, message } = e;
-            const valid = func(form.value[item], ...args);
-            prop.message = valid ? "" : message;
-            return valid;
-          })
-        : prop.valid;
-
-    isValid = isValid && prop.valid;
-  });
-  return isValid;
-};
-/**
  * Lưu form
  * Created By: NQTruong (20/06/2023)
  */
+const validateForm = () => {
+  return exerciseStore.validateForm(form.value);
+};
 const saveForm = () => {
   const valid = validateForm();
   if (valid) {

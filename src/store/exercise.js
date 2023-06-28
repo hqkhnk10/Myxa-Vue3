@@ -1,4 +1,4 @@
-import { getDetailExercise, getExercises } from "@/api/exercise";
+import { addExercise, getDetailExercise, getExercises } from "@/api/exercise";
 import { defineStore } from "pinia";
 import {
   defaultImg,
@@ -25,6 +25,7 @@ import { dispatchNotification } from "@/components/Notification";
 import { globals } from "@/main";
 import { useRouter } from "vue-router";
 import { router } from "@/routers/router";
+import { maxLength, required } from "@/js/validate/validate";
 
 export const useExerciseStore = defineStore("exerciseStore", {
   state: () => ({
@@ -74,10 +75,45 @@ export const useExerciseStore = defineStore("exerciseStore", {
       { value: 6, label: "Tự luận", img: essay },
     ],
     answers: [],
+    validate: {
+      exerciseName: {
+        required: true,
+        valid: true,
+        message: "",
+        validator: [
+          { func: required, message: "Tên danh hiệu không được để trống" },
+          {
+            func: maxLength,
+            args: [255],
+            message: "Tên danh hiệu không được vượt quá 255 kí tự",
+          },
+        ],
+      },
+      subjectId: {
+        required: true,
+        valid: true,
+        message: "",
+        validator: [
+          { func: required, message: "Tên danh hiệu không được để trống" },
+        ],
+      },
+      gradeId: {
+        required: true,
+        valid: true,
+        message: "",
+        validator: [
+          { func: required, message: "Tên danh hiệu không được để trống" },
+        ],
+      },
+      topicId: {
+        valid: true,
+        message: "",
+      },
+    },
   }),
   getters: {
-    getTotalQuestion(state){
-      return state.detailExercise.questions.length
+    getTotalQuestion(state) {
+      return state.detailExercise.questions.length;
     },
     /**
      * Lấy id của exercise
@@ -108,6 +144,35 @@ export const useExerciseStore = defineStore("exerciseStore", {
     },
   },
   actions: {
+    /**
+     * Validate dữ liệu bài tập
+     * @returns
+     */
+    validateForm(form = this.detailExercise) {
+      let isValid = true;
+      Object.keys(this.validate).forEach((item) => {
+        const prop = this.validate[item];
+        prop.valid =
+          prop?.validator?.length > 0
+            ? prop.validator.every((e) => {
+                const { args = [], func, message } = e;
+                const valid = func(form[item], ...args);
+                prop.message = valid ? "" : message;
+                return valid;
+              })
+            : prop.valid;
+
+        isValid = isValid && prop.valid;
+      });
+      return isValid;
+    },
+    /**
+     * Thêm hoặc sửa bài tập
+     * Created By: NQTruong (20/06/2023)
+     */
+    addExercise() {
+      addExercise({ ...this.detailExercise });
+    },
     /**
      * Lấy dữ liệu bài tập
      * @param {*} paginationParams
@@ -150,7 +215,6 @@ export const useExerciseStore = defineStore("exerciseStore", {
         ...question,
         answers: validAnswer,
       };
-      console.log("type", type);
       switch (type) {
         case MisaEnum.FormActions.Add:
           return postQuestion(postData)
@@ -161,7 +225,6 @@ export const useExerciseStore = defineStore("exerciseStore", {
               });
               this.getExerciseById(res.data);
               if (this.getExerciseId !== res.data) {
-                console.log("push");
                 router.push(MisaEnum.Router.PreparePage + "/" + res.data);
               }
               return true;

@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="modelValue"
     role="dialog"
     aria-modal="true"
     aria-label="Tips"
@@ -54,7 +55,6 @@ export default {
   props: {
     modelValue: {
       type: Boolean,
-      required: true,
     },
     title: {
       type: String,
@@ -89,7 +89,7 @@ export default {
       return `padding-top: ${this.top}`;
     },
   },
-  emits: ["update:modelValue", "mounted"],
+  emits: ["update:modelValue", "mounted", "close"],
   mounted() {
     this.$emit("mounted");
   },

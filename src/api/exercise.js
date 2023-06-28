@@ -16,3 +16,11 @@ export const getDetailExercise = async (params) => {
   });
   return res;
 };
+export const addExercise = async (data) => {
+  const res = await request.post({
+    baseURL: hostUrl,
+    url: "Exercise",
+    data: data,
+  });
+  return res;
+};
