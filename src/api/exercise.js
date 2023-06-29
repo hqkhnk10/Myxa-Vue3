@@ -24,3 +24,11 @@ export const addExercise = async (data) => {
   });
   return res;
 };
+export const updateExercise = async (data, id) => {
+  const res = await request.post({
+    baseURL: hostUrl,
+    url: `Exercise/${id}`,
+    data: data,
+  });
+  return res;
+};

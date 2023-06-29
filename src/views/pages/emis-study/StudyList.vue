@@ -1,5 +1,4 @@
 <script setup>
-
 import EmisCard from "@/components/EMIS/EmisCard.vue";
 import MisaEnum from "@/js/base/enum";
 import { useExerciseStore } from "@/store/exercise";
@@ -125,12 +124,14 @@ const detailExercise = (id) => {
   <div class="study-combobox">
     <misa-combobox
       v-model="exerciseParams.exerciseStatus"
+      reset
       :options="exerciseStatus"
       class="small-box"
       :placeholder="t('emis.allExercise')"
     ></misa-combobox>
     <misa-combobox
       v-model="exerciseParams.gradeId"
+      reset
       :options="grades"
       class="small-box"
       :placeholder="t('emis.allGrade')"

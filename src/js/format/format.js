@@ -93,3 +93,24 @@ export const formatStatusExercise = (type) => {
       return ""
   }
 };
+
+
+/**
+ * Lấy background của câu trả lời
+ * @param {*} index
+ * Created By: NQTruong (20/06/2023)
+ */
+export const getAnswerBg = (index) => {
+  switch (index % 4) {
+    case 1: //1,5,9
+      return "answer-bg-pink";
+    case 2: //2,6,10
+      return "answer-bg-green";
+    case 3: //3,7,11
+      return "answer-bg-orange";
+    case 0: //4,8,12
+      return "answer-bg-blue";
+    default:
+      return "answer-bg-white";
+  }
+};

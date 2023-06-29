@@ -37,11 +37,11 @@ const MisaEnum = {
     Inactive: 1,
   },
   ExerciseStatus: {
-    Preparing: 1,
-    Prepared: 2,
-    Shared: 3,
-    NotShared: 4,
-    FromLibrary: 5,
+    Preparing: 0,
+    Prepared: 1,
+    Shared: 2,
+    NotShared: 3,
+    FromLibrary: 4,
   },
   QuestionType:{
     Choosing: 1,

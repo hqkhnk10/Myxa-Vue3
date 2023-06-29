@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, ref } from "vue";
+import { defineProps, ref, computed } from "vue";
 import { getSubjectImg } from "@/js/img/getSubjectImg";
 import {
   formatBgBaseOnSubjectId,
@@ -17,8 +17,13 @@ const detail = () => {
   push(MisaEnum.Router.PreparePage + "/" + props.value.exerciseId);
 };
 const remove = () => {
-  confirmDialog.value = true
+  confirmDialog.value = true;
 };
+const exerciseName = computed(() =>
+  props.value.exerciseName
+    ? props.value.exerciseName
+    : `Bài nháp ${props.value.subjectName} - ${props.value.gradeName}`
+);
 </script>
 <template>
   <div class="card-container">
@@ -37,7 +42,7 @@ const remove = () => {
     </div>
     <div class="card-description">
       <div class="card-header">
-        <div class="card-title">{{ props.value.exerciseName }}</div>
+        <div class="card-title">{{ exerciseName }}</div>
         <div
           class="card-button"
           @click.stop="dropdownVisible = !dropdownVisible"
@@ -54,7 +59,7 @@ const remove = () => {
           <img src="../../assets/emis/icon/stack.svg" alt="stack" />
         </div>
         <div class="card-number">{{ props.value.question }} câu</div>
-        <div class="card-status">
+        <div class="card-status" v-if="props.value.exerciseStatus == 0">
           <div class="card-status-content">
             {{ formatStatusExercise(props.value.exerciseStatus) }}
           </div>

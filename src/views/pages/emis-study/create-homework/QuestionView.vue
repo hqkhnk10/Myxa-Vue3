@@ -47,14 +47,14 @@
     @keydown.enter="removeRow"
   >
     <template #content>
-      <div>Bạn có chắc muốn xóa câu hỏi ôn tập</div>
+      <div>Bạn có chắc chắn muốn xóa câu hỏi không?</div>
     </template>
     <template #button>
-      <misa-button type="secondary" @click="closeConfirmDialog">{{
-        t("reuse.no")
+      <misa-button type="default" @click="closeConfirmDialog">{{
+        t("reuse.cancel")
       }}</misa-button>
-      <misa-button type="danger" @click="removeRow">{{
-        t("emulationTitle.removeEmulationTitle")
+      <misa-button @click="removeRow">{{
+        t("reuse.remove")
       }}</misa-button>
     </template>
   </misa-confirm-dialog>
@@ -121,7 +121,6 @@ const removeRow = () => {
 .question {
   background: white;
   margin: 0 0 24px 0px;
-  border-radius: 10px;
   box-shadow: 0 3px 20px rgba(90, 125, 141, 0.16);
   border-radius: 0 0 6px 6px;
 }

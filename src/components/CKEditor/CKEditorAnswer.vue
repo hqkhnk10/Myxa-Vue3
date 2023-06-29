@@ -26,7 +26,7 @@ export default {
           options: ["center"],
         },
         toolbar: ["bold", "italic"],
-        startupFocus: true,
+        placeholder: "Nhập đáp án",
       },
     };
   },
@@ -37,6 +37,11 @@ export default {
     },
   },
   emits: ["on-blur", "update:modelValue"],
+  watch: {
+    modelValue(newValue) {
+      this.editorData = newValue;
+    },
+  },
   methods: {
     changeData(value) {
       this.$emit("update:modelValue", decodeHtml(value));
@@ -51,6 +56,9 @@ export default {
 };
 </script>
 <style>
+#answer:has(.ck-focused) .ck.ck-editor__editable > .ck-placeholder::before {
+    display: none;
+}
 #answer {
   height: 100%;
 }

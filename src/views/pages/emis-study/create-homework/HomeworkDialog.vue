@@ -4,11 +4,20 @@
       <div class="exercise-body">
         <div class="exercise-container">
           <div class="exercise-type">
-            <span>Câu {{ nextQuestion }} -</span>
+            <span
+              >Câu
+              {{
+                type == MisaEnum.FormActions.Edit
+                  ? nextQuestion
+                  : nextQuestion + 1
+              }}
+              -</span
+            >
             <misa-combobox
               class="trans-bg"
               :options="questionTypeOptions"
               v-model="question.questionType"
+              @change="changeQuestionType"
             ></misa-combobox>
           </div>
           <div style="height: 100%">
@@ -20,64 +29,18 @@
           </div>
           <div class="answer-container">
             <div class="exercise-answer">
-              <div v-if="type == 2" class="answer-card hidden"></div>
-              <div
-                v-for="(answer, index) in answers"
-                :key="index"
-                class="answer-card"
-                :class="getAnswerBg(index)"
-              >
-                <div class="answer-header">
-                  <div>{{ formatIndexToAlphabet(index) }}</div>
-                  <div class="answer-icon">
-                    <div
-                      class="delete-icon toolbar-icon"
-                      @click="deleteAnswer(index)"
-                    >
-                      <img
-                        src="https://sisapapp.misacdn.net/lms/img/icon_delete.9097d258.svg"
-                        width="18"
-                        alt="icon"
-                      />
-                    </div>
-                    <div class="upload-icon toolbar-icon">
-                      <img
-                        src="https://sisapapp.misacdn.net/lms/img/ck_file.301a99b1.svg"
-                        width="18"
-                        alt="icon"
-                      />
-                    </div>
-                    <div
-                      class="checkbox-icon toolbar-icon bg-default"
-                      id="checkbox-0"
-                      :class="{ 'tick-status': answer.answerStatus }"
-                      @click="checkStatus(index)"
-                    >
-                      <img
-                        src="https://sisapapp.misacdn.net/lms/img/ic_uncheck.ceabec80.svg"
-                        width="14"
-                        alt="icon"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div class="answer-body">
-                  <div class="answer-content">
-                    <CKEditorAnswer
-                      v-model="answer.answerContent"
-                    ></CKEditorAnswer>
-                  </div>
-                </div>
-              </div>
-              <div v-if="type == 2" class="answer-card hidden"></div>
+              <component :is="tabs[currentTab]" :answers="answers"></component>
             </div>
           </div>
         </div>
         <div class="exercise-button">
           <div>
-            <misa-button type="default" v-if="type !== 2" @click="addAnswer">{{
-              t("emis.addAnswers")
-            }}</misa-button>
+            <misa-button
+              type="default"
+              v-if="question.questionType !== MisaEnum.QuestionType.TrueFalse"
+              @click="addAnswer"
+              >{{ t("emis.addAnswers") }}</misa-button
+            >
           </div>
           <div class="exercise-button-right">
             <misa-button type="default" @click="clickCloseButton">{{
@@ -179,6 +142,23 @@ import {
   computed,
 } from "vue";
 import { emitter } from "@/main";
+import ChooseAnswer from "@/components/EMIS/Answers/ChooseAnswer.vue";
+import TrueOrFalse from "@/components/EMIS/Answers/TrueOrFalse.vue";
+
+const tabs = {
+  ChooseAnswer,
+  TrueOrFalse,
+};
+const currentTab = computed(() => {
+  switch (question.value.questionType) {
+    case MisaEnum.QuestionType.Choosing:
+      return "ChooseAnswer";
+    case MisaEnum.QuestionType.TrueFalse:
+      return "TrueOrFalse";
+    default:
+      return "ChooseAnswer";
+  }
+});
 
 const emits = defineEmits(["close-dialog"]);
 const dialogVisible = ref(false);
@@ -210,14 +190,14 @@ const notification = ref({
 const exerciseStore = useExerciseStore();
 const { getDetailQuestion } = storeToRefs(exerciseStore);
 
-const nextQuestion = computed(() => exerciseStore.getTotalQuestion + 1);
+const nextQuestion = computed(() => exerciseStore.getTotalQuestion);
 const question = ref({
   questionType: questionType.value,
   questionContent: "",
   questionNote: "",
 });
 const questionTypeOptions = exerciseStore.questionTypeOptions;
-const answers = ref([]);
+const answers = computed(() => exerciseStore.answers);
 const ckquestion = ref(null);
 /**
  * Thay đổi dữ liệu khi mở dialog
@@ -235,32 +215,16 @@ watch(
         questionType: questionType.value,
         questionContent: "",
       };
-      answers.value = exerciseStore.answers;
     } else {
-      question.value = getDetailQuestion.value(questionIndex.value);
-      answers.value = question.value?.answers;
+      question.value = JSON.parse(
+        JSON.stringify(getDetailQuestion.value(questionIndex.value))
+      );
+      exerciseStore.answers = question.value.answers;
     }
   }
 );
-
-/**
- * Lấy background của câu trả lời
- * @param {*} index
- * Created By: NQTruong (20/06/2023)
- */
-const getAnswerBg = (index) => {
-  switch (index % 4) {
-    case 1: //1,5,9
-      return "answer-bg-pink";
-    case 2: //2,6,10
-      return "answer-bg-green";
-    case 3: //3,7,11
-      return "answer-bg-orange";
-    case 0: //4,8,12
-      return "answer-bg-blue";
-    default:
-      return "answer-bg-white";
-  }
+const changeQuestionType = (type) => {
+  exerciseStore.createDefatulAnswer(type);
 };
 /**
  * Tắt dialog
@@ -268,22 +232,6 @@ const getAnswerBg = (index) => {
  */
 const clickCloseButton = () => {
   dialogVisible.value = false;
-};
-/**
- * Thay đổi dữ liệu đúng/sai của đáp án
- * @param {*} index
- * Created By: NQTruong (20/06/2023)
- */
-const checkStatus = (index) => {
-  answers.value[index].answerStatus = !answers.value[index].answerStatus;
-};
-/**
- * Xóa câu trả lời
- * @param {*} index
- * Created By: NQTruong (20/06/2023)
- */
-const deleteAnswer = (index) => {
-  answers.value.splice(index, 1);
 };
 /**
  * Thêm câu trả lời
@@ -317,7 +265,7 @@ const validate = () => {
     return false;
   }
   if (!validAnswers.some((a) => a.answerStatus)) {
-    showNotification("Bạn vui lòng nhập nội dung đáp án và đáp án đúng");
+    showNotification("Bạn vui lòng nhập nội dung đáp án, chọn đáp án đúng");
     return false;
   }
   return true;
@@ -369,21 +317,7 @@ const saveNote = () => {
 .exercise-note {
   cursor: pointer;
 }
-.answer-bg-white {
-  background-color: white;
-}
-.answer-bg-pink {
-  background-color: rgb(255, 214, 240);
-}
-.answer-bg-green {
-  background-color: rgb(172, 235, 241);
-}
-.answer-bg-orange {
-  background-color: rgb(252, 208, 198);
-}
-.answer-bg-blue {
-  background-color: rgb(196, 229, 255);
-}
+
 .exercise-dialog {
   position: fixed;
   top: 0;
@@ -457,38 +391,6 @@ const saveNote = () => {
   font-size: 16px;
   line-height: 24px;
   height: 40px;
-}
-.toolbar-icon {
-  background-color: #fff;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 10px;
-  cursor: pointer;
-  margin-left: 8px;
-  outline: none;
-}
-.toolbar-icon:hover {
-  transform: scale(1.2);
-  transition: 0.3s;
-}
-.answer-header {
-  display: flex;
-  justify-content: space-between;
-}
-.answer-icon {
-  display: flex;
-}
-.answer-content:has(.ck-focused) {
-  border-radius: 10px;
-  border: 3px solid;
-  border-color: #f59ad4;
-  overflow-x: hidden;
-  overflow-y: hidden;
-  scrollbar-width: thin;
-  transition: 0.2s;
 }
 .answer-body,
 .answer-content {

@@ -1,17 +1,11 @@
-import { addExercise, getDetailExercise, getExercises } from "@/api/exercise";
+import {
+  addExercise,
+  getDetailExercise,
+  getExercises,
+  updateExercise,
+} from "@/api/exercise";
 import { defineStore } from "pinia";
 import {
-  defaultImg,
-  toan,
-  tienganh,
-  diali,
-  gdcd,
-  lichsu,
-  nguvan,
-} from "@/js/img/getSubjectImg";
-import {
-  library,
-  line,
   select,
   yesorno,
   fill,
@@ -36,24 +30,12 @@ export const useExerciseStore = defineStore("exerciseStore", {
     loading: false,
     exerciseStatus: [
       {
-        value: 1,
-        label: "Đã soạn",
-      },
-      {
-        value: 2,
+        value: 0,
         label: "Đang soạn",
       },
       {
-        value: 3,
-        label: "Đã chia sẻ",
-      },
-      {
-        value: 4,
-        label: "Chưa chia sẻ",
-      },
-      {
-        value: 5,
-        label: "Lấy từ thư viện",
+        value: 1,
+        label: "Đã soạn",
       },
     ],
     detailExercise: {
@@ -81,11 +63,11 @@ export const useExerciseStore = defineStore("exerciseStore", {
         valid: true,
         message: "",
         validator: [
-          { func: required, message: "Tên danh hiệu không được để trống" },
+          { func: required, message: "Tên bài tập không được để trống" },
           {
             func: maxLength,
             args: [255],
-            message: "Tên danh hiệu không được vượt quá 255 kí tự",
+            message: "Tên bài tập không được vượt quá 255 kí tự",
           },
         ],
       },
@@ -94,7 +76,7 @@ export const useExerciseStore = defineStore("exerciseStore", {
         valid: true,
         message: "",
         validator: [
-          { func: required, message: "Tên danh hiệu không được để trống" },
+          { func: required, message: "Tên môn học không được để trống" },
         ],
       },
       gradeId: {
@@ -102,7 +84,7 @@ export const useExerciseStore = defineStore("exerciseStore", {
         valid: true,
         message: "",
         validator: [
-          { func: required, message: "Tên danh hiệu không được để trống" },
+          { func: required, message: "Tên khối không được để trống" },
         ],
       },
       topicId: {
@@ -112,6 +94,12 @@ export const useExerciseStore = defineStore("exerciseStore", {
     },
   }),
   getters: {
+    /**
+     * Lấy số câu hỏi trong bài tập
+     * @param {*} state
+     * @returns
+     * Created By: NQTruong (20/06/2023)
+     */
     getTotalQuestion(state) {
       return state.detailExercise.questions.length;
     },
@@ -145,8 +133,17 @@ export const useExerciseStore = defineStore("exerciseStore", {
   },
   actions: {
     /**
+     * Update trạng thái của bài tập
+     * @param {*} status
+     * Created By: NQTruong (20/06/2023)
+     */
+    updateStatusExercise(status) {
+      updateExercise({ ...this.detailExercise, exerciseStatus: status });
+    },
+    /**
      * Validate dữ liệu bài tập
      * @returns
+     * Created By: NQTruong (20/06/2023)
      */
     validateForm(form = this.detailExercise) {
       let isValid = true;
@@ -170,8 +167,11 @@ export const useExerciseStore = defineStore("exerciseStore", {
      * Thêm hoặc sửa bài tập
      * Created By: NQTruong (20/06/2023)
      */
-    addExercise() {
-      addExercise({ ...this.detailExercise });
+    addOrUpdateExercise() {
+      addExercise({
+        ...this.detailExercise,
+        exerciseStatus: MisaEnum.ExerciseStatus.Prepared,
+      });
     },
     /**
      * Lấy dữ liệu bài tập
@@ -276,7 +276,7 @@ export const useExerciseStore = defineStore("exerciseStore", {
      */
     createDefatulAnswer(questionType) {
       switch (questionType) {
-        case 1:
+        case MisaEnum.QuestionType.Choosing:
           this.answers = [
             {
               answerContent: "",
@@ -296,7 +296,7 @@ export const useExerciseStore = defineStore("exerciseStore", {
             },
           ];
           break;
-        case 2:
+        case MisaEnum.QuestionType.TrueFalse:
           this.answers = [
             {
               answerContent: "Đúng",
@@ -311,6 +311,43 @@ export const useExerciseStore = defineStore("exerciseStore", {
         default:
           break;
       }
+    },
+    changeStatus(index) {
+      this.answers.forEach((a) => {
+        a.answerStatus = false;
+      });
+      this.answers[index].answerStatus = true;
+    },
+    /**
+     * Thay đổi dữ liệu đúng/sai của đáp án
+     * @param {*} index
+     * Created By: NQTruong (20/06/2023)
+     */
+    checkStatus(index) {
+      this.answers[index].answerStatus = !this.answers[index].answerStatus;
+    },
+    /**
+     * Xóa câu trả lời
+     * @param {*} index
+     * Created By: NQTruong (20/06/2023)
+     */
+    deleteAnswer(index) {
+      if (this.answers.length == 1) {
+        dispatchNotification({
+          content: "Có ít nhất 1 đáp án",
+          type: "warning",
+        });
+        return;
+      }
+
+      this.answers.splice(index, 1);
+    },
+    /**
+     * Thêm câu trả lời
+     * Created By: NQTruong (20/06/2023)
+     */
+    addAnswer() {
+      this.answers.push({});
     },
     /**
      * Reset dữ liệu

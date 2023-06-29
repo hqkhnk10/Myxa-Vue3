@@ -94,7 +94,7 @@ const validate = () => {
 };
 const finishExercise = () => {
   if (validate()) {
-    exerciseStore.addExercise();
+    exerciseStore.addOrUpdateExercise();
     finishDialog.value = true;
   }
 };
@@ -124,11 +124,13 @@ const finishExercise = () => {
               v-model="exerciseForm.subjectId"
               :options="subjects"
               :placeholder="t('emis.allSubject')"
+              style="width: 160px"
             ></misa-combobox>
             <misa-combobox
               v-model="exerciseForm.gradeId"
               :options="grades"
               :placeholder="t('emis.allGrade')"
+              style="width: 160px"
             ></misa-combobox>
             <misa-button type="default" @click="openAddInfoDialog">{{
               t("emis.addInformation")
@@ -138,8 +140,14 @@ const finishExercise = () => {
             }}</misa-button>
           </div>
           <div class="prepare-button-right">
-            <misa-button type="default"></misa-button>
-            <misa-button>{{ t("emis.try") }}</misa-button>
+            <misa-button type="default" style="min-width: 40px;width: 40px;">
+              <img
+                src="https://sisapapp.misacdn.net/lms/img/ic_help.6d809294.svg"
+                height="24"
+                width="24"
+              />
+            </misa-button>
+            <misa-button type="default">{{ t("emis.try") }}</misa-button>
             <misa-button @click="finishExercise">{{
               t("emis.finish")
             }}</misa-button>

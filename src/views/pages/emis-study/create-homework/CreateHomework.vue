@@ -101,7 +101,7 @@ const renderDirection = () => {
         </div>
       </div>
       <div class="question-view">
-        <div v-for="(question, index) in questions" :key="index">
+        <div v-for="(question, index) in questions" :key="index" class="question-container">
           <QuestionView :question="question" :index="index" />
         </div>
       </div>
@@ -340,5 +340,8 @@ const renderDirection = () => {
 .green {
   color: #00c542;
   background-color: rgba(0, 197, 66, 0.2);
+}
+.question-container{
+  padding: 0 12px
 }
 </style>

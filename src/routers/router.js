@@ -33,9 +33,9 @@ const mainRoutes = [
   {
     path: "/prepare/:id?",
     name: "Prepare",
-    component: () => import("@/views/pages/emis-study/create-homework/PreparePage.vue"),
-    children: [
-    ],
+    component: () =>
+      import("@/views/pages/emis-study/create-homework/PreparePage.vue"),
+    children: [],
   },
 ];
 
@@ -389,10 +389,8 @@ router.beforeEach((to, from, next) => {
   const loading = document.querySelector(".loading-screen");
   if (loading) {
     loading.style.display = "flex";
-  }
-  setTimeout(() => {
     next();
-  }, 100);
+  }
 });
 /**
  * Hide loading when finish change route
@@ -401,6 +399,8 @@ router.beforeEach((to, from, next) => {
 router.afterEach(() => {
   const loading = document.querySelector(".loading-screen");
   if (loading) {
-    loading.style.display = "none";
+    setTimeout(() => {
+      loading.style.display = "none";
+    }, 100);
   }
 });
