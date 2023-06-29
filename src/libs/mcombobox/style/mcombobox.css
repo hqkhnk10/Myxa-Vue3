@@ -74,6 +74,7 @@
 }
 a.mcombobox-item{
   display: flex;
+  font-weight: 500;
 }
 .mcombobox-item {
   height: 40px;
@@ -147,6 +148,7 @@ a{
 }
 .trans-bg input{
   background-color: transparent !important;
+  padding-left: 4px;
 }
 .trans-bg .mcombobox__button{
   background-color: transparent !important;

@@ -37,6 +37,11 @@ export default {
   },
   expose: ["focusCK"],
   emits: ["update:modelValue"],
+  watch: {
+    modelValue(newValue) {
+      this.editorData = newValue;
+    },
+  },
   methods: {
     changeData(value) {
       this.$emit("update:modelValue", value);

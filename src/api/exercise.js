@@ -32,3 +32,10 @@ export const updateExercise = async (data, id) => {
   });
   return res;
 };
+export const deleteExercise = async (id) => {
+  const res = await request.delete({
+    baseURL: hostUrl,
+    url: `Exercise/${id}`,
+  });
+  return res;
+};

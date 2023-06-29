@@ -7,17 +7,41 @@ import {
 } from "@/js/format/format";
 import { useRouter } from "vue-router";
 import MisaEnum from "@/js/base/enum";
+import { deleteExercise } from "@/api/exercise";
+import { dispatchNotification } from "../Notification";
+import { useExerciseStore } from "@/store/exercise";
+import { globals } from "@/main";
 const props = defineProps(["value"]);
 
 const dropdownVisible = ref(false);
 const confirmDialog = ref(false);
-
+const exerciseStore = useExerciseStore();
 const { push } = useRouter();
 const detail = () => {
   push(MisaEnum.Router.PreparePage + "/" + props.value.exerciseId);
 };
+/**
+ * Chuyển sang trang xem chi tiết
+ * Created By: NQTruong (20/06/2023)
+ */
+const detailExercise = () => {
+  push(MisaEnum.Router.PreparePage + "/" + props.value.exerciseId);
+};
 const remove = () => {
   confirmDialog.value = true;
+};
+const closeConfirmDialog = () => {
+  confirmDialog.value = false;
+};
+const removeRow = () => {
+  deleteExercise(props.value.exerciseId).then(() => {
+    dispatchNotification({
+      content: globals.t("reuse.deleteSuccess"),
+      type: "success",
+    });
+    exerciseStore.getExercises();
+  });
+  closeConfirmDialog()
 };
 const exerciseName = computed(() =>
   props.value.exerciseName
@@ -26,7 +50,7 @@ const exerciseName = computed(() =>
 );
 </script>
 <template>
-  <div class="card-container">
+  <div class="card-container" @click="detailExercise()">
     <div class="card-image">
       <div
         class="card-subject"
@@ -73,6 +97,22 @@ const exerciseName = computed(() =>
       </div>
     </div>
   </div>
+  <misa-confirm-dialog
+    v-if="confirmDialog"
+    v-model="confirmDialog"
+    title="EMIS Ôn tập"
+    @keydown.enter="removeRow"
+  >
+    <template #content>
+      <div>Bạn có chắc chắn muốn xóa câu hỏi không?</div>
+    </template>
+    <template #button>
+      <misa-button type="default" @click="closeConfirmDialog">{{
+        t("reuse.cancel")
+      }}</misa-button>
+      <misa-button @click="removeRow">{{ t("reuse.remove") }}</misa-button>
+    </template>
+  </misa-confirm-dialog>
 </template>
 <style scoped>
 .card-container {
@@ -94,7 +134,6 @@ const exerciseName = computed(() =>
   display: flex;
   flex-direction: column;
   gap: 8px;
-  padding: 12px;
   position: relative;
   width: 100%;
   height: 100px;
@@ -174,8 +213,8 @@ const exerciseName = computed(() =>
   display: flex;
   justify-content: end;
   align-items: center;
-  width: 20px;
   position: relative;
+  padding: 0 12px;
 }
 .card-dropdown {
   top: 0;
@@ -200,5 +239,12 @@ const exerciseName = computed(() =>
 .dropdown-item:hover {
   color: #8a6bf6;
   font-weight: 700;
+}
+.card-extend,
+.card-owner {
+  padding: 0 12px;
+}
+.card-header {
+  padding: 12px 0 0 12px;
 }
 </style>

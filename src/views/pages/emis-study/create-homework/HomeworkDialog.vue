@@ -77,7 +77,15 @@
       <div class="exercise-body">
         <div class="exercise-container">
           <div class="exercise-type">
-            <span>Câu 1 -</span>
+            <span
+              >Câu
+              {{
+                type == MisaEnum.FormActions.Edit
+                  ? nextQuestion
+                  : nextQuestion + 1
+              }}
+              </span
+            >
           </div>
           <div style="height: 100%">
             <CKEditor
@@ -128,9 +136,7 @@
 
 <script setup>
 import CKEditor from "@/components/CKEditor/CKEditor.vue";
-import CKEditorAnswer from "@/components/CKEditor/CKEditorAnswer.vue";
 import MisaEnum from "@/js/base/enum";
-import { formatIndexToAlphabet } from "@/js/format/format";
 import { useExerciseStore } from "@/store/exercise";
 import { storeToRefs } from "pinia";
 import {
@@ -211,18 +217,24 @@ watch(
     }
     if (type.value == MisaEnum.FormActions.Add) {
       exerciseStore.createDefatulAnswer(questionType.value);
-      question.value = {
-        questionType: questionType.value,
-        questionContent: "",
-      };
+      createDefaultQuestion();
     } else {
       question.value = JSON.parse(
         JSON.stringify(getDetailQuestion.value(questionIndex.value))
       );
       exerciseStore.answers = question.value.answers;
+      questionNote.value = question.value.questionNote;
     }
   }
 );
+const createDefaultQuestion = () => {
+  question.value = {
+    questionType: questionType.value,
+    questionContent: "",
+    questionNote: "",
+  };
+  questionNote.value = "";
+};
 const changeQuestionType = (type) => {
   exerciseStore.createDefatulAnswer(type);
 };
@@ -283,6 +295,8 @@ const saveQuestion = async (visible) => {
     );
     if (success) {
       dialogVisible.value = visible;
+      exerciseStore.createDefatulAnswer(questionType.value);
+      createDefaultQuestion();
     }
   }
 };
@@ -299,17 +313,17 @@ const openNote = () => {
  * Created By: NQTruong (20/06/2023)
  */
 const closeNote = () => {
-  questionNote.value = "";
+  questionNote.value = question.value.questionNote;
   noteDialog.value = false;
 };
-const questionNote = ref("");
 /**
  * Lưu lời giải thích
  * Created By: NQTruong (20/06/2023)
  */
+const questionNote = ref("");
 const saveNote = () => {
   question.value.questionNote = questionNote.value;
-  closeNote();
+  noteDialog.value = false;
 };
 </script>
 
@@ -391,6 +405,7 @@ const saveNote = () => {
   font-size: 16px;
   line-height: 24px;
   height: 40px;
+  color: #606266;
 }
 .answer-body,
 .answer-content {

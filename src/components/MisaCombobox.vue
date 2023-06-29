@@ -19,7 +19,7 @@
         :disabled="disabled"
         @input="(e) => inputChange(e.target.value)"
         :reset="reset"
-        @click-reset="clickReset"
+        @click-reset.stop="clickReset"
       ></misa-input>
       <span class="mcombobox-input__icon" v-if="loading">
         <img
@@ -168,7 +168,7 @@ export default {
      * reset value
      * CreatedBy: NQTruong (15/05/2023)
      */
-    clickReset() {
+    clickReset(e) {
       this.$emit("update:modelValue", null);
       this.setSelected({});
       this.addClassFocusToItem(-1);

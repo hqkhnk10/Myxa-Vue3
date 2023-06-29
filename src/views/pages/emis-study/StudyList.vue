@@ -49,7 +49,10 @@ const { push } = useRouter();
  * Created By: NQTruong (20/06/2023)
  */
 const getExerciseValue = () => {
-  exerciseStore.getExercises(paginationParams.value, exerciseParams.value);
+  exerciseStore.paginationParams = paginationParams.value;
+  exerciseStore.exerciseParams = exerciseParams.value;
+
+  exerciseStore.getExercises();
 };
 /**
  * Reset dữ liệu phân trang
@@ -103,14 +106,7 @@ watch(
     }, 1000);
   }
 );
-/**
- * Chuyển sang trang xem chi tiết
- * @param {*} id
- * Created By: NQTruong (20/06/2023)
- */
-const detailExercise = (id) => {
-  push(MisaEnum.Router.PreparePage + "/" + id);
-};
+
 </script>
 <template>
   <div>
@@ -147,7 +143,6 @@ const detailExercise = (id) => {
   <div class="grid-card" v-if="paginationValue.count > 0">
     <misa-loading v-model="loading"></misa-loading>
     <EmisCard
-      @click="detailExercise(card?.exerciseId)"
       v-for="(card, index) in exercises"
       :key="index"
       :value="card"

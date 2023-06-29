@@ -20,7 +20,7 @@
       type="button"
       aria-label="Close"
       class="button__icon-default input-button-x"
-      @click="resetInput()"
+      @click="resetInput"
     >
       <img src="../assets/emis/icon/closed.png" alt="Exit" style="width: 15px" />
     </button>
@@ -150,11 +150,11 @@ export default {
      * Created At: 19/05/2023
      * @author: NQTruong
      */
-    resetInput() {
+    resetInput(e) {
       this.inputValue = null;
       this.$emit("update:modelValue", "");
       this.$emit("blur");
-      this.$emit("click-reset", "");
+      this.$emit("click-reset", e);
       this.$emit("debounce", "")
     },
     /**

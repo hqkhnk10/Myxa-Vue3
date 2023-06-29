@@ -19,7 +19,6 @@
 *{
     font-family: var(--default-font);
     font-size: var(--default-font-size);
-    font-weight: var(--default-font-weight);
     box-sizing: border-box;
     word-break: break-word;
     /* outline: 1px dotted black; */

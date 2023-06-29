@@ -92,6 +92,8 @@ export const useExerciseStore = defineStore("exerciseStore", {
         message: "",
       },
     },
+    paginationParams: {},
+    exerciseParams: {},
   }),
   getters: {
     /**
@@ -175,15 +177,13 @@ export const useExerciseStore = defineStore("exerciseStore", {
     },
     /**
      * Lấy dữ liệu bài tập
-     * @param {*} paginationParams
-     * @param {*} exerciseParams
      * Created By: NQTruong (20/06/2023)
      */
-    getExercises(paginationParams, exerciseParams) {
+    getExercises() {
       this.loading = true;
       getExercises({
-        ...paginationParams,
-        ...exerciseParams,
+        ...this.paginationParams,
+        ...this.exerciseParams,
       })
         .then((res) => {
           this.exercises = res.data;
@@ -217,6 +217,7 @@ export const useExerciseStore = defineStore("exerciseStore", {
       };
       switch (type) {
         case MisaEnum.FormActions.Add:
+        case MisaEnum.FormActions.Clone:
           return postQuestion(postData)
             .then((res) => {
               dispatchNotification({
@@ -312,6 +313,11 @@ export const useExerciseStore = defineStore("exerciseStore", {
           break;
       }
     },
+    /**
+     * Đổi trạng thái (dành cho đúng/sai)
+     * @param {*} index
+     * Created By: NQTruong (20/06/2023)
+     */
     changeStatus(index) {
       this.answers.forEach((a) => {
         a.answerStatus = false;
@@ -334,7 +340,7 @@ export const useExerciseStore = defineStore("exerciseStore", {
     deleteAnswer(index) {
       if (this.answers.length == 1) {
         dispatchNotification({
-          content: "Có ít nhất 1 đáp án",
+          content: "Câu hỏi phải có ít nhất 1 đáp án",
           type: "warning",
         });
         return;

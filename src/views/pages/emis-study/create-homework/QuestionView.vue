@@ -23,12 +23,18 @@
       </div>
       <div class="question-button">
         <div>
-          <misa-button type="default" @click="openDialog">{{
-            t("emis.edit")
-          }}</misa-button>
+          <misa-button
+            type="default"
+            @click="openDialog(MisaEnum.FormActions.Edit)"
+            >{{ t("emis.edit") }}</misa-button
+          >
         </div>
         <div>
-          <misa-button type="default" class="icon">
+          <misa-button
+            type="default"
+            class="icon"
+            @click="openDialog(MisaEnum.FormActions.Clone)"
+          >
             <img :src="duplicate" alt="duplicate" />
           </misa-button>
         </div>
@@ -53,9 +59,7 @@
       <misa-button type="default" @click="closeConfirmDialog">{{
         t("reuse.cancel")
       }}</misa-button>
-      <misa-button @click="removeRow">{{
-        t("reuse.remove")
-      }}</misa-button>
+      <misa-button @click="removeRow">{{ t("reuse.remove") }}</misa-button>
     </template>
   </misa-confirm-dialog>
 </template>
@@ -75,10 +79,10 @@ import { useExerciseStore } from "@/store/exercise";
  * Mở dialog sửa
  * Created By: NQTruong (20/06/2023)
  */
-const openDialog = () => {
+const openDialog = (type) => {
   emitter.emit("homework-dialog-visible", {
     isShow: true,
-    formType: MisaEnum.FormActions.Edit,
+    formType: type,
     questionTypes: props.question?.questionType,
     index: props.index,
   });

@@ -11,6 +11,7 @@ const MisaEnum = {
     Add: "add",
     Edit: "edit",
     Detail: "detail",
+    Clone: "clone"
   },
   Keys: {
     EmulationTitle: "emulationtitle",

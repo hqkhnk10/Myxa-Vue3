@@ -24,7 +24,7 @@
     </div>
     <div class="answer-body">
       <div class="answer-content">
-        <CKEditorAnswer v-model="answer.answerContent"></CKEditorAnswer>
+        <input v-model="answer.answerContent" class="trans-input">
       </div>
     </div>
   </div>
@@ -33,10 +33,21 @@
 
 <script setup>
 import { defineProps } from "vue";
-import CKEditorAnswer from "@/components/CKEditor/CKEditorAnswer.vue";
 import { formatIndexToAlphabet, getAnswerBg } from "@/js/format/format";
 import { useExerciseStore } from "@/store/exercise";
 defineProps(["answers"]);
 
 const exerciseStore = useExerciseStore();
 </script>
+<style scoped>
+.answer-content{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.trans-input{
+  text-align: center;
+  border: none;
+  background: transparent;
+}
+</style>
