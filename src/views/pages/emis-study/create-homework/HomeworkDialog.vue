@@ -112,12 +112,11 @@
         </div>
         <div class="note-icon">
           <img
-            alt="note"
-            src="https://sisapapp.misacdn.net/lms/img/icon_answer_compose.fee2cfd8.svg"
+            src="https://sisapapp.misacdn.net/lms/img/icon_back.006a615c.svg"
             width="48"
             height="42"
           />
-          <div class="label text-neutral-500 text-center">Thêm lời giải</div>
+          <div class="label text-neutral-500 text-center">Quay lại câu hỏi</div>
         </div>
       </div>
     </div>
@@ -322,6 +321,7 @@ const closeNote = () => {
 const questionNote = ref("");
 const saveNote = () => {
   question.value.questionNote = questionNote.value;
+  console.log("note", question.value.questionNote, questionNote.value);
   noteDialog.value = false;
 };
 </script>

@@ -22,7 +22,6 @@ export default {
       editorConfig: {
         placeholder: this.placeholder,
       },
-      instance: null,
     };
   },
   props: {
@@ -42,7 +41,6 @@ export default {
       handler(newValue) {
         this.editorData = newValue;
       },
-      immediate: true,
     },
   },
   methods: {

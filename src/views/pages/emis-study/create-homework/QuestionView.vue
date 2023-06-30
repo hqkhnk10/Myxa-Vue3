@@ -7,10 +7,7 @@
     <div class="question-container">
       <div class="question-content">
         <div class="question-index">{{ index + 1 }}.</div>
-        <div
-          v-html="question.questionContent"
-          class="html-content"
-        ></div>
+        <div v-html="question.questionContent" class="html-content"></div>
       </div>
       <div class="answer-container">
         <div
@@ -23,6 +20,12 @@
           </div>
           <div v-html="answer.answerContent" class="html-content answer"></div>
         </div>
+      </div>
+      <div class="note-container" v-if="question.questionNote">
+        <div class="note-title">
+          Lời giải:
+        </div>
+        <div v-html="question.questionNote" class="html-content"></div>
       </div>
       <div class="question-button">
         <div>
@@ -137,6 +140,12 @@ const removeRow = () => {
   grid-template-columns: repeat(4, 1fr);
   border-bottom: 1px solid #eaebf5;
 }
+.note-container{
+  display: flex;
+  gap: 4px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eaebf5;
+}
 .answer-content {
   margin-bottom: 16px;
 }
@@ -181,11 +190,14 @@ const removeRow = () => {
 .question-decore.pink {
   background-color: rgb(255, 88, 140);
 }
-.html-content.answer{
+.html-content.answer {
   padding-top: 4px;
 }
 :deep(.html-content > *) {
   margin: 0;
   padding: 0;
+}
+.note-title{
+  font-weight: 700;
 }
 </style>

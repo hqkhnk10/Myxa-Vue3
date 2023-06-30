@@ -117,6 +117,7 @@ const form = ref({
   topicId: null,
   questions: [],
 });
+const finishAPI = ref(false);
 onMounted(() => {
   /**
    * Event bus dialog visible
@@ -126,6 +127,7 @@ onMounted(() => {
    */
   emitter.on("info-dialog-visible", (visible) => {
     dialogVisible.value = visible;
+    finishAPI.value = true;
   });
 });
 watch(
@@ -174,6 +176,9 @@ const saveForm = () => {
   const valid = validateForm();
   if (valid) {
     exerciseStore.updateExercise(form.value);
+    if (finishAPI.value) {
+      exerciseStore.addOrUpdateExercise();
+    }
     closeDialog();
   }
 };

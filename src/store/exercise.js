@@ -174,6 +174,12 @@ export const useExerciseStore = defineStore("exerciseStore", {
       addExercise({
         ...this.detailExercise,
         exerciseStatus: MisaEnum.ExerciseStatus.Prepared,
+      }).then(() => {
+        dispatchNotification({
+          content: "Soạn bài thành công",
+          type: "success",
+        });
+        router.push(MisaEnum.Router.StudyPage);
       });
     },
     /**
@@ -217,16 +223,18 @@ export const useExerciseStore = defineStore("exerciseStore", {
      * Created By: NQTruong (20/06/2023)
      */
     addQuestion(type, question, answers) {
-      const validAnswer = answers?.filter((a) => a.answerContent);
-      validAnswer.forEach((a) => {
-        a.answerContent = htmlEncode(a.answerContent);
-      });
+      let validAnswer = answers
+        .map((a) => ({
+          answerContent: htmlEncode(a.answerContent),
+          answerStatus: a.answerStatus,
+        }))
+        .filter((a) => a.answerContent);
       const postData = {
         exercise: { ...this.detailExercise },
         questionType: question.questionType,
         questionContent: htmlEncode(question.questionContent),
         questionNote: htmlEncode(question.questionNote),
-        answers: validAnswer,
+        answers: [...validAnswer],
       };
       switch (type) {
         case MisaEnum.FormActions.Add:
@@ -260,7 +268,7 @@ export const useExerciseStore = defineStore("exerciseStore", {
               return false;
             });
         default:
-          return false;
+          return Promise.reject(false);
       }
     },
     /**

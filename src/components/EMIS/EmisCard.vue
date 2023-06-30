@@ -155,15 +155,15 @@ const exerciseName = computed(() =>
 .card-status {
   background-color: #e8e1fd;
   border-radius: 4px;
-  width: 60px;
+  width: fit-content;
   height: 21px;
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 0 5px;
 }
 .card-status-content {
-  padding: 5px;
   font-size: 12px;
   font-weight: 500;
   color: #8a6bf6;

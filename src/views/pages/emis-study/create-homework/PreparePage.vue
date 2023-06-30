@@ -95,7 +95,6 @@ const validate = () => {
 const finishExercise = () => {
   if (validate()) {
     exerciseStore.addOrUpdateExercise();
-    finishDialog.value = true;
   }
 };
 </script>
