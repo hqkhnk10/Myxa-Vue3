@@ -247,8 +247,11 @@ const clickPrepareButton = () => {
 onMounted(() => {
   exerciseStore.resetValue();
 });
-const year = ref(2)
-const yearOptions = ref([{ value: 1, label: "Năm học 2021-2022" },{ value: 2, label: "Năm học 2022-2023" }]);
+const year = ref(2);
+const yearOptions = ref([
+  { value: 1, label: "Năm học 2021-2022" },
+  { value: 2, label: "Năm học 2022-2023" },
+]);
 </script>
 
 <style>
@@ -384,7 +387,6 @@ const yearOptions = ref([{ value: 1, label: "Năm học 2021-2022" },{ value: 2,
   width: 100%;
   overflow-x: hidden;
   overflow-y: auto;
-  padding-top: 16px;
 }
 .main-content {
   width: 1024px;
@@ -400,9 +402,13 @@ const yearOptions = ref([{ value: 1, label: "Năm học 2021-2022" },{ value: 2,
   padding: 0 12px;
 }
 .tab-container {
+  padding: 16px 0 ;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 20px;
+  z-index: 20;
+  background: white;
+  top: 0;
+  position: sticky;
 }
 .tab-selected {
   overflow: hidden;
@@ -417,7 +423,7 @@ const yearOptions = ref([{ value: 1, label: "Năm học 2021-2022" },{ value: 2,
   gap: 12px;
 }
 .background-banner {
-  margin: 0.5rem;
+  margin-bottom: 1rem;
   position: relative;
 }
 .banner-title {

@@ -52,12 +52,13 @@ export const formatBgBaseOnQuestionType = (type) => {
   }
 };
 /**
- * Decode xss html
+ * Decode html
  * @param {*} text
  * @returns
  * Created By: NQTruong (20/06/2023)
  */
 export const decodeHtml = (text) => {
+  if(!text) return ''
   const span = document.createElement("span");
   return text.replace(/&[#A-Za-z0-9]+;/gi, (entity, position, text) => {
     span.innerHTML = entity;
@@ -90,10 +91,9 @@ export const formatStatusExercise = (type) => {
     case 5:
       return "Lấy từ thư viện";
     default:
-      return ""
+      return "";
   }
 };
-
 
 /**
  * Lấy background của câu trả lời
@@ -113,4 +113,16 @@ export const getAnswerBg = (index) => {
     default:
       return "answer-bg-white";
   }
+};
+
+/**
+ * Encode html
+ * @param {*} str
+ * @returns
+ * Created By: NQTruong (20/06/2023)
+ */
+export const htmlEncode = (str) => {
+  return String(str).replace(/[^\w. ]/gi, function (c) {
+    return "&#" + c.charCodeAt(0) + ";";
+  });
 };

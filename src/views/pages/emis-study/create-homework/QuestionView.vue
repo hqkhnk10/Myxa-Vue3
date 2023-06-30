@@ -7,7 +7,10 @@
     <div class="question-container">
       <div class="question-content">
         <div class="question-index">{{ index + 1 }}.</div>
-        <div v-html="question.questionContent" class="html-content"></div>
+        <div
+          v-html="question.questionContent"
+          class="html-content"
+        ></div>
       </div>
       <div class="answer-container">
         <div
@@ -18,7 +21,7 @@
           <div class="answer__index" :class="{ true: answer.answerStatus }">
             {{ formatIndexToAlphabet(index) }}
           </div>
-          <div v-html="answer.answerContent" class="html-content"></div>
+          <div v-html="answer.answerContent" class="html-content answer"></div>
         </div>
       </div>
       <div class="question-button">
@@ -69,6 +72,7 @@ import { defineProps, ref } from "vue";
 import {
   formatIndexToAlphabet,
   formatBgBaseOnQuestionType,
+  decodeHtml,
 } from "@/js/format/format";
 import { duplicate, deleteIcon } from "@/js/img/getImg";
 import { emitter } from "@/main";
@@ -140,7 +144,6 @@ const removeRow = () => {
 .question-content {
   display: flex;
   gap: 8px;
-  align-items: center;
 }
 .answer__index {
   color: #fff;
@@ -177,6 +180,9 @@ const removeRow = () => {
 }
 .question-decore.pink {
   background-color: rgb(255, 88, 140);
+}
+.html-content.answer{
+  padding-top: 4px;
 }
 :deep(.html-content > *) {
   margin: 0;

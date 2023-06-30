@@ -38,13 +38,15 @@ export default {
   },
   emits: ["on-blur", "update:modelValue"],
   watch: {
-    modelValue(newValue) {
-      this.editorData = newValue;
+    modelValue: {
+      handler(newValue) {
+        this.editorData = newValue;
+      },
     },
   },
   methods: {
     changeData(value) {
-      this.$emit("update:modelValue", decodeHtml(value));
+      this.$emit("update:modelValue", value);
     },
     onReady() {
       // document.querySelector("#answer .ck .ck-content").focus();
@@ -57,7 +59,7 @@ export default {
 </script>
 <style>
 #answer:has(.ck-focused) .ck.ck-editor__editable > .ck-placeholder::before {
-    display: none;
+  display: none;
 }
 #answer {
   height: 100%;
@@ -72,6 +74,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   border: 0 !important;
   box-shadow: none !important;
   text-align: center;

@@ -20,6 +20,7 @@ import { globals } from "@/main";
 import { useRouter } from "vue-router";
 import { router } from "@/routers/router";
 import { maxLength, required } from "@/js/validate/validate";
+import { decodeHtml, htmlEncode } from "@/js/format/format";
 
 export const useExerciseStore = defineStore("exerciseStore", {
   state: () => ({
@@ -202,6 +203,13 @@ export const useExerciseStore = defineStore("exerciseStore", {
     getExerciseById(id) {
       getDetailExercise(id).then((res) => {
         this.detailExercise = { ...res.data[0] };
+        this.detailExercise.questions.forEach((q) => {
+          q.questionContent = decodeHtml(q.questionContent);
+          q.questionNote = decodeHtml(q.questionNote);
+          q?.answers?.forEach((a) => {
+            a.answerContent = decodeHtml(a.answerContent);
+          });
+        });
       });
     },
     /**
@@ -210,9 +218,14 @@ export const useExerciseStore = defineStore("exerciseStore", {
      */
     addQuestion(type, question, answers) {
       const validAnswer = answers?.filter((a) => a.answerContent);
+      validAnswer.forEach((a) => {
+        a.answerContent = htmlEncode(a.answerContent);
+      });
       const postData = {
         exercise: { ...this.detailExercise },
-        ...question,
+        questionType: question.questionType,
+        questionContent: htmlEncode(question.questionContent),
+        questionNote: htmlEncode(question.questionNote),
         answers: validAnswer,
       };
       switch (type) {

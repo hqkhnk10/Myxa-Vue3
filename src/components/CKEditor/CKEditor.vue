@@ -38,8 +38,11 @@ export default {
   expose: ["focusCK"],
   emits: ["update:modelValue"],
   watch: {
-    modelValue(newValue) {
-      this.editorData = newValue;
+    modelValue: {
+      handler(newValue) {
+        this.editorData = newValue;
+      },
+      immediate: true,
     },
   },
   methods: {

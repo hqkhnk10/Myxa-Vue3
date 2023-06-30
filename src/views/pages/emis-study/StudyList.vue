@@ -106,7 +106,6 @@ watch(
     }, 1000);
   }
 );
-
 </script>
 <template>
   <div>

@@ -8,7 +8,7 @@
               >Câu
               {{
                 type == MisaEnum.FormActions.Edit
-                  ? nextQuestion
+                  ? questionIndex + 1
                   : nextQuestion + 1
               }}
               -</span
@@ -81,11 +81,10 @@
               >Câu
               {{
                 type == MisaEnum.FormActions.Edit
-                  ? nextQuestion
+                  ? questionIndex + 1
                   : nextQuestion + 1
               }}
-              </span
-            >
+            </span>
           </div>
           <div style="height: 100%">
             <CKEditor
