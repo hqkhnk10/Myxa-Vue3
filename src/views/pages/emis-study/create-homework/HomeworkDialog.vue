@@ -234,6 +234,7 @@ const createDefaultQuestion = () => {
   questionNote.value = "";
 };
 const changeQuestionType = (type) => {
+  question.value.questionType= type;
   exerciseStore.createDefatulAnswer(type);
 };
 /**

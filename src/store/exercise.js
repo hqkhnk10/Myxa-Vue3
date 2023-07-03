@@ -302,19 +302,19 @@ export const useExerciseStore = defineStore("exerciseStore", {
           this.answers = [
             {
               answerContent: "",
-              status: false,
+              answerStatus: false,
             },
             {
               answerContent: "",
-              status: false,
+              answerStatus: false,
             },
             {
               answerContent: "",
-              status: false,
+              answerStatus: false,
             },
             {
               answerContent: "",
-              status: false,
+              answerStatus: false,
             },
           ];
           break;

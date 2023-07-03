@@ -199,6 +199,7 @@ const renderDirection = () => {
   bottom: 1.5rem;
 }
 .upload-wrap .extract__content {
+  z-index: 1;
   width: 840px;
   height: 224px;
   border: 2px dashed #b6b9ce;
