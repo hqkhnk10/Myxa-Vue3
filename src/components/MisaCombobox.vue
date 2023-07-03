@@ -57,6 +57,13 @@
           >{{ item[label] }}</a
         >
       </div>
+      <div
+        class="mcombobox__data"
+        v-if="optionsBox && filterOptions.length == 0"
+        :class="positionStyle"
+      >
+        <div class="mid">Không có dữ liệu hiển thị</div>
+      </div>
     </div>
     <div class="error active" v-if="!valid">
       {{ message }} {{ t("reuse.notRight") }}. {{ t("reuse.pleaseChoose") }}
@@ -215,8 +222,8 @@ export default {
      * CreatedBy: NQTruong (15/05/2023)
      */
     openOptions() {
+      this.optionsBox = true;
       if (this.filterOptions?.length > 0) {
-        this.optionsBox = true;
         const getSelectedIdx = this.getSelectedIndex();
         if (getSelectedIdx !== -1) {
           this.addClassFocusToItem(getSelectedIdx);
@@ -363,3 +370,9 @@ export default {
   },
 };
 </script>
+<style scoped>
+.mid{
+  display: flex;
+  justify-content: center;
+}
+</style>

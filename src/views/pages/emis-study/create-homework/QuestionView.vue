@@ -22,9 +22,7 @@
         </div>
       </div>
       <div class="note-container" v-if="question.questionNote">
-        <div class="note-title">
-          Lời giải:
-        </div>
+        <div class="note-title">Lời giải:</div>
         <div v-html="question.questionNote" class="html-content"></div>
       </div>
       <div class="question-button">
@@ -35,7 +33,7 @@
             >{{ t("emis.edit") }}</misa-button
           >
         </div>
-        <div>
+        <div class="tooltip">
           <misa-button
             type="default"
             class="icon"
@@ -43,11 +41,13 @@
           >
             <img :src="duplicate" alt="duplicate" />
           </misa-button>
+          <span class="tooltiptext tooltiptext-top"> Sao chép câu hỏi </span>
         </div>
-        <div>
+        <div class="tooltip">
           <misa-button type="default" class="icon" @click="openConfirmDialog">
             <img :src="deleteIcon" alt="icon" />
           </misa-button>
+          <span class="tooltiptext tooltiptext-top"> Xóa câu hỏi </span>
         </div>
       </div>
     </div>
@@ -140,7 +140,7 @@ const removeRow = () => {
   grid-template-columns: repeat(4, 1fr);
   border-bottom: 1px solid #eaebf5;
 }
-.note-container{
+.note-container {
   display: flex;
   gap: 4px;
   padding-bottom: 12px;
@@ -197,7 +197,7 @@ const removeRow = () => {
   margin: 0;
   padding: 0;
 }
-.note-title{
+.note-title {
   font-weight: 700;
 }
 </style>

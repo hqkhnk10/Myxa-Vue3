@@ -151,7 +151,7 @@ const topics = ref([]);
  * Created By: NQTruong (20/06/2023)
  */
 watch(
-  () => form.value.subjectId,
+  () => [form.value.subjectId, form.value.gradeId],
   () => {
     getTopics({
       subjectId: form.value.subjectId,

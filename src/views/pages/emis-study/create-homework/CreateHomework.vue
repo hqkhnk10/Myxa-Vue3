@@ -101,7 +101,11 @@ const renderDirection = () => {
         </div>
       </div>
       <div class="question-view">
-        <div v-for="(question, index) in questions" :key="index" class="question-container">
+        <div
+          v-for="(question, index) in questions"
+          :key="index"
+          class="question-container"
+        >
           <QuestionView :question="question" :index="index" />
         </div>
       </div>
@@ -132,13 +136,16 @@ const renderDirection = () => {
               :key="index"
               @click="clickQuestionImg(question.value)"
             >
-              <div>
+              <div class="tooltip">
                 <img
                   :src="question?.img"
                   class="question__icon"
                   width="64"
                   alt="question-icon"
                 />
+                <span class="tooltiptext tooltiptext-left">
+                  {{ question.label }}
+                </span>
               </div>
               <div class="question__desc">{{ question.label }}</div>
             </div>
@@ -342,7 +349,16 @@ const renderDirection = () => {
   color: #00c542;
   background-color: rgba(0, 197, 66, 0.2);
 }
-.question-container{
-  padding: 0 12px
+.question-container {
+  padding: 0 12px;
+}
+.horizontal .h5.mb-6 {
+  display: block;
+}
+.vertical .compose{
+  margin-top: 0;
+}
+.horizontal .tooltiptext{
+  display: none;
 }
 </style>
