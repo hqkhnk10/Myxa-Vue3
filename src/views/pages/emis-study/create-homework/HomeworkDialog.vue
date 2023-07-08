@@ -164,7 +164,7 @@ const currentTab = computed(() => {
     case MisaEnum.QuestionType.Fill:
       return "FillAnswer";
     default:
-      return "ChooseAnswer";
+      return "";
   }
 });
 
@@ -253,7 +253,7 @@ const clickCloseButton = () => {
  * Created By: NQTruong (20/06/2023)
  */
 const addAnswer = () => {
-  answers.value.push({});
+  exerciseStore.addAnswer();
 };
 /**
  * Hiện thông báo validate
@@ -268,6 +268,7 @@ const showNotification = (content) => {
 };
 /**
  * Validate trước khi thêm/sửa câu hỏi
+ * Created By: NQTruong (20/06/2023)
  */
 const validate = () => {
   if (!question.value.questionContent) {
@@ -275,6 +276,35 @@ const validate = () => {
     return false;
   }
   const validAnswers = answers.value.filter((a) => a.answerContent);
+  switch (question.value.questionType) {
+    case MisaEnum.QuestionType.Choosing:
+      return validateChoosingAnswer(validAnswers);
+    case MisaEnum.QuestionType.TrueFalse:
+      return validateTrueFalseAnswer(validAnswers);
+    case MisaEnum.QuestionType.Fill:
+      return validateFillAnswer(validAnswers);
+    default:
+      break;
+  }
+  return true;
+};
+/**
+ * Validate chọn câu trả lời
+ * @param {*} validAnswers
+ * Created By: NQTruong (01/07/2023)
+ */
+const validateFillAnswer = (validAnswers) => {
+  if (validAnswers.length == 0) {
+    showNotification("Bạn vui lòng nhập nội dung đáp án");
+    return false;
+  }
+};
+/**
+ * Validate chọn câu trả lời
+ * @param {*} validAnswers
+ * Created By: NQTruong (01/07/2023)
+ */
+const validateChoosingAnswer = (validAnswers) => {
   if (validAnswers.length == 0) {
     showNotification("Bạn vui lòng nhập nội dung đáp án");
     return false;
@@ -283,11 +313,25 @@ const validate = () => {
     showNotification("Bạn vui lòng nhập nội dung đáp án, chọn đáp án đúng");
     return false;
   }
-  return true;
+};
+/**
+ * Validate câu trả lời Đúng/sai
+ * @param {*} validAnswers
+ * Created By: NQTruong (01/07/2023)
+ */
+const validateTrueFalseAnswer = (validAnswers) => {
+  if (validAnswers.length == 2) {
+    showNotification("Bạn vui lòng nhập nội dung đáp án");
+    return false;
+  }
+  if (validAnswers.filter((a) => a.answerContent).length != 1) {
+    showNotification("Bạn vui lòng nhập nội dung đáp án, chọn đáp án đúng");
+    return false;
+  }
 };
 /**
  * Lưu và thêm mới
- * Created By: NQTruong (20/06/2023)
+ * Created By: NQTruong (01/07/2023)
  */
 const saveQuestion = async (visible) => {
   if (validate()) {
@@ -385,7 +429,6 @@ const saveNote = () => {
   max-height: 60%;
 }
 .answer-container {
-  padding: 1rem 1.5rem 1.5rem 1.5rem;
   background: white;
   flex: 1;
   border-radius: 0 0 10px 10px;

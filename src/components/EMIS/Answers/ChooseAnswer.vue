@@ -127,5 +127,6 @@ const exerciseStore = useExerciseStore();
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1rem;
-}
+  padding: 1rem 1.5rem 1.5rem 1.5rem;
+  }
 </style>

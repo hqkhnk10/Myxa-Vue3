@@ -35,8 +35,8 @@
 import { defineProps, defineEmits, ref, watch, computed } from "vue";
 const props = defineProps({
   modelValue: {
-    type: Array,
-    default: () => [],
+    type: String,
+    default: "",
   },
   placeholder: {
     type: String,
@@ -46,6 +46,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  spiltExp: {
+    type: String,
+    default: "||",
+  },
 });
 const emit = defineEmits(["update:modelValue", "click-close"]);
 const newTag = ref("");
@@ -53,7 +57,7 @@ const tags = ref([]);
 watch(
   () => props.modelValue,
   () => {
-    tags.value = props.modelValue;
+    tags.value = props.modelValue ? props.modelValue.split(props.spiltExp) : [];
   },
   { immediate: true }
 );
@@ -64,7 +68,10 @@ const isHidePlaceholder = computed(() => {
   return tags.value.length > 0 || newTag.value != "";
 });
 const updateModelValue = () => {
-  emit("update:modelValue", tags.value);
+//   const uniqueArray = tags.value.filter(function(item, pos) {
+//     return tags.value.indexOf(item) == pos;
+// })
+  emit("update:modelValue", tags.value.join(props.spiltExp));
 };
 const addTag = (e) => {
   const text = e.target.innerText.trim();

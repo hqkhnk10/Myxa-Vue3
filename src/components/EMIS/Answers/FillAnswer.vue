@@ -1,23 +1,25 @@
 <template>
-  <div v-for="(answer, index) in answers" :key="index" class="fill-container">
-    <div class="fill-title">Ô trống {{ index + 1}}</div>
-    <div class="fill-tag">
-      <misa-tag
-        v-model="answer.answerContent"
-        closeable
-        @click-close="clickClose(index)"
-      ></misa-tag>
+  <div class="exercise-container">
+    <div v-for="(answer, index) in answers" :key="index" class="fill-container">
+      <div class="fill-title">Ô trống {{ index + 1 }}</div>
+      <div class="fill-tag">
+        <misa-tag
+          v-model="answer.answerContent"
+          closeable
+          @click-close="clickClose(index)"
+        ></misa-tag>
+      </div>
     </div>
-  </div>
-  <div class="fill-button" @click="addAnswer">
-    <div class="fill-title"></div>
-    <div class="add-answer title w-full">
-      <img
-        alt="add"
-        src="https://sisapapp.misacdn.net/lms/img/ic_add-answer.9486a95a.svg"
-        width="12"
-      />
-      <span class="button-title"> Thêm đáp án </span>
+    <div class="fill-button" @click="addAnswer">
+      <div class="fill-title"></div>
+      <div class="add-answer title w-full">
+        <img
+          alt="add"
+          src="https://sisapapp.misacdn.net/lms/img/ic_add-answer.9486a95a.svg"
+          width="12"
+        />
+        <span class="button-title"> Thêm đáp án </span>
+      </div>
     </div>
   </div>
 </template>
@@ -67,5 +69,8 @@ const clickClose = (index) => {
   min-width: 5rem;
   max-width: 5rem;
   margin-right: 4px;
+}
+.exercise-container {
+  padding: 1rem 1.5rem 1.5rem 1.5rem;
 }
 </style>

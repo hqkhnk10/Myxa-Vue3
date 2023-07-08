@@ -1,7 +1,7 @@
 <script setup>
 import EmisCard from "@/components/EMIS/EmisCard.vue";
 import { ref } from "vue";
-const tags = ref(['1','2','3'])
+const tags = ref('1||2||3')
 const cards = ref([
   {
     img: "",
