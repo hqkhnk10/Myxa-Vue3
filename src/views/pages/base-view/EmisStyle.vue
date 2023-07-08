@@ -47,7 +47,7 @@ const cards = ref([
     </div>
     <div>
       {{ tags }}
-      <misa-tag v-model="tags"></misa-tag>
+      <misa-tag v-model="tags" closeable></misa-tag>
     </div>
   <div class="grid-card">
     <EmisCard

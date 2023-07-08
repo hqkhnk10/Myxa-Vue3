@@ -18,7 +18,15 @@
         class="new-tag"
         @keydown.enter.prevent="addTag"
         @input="inputChange"
+        @blur="addTag"
       ></span>
+    </div>
+    <div v-if="closeable" class="close-end" @click="clickCloseButton">
+      <img
+        alt="close"
+        src="https://sisapapp.misacdn.net/lms/img/ic_remove.2d9e09d5.svg"
+        width="15"
+      />
     </div>
   </div>
 </template>
@@ -34,8 +42,12 @@ const props = defineProps({
     type: String,
     default: "Nhập đáp án rồi nhấn Enter...",
   },
+  closeable: {
+    type: Boolean,
+    default: false,
+  },
 });
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue", "click-close"]);
 const newTag = ref("");
 const tags = ref([]);
 watch(
@@ -66,5 +78,8 @@ const addTag = (e) => {
 const removeTag = (index) => {
   tags.value.splice(index, 1);
   updateModelValue();
+};
+const clickCloseButton = () => {
+  emit("click-close");
 };
 </script>

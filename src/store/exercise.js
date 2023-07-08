@@ -330,6 +330,9 @@ export const useExerciseStore = defineStore("exerciseStore", {
             },
           ];
           break;
+        case MisaEnum.QuestionType.Fill:
+          this.answers = [{ answerContent: [], status: true }];
+          break;
         default:
           break;
       }

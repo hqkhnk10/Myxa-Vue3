@@ -28,16 +28,14 @@
             ></CKEditor>
           </div>
           <div class="answer-container">
-            <div class="exercise-answer">
-              <component :is="tabs[currentTab]" :answers="answers"></component>
-            </div>
+            <component :is="tabs[currentTab]" :answers="answers"></component>
           </div>
         </div>
         <div class="exercise-button">
           <div>
             <misa-button
               type="default"
-              v-if="question.questionType !== MisaEnum.QuestionType.TrueFalse"
+              v-if="question.questionType == MisaEnum.QuestionType.ChooseAnswer"
               @click="addAnswer"
               >{{ t("emis.addAnswers") }}</misa-button
             >
@@ -146,12 +144,16 @@ import {
   computed,
 } from "vue";
 import { emitter } from "@/main";
-import ChooseAnswer from "@/components/EMIS/Answers/ChooseAnswer.vue";
-import TrueOrFalse from "@/components/EMIS/Answers/TrueOrFalse.vue";
+import {
+  ChooseAnswer,
+  TrueOrFalse,
+  FillAnswer,
+} from "@/components/EMIS/Answers/index";
 
 const tabs = {
   ChooseAnswer,
   TrueOrFalse,
+  FillAnswer,
 };
 const currentTab = computed(() => {
   switch (question.value.questionType) {
@@ -159,6 +161,8 @@ const currentTab = computed(() => {
       return "ChooseAnswer";
     case MisaEnum.QuestionType.TrueFalse:
       return "TrueOrFalse";
+    case MisaEnum.QuestionType.Fill:
+      return "FillAnswer";
     default:
       return "ChooseAnswer";
   }
@@ -234,7 +238,7 @@ const createDefaultQuestion = () => {
   questionNote.value = "";
 };
 const changeQuestionType = (type) => {
-  question.value.questionType= type;
+  question.value.questionType = type;
   exerciseStore.createDefatulAnswer(type);
 };
 /**
@@ -327,7 +331,7 @@ const saveNote = () => {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .exercise-note {
   cursor: pointer;
 }
@@ -363,11 +367,6 @@ const saveNote = () => {
   height: 100%;
   border-radius: 10px;
   overflow-y: auto;
-}
-.exercise-answer {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1rem;
 }
 .answer-card {
   width: 245px;
@@ -463,5 +462,23 @@ const saveNote = () => {
 }
 .tick-status {
   background-color: #00c542;
+}
+.fill-button {
+  margin-top: 12px;
+  display: flex;
+  .add-answer {
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px dashed #b6b9ce;
+    border-radius: 10px;
+    background-color: #f1f2f7;
+    cursor: pointer;
+    color: rgba(78, 91, 106, 0.7);
+    .button-title {
+      margin-left: 12px;
+    }
+  }
 }
 </style>
