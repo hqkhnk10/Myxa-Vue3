@@ -91,7 +91,6 @@ import { useSubjectStore } from "@/store/subject";
 import { useGradeStore } from "@/store/grade";
 import { useExerciseStore } from "@/store/exercise";
 import { getSubjectImgFromId } from "@/js/img/getSubjectImg";
-import { maxLength, required } from "@/js/validate/validate";
 import { emitter } from "@/main";
 
 const firstInput = ref(null);

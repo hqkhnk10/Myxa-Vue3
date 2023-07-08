@@ -16,6 +16,7 @@ import MisaLoadingVue from "./components/MisaLoading.vue";
 import MisaNotification from "./components/Notification/NotificationProvider.vue";
 import MisaConfirmDialog from "./components/ConfirmDialog/ConfirmDialog.vue";
 import MisaUploadVue from "./components/MisaUpload.vue";
+import MisaTagVue from "./components/MisaTag.vue";
 
 import MisaEnum from "./js/base/enum";
 
@@ -43,6 +44,7 @@ vue.component("misa-loading", MisaLoadingVue);
 vue.component("misa-notification", MisaNotification);
 vue.component("misa-confirm-dialog", MisaConfirmDialog);
 vue.component("misa-upload", MisaUploadVue);
+vue.component("misa-tag", MisaTagVue);
 
 vue.config.globalProperties.$enum = MisaEnum;
 vue.config.globalProperties.emitter = emitter;

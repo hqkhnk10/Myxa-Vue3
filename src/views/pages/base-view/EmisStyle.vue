@@ -1,7 +1,7 @@
 <script setup>
 import EmisCard from "@/components/EMIS/EmisCard.vue";
 import { ref } from "vue";
-
+const tags = ref(['1','2','3'])
 const cards = ref([
   {
     img: "",
@@ -44,6 +44,10 @@ const cards = ref([
     <div>
         <misa-button type="default">Default</misa-button>
         <misa-button>Primary</misa-button>
+    </div>
+    <div>
+      {{ tags }}
+      <misa-tag v-model="tags"></misa-tag>
     </div>
   <div class="grid-card">
     <EmisCard

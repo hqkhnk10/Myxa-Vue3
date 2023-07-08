@@ -5,7 +5,7 @@ import { useExerciseStore } from "@/store/exercise";
 import MisaEnum from "@/js/base/enum";
 import { emitter } from "@/main";
 import { question } from "@/js/img/getImg";
-
+import QuestionUpload from "@/components/EMIS/QuestionUpload.vue"
 const props = defineProps({
   type: {
     type: String,
@@ -56,48 +56,8 @@ const renderDirection = () => {
         <div class="h5 extract__title mb-6">
           Tách câu hỏi tự động sử dụng công nghệ AI
         </div>
-        <div class="upload-wrap relative flex justify-center">
-          <div class="button-download-wrap absolute bottom-6">
-            <misa-button type="primary" class="ms-button purple">
-              Tải lên file bài tập
-            </misa-button>
-            <misa-button type="primary" class="ms-button green">
-              Tải file Excel mẫu
-            </misa-button>
-          </div>
-          <div
-            class="file-container extract__content text-center"
-            is-auto-upload="false"
-          >
-            <label class="drop-zone"
-              ><div
-                class="file-extract w-full h-full flex flex-col justify-center items-center overflow-hidden cursor-pointer"
-              >
-                <div class="extract__content__icon">
-                  <img
-                    alt="file"
-                    src="https://sisapapp.misacdn.net/lms/img/ic_extract.d2689d03.svg"
-                    height="64"
-                  />
-                </div>
-                <div class="extract__content__desc">
-                  Nhấn để tải lên file bài tập hoặc kéo thả file vào đây.<br />File
-                  có định dạng xls, xlsx, doc, docx, pdf
-                </div>
-                <div class="h-10 mt-3"></div></div
-            ></label>
-            <div class="preview-menu-container">
-              <div class="ms-upload-field position-relative">
-                <label class="label-input"><span></span></label
-                ><input
-                  type="file"
-                  class="position-relative"
-                  accept=".png,.jpg,.jpeg,.bmp,.doc,.docx,.xls,.xlsx,.pdf,.mp3,.mp4,.m4a,.ppt,.pptx,.odp"
-                  style="display: none"
-                />
-              </div>
-            </div>
-          </div>
+        <div>
+          <QuestionUpload></QuestionUpload>
         </div>
       </div>
       <div class="question-view">
@@ -191,51 +151,7 @@ const renderDirection = () => {
   font-size: 18px;
   line-height: 26px;
 }
-.upload-wrap {
-  width: 840px;
-  height: 224px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-}
-.upload-wrap .button-download-wrap {
-  display: flex;
-  z-index: 5;
-  position: absolute;
-  bottom: 1.5rem;
-}
-.upload-wrap .extract__content {
-  z-index: 1;
-  width: 840px;
-  height: 224px;
-  border: 2px dashed #b6b9ce;
-  padding: 24px 0;
-  border-radius: 10px;
-}
-.file-container .drop-zone {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 5;
-}
-.file-extract {
-  padding-bottom: 40px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  cursor: pointer;
-  width: 100%;
-  height: 100%;
-}
-.upload-wrap .extract__content__icon {
-  margin-bottom: 16px;
-  height: 64px;
-}
+
 .toolbar {
   display: flex;
 }
@@ -332,33 +248,16 @@ const renderDirection = () => {
 .horizontal .question-view {
   height: fit-content;
 }
-.ms-button {
-  min-width: 113px;
-  padding: 0 12px;
-  margin-right: 12px;
-  margin-left: 0 !important;
-  height: 40px;
-  font-size: 14px;
-  line-height: 20px;
-}
-.purple {
-  background-color: #ece7fe !important;
-  color: #8a6bf6 !important;
-}
-.green {
-  color: #00c542;
-  background-color: rgba(0, 197, 66, 0.2);
-}
 .question-container {
   padding: 0 12px;
 }
 .horizontal .h5.mb-6 {
   display: block;
 }
-.vertical .compose{
+.vertical .compose {
   margin-top: 0;
 }
-.horizontal .tooltiptext{
+.horizontal .tooltiptext {
   display: none;
 }
 </style>

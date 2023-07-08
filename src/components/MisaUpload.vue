@@ -100,7 +100,6 @@
           ref="fileInput"
           type="file"
           accept=".xlsx"
-          multiple
           style="display: none"
           @change="handleFileInputChange"
         />
