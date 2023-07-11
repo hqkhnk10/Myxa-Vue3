@@ -42,9 +42,8 @@ export const useExerciseStore = defineStore("exerciseStore", {
     detailExercise: {
       exerciseId: null,
       exerciseName: "",
-      subjectId: 1,
-      gradeId: 1,
-      subjectImage: "toan.png",
+      subjectId: "2968e245-7446-401f-897e-eba897d55e2f",
+      gradeId: "215b1f47-9d0b-4028-b1d9-740ed349d2e5",
       topicId: null,
       questions: [],
     },
@@ -171,10 +170,14 @@ export const useExerciseStore = defineStore("exerciseStore", {
      * Created By: NQTruong (20/06/2023)
      */
     addOrUpdateExercise() {
-      addExercise({
+      const exerciseData = {
         ...this.detailExercise,
         exerciseStatus: MisaEnum.ExerciseStatus.Prepared,
-      }).then(() => {
+      };
+      const action = this.detailExercise.exerciseId == null
+        ? addExercise(exerciseData)
+        : updateExercise(exerciseData, this.detailExercise.exerciseId);
+      action.then(() => {
         dispatchNotification({
           content: "Soạn bài thành công",
           type: "success",
@@ -331,7 +334,7 @@ export const useExerciseStore = defineStore("exerciseStore", {
           ];
           break;
         case MisaEnum.QuestionType.Fill:
-          this.answers = [{ answerContent: '', status: true }];
+          this.answers = [{ answerContent: "", status: true }];
           break;
         default:
           break;
@@ -387,9 +390,8 @@ export const useExerciseStore = defineStore("exerciseStore", {
       this.detailExercise = {
         exerciseId: null,
         exerciseName: "",
-        subjectId: 1,
-        gradeId: 1,
-        subjectImage: "",
+        subjectId: "2968e245-7446-401f-897e-eba897d55e2f",
+        gradeId: "215b1f47-9d0b-4028-b1d9-740ed349d2e5",
         topicId: null,
         questions: [],
       };

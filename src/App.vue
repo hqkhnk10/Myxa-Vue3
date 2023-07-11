@@ -18,7 +18,6 @@ export default {
       // router.push('/study')
     }
     // Set the initial page title
-    document.title = 'CeGov'
     // Update the page title when the route changes
     watch(
       () => router.currentRoute.value.meta.title,
