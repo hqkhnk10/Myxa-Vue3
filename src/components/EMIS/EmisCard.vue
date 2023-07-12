@@ -1,6 +1,6 @@
 <script setup>
 import { defineProps, ref, computed } from "vue";
-import { getSubjectImg } from "@/js/img/getSubjectImg";
+import { getSubjectImgFromId } from "@/js/img/getSubjectImg";
 import {
   formatBgBaseOnSubjectId,
   formatStatusExercise,
@@ -61,7 +61,7 @@ const exerciseName = computed(() =>
       <img
         class="card-image"
         alt="subject"
-        :src="getSubjectImg(props.value.subjectImage)"
+        :src="getSubjectImgFromId(props.value.subjectId)"
       />
     </div>
     <div class="card-description">

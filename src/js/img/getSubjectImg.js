@@ -29,17 +29,12 @@ export const getSubjectImg = (img) => {
 
 export const getSubjectImgFromId = (id) => {
   switch (id) {
-    case 1:
+    case 'b43d178d-6e3a-4b24-adfd-48480b807965':
       return toan;
-    case 2:
+    case '961db234-1f95-11ee-91a9-e4a8dfba4ce4':
       return nguvan;
-    case 3:
+    case '2968e245-7446-401f-897e-eba897d55e2f':
       return tienganh;
-    case 4:
-      return gdcd;
-    case 10:
-      return diali;
-
     default:
       return defaultImg;
   }

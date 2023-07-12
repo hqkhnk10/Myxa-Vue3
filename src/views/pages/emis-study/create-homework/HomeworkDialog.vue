@@ -298,6 +298,7 @@ const validateFillAnswer = (validAnswers) => {
     showNotification("Bạn vui lòng nhập nội dung đáp án");
     return false;
   }
+  return true;
 };
 /**
  * Validate chọn câu trả lời
@@ -313,6 +314,7 @@ const validateChoosingAnswer = (validAnswers) => {
     showNotification("Bạn vui lòng nhập nội dung đáp án, chọn đáp án đúng");
     return false;
   }
+  return true;
 };
 /**
  * Validate câu trả lời Đúng/sai
@@ -320,14 +322,15 @@ const validateChoosingAnswer = (validAnswers) => {
  * Created By: NQTruong (01/07/2023)
  */
 const validateTrueFalseAnswer = (validAnswers) => {
-  if (validAnswers.length == 2) {
+  if (validAnswers.length != 2) {
     showNotification("Bạn vui lòng nhập nội dung đáp án");
     return false;
   }
-  if (validAnswers.filter((a) => a.answerContent).length != 1) {
+  if (validAnswers.filter((a) => a.answerStatus).length != 1) {
     showNotification("Bạn vui lòng nhập nội dung đáp án, chọn đáp án đúng");
     return false;
   }
+  return true;
 };
 /**
  * Lưu và thêm mới

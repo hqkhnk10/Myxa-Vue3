@@ -110,13 +110,12 @@ const subjects = computed(() => {
 });
 const form = ref({
   exerciseName: "",
-  subjectImage: "toan.png",
-  subjectId: 1,
-  gradeId: 1,
+  subjectId: "2968e245-7446-401f-897e-eba897d55e2f",
+  gradeId: "215b1f47-9d0b-4028-b1d9-740ed349d2e5",
   topicId: null,
   questions: [],
 });
-const finishAPI = ref(false);
+const isSendRequest = ref(false);
 onMounted(() => {
   /**
    * Event bus dialog visible
@@ -126,7 +125,7 @@ onMounted(() => {
    */
   emitter.on("info-dialog-visible", (visible) => {
     dialogVisible.value = visible;
-    finishAPI.value = true;
+    isSendRequest.value = true;
   });
 });
 watch(
@@ -161,8 +160,7 @@ watch(
         label: e.topicName,
       }));
     });
-  },
-  { immediate: true }
+  }
 );
 /**
  * Lưu form
@@ -175,7 +173,7 @@ const saveForm = () => {
   const valid = validateForm();
   if (valid) {
     exerciseStore.updateExercise(form.value);
-    if (finishAPI.value) {
+    if (isSendRequest.value) {
       exerciseStore.addOrUpdateExercise();
     }
     closeDialog();
